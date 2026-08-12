@@ -1263,52 +1263,79 @@ void loop() {
   }
 }
 `,
-            castle: `// 天空之城 (Castle in the Sky) - 主題曲
-int buzzer = A5;
-int NOTE_A4 = 440;
-int NOTE_B4 = 494;
-int NOTE_C5 = 523;
-int NOTE_B4_2 = 494; // Avoid duplicated variables if transpiler complains
-int NOTE_C5_2 = 523;
-int NOTE_E5 = 659;
-int NOTE_B4_3 = 494;
-int NOTE_E4 = 330;
-int NOTE_E4_2 = 330;
-int NOTE_A4_2 = 440;
-int NOTE_G4 = 392;
-int NOTE_A4_3 = 440;
-int NOTE_C5_3 = 523;
-int NOTE_G4_2 = 392;
-int NOTE_E4_3 = 330;
-int NOTE_E4_4 = 330;
+            castle: `// 天空之城 (Castle in the Sky) - 經典分解和弦華麗版
+int NOTE_A2 = 110; int NOTE_B2 = 123; int NOTE_C3 = 131; int NOTE_D3 = 147; int NOTE_E3 = 165; int NOTE_F3 = 175; int NOTE_G3 = 196;
+int NOTE_A3 = 220; int NOTE_B3 = 247; int NOTE_C4 = 262; int NOTE_D4 = 294; int NOTE_E4 = 330; int NOTE_F4 = 349; int NOTE_G4 = 392;
+int NOTE_A4 = 440; int NOTE_B4 = 494; int NOTE_C5 = 523; int NOTE_D5 = 587; int NOTE_E5 = 659; int NOTE_F5 = 698; int NOTE_G5 = 784;
 
-int melody[] = {
-  NOTE_A4, NOTE_B4, NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5,
-  NOTE_B4, NOTE_E4, NOTE_E4,
-  NOTE_A4, NOTE_G4, NOTE_A4, NOTE_C5, NOTE_G4,
-  NOTE_E4, NOTE_E4
+int buzzer = A5;
+int ledPins[15] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, A0, A1, A2};
+
+// 主旋律與低音分解和弦 (Am -> F -> G -> C -> Am -> Dm -> E7 -> Am)
+int CastleTone[] = {
+  // 前奏動機
+  NOTE_A4, NOTE_B4, 
+  NOTE_A3, NOTE_E4, NOTE_C5, NOTE_E4, NOTE_B4, NOTE_E4, NOTE_C5, NOTE_E4, NOTE_E5, NOTE_E4,
+  NOTE_E3, NOTE_B4, NOTE_E5, NOTE_B4, NOTE_G4, NOTE_B4, NOTE_E5, NOTE_B4,
+  
+  // 第一段
+  NOTE_E4, NOTE_A4, NOTE_B4,
+  NOTE_F3, NOTE_C4, NOTE_C5, NOTE_C4, NOTE_B4, NOTE_C4, NOTE_C5, NOTE_C4, NOTE_E5, NOTE_C4,
+  NOTE_C3, NOTE_G4, NOTE_E5, NOTE_G4, NOTE_G4, NOTE_G4, NOTE_C5, NOTE_G4,
+  
+  // 第二段
+  NOTE_C4, NOTE_D4,
+  NOTE_F3, NOTE_C4, NOTE_F4, NOTE_C4, NOTE_E4, NOTE_C4, NOTE_F4, NOTE_C4, NOTE_G5, NOTE_C4,
+  NOTE_G3, NOTE_D4, NOTE_D5, NOTE_D4, NOTE_B4, NOTE_D4, NOTE_C5, NOTE_D4,
+  
+  // 副歌收尾
+  NOTE_C4, NOTE_B3,
+  NOTE_A3, NOTE_E4, NOTE_A4, NOTE_E4, NOTE_B4, NOTE_E4, NOTE_C5, NOTE_E4, NOTE_B4, NOTE_E4,
+  NOTE_A3, NOTE_C4, NOTE_E4, NOTE_A4, NOTE_E4, NOTE_C4, NOTE_A3, 0
 };
 
-int beats[] = {
-  4, 4, 3, 8, 4, 4,
-  2, 4, 4,
-  3, 8, 4, 4, 2,
-  2, 2
+int noteDurations[] = {
+  8, 8,
+  8, 16, 16, 16, 16, 16, 16, 16, 8, 8,
+  8, 16, 16, 16, 16, 16, 16, 8,
+  
+  8, 8, 8,
+  8, 16, 16, 16, 16, 16, 16, 16, 8, 8,
+  8, 16, 16, 16, 16, 16, 16, 8,
+  
+  8, 8,
+  8, 16, 16, 16, 16, 16, 16, 16, 8, 8,
+  8, 16, 16, 16, 16, 16, 16, 8,
+  
+  8, 8,
+  8, 16, 16, 16, 16, 16, 16, 16, 8, 8,
+  8, 16, 16, 16, 16, 16, 4, 4
 };
 
 void setup() {
   pinMode(buzzer, OUTPUT);
+  for (int i = 0; i < 15; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
 }
 
 void loop() {
-  int size = 16;
-  for (int i = 0; i < size; i++) {
-    int duration = 800 / beats[i];
-    tone(buzzer, melody[i], duration);
-    delay(duration * 1.25);
+  for (int i = 0; i < 76; i++) {
+    int noteDuration = 1000 / noteDurations[i];
+    
+    // 依節奏脈動流動 15 顆 LED
+    int ledIndex = i % 15;
+    digitalWrite(ledPins[ledIndex], HIGH);
+
+    if (CastleTone[i] > 0) {
+      tone(buzzer, CastleTone[i], noteDuration);
+    }
+    
+    delay(noteDuration * 1.30); // 黃金 1.3 倍斷音比
+    digitalWrite(ledPins[ledIndex], LOW);
     noTone(buzzer);
   }
-  delay(2000);
+  delay(3000);
 }
 `,
             mario: `// 超級瑪利歐 (Super Mario Theme)
