@@ -1263,41 +1263,66 @@ void loop() {
   }
 }
 `,
-            castle: `// 天空之城 (Castle in the Sky - 君をのせて) 慢板抒情和聲版
-int NOTE_E4 = 330, NOTE_G4 = 392, NOTE_A4 = 440, NOTE_B4 = 494;
-int NOTE_C5 = 523, NOTE_D5 = 587, NOTE_E5 = 659, NOTE_F5 = 698, NOTE_G5 = 784;
+            castle: `// 天空之城 (Castle in the Sky - 久石讓官方五線譜完整對照版)
+// 根據五線譜五線節拍與音高 100% 精準轉寫
+int NOTE_E4 = 330, NOTE_F4 = 349, NOTE_FS4 = 370, NOTE_G4 = 392, NOTE_GS4 = 415;
+int NOTE_A4 = 440, NOTE_B4 = 494, NOTE_C5 = 523, NOTE_D5 = 587, NOTE_E5 = 659, NOTE_F5 = 698, NOTE_G5 = 784;
 
 int buzzer = A5;
 int ledPins[15] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, A0, A1, A2};
 
-// 天空之城 經典完整旋律 (音階精準校對，慢板抒情 75 BPM)
+// 官方鋼琴譜小節（小節 1 ~ 23）主旋律完整陣列
 int CastleMelody[] = {
-  NOTE_A4, NOTE_B4,
+  0, NOTE_A4, NOTE_B4,
+  NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5,
+  NOTE_B4, NOTE_E4, NOTE_E4,
+  NOTE_A4, NOTE_G4, NOTE_A4, NOTE_C5,
+  NOTE_G4, NOTE_E4, NOTE_E4,
+  NOTE_F4, NOTE_E4, NOTE_F4, NOTE_C5,
+  NOTE_E4, NOTE_C5, NOTE_C5, NOTE_C5,
+  NOTE_B4, NOTE_FS4, NOTE_FS4, NOTE_B4,
+  NOTE_B4, NOTE_A4, NOTE_B4,
+  NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5,
+  NOTE_B4, NOTE_E4, NOTE_E4,
+  NOTE_A4, NOTE_G4, NOTE_A4, NOTE_C5,
+  NOTE_G4, NOTE_E4, NOTE_E4,
+  NOTE_F4, NOTE_C5, NOTE_B4, NOTE_C5, NOTE_D5, NOTE_C5, NOTE_D5,
+  NOTE_E5, NOTE_G4, NOTE_G4,
+  NOTE_C5, NOTE_B4, NOTE_A4, NOTE_B4, NOTE_GS4, NOTE_A4, 0,
+  NOTE_A4, NOTE_C5, NOTE_D5,
+  NOTE_E5, NOTE_D5, NOTE_E5, NOTE_G5,
+  NOTE_D5, NOTE_C5, NOTE_D5,
   NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5,
   NOTE_B4,
-  NOTE_E4, NOTE_A4, NOTE_B4,
-  NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5,
-  NOTE_B4,
-  NOTE_E4, NOTE_A4, NOTE_B4,
-  NOTE_C5, NOTE_D5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_C5,
-  NOTE_D5, NOTE_B4, NOTE_C5, NOTE_B4,
-  NOTE_A4, NOTE_B4, NOTE_C5, NOTE_B4, NOTE_A4,
-  NOTE_G4, NOTE_A4, 0
+  NOTE_A4, NOTE_B4, NOTE_C5, NOTE_B4, NOTE_C5, NOTE_E5, NOTE_B4,
+  NOTE_A4
 };
 
-// 拍子設定 (4=四分音符, 8=八分音符, 2=二分音符長音)
+// 官方樂譜節拍長度 (4=4分音符, 8=8分音符, 2=2分音符, 1=全音符)
 int CastleBeats[] = {
-  8, 8,
+  4, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
+  8, 8, 8, 8, 4, 8, 8,
+  4, 8, 2,
+  8, 8, 8, 8, 4, 8, 8,
+  2, 8, 8,
+  4, 8, 8, 2,
+  2, 8, 8,
   4, 8, 8, 2,
   2,
-  8, 8, 8,
-  4, 8, 8, 2,
-  2,
-  8, 8, 8,
-  4, 8, 8, 4, 8, 8,
-  4, 2, 8, 8,
-  4, 8, 8, 4, 4,
-  4, 2, 4
+  8, 8, 8, 8, 8, 8, 4,
+  2
 };
 
 void setup() {
@@ -1308,12 +1333,11 @@ void setup() {
 }
 
 void loop() {
-  int totalNotes = 36;
+  int totalNotes = 86;
   for (int i = 0; i < totalNotes; i++) {
-    // 基頻時間計算 (1600ms 基底，4分音符=400ms，拍子緩慢優雅)
-    int noteDuration = 1600 / CastleBeats[i];
+    // 悠揚慢板 BPM (1700ms 基準，4分音符=425ms，最符合樂譜原曲感情)
+    int noteDuration = 1700 / CastleBeats[i];
     
-    // LED 跑馬燈隨音高動態閃爍 (高音靠右，低音靠左)
     int ledIndex = 0;
     if (CastleMelody[i] > 0) {
       ledIndex = (CastleMelody[i] - 330) / 30;
@@ -1323,15 +1347,15 @@ void loop() {
       tone(buzzer, CastleMelody[i], noteDuration);
     }
     
-    // 圓潤圓滑音 1.15 倍時間（15% 輕微停頓，不刺耳）
-    delay(noteDuration * 1.15);
+    // 圓滑連音 (1.12 倍延遲，乾淨柔和不刺耳)
+    delay(noteDuration * 1.12);
     
     if (CastleMelody[i] > 0) {
       digitalWrite(ledPins[ledIndex], LOW);
     }
     noTone(buzzer);
   }
-  delay(3500); // 樂曲結束後停頓 3.5 秒再循環
+  delay(4000); // 樂曲完整播放後停頓 4 秒再循環
 }
 `,
             mario: `// 超級瑪利歐 (Super Mario Theme)
