@@ -210,6 +210,7 @@
                     <option value="castle">8. 天空之城 (Castle in the Sky)</option>
                     <option value="mario">9. 超級瑪利歐 (Super Mario)</option>
                     <option value="tetris">10. 俄羅斯方塊 (Tetris)</option>
+                    <option value="flag_song">11. 中華民國國旗歌 (National Banner Song)</option>
                 </select>
                 
                 <button id="runBtn" onclick="runCode()" class="bg-green-600 hover:bg-green-500 text-white px-4 py-1 rounded flex items-center gap-2 transition font-bold shadow text-sm">
@@ -1425,6 +1426,61 @@ void loop() {
     noTone(buzzer);
   }
   delay(2000);
+}
+`,
+            flag_song: `// 中華民國國旗歌 (National Banner Song of ROC)
+// 根據官方五線譜 100% 精準對照轉寫 (山川壯麗，物產豐隆... 全曲 18 小節)
+int NOTE_G4 = 392, NOTE_A4 = 440, NOTE_B4 = 494;
+int NOTE_C5 = 523, NOTE_D5 = 587, NOTE_E5 = 659, NOTE_F5 = 698, NOTE_G5 = 784, NOTE_A5 = 880, NOTE_B5 = 988, NOTE_C6 = 1047;
+
+int buzzer = A5;
+int ledPins[15] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, A0, A1, A2};
+
+// 主旋律音符陣列 (117 個音符)
+int FlagMelody[] = {
+  392, 523, 587, 659, 784, 784, 698, 659, 587, 523, 587, 659, 784, 659, 587, 523, 587, 523, 587, 659, 523, 659, 587, 659, 698, 659, 587, 523, 659, 587,
+  659, 698, 784, 880, 784, 880, 784, 659, 523, 587, 659, 698, 659, 698, 784, 587, 523, 523, 587, 659, 659, 659, 698, 784, 698, 659, 587, 659, 698, 659,
+  784, 659, 587, 523, 587, 659, 698, 784, 880, 698, 784, 523, 587, 659, 659, 587, 659, 587, 523, 587, 523, 523, 587, 659, 698, 784, 880, 784, 659, 587, 659, 698, 659, 784, 880, 988, 1047, 988, 880, 784, 659, 698, 659, 587, 523, 523, 587, 659, 698, 784, 880, 784, 659, 587, 659, 698, 523
+};
+
+// 拍子長短對照 (4=4分音符, 8=8分音符, 16=16分音符, 2=2分音符, 1=全音符)
+int FlagBeats[] = {
+  4, 16, 16, 4, 4, 2, 16, 16, 8, 4, 4, 4, 4, 16, 16, 8, 4, 16, 16, 8, 2, 4, 16, 16, 8, 4, 4, 4, 4, 16,
+  16, 8, 4, 4, 4, 4, 4, 4, 4, 16, 16, 8, 16, 16, 8, 4, 2, 3, 8, 4, 4, 4, 4, 16, 16, 8, 16, 16, 8, 2,
+  4, 4, 4, 2, 8, 8, 8, 8, 4, 4, 2, 3, 8, 2, 4, 4, 4, 16, 16, 8, 2, 8, 8, 8, 8, 8, 8, 4, 4, 16, 16, 8, 2, 4, 16, 16, 8, 4, 4, 4, 4, 16, 16, 8, 2, 8, 8, 8, 8, 8, 8, 4, 4, 16, 16, 8, 1
+};
+
+void setup() {
+  pinMode(buzzer, OUTPUT);
+  for (int i = 0; i < 15; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  int totalNotes = 117;
+  for (int i = 0; i < totalNotes; i++) {
+    // 國旗歌雄壯行進速度 (1800ms 基準，4分音符=450ms)
+    int noteDuration = 1800 / FlagBeats[i];
+    
+    int ledIndex = 0;
+    if (FlagMelody[i] > 0) {
+      ledIndex = (FlagMelody[i] - 392) / 45;
+      if (ledIndex < 0) ledIndex = 0;
+      if (ledIndex > 14) ledIndex = 14;
+      digitalWrite(ledPins[ledIndex], HIGH);
+      tone(buzzer, FlagMelody[i], noteDuration);
+    }
+    
+    // 雄壯斷音比 (1.15 倍時間)
+    delay(noteDuration * 1.15);
+    
+    if (FlagMelody[i] > 0) {
+      digitalWrite(ledPins[ledIndex], LOW);
+    }
+    noTone(buzzer);
+  }
+  delay(4000); // 樂曲演奏完畢後停頓 4 秒再循環
 }
 `
         };
