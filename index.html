@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡老師的個人網站</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #0284c7;
+            --primary-glow: rgba(2, 132, 199, 0.1);
+            --accent-purple: #9333ea;
+            --accent-teal: #0d9488;
+            --accent-gold: #d97706;
+            --font-display: "Outfit", "Noto Sans TC", sans-serif;
+            --sidebar-w: 300px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-display);
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Layout shell ---------- */
+        .layout {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: visible;
+        }
+
+        /* ---------- Top Navbar Header ---------- */
+        .sidebar {
+            width: 100%;
+            height: 52px;
+            position: sticky;
+            top: 0;
+            z-index: 10000;
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            color: #ffffff;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            overflow: visible;
+        }
+
+        .sidebar-header {
+            margin: 0 2rem 0 0;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header .banner-glow {
+            display: none;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: none;
+            -webkit-text-fill-color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .sidebar-header p {
+            display: none;
+        }
+
+        .side-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3rem;
+            flex: 1;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            height: 100%;
+        }
+
+        .nav-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .nav-group::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: transparent;
+        }
+
+        .nav-item {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: #ffffff;
+            padding: 0 1rem;
+            height: 38px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .nav-item .nav-item-text {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-item .chevron {
+            font-size: 0.7rem;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .nav-item:hover, .nav-group:hover .nav-item {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .nav-item .nav-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .nav-item .nav-desc {
+            display: none;
+        }
+
+        /* Floating Level 2 Dropdown Submenu */
+        .nav-sub {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 99999;
+            background: #ffffff;
+            min-width: 260px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 0;
+            display: none;
+            margin-top: 2px;
+        }
+
+        .nav-sub::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: transparent;
+        }
+
+        .nav-group:hover .nav-sub, .nav-sub:hover, .nav-sub.open {
+            display: block;
+            animation: fadeInDown 0.15s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-sub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0.3rem 0.4rem;
+            margin: 0;
+            border-left: none;
+        }
+
+        .nav-sub-item {
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            text-align: left;
+            padding: 0.7rem 1.2rem;
+            font-size: 0.92rem;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        /* 超強動態 Hover 滑動反差 (與頂部導覽列漸層完全一致：linear-gradient(90deg, #0d9488 0%, #0284c7 100%)) */
+        .nav-sub-item:hover {
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            color: #ffffff !important;
+            font-weight: 800;
+            padding-left: 1.5rem;
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+        }
+
+        .nav-sub-item.active {
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .sidebar-footer {
+            display: none;
+        }
+        /* ---------- Main content ---------- */
+        .content {
+            flex: 1;
+            min-width: 0;
+            height: calc(100vh - 52px);
+            overflow-y: auto;
+            padding: 2.5rem 2.5rem 4rem;
+            box-sizing: border-box;
+        }
+
+        .content.is-framed {
+            padding: 0;
+            overflow: hidden;
+            height: calc(100vh - 52px);
+        }
+
+        .frame-wrap {
+            display: none;
+            width: 100%;
+            height: calc(100vh - 52px);
+        }
+
+        .frame-wrap.show {
+            display: block;
+        }
+
+        .frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Grid Cards Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid.hide {
+            display: none;
+        }
+
+        @media (max-width: 1300px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+        }
+
+        /* SVG Icons colors */
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card.award .card-icon { color: var(--accent-gold); }
+        .card.feature .card-icon { color: var(--accent-teal); }
+        .card.map .card-icon { color: var(--primary); }
+        .badge-year {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+            background-color: rgba(15, 23, 42, 0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+
+        .card.award .badge-year {
+            background-color: rgba(217, 119, 6, 0.1);
+            color: var(--accent-gold);
+            border-color: rgba(217, 119, 6, 0.15);
+        }
+
+        .card.feature .badge-year {
+            background-color: rgba(13, 148, 136, 0.1);
+            color: var(--accent-teal);
+            border-color: rgba(13, 148, 136, 0.15);
+        }
+
+        .card-body h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.45;
+            margin-bottom: 0.65rem;
+            transition: color 0.25s ease;
+        }
+
+        .card:hover h3 {
+            color: var(--primary);
+        }
+
+        .card-body p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-align: justify;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(15, 23, 42, 0.06);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .card-footer .category-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .go-link {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: transform 0.2s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .card:hover .go-link {
+            transform: translateX(3px);
+        }
+
+        /* Footer Section */
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.4s ease forwards;
+        }
+        /* ---------- Responsive: collapse sidebar to a top bar ---------- */
+        @media (max-width: 900px) {
+            .layout {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .side-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 0.5rem 0.8rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .side-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content {
+                height: auto;
+                min-height: 60vh;
+                padding: 1rem 0.8rem 2.5rem;
+            }
+
+            .content.is-framed {
+                height: calc(100vh - 110px);
+                min-height: 80vh;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="banner-glow"></div>
+            <h1>簡老師的個人網站</h1>
+            <p>教學資源與工具</p>
+        </div>
+
+        <!-- 左側選單：第1層分類 + 第2層子項目 -->
+        <nav class="side-nav" id="sideNav">
+            <div class="nav-group">
+                <button class="nav-item" data-cat="award">
+                    <span class="nav-item-text">
+                        <span class="nav-title">術科檢定</span>
+                        <span class="nav-desc">數位電子乙級與 App 檢定</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="award">
+                    <div>
+                        <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
+                            <button class="nav-sub-item" data-src="digi_el.html">數位乙級評審表設定</button>
+                            <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
+                            <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
+                            <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
+                            <button class="nav-sub-item" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
+                            <button class="nav-sub-item" data-src="app_inventor.html">App Inventor 上機測驗</button>
+                            <button class="nav-sub-item" data-src="app_inventor_answers.html">App Inventor 完整解答</button>
+                            <button class="nav-sub-item" data-src="app_inventor_practice.html">App Inventor 練習題庫</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-group">
+                <button class="nav-item" data-cat="feature">
+                    <span class="nav-item-text">
+                        <span class="nav-title">模擬與實作</span>
+                        <span class="nav-desc">互動式邏輯電路與程式平台</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="feature">
+                    <div>
+                        <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="arduino.html">Arduino 模擬教學平台</button>
+                            <button class="nav-sub-item" data-src="id_circuit.html">學號顯示電路設計模擬器</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-item" data-cat="map">
+                    <span class="nav-item-text">
+                        <span class="nav-title">課程規劃與行政</span>
+                        <span class="nav-desc">科別課程地圖與排班工具</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="map">
+                    <div>
+                        <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="coursemap112.html">課程地圖 112學年・列印版</button>
+                            <button class="nav-sub-item" data-src="coursemap_premium112.html">課程地圖 112學年・互動版</button>
+                            <button class="nav-sub-item" data-src="coursemap113.html">課程地圖 113學年・列印版</button>
+                            <button class="nav-sub-item" data-src="coursemap_premium113.html">課程地圖 113學年・互動版</button>
+                            <button class="nav-sub-item" data-src="coursemap114.html">課程地圖 114學年・列印版</button>
+                            <button class="nav-sub-item" data-src="coursemap_premium114.html">課程地圖 114學年・互動版</button>
+                            <button class="nav-sub-item" data-src="coursemap115.html">課程地圖 115學年・列印版</button>
+                            <button class="nav-sub-item" data-src="coursemap_premium115.html">課程地圖 115學年・互動版</button>
+                            <button class="nav-sub-item" data-src="roster.html">輪值表產生器</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="nav-item" data-cat="all">
+                <span class="nav-item-text">
+                    <span class="nav-title">全部資源</span>
+                    <span class="nav-desc">瀏覽首頁所有教學與模擬資源</span>
+                </span>
+            </button>
+
+            <div style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto;">
+                <span>🕒 網頁更新：</span><span class="updateTimeTop">2026-08-12 20:38</span>
+            </div>
+
+            <button class="nav-item" id="shareBtn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.85rem;" title="複製目前頁面的獨立分享網址">
+                🔗 複製本頁獨立網址
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            &copy; 2026 簡老師的個人網站
+        </div>
+    </aside>
+
+    <main class="content" id="mainContent">
+        <div class="grid" id="cardGrid">
+            <!-- 工業電子量測互動教學系統 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <span class="badge-year">互動模擬</span>
+                </div>
+                <div class="card-body">
+                    <h3>工業電子量測互動教學系統</h3>
+                    <p>數位電子乙級必備！提供 12 大題組的直流負載 (DC) 與交流分壓 (AC) 電路分析。支援開路/短路動態模擬與公式高亮對照。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">量測模擬</span>
+                    <button class="go-link" data-src="industrial_electronics_app.html">進入系統 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- 課程地圖 -->
+            <div class="card map" data-cat="map">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 4L9 7"/></svg>
+                    </div>
+                    <span class="badge-year">專業指引</span>
+                </div>
+                <div class="card-body">
+                    <h3>資訊科・電子科 課程地圖</h3>
+                    <p>楊梅高中資訊科與電子科課程地圖指引。完整呈現部定必修、校訂必修與選修專業實習課程規劃，輔以產業需求及科專業核心能力對接指南。</p>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">112學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap112.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium112.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">113學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap113.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium113.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">114學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap114.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium114.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">115學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap115.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium115.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin-top: 1.2rem;">
+                    <span class="category-tag">課程規劃</span>
+                </div>
+            </div>
+            <!-- 數位電子乙級設定 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <span class="badge-year">線上設定</span>
+                </div>
+                <div class="card-body">
+                    <h3>數位乙級評審表設定</h3>
+                    <p>線上配置數位電子乙級考題指定表參數，包含四位數顯示裝置與鍵盤輸入顯示裝置、CPLD 接腳分配、七段顯示器組合等。一鍵生成考生大批評分表 PDF 檔案。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">術科檢定</span>
+                    <button class="go-link" data-src="digi_el.html">進入設定 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- CPLD 綜合導覽系統 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <span class="badge-year">綜合導覽</span>
+                </div>
+                <div class="card-body">
+                    <h3>數位乙級學習導覽</h3>
+                    <p>包含「腳位邏輯模擬」與「硬體布局指引」雙模式。支援試題一、二全題組 CPLD 3064 物理偏移腳位對照、電阻裝配順序、Quartus 邏輯圖、AHDL 原始碼與精確 PCB 實體格數定位走線手冊。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">模擬與布局</span>
+                    <button class="go-link" data-src="cpld_simulator.html">進入系統 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Quartus MegaWizard 教學 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <span class="badge-year">影片教學</span>
+                </div>
+                <div class="card-body">
+                    <h3>Quartus MegaWizard 精靈教學</h3>
+                    <p>含第一題（B組）與第二題（E組）完整示範影片、CPLD 電路方塊圖、腳位對照，以及 Altera MegaWizard AHDL 講義下載。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">實作教學</span>
+                    <button class="go-link" data-src="CPLD/index.html">進入教學 &rarr;</button>
+                </div>
+            </div>
+            <!-- Arduino 模擬教學平台 -->
+            <div class="card feature" data-cat="feature">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </div>
+                    <span class="badge-year">課程實作</span>
+                </div>
+                <div class="card-body">
+                    <h3>楊梅高中 Arduino 模擬教學平台</h3>
+                    <p>線上 Arduino 程式開發與硬體即時模擬。支援 15 顆 LED 流水燈、雙按鈕與蜂鳴器音效控制。內含課程講義與 10 大主題 AI 提示語範例。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">模擬平台</span>
+                    <button class="go-link" data-src="arduino.html">進入平台 &rarr;</button>
+                </div>
+            </div>
+
+
+
+            <!-- PCB 元件佈局指引 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                    </div>
+                    <span class="badge-year">佈局指引</span>
+                </div>
+                <div class="card-body">
+                    <h3>數位乙級PCB佈局指引</h3>
+                    <p>專業 PCB 元件裝配定位指引。包含核心定位基準、限流電阻安裝順序、組裝作業程序、網格間距要求以及品質控管重點提示手冊。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">佈局手冊</span>
+                    <button class="go-link" data-src="pcb_layout.html">進入手冊 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- FPGA 矩陣鍵盤與七段顯示器模擬 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" ry="2"/><path d="M7 2v20M12 2v20M17 2v20M2 7h20M2 12h20M2 17h20"/></svg>
+                    </div>
+                    <span class="badge-year">數位電子</span>
+                </div>
+                <div class="card-body">
+                    <h3>FPGA 矩陣鍵盤與七段顯示器模擬</h3>
+                    <p>硬體掃描邏輯即時展示。模擬 4x3 矩陣鍵盤按鍵觸發 OR Gate 的訊號流向、鎖存器 (Latch) 數值保存行為與七段顯示器對應段碼變更。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">硬體模擬</span>
+                    <button class="go-link" data-src="fpga_keypad.html">進入模擬 &rarr;</button>
+                </div>
+            </div>
+            <!-- 輪值表產生器 -->
+            <div class="card map" data-cat="map">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <span class="badge-year">行政管理</span>
+                </div>
+                <div class="card-body">
+                    <h3>楊梅高中實習處 輪值表產生器</h3>
+                    <p>線上動態留守人員輪值表排程與統計系統。支援週一浮動輪替與週二至五固定排班規則，自動檢測排值衝突，支援匯出 A4 尺寸輪值表圖片。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">行政工具</span>
+                    <button class="go-link" data-src="roster.html">進入產生器 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 上機測驗 (學生版) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    </div>
+                    <span class="badge-year">課程測驗</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 上機測驗系統</h3>
+                    <p>線上行動 App 邏輯開發與即時手機畫面模擬。提供溫度警報、三角形面積、因數分析、偶數累加、金字塔、點餐計費等 7 大上機考試題組與防呆練習。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">測驗系統</span>
+                    <button class="go-link" data-src="app_inventor.html">進入測驗 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 上機測驗 (完整解答版) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M9 11l3 3L22 4"/></svg>
+                    </div>
+                    <span class="badge-year">教師專區</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 上機測驗 (完整解答)</h3>
+                    <p>上機考題拼圖積木 (Blocks) 完整配置答案。包含邏輯判斷、雙層迴圈 (Nested Loop) 金字塔、因數分析以及 CheckBox 計算的官方解答拼圖對照。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">解答查詢</span>
+                    <button class="go-link" data-src="app_inventor_answers.html">查看解答 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 練習題全集 (含模擬器) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span class="badge-year">練習題庫</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 練習題庫全集</h3>
+                    <p>MIT AI2 行動應用開發專屬基礎練習題庫。包含自訂程序溫度轉換、畢氏定理求斜邊、公因數運算、1到N防呆累加、文字三角形、水果多選串接與階層計算，均含拼圖解答與模擬器。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">題庫練習</span>
+                    <button class="go-link" data-src="app_inventor_practice.html">進入題庫 &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="frame-wrap" id="frameWrap">
+            <iframe id="mainFrame" title="內容框架"></iframe>
+        </div>
+
+        <footer id="pageFooter">
+            &copy; 2026 簡老師的個人網站 &middot; 版權所有
+        </footer>
+    </main>
+</div>
+
+<script>
+    const grid = document.getElementById('cardGrid');
+    const frameWrap = document.getElementById('frameWrap');
+    const mainFrame = document.getElementById('mainFrame');
+    const mainContent = document.getElementById('mainContent');
+    const pageFooter = document.getElementById('pageFooter');
+    const navItems = document.querySelectorAll('.nav-item');
+    const navSubItems = document.querySelectorAll('.nav-sub-item');
+    const goLinkBtns = document.querySelectorAll('.go-link[data-src]');
+
+    function showGrid() {
+        grid.classList.remove('hide');
+        frameWrap.classList.remove('show');
+        mainContent.classList.remove('is-framed');
+        pageFooter.style.display = '';
+    }
+
+    function showFrame(src) {
+        if (!mainFrame.src.includes(src)) {
+            mainFrame.src = src;
+        }
+        grid.classList.add('hide');
+        frameWrap.classList.add('show');
+        mainContent.classList.add('is-framed');
+        pageFooter.style.display = 'none';
+    }
+
+    function closeAllSubmenus(exceptCat) {
+        document.querySelectorAll('.nav-sub').forEach(sub => {
+            if (sub.getAttribute('data-group') !== exceptCat) sub.classList.remove('open');
+        });
+        navItems.forEach(el => {
+            if (el.getAttribute('data-cat') !== exceptCat) el.classList.remove('active');
+        });
+    }
+
+    function setActiveSubItem(src) {
+        navSubItems.forEach(el => el.classList.toggle('active', el.getAttribute('data-src') === src));
+    }
+
+    // Router Implementation with Hash (#page/name)
+    function navigateToSrc(src, updateHash = true) {
+        if (!src) {
+            showGrid();
+            if (updateHash) history.pushState(null, '', location.pathname + location.search);
+            return;
+        }
+
+        showFrame(src);
+        setActiveSubItem(src);
+
+        if (updateHash) {
+            const pageKey = src.replace('.html', '');
+            location.hash = 'page/' + pageKey;
+        }
+    }
+
+    function checkHashRoute() {
+        const hash = location.hash;
+        if (hash && hash.startsWith('#page/')) {
+            const pageKey = hash.replace('#page/', '');
+            const targetSrc = pageKey.endsWith('.html') ? pageKey : pageKey + '.html';
+            showFrame(targetSrc);
+            setActiveSubItem(targetSrc);
+        } else {
+            showGrid();
+        }
+    }
+
+    window.addEventListener('hashchange', checkHashRoute);
+    checkHashRoute();
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const cat = item.getAttribute('data-cat');
+            if (cat === 'all') {
+                closeAllSubmenus(null);
+                setActiveSubItem(null);
+                navigateToSrc(null, true);
+            }
+        });
+    });
+
+    navSubItems.forEach(subItem => {
+        subItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const src = subItem.getAttribute('data-src');
+            navigateToSrc(src, true);
+        });
+    });
+
+    goLinkBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const src = btn.getAttribute('data-src');
+            navigateToSrc(src, true);
+        });
+    });
+
+    // Share Button Implementation
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const currentUrl = location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const origText = shareBtn.innerText;
+                    shareBtn.innerText = '✅ 已複製獨立網址！';
+                    setTimeout(() => shareBtn.innerText = origText, 2000);
+                }).catch(() => {
+                    alert('您的獨立網址為：\n' + currentUrl);
+                });
+            } else {
+                alert('您的獨立網址為：\n' + currentUrl);
+            }
+        });
+    }
+
+    // Dynamic Last Modified Time Formatter
+    const updateTimeStrEl = document.getElementById('updateTimeStr');
+    const updateTimeTopEls = document.querySelectorAll('.updateTimeTop');
+    if (document.lastModified) {
+        const modDate = new Date(document.lastModified);
+        if (!isNaN(modDate.getTime())) {
+            const yyyy = modDate.getFullYear();
+            const mm = String(modDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(modDate.getDate()).padStart(2, '0');
+            const hh = String(modDate.getHours()).padStart(2, '0');
+            const min = String(modDate.getMinutes()).padStart(2, '0');
+            const formattedStr = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+            if (updateTimeStrEl) updateTimeStrEl.innerText = formattedStr;
+            updateTimeTopEls.forEach(el => el.innerText = formattedStr);
+        }
+    }
+
+    // Check route on initial load
+    checkHashRoute();
+</script>
+</body>
+</html>

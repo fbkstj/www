@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT App Inventor 上機測驗 (完整解答版)</title>
+    <style>
+        body {
+            font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 16px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #1a252f;
+            border-bottom: 1px solid #34495e;
+            color: #f1c40f; /* Gold for Teacher Version */
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .nav-item {
+            padding: 18px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #34495e;
+            transition: background 0.3s;
+            font-size: 1em;
+        }
+
+        .nav-item:hover {
+            background-color: #34495e;
+        }
+
+        .nav-item.active {
+            background-color: #f39c12; /* Orange for Teacher Mode */
+            border-left: 6px solid #f1c40f;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .exercise-container {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s;
+        }
+
+        .exercise-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 4px solid #f39c12;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 2em;
+        }
+
+        .instruction-box {
+            background-color: #fff;
+            border-left: 5px solid #f39c12;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+
+        .instruction-title {
+            font-weight: bold;
+            color: #d35400;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .split-view {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        /* BLOCKS AREA STYLE */
+        .blocks-area {
+            flex: 1;
+            min-width: 500px;
+            background-color: #ffffff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            min-height: 500px;
+            position: relative;
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow-x: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+        }
+
+        /* --- BLOCK CSS STYLES --- */
+        .block {
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: white;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            cursor: default;
+            margin-bottom: -1px;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .has-notch-top::before { content: ''; position: absolute; top: -5px; left: 15px; width: 15px; height: 5px; background-color: inherit; border-radius: 2px 2px 0 0; }
+        .has-notch-bottom::after { content: ''; position: absolute; bottom: -5px; left: 15px; width: 15px; height: 5px; background-color: inherit; border-radius: 0 0 2px 2px; z-index: 10; }
+        .socket-plug::before { content: ''; position: absolute; top: 50%; left: -5px; margin-top: -6px; width: 10px; height: 12px; background-color: inherit; clip-path: polygon(0% 0%, 100% 20%, 100% 80%, 0% 100%); z-index: 0; }
+
+        /* Block Colors */
+        .cat-event { background-color: #B8860B; border-color: #B8860B; }
+        .cat-control { background-color: #B19923; }
+        .cat-logic { background-color: #77B942; }
+        .cat-math { background-color: #3F71B5; }
+        .cat-text { background-color: #CB4582; }
+        .cat-component-set { background-color: #2F6F50; }
+        .cat-component-get { background-color: #6FAA6F; }
+        .cat-variable { background-color: #E67E22; }
+
+        .c-block { display: flex; flex-direction: column; align-items: flex-start; background-color: transparent !important; box-shadow: none; padding: 0; margin-bottom: 15px; }
+        .c-top { padding: 10px 15px; border-radius: 8px 8px 0 0; min-width: 150px; position: relative; color: white; font-weight: bold; font-size: 14px; }
+        .c-interior { border-left: 15px solid; padding-left: 10px; padding-top: 4px; padding-bottom: 4px; min-width: 100px; background-color: rgba(255,255,255,0.1); }
+        .c-bottom { height: 10px; width: 100%; border-radius: 0 0 8px 8px; margin-top: -1px; }
+        .socket { background-color: white; border: 1px inset #ccc; border-radius: 3px; padding: 2px 5px; margin: 0 5px; color: black; font-weight: normal; display: inline-flex; align-items: center; }
+        .nested-stack { display: flex; flex-direction: column; gap: 2px; }
+
+        /* Simulator Area */
+        .phone-preview {
+            width: 320px;
+            flex-shrink: 0;
+        }
+
+        .phone-case {
+            width: 320px;
+            height: 640px;
+            background-color: #333;
+            border-radius: 35px;
+            padding: 15px 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        .phone-case::before {
+            content: ''; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 70px; height: 6px; background-color: #111; border-radius: 10px; z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 25px; overflow: hidden; display: flex; flex-direction: column; position: relative;
+        }
+
+        .app-bar { background-color: #444; color: white; padding: 15px; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 5; }
+        .app-content { padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; flex: 1; }
+
+        /* UI Components */
+        .sim-label { font-size: 16px; color: #333; margin-bottom: -5px; font-weight: bold; }
+        .sim-textbox { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; background: white; }
+        .sim-textbox:focus { border-color: #e67e22; outline: none; }
+        .sim-button { width: 100%; padding: 15px; background-color: #e0e0e0; border: 2px solid #999; border-radius: 6px; font-size: 16px; font-weight: bold; color: black; cursor: pointer; transition: background 0.2s; text-align: center; }
+        .sim-button:active { background-color: #ccc; }
+        .sim-result-label { margin-top: 10px; font-size: 18px; color: #444; min-height: 24px; white-space: pre-wrap; word-break: break-all; font-weight: bold; }
+        
+        .sim-checkbox-group { display: flex; flex-direction: column; gap: 12px; background: white; padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+        .sim-checkbox { display: flex; align-items: center; gap: 10px; font-size: 16px; cursor: pointer; }
+        .sim-checkbox input { transform: scale(1.5); }
+
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-header">完整解答版</div>
+        <ul class="nav-list" id="navList">
+            <li class="nav-item active" onclick="showTab('q1')">1. 溫度警報器</li>
+            <li class="nav-item" onclick="showTab('q2')">2. 三角形面積</li>
+            <li class="nav-item" onclick="showTab('q3')">3. 因數計數器</li>
+            <li class="nav-item" onclick="showTab('q4')">4. 偶數累加器</li>
+            <li class="nav-item" onclick="showTab('q5')">5. 數字金字塔</li>
+            <li class="nav-item" onclick="showTab('q6')">6. 飲料點餐機</li>
+            <li class="nav-item" onclick="showTab('q7')">7. 次方計算器</li>
+        </ul>
+        
+        <!-- Return Home Button -->
+        <div style="padding: 20px; border-top: 1px solid #34495e; background-color: #1a252f;">
+            <a href="index.html" style="display: block; text-align: center; color: #ecf0f1; text-decoration: none; background-color: #f39c12; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 0.9em; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#d35400'" onmouseout="this.style.backgroundColor='#f39c12'">
+                🏠 返回教學首頁
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- QUESTION 1 -->
+        <div id="q1" class="exercise-container active">
+            <h2>題目 1: 溫度警報器</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                判斷式應用。若華氏溫度 > 100，則顯示紅色警告文字。
+            </div>
+            
+            <div class="split-view">
+                <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Convert.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <!-- Calc F -->
+                            <div class="block cat-variable has-notch-top has-notch-bottom">
+                                set global F to
+                                <div class="socket">
+                                    <div class="block cat-math socket-plug">
+                                        ( <div class="socket"><div class="block cat-component-get socket-plug">Box_C.Text</div></div> × 1.8 ) + 32
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- IF > 100 -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    if <div class="socket"><div class="block cat-logic socket-plug">get global F > 100</div></div> then
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.TextColor to Red</div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join(get global F, " (過熱警告)")</div>
+                                </div>
+                                <!-- Else -->
+                                <div class="c-interior" style="border-left: 15px solid #B19923; margin-top: -1px; padding: 5px 0 5px 10px;">
+                                    <span style="color: white; font-weight: bold;">else</span>
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.TextColor to Black</div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to get global F</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">溫度警報器</div>
+                            <div class="app-content">
+                                <label class="sim-label">輸入攝氏溫度 (C):</label>
+                                <input type="number" id="q1_input" class="sim-textbox" placeholder="例如: 38">
+                                <button onclick="runQ1()" class="sim-button">轉換並檢查</button>
+                                <div id="q1_result" class="sim-result-label">...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 2 -->
+        <div id="q2" class="exercise-container">
+            <h2>題目 2: 三角形面積計算</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                邏輯運算 (OR)。防止輸入負數，若輸入負數則顯示錯誤。
+            </div>
+            
+            <div class="split-view">
+                <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Calc.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <!-- Validation IF -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    if <div class="socket"><div class="block cat-logic socket-plug">(Box_Base.Text < 0) OR (Box_Height.Text < 0)</div></div> then
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to "輸入錯誤：數值不能為負"</div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.TextColor to Red</div>
+                                </div>
+                                <!-- Else -->
+                                <div class="c-interior" style="border-left: 15px solid #B19923; margin-top: -1px; padding: 5px 0 5px 10px;">
+                                    <span style="color: white; font-weight: bold;">else</span>
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                     <div class="block cat-variable has-notch-top has-notch-bottom">
+                                        set global Area to
+                                        <div class="socket">
+                                            <div class="block cat-math socket-plug">(Box_Base.Text × Box_Height.Text) ÷ 2</div>
+                                        </div>
+                                    </div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join("面積 = ", get global Area)</div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.TextColor to Black</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">面積計算器</div>
+                            <div class="app-content">
+                                <label class="sim-label">底 (Base):</label>
+                                <input type="number" id="q2_base" class="sim-textbox" placeholder="10">
+                                <label class="sim-label">高 (Height):</label>
+                                <input type="number" id="q2_height" class="sim-textbox" placeholder="5">
+                                <button onclick="runQ2()" class="sim-button">計算面積</button>
+                                <div id="q2_result" class="sim-result-label">面積 = </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 3 -->
+        <div id="q3" class="exercise-container">
+            <h2>題目 3: 因數計數器</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                迴圈與變數計數 (Counter)。找出因數的同時，計算個數。
+            </div>
+            
+            <div class="split-view">
+                 <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Find.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <div class="block cat-variable has-notch-top has-notch-bottom">set count to 0</div>
+                            <div class="block cat-variable has-notch-top has-notch-bottom">set str to "因數有: "</div>
+                            <!-- Loop -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    for each number from 1 to Box_N.Text by 1 do
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <!-- IF Remainder == 0 -->
+                                    <div class="c-block" style="margin-bottom:0;">
+                                        <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                            if <div class="socket"><div class="block cat-math socket-plug">remainder(Box_N.Text, number) = 0</div></div> then
+                                        </div>
+                                        <div class="c-interior" style="border-left-color: #B19923;">
+                                            <div class="block cat-variable has-notch-top has-notch-bottom">set str to join(str, number, ", ")</div>
+                                            <div class="block cat-variable has-notch-top has-notch-bottom">set count to (count + 1)</div>
+                                        </div>
+                                        <div class="c-bottom cat-control"></div>
+                                    </div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                            <!-- Display -->
+                            <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join(str, "\n總共有 ", count, " 個")</div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">找因數與計數</div>
+                            <div class="app-content">
+                                <label class="sim-label">輸入整數 N:</label>
+                                <input type="number" id="q3_num" class="sim-textbox" placeholder="12">
+                                <button onclick="runQ3()" class="sim-button">分析因數</button>
+                                <div id="q3_result" class="sim-result-label" style="font-size: 16px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 4 -->
+        <div id="q4" class="exercise-container">
+            <h2>題目 4: 偶數累加器</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                迴圈內的條件判斷。只累加偶數 (餘數為0)。
+            </div>
+            
+            <div class="split-view">
+                 <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Sum.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <div class="block cat-variable has-notch-top has-notch-bottom">set sum to 0</div>
+                            <!-- Loop -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    for each number from 1 to Box_N.Text by 1 do
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <!-- IF Even -->
+                                    <div class="c-block" style="margin-bottom:0;">
+                                        <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                            if <div class="socket"><div class="block cat-math socket-plug">remainder(number, 2) = 0</div></div> then
+                                        </div>
+                                        <div class="c-interior" style="border-left-color: #B19923;">
+                                            <div class="block cat-variable has-notch-top has-notch-bottom">set sum to (sum + number)</div>
+                                        </div>
+                                        <div class="c-bottom cat-control"></div>
+                                    </div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                            <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join("偶數和 = ", sum)</div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">偶數累加</div>
+                            <div class="app-content">
+                                <label class="sim-label">輸入整數 N:</label>
+                                <input type="number" id="q4_n" class="sim-textbox" placeholder="10">
+                                <button onclick="runQ4()" class="sim-button">計算偶數和</button>
+                                <div id="q4_result" class="sim-result-label"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 5 -->
+        <div id="q5" class="exercise-container">
+            <h2>題目 5: 數字金字塔</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                雙層迴圈 (Nested Loop)。利用內層迴圈變數 <code>j</code> 產生連續數字。
+            </div>
+            
+            <div class="split-view">
+                 <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Draw.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to ""</div>
+                            <!-- Outer Loop i -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    for each i from 1 to Box_Level.Text by 1 do
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-variable has-notch-top has-notch-bottom">set line_str to ""</div>
+                                    <!-- Inner Loop j -->
+                                    <div class="c-block" style="margin-bottom:0;">
+                                        <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                            for each j from 1 to get i by 1 do
+                                        </div>
+                                        <div class="c-interior" style="border-left-color: #B19923;">
+                                            <div class="block cat-variable has-notch-top has-notch-bottom">set line_str to join(line_str, get j)</div>
+                                        </div>
+                                        <div class="c-bottom cat-control"></div>
+                                    </div>
+                                    <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join(Label.Text, line_str, "\n")</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">數字金字塔</div>
+                            <div class="app-content">
+                                <label class="sim-label">輸入層數:</label>
+                                <input type="number" id="q5_level" class="sim-textbox" placeholder="5">
+                                <button onclick="runQ5()" class="sim-button">建立金字塔</button>
+                                <div id="q5_result" class="sim-result-label" style="font-family: monospace; color: blue;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 6 -->
+        <div id="q6" class="exercise-container">
+            <h2>題目 6: 飲料點餐機</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                累加計價與 CheckBox 狀態判斷。變數初始值為 30。
+            </div>
+            
+            <div class="split-view">
+                 <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Pay.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <div class="block cat-variable has-notch-top has-notch-bottom">set total to 30</div>
+                            <!-- Check 1 -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    if <div class="socket"><div class="block cat-component-get socket-plug">Chk_Pearl.Checked</div></div> then
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-variable has-notch-top has-notch-bottom">set total to (total + 10)</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                             <!-- Check 2 -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    if <div class="socket"><div class="block cat-component-get socket-plug">Chk_Coco.Checked</div></div> then
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-variable has-notch-top has-notch-bottom">set total to (total + 5)</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                             <!-- Check 3 -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    if <div class="socket"><div class="block cat-component-get socket-plug">Chk_Pudding.Checked</div></div> then
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-variable has-notch-top has-notch-bottom">set total to (total + 15)</div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                            <!-- Result -->
+                            <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join("總金額：$", total)</div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">飲料點餐</div>
+                            <div class="app-content">
+                                <div class="sim-label">基本茶飲 $30，請選擇配料：</div>
+                                <div class="sim-checkbox-group">
+                                    <label class="sim-checkbox"><input type="checkbox" id="q6_chk1"> 珍珠 (+$10)</label>
+                                    <label class="sim-checkbox"><input type="checkbox" id="q6_chk2"> 椰果 (+$5)</label>
+                                    <label class="sim-checkbox"><input type="checkbox" id="q6_chk3"> 布丁 (+$15)</label>
+                                </div>
+                                <button onclick="runQ6()" class="sim-button" style="margin-top:20px;">結帳</button>
+                                <div id="q6_result" class="sim-result-label" style="color: darkgreen;">總金額：$30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION 7 -->
+        <div id="q7" class="exercise-container">
+            <h2>題目 7: 次方計算器 (Loop練習)</h2>
+            <div class="instruction-box">
+                <span class="instruction-title">測驗重點：</span>
+                使用迴圈進行累乘運算 (取代 Math.Power)。初始值需為 1。
+            </div>
+            
+            <div class="split-view">
+                 <!-- Blocks Solution -->
+                <div class="blocks-area">
+                    <div class="c-block">
+                        <div class="c-top cat-event has-notch-bottom">當 Button_Calc.Click do</div>
+                        <div class="c-interior" style="border-left-color: #B8860B;">
+                            <div class="block cat-variable has-notch-top has-notch-bottom">set result to 1</div>
+                            <!-- Loop -->
+                            <div class="c-block" style="margin-bottom:0;">
+                                <div class="c-top cat-control has-notch-top has-notch-bottom">
+                                    for each number from 1 to Box_Exp.Text by 1 do
+                                </div>
+                                <div class="c-interior" style="border-left-color: #B19923;">
+                                    <div class="block cat-variable has-notch-top has-notch-bottom">
+                                        set result to
+                                        <div class="socket">
+                                            <div class="block cat-math socket-plug">get result × Box_Base.Text</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="c-bottom cat-control"></div>
+                            </div>
+                            <div class="block cat-component-set has-notch-top has-notch-bottom">set Label.Text to join("結果 = ", get result)</div>
+                        </div>
+                        <div class="c-bottom cat-event"></div>
+                    </div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="phone-preview">
+                    <div class="phone-case">
+                        <div class="phone-screen">
+                            <div class="app-bar">次方計算 (Loop)</div>
+                            <div class="app-content">
+                                <label class="sim-label">底數 (Base):</label>
+                                <input type="number" id="q7_base" class="sim-textbox" placeholder="2">
+                                <label class="sim-label">指數 (Exponent):</label>
+                                <input type="number" id="q7_exp" class="sim-textbox" placeholder="3">
+                                <button onclick="runQ7()" class="sim-button">開始計算</button>
+                                <div id="q7_result" class="sim-result-label">結果 = </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showTab(id) {
+            document.querySelectorAll('.exercise-container').forEach(div => div.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // --- EXAM SIMULATOR LOGIC ---
+
+        function runQ1() {
+            let c = parseFloat(document.getElementById('q1_input').value);
+            let label = document.getElementById('q1_result');
+            if(isNaN(c)) { label.innerText = "請輸入數字"; return; }
+            let f = c * 1.8 + 32;
+            if (f > 100) { label.innerText = "華氏 = " + f.toFixed(1) + " (過熱警告)"; label.style.color = "red"; } 
+            else { label.innerText = "華氏 = " + f.toFixed(1); label.style.color = "black"; }
+        }
+
+        function runQ2() {
+            let b = parseFloat(document.getElementById('q2_base').value);
+            let h = parseFloat(document.getElementById('q2_height').value);
+            let label = document.getElementById('q2_result');
+            if(isNaN(b) || isNaN(h)) { label.innerText = "請輸入數值"; return; }
+            if (b < 0 || h < 0) { label.innerText = "輸入錯誤：數值不能為負"; label.style.color = "red"; } 
+            else { let area = (b * h) / 2; label.innerText = "面積 = " + area; label.style.color = "black"; }
+        }
+
+        function runQ3() {
+            let n = parseInt(document.getElementById('q3_num').value);
+            let label = document.getElementById('q3_result');
+            if(isNaN(n)) return;
+            let str = "因數有: "; let count = 0;
+            for(let i=1; i<=n; i++) { if(n % i === 0) { str += i + ", "; count++; } }
+            str = str.slice(0, -2); str += "\n總共有 " + count + " 個因數"; label.innerText = str;
+        }
+
+        function runQ4() {
+            let n = parseInt(document.getElementById('q4_n').value);
+            let label = document.getElementById('q4_result');
+            if(isNaN(n)) return;
+            let sum = 0;
+            for(let i=1; i<=n; i++) { if (i % 2 === 0) sum += i; }
+            label.innerText = "1~" + n + " 的偶數和 = " + sum;
+        }
+
+        function runQ5() {
+            let level = parseInt(document.getElementById('q5_level').value);
+            let label = document.getElementById('q5_result');
+            if (isNaN(level)) return;
+            let text = "";
+            for (let i = 1; i <= level; i++) {
+                let line = "";
+                for (let j = 1; j <= i; j++) { line += j; }
+                text += line + "\n";
+            }
+            label.innerText = text;
+        }
+
+        function runQ6() {
+            let total = 30;
+            if(document.getElementById('q6_chk1').checked) total += 10;
+            if(document.getElementById('q6_chk2').checked) total += 5;
+            if(document.getElementById('q6_chk3').checked) total += 15;
+            document.getElementById('q6_result').innerText = "總金額：$" + total;
+        }
+
+        function runQ7() {
+            let base = parseInt(document.getElementById('q7_base').value);
+            let exp = parseInt(document.getElementById('q7_exp').value);
+            let label = document.getElementById('q7_result');
+            if(isNaN(base) || isNaN(exp)) return;
+            let result = 1;
+            for(let i=1; i<=exp; i++) { result = result * base; }
+            label.innerText = base + " 的 " + exp + " 次方 = " + result;
+        }
+
+    </script>
+
+</body>
+</html>

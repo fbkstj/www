@@ -1,0 +1,17 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Node / Python / Dev
+node_modules/
+__pycache__/
+*.pyc
+.vscode/
+.idea/
