@@ -1682,6 +1682,13 @@
             }
             logEl.scrollTop = logEl.scrollHeight;
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (location.hash) {
+                const target = location.hash.replace('#', '');
+                if (document.getElementById(target)) showTab(target);
+            }
+        });
     </script>
 </body>
 </html>
