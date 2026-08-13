@@ -131,8 +131,8 @@
                         </button>
                     </div>
 
-                    <!-- 返回首頁按鈕 -->
-                    <a href="index.html" class="flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm md:text-base transition-all shadow-md border-2 border-amber-300">
+                    <!-- 返回首頁按鈕 (跳出 iframe 防巢狀) -->
+                    <a href="index.html" target="_top" @click.prevent="goHome" class="flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm md:text-base transition-all shadow-md border-2 border-amber-300">
                         <span class="text-base">🏠</span> 首頁
                     </a>
                 </div>
@@ -142,7 +142,7 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 題組選擇區塊 (按鈕加寬至 max-w-[1450px]，強制單行單排顯示 whitespace-nowrap) -->
+            <!-- 題組選擇區塊 -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 shadow-lg space-y-2.5 max-w-[1450px] mx-auto w-full">
                 <div class="flex items-center justify-between px-1">
                     <h3 class="text-amber-300 font-black text-base md:text-lg flex items-center gap-2 tracking-wide">
@@ -449,6 +449,14 @@
                 const sets = ['A', 'B', 'C', 'D', 'E'];
                 const showCircuit = ref(true); 
                 const showAhdl = ref(true); 
+
+                const goHome = () => {
+                    if (window.parent && window.parent !== window && window.parent.location) {
+                        window.parent.location.hash = '';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                };
                 
                 const taskData = {
                     1: {
@@ -556,7 +564,7 @@
                 return {
                     currentTask, viewMode, currentSide, selectedSet, sets, taskData, layoutConfig,
                     j2Headers, j3Headers, allPinsLeft, allPinsRight, showCircuit, showAhdl,
-                    setTask, currentSetData, getPinY, getResPoints, isSelected, getSignalName, isSpec
+                    setTask, currentSetData, getPinY, getResPoints, isSelected, getSignalName, isSpec, goHome
                 };
             }
         }).mount('#app');
