@@ -78,6 +78,7 @@
         .ahdl-keyword { color: #38bdf8; font-weight: 900; }
         .ahdl-comment { color: #4ade80; font-style: italic; font-weight: 700; }
         .ahdl-string { color: #facc15; font-weight: 900; }
+        .ahdl-highlight { background-color: rgba(250, 204, 21, 0.25); border-left: 4px solid #facc15; padding-left: 6px; }
 
         .step-number {
             width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
@@ -236,6 +237,15 @@
                     </a>
 
                 </div>
+                
+                <!-- 💡 113/10/26 最新修訂重點提示卡片 -->
+                <div v-show="showOfficialDownloads" class="mt-2 bg-[#090d16] p-2.5 rounded-xl border border-sky-500/40 text-xs flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-300 font-bold">💡 113/10/26 修訂考場技巧：</span>
+                        <span class="text-slate-200">測試前可用桌面上 <code class="text-sky-300 font-mono-custom bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">SKC_DEtest.pof</code> 燒錄測試 CPLD 各 I/O 腳位功能正常，並於 30 分鐘內確認耗材。</span>
+                    </div>
+                    <span class="text-sky-400 font-mono-custom font-black shrink-0">規章第 3 頁修訂載明</span>
+                </div>
             </div>
 
             <!-- 題組選擇區塊 (僅在邏輯模擬模式顯示) -->
@@ -244,7 +254,12 @@
                     <h3 class="text-amber-300 font-black text-base md:text-lg flex items-center gap-2 tracking-wide">
                         <span class="text-xl">📑</span> 選擇官方試題組<span class="text-white font-black text-sm md:text-base">（ 1 ~ 5 題組物理偏移 ）</span>：
                     </h3>
-                    <span class="text-xs font-mono-custom font-black text-slate-300 bg-[#090d16] px-3 py-0.5 rounded-lg border border-[#475569] hidden md:inline-block">CPLD 3064 Pin Selection</span>
+                    <div class="flex items-center gap-2">
+                        <button @click="copyQSF" class="text-xs font-mono-custom font-black text-amber-300 hover:text-amber-200 bg-[#090d16] hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-amber-400/80 transition-all flex items-center gap-1 shadow-sm">
+                            <span>📋 複製當前題組 ({{ selectedSet }}) QSF 腳位碼</span>
+                        </button>
+                        <span class="text-xs font-mono-custom font-black text-slate-300 bg-[#090d16] px-3 py-1 rounded-lg border border-[#475569] hidden md:inline-block">CPLD 3064 Pin Selection</span>
+                    </div>
                 </div>
                 <div class="grid grid-cols-5 gap-2 md:gap-3.5">
                     <button
@@ -414,16 +429,35 @@
                         </div>
                     </div>
 
-                    <!-- 試題二：AHDL 原始檔 -->
+                    <!-- 試題二：AHDL 原始檔 (含 4x3 虛擬按鍵對照高亮) -->
                     <div v-if="currentTask === 2" class="bg-[#1e293b] rounded-xl border-2 border-[#475569] shadow-lg overflow-hidden">
                         <button @click="showAhdl = !showAhdl" class="w-full flex items-center justify-between p-3 bg-[#090d16] text-white hover:bg-slate-800 transition-colors">
                             <div class="flex items-center gap-2">
                                 <span class="text-emerald-400 text-xl font-bold">⌨</span>
-                                <h3 class="text-base md:text-lg font-black tracking-tight">試題二：自訂顯示器元件（AHDL 原始碼）</h3>
+                                <h3 class="text-base md:text-lg font-black tracking-tight">試題二：自訂顯示器元件（AHDL 原始碼與 4x3 按鍵解碼對照）</h3>
                             </div>
                             <span class="text-xs font-black px-3 py-1 bg-[#1e293b] text-emerald-400 rounded-lg border border-[#475569]">{{ showAhdl ? '▲ 隱藏程式碼' : '▼ 展開程式碼' }}</span>
                         </button>
-                        <div v-show="showAhdl" class="p-3.5 bg-[#090d16] border-t-2 border-[#475569]">
+                        <div v-show="showAhdl" class="p-3.5 bg-[#090d16] border-t-2 border-[#475569] space-y-3">
+                            
+                            <!-- 4x3 鍵盤互動模擬列 -->
+                            <div class="bg-[#1e293b] p-2.5 rounded-xl border border-[#475569] flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                                    <span>🎹 4x3 鍵盤模擬對照：點擊按鍵亮高亮 AHDL 程式碼</span>
+                                </span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button
+                                        v-for="k in ['1','4','7','*','2','5','8','0','3','6','9','#']"
+                                        :key="k"
+                                        @click="selectedKeypad = (selectedKeypad === k ? null : k)"
+                                        :class="selectedKeypad === k ? 'bg-amber-400 text-slate-950 font-black ring-2 ring-amber-300' : 'bg-[#0f172a] text-sky-300 hover:text-white font-black border border-[#475569]'"
+                                        class="px-2.5 py-1 rounded-lg text-xs font-mono-custom transition-all"
+                                    >
+                                        {{ k }}
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="ahdl-code overflow-x-auto custom-scrollbar">
                                 <pre><span class="ahdl-keyword">SUBDESIGN</span> 7Asegment
 (
@@ -432,18 +466,18 @@
 )
 <span class="ahdl-keyword">BEGIN</span>
     <span class="ahdl-keyword">TABLE</span> i[3..0] => a,b,c,d,e,f,g;
-             <span class="ahdl-string">H"0"</span> => 1,0,0,1,1,1,1; <span class="ahdl-comment">--1</span>
-             <span class="ahdl-string">H"1"</span> => 1,0,0,1,1,0,0; <span class="ahdl-comment">--4</span>
-             <span class="ahdl-string">H"2"</span> => 0,0,0,1,1,1,1; <span class="ahdl-comment">--7</span>
-             <span class="ahdl-string">H"3"</span> => 1,1,1,0,0,1,0; <span class="ahdl-comment">--*</span>
-             <span class="ahdl-string">H"4"</span> => 0,0,1,0,0,1,0; <span class="ahdl-comment">--2</span>
-             <span class="ahdl-string">H"5"</span> => 0,1,0,0,1,0,0; <span class="ahdl-comment">--5</span>
-             <span class="ahdl-string">H"6"</span> => 0,0,0,0,0,0,0; <span class="ahdl-comment">--8</span>
-             <span class="ahdl-string">H"7"</span> => 0,0,0,0,0,0,1; <span class="ahdl-comment">--0</span>
-             <span class="ahdl-string">H"8"</span> => 0,0,0,0,1,1,0; <span class="ahdl-comment">--3</span>
-             <span class="ahdl-string">H"9"</span> => 0,1,0,0,0,0,0; <span class="ahdl-comment">--6</span>
-             <span class="ahdl-string">H"A"</span> => 0,0,1,1,1,0,0; <span class="ahdl-comment">--9</span>
-             <span class="ahdl-string">H"B"</span> => 1,1,0,0,1,1,0; <span class="ahdl-comment">--#</span>
+<span :class="selectedKeypad === '1' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"0"</span> => 1,0,0,1,1,1,1; <span class="ahdl-comment">--1</span></span>
+<span :class="selectedKeypad === '4' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"1"</span> => 1,0,0,1,1,0,0; <span class="ahdl-comment">--4</span></span>
+<span :class="selectedKeypad === '7' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"2"</span> => 0,0,0,1,1,1,1; <span class="ahdl-comment">--7</span></span>
+<span :class="selectedKeypad === '*' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"3"</span> => 1,1,1,0,0,1,0; <span class="ahdl-comment">--*</span></span>
+<span :class="selectedKeypad === '2' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"4"</span> => 0,0,1,0,0,1,0; <span class="ahdl-comment">--2</span></span>
+<span :class="selectedKeypad === '5' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"5"</span> => 0,1,0,0,1,0,0; <span class="ahdl-comment">--5</span></span>
+<span :class="selectedKeypad === '8' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"6"</span> => 0,0,0,0,0,0,0; <span class="ahdl-comment">--8</span></span>
+<span :class="selectedKeypad === '0' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"7"</span> => 0,0,0,0,0,0,1; <span class="ahdl-comment">--0</span></span>
+<span :class="selectedKeypad === '3' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"8"</span> => 0,0,0,0,1,1,0; <span class="ahdl-comment">--3</span></span>
+<span :class="selectedKeypad === '6' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"9"</span> => 0,1,0,0,0,0,0; <span class="ahdl-comment">--6</span></span>
+<span :class="selectedKeypad === '9' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"A"</span> => 0,0,1,1,1,0,0; <span class="ahdl-comment">--9</span></span>
+<span :class="selectedKeypad === '#' ? 'ahdl-highlight' : ''">             <span class="ahdl-string">H"B"</span> => 1,1,0,0,1,1,0; <span class="ahdl-comment">--#</span></span>
     <span class="ahdl-keyword">END TABLE</span>;
 <span class="ahdl-keyword">END</span>;</pre>
                             </div>
@@ -614,10 +648,16 @@
                         </div>
                     </div>
 
-                    <!-- 5. 輸出考生人數 -->
-                    <div class="space-y-1.5">
-                        <label class="block text-sm font-black text-slate-200">輸出考生人數：</label>
-                        <input type="number" v-model.number="candidateCount" min="1" max="100" class="w-full bg-[#0f172a] border-2 border-[#475569] focus:border-sky-400 text-white font-black rounded-xl p-2.5 text-base outline-none transition-all">
+                    <!-- 5. 輸出考生人數與監評簽名姓名 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-sm font-black text-slate-200">輸出考生人數：</label>
+                            <input type="number" v-model.number="candidateCount" min="1" max="100" class="w-full bg-[#0f172a] border-2 border-[#475569] focus:border-sky-400 text-white font-black rounded-xl p-2.5 text-base outline-none transition-all">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-sm font-black text-amber-300">評審 / 監評簽名姓名：</label>
+                            <input type="text" v-model.trim="evalSignerName" placeholder="例如: 簡樹桐" class="w-full bg-[#0f172a] border-2 border-[#475569] focus:border-sky-400 text-white font-black rounded-xl p-2.5 text-base outline-none transition-all">
+                        </div>
                     </div>
 
                     <!-- 6. 確認生成 PDF 下載按鈕 -->
@@ -650,6 +690,7 @@
                 const showCircuit = ref(true); 
                 const showAhdl = ref(true); 
                 const showOfficialDownloads = ref(true);
+                const selectedKeypad = ref(null);
 
                 // 評審表設定 state
                 const evalSubject = ref('1');
@@ -658,6 +699,7 @@
                 const stationStart = ref(5);
                 const testNoStart = ref('07240001');
                 const candidateCount = ref(20);
+                const evalSignerName = ref('簡樹桐');
                 const isGeneratingPdf = ref(false);
 
                 const goHome = () => {
@@ -752,6 +794,7 @@
                     selectedSet.value = 'A';
                     currentSide.value = 'front';
                     evalSubject.value = String(t);
+                    selectedKeypad.value = null;
                 };
 
                 const currentSetData = computed(() => taskData[currentTask.value].sets[selectedSet.value]);
@@ -777,10 +820,30 @@
 
                 const isSpec = (setKey, pin) => taskData[currentTask.value].specialPins[setKey]?.includes(pin);
 
+                const copyQSF = () => {
+                    const set = taskData[currentTask.value].sets[selectedSet.value];
+                    let qsfText = `# Quartus II Pin Assignment File (.qsf) - Task ${currentTask.value} Set ${selectedSet.value}\n`;
+                    qsfText += `# Generated by Digital Electronics B Learning Guide\n\n`;
+                    
+                    set.left.pins.forEach((pin, i) => {
+                        qsfText += `set_location_assignment PIN_${pin} -to ${set.left.signals[i]}\n`;
+                    });
+                    set.right.pins.forEach((pin, i) => {
+                        qsfText += `set_location_assignment PIN_${pin} -to ${set.right.labels[i]}\n`;
+                    });
+
+                    navigator.clipboard.writeText(qsfText).then(() => {
+                        alert(`已成功複製【試題${currentTask.value} - 題組 ${selectedSet.value}】的 Quartus QSF 腳位設定碼至剪貼簿！\n可直接貼入 Quartus 專案 .qsf 檔案。`);
+                    }).catch(err => {
+                        alert('複製失敗：' + err);
+                    });
+                };
+
                 const generatePDF = async () => {
                     const stStart = parseInt(stationStart.value);
                     const tNoStart = String(testNoStart.value).trim();
                     const cCount = parseInt(candidateCount.value);
+                    const signerName = String(evalSignerName.value || '簡樹桐').trim();
 
                     if (!stStart || stStart < 1 || stStart > 20) {
                         alert('崗位編號需介於 1 到 20 之間！');
@@ -908,8 +971,8 @@
                                 });
                             }
 
-                            // 寫入簽名「簡樹桐」
-                            page1.drawText("簡樹桐", {
+                            // 寫入簽名（支援動態填寫）
+                            page1.drawText(signerName, {
                                 x: 150,
                                 y: HEIGHT - 738,
                                 size: 26,
@@ -945,6 +1008,7 @@
                 return {
                     currentTask, viewMode, currentSide, selectedSet, sets, taskData, layoutConfig,
                     j2Headers, j3Headers, allPinsLeft, allPinsRight, showCircuit, showAhdl, showOfficialDownloads,
+                    selectedKeypad, evalSignerName, copyQSF,
                     setTask, currentSetData, getPinY, getResPoints, isSelected, getSignalName, isSpec, goHome,
                     evalSubject, evalCpld, evalDisplay, stationStart, testNoStart, candidateCount, isGeneratingPdf, generatePDF
                 };
