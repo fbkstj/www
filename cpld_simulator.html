@@ -102,7 +102,7 @@
         
         <!-- 頂部全寬 Header -->
         <header class="bg-[#090d16] border-b-2 border-[#475569] sticky top-0 z-50 shadow-xl px-4 md:px-6 py-2.5">
-            <div class="max-w-[1750px] mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="max-w-[1850px] mx-auto flex flex-wrap items-center justify-between gap-3">
                 
                 <!-- 標題與醒目標示徽章 -->
                 <div class="flex flex-wrap items-center gap-3">
@@ -149,7 +149,7 @@
         </header>
 
         <!-- 主內容區域 -->
-        <main class="flex-1 max-w-[1750px] w-full mx-auto p-4 md:p-5 space-y-5">
+        <main class="flex-1 max-w-[1850px] w-full mx-auto p-4 md:p-5 space-y-5">
             
             <!-- 題組選擇區塊 -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-4 md:p-5 shadow-lg space-y-3">
@@ -203,101 +203,113 @@
                     </div>
                 </div>
 
-                <!-- 物理接腳對照表 (J2 & J3 Pin Mapping Table - 壓縮寬度至原來的1/2, max-w-[900px] 置中) -->
-                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] shadow-lg overflow-hidden max-w-[920px] mx-auto w-full">
-                    <div class="p-3 bg-[#090d16] text-white flex items-center justify-between border-b-2 border-[#475569]">
-                        <h3 class="font-black text-sm md:text-base flex items-center gap-2 text-sky-300 tracking-tight">
-                            <span class="text-lg">📊</span> J2 與 J3 物理腳位對照表<span class="text-amber-300 font-black text-xs md:text-sm">（題組 {{ selectedSet }}）</span>
-                        </h3>
-                        <span class="text-xs text-slate-200 font-mono-custom font-black bg-[#1e293b] px-2.5 py-0.5 rounded-md border border-[#475569]">CPLD 3064</span>
+                <!-- 左右對照 Layout: 左側為 CPLD 3064 圖形模擬器，右側為 J2 & J3 物理腳位映射對照表 (極速對比連動關係) -->
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+                    
+                    <!-- 左欄：SVG CPLD 3064 硬體腳位即時圖形模擬器 (col-span-6) -->
+                    <div class="xl:col-span-6 bg-[#1e293b] rounded-2xl border-2 border-[#475569] p-4 md:p-5 shadow-lg flex flex-col items-center h-full">
+                        <div class="w-full flex items-center justify-between mb-3">
+                            <h3 class="text-white font-black text-base md:text-lg flex items-center gap-2">
+                                <span class="text-amber-300 text-xl">🖥️</span> CPLD 3064 即時晶片圖形
+                            </h3>
+                            <span class="text-xs text-sky-300 font-black bg-[#090d16] px-2.5 py-1 rounded-md border border-[#475569]">段碼與驅動實體腳位</span>
+                        </div>
+                        <div class="bg-neutral-900 rounded-2xl shadow-xl border-2 border-neutral-700 relative overflow-hidden w-full">
+                            <svg viewBox="0 0 1000 700" class="w-full h-auto p-2">
+                                <rect x="250" y="30" width="500" height="640" rx="4" fill="#171717" stroke="#FFFFFF" stroke-width="6" />
+                                <rect x="465" y="55" width="70" height="50" rx="2" fill="#262626" stroke="#444" />
+                                <text x="500" y="85" text-anchor="middle" fill="#555" font-size="14" font-weight="bold">Y1</text>
+                                <rect x="420" y="240" width="160" height="160" rx="4" fill="#111" stroke="#444" stroke-width="2" />
+                                <text x="500" y="330" text-anchor="middle" fill="#222" font-size="30" font-weight="900">U1</text>
+                                <path d="M420 260 L440 240" stroke="#444" stroke-width="2" />
+                                <rect x="430" y="560" width="140" height="70" rx="2" fill="#262626" stroke="#444" />
+                                <rect x="330" y="70" width="35" height="560" fill="#111" stroke="#444" />
+                                <rect x="635" y="70" width="35" height="560" fill="#111" stroke="#444" />
+                                <g v-for="(pin, i) in currentSetData.left.pins" :key="'svg-l'+i">
+                                    <text x="240" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" text-anchor="end" fill="#60a5fa" font-size="22" font-weight="900">{{ currentSetData.left.signals[i] }}</text>
+                                    <g v-if="currentSetData.left.resistors[i]">
+                                        <template v-if="currentTask === 1 && currentSetData.left.signals[i] === 'dp'">
+                                            <text x="40" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" fill="#60a5fa" font-size="26" font-weight="900">({{ currentSetData.left.resistors[i] }}</text>
+                                            <polyline :points="getResPoints(85, getPinY(allPinsLeft.indexOf(pin)))" fill="none" stroke="#60a5fa" stroke-width="2.5" />
+                                            <text x="155" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" fill="#60a5fa" font-size="26" font-weight="900">{{ currentSetData.left.resValue }})</text>
+                                        </template>
+                                        <text v-else x="210" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" text-anchor="end" fill="#60a5fa" font-size="26" font-weight="900">({{ currentSetData.left.resistors[i] }} {{ currentSetData.left.resValue }})</text>
+                                    </g>
+                                </g>
+                                <g v-for="(pin, i) in currentSetData.right.pins" :key="'svg-r'+i">
+                                    <text x="760" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="22" font-weight="900">{{ currentSetData.right.labels[i] }}</text>
+                                    <g v-if="currentSetData.right.resistors[i]">
+                                        <text x="785" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="26" font-weight="900">({{ currentSetData.right.resistors[i] }}</text>
+                                        <polyline :points="getResPoints(825, getPinY(allPinsRight.indexOf(pin)))" fill="none" stroke="#facc15" stroke-width="2.5" />
+                                        <text x="898" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="26" font-weight="900">{{ currentSetData.right.resValue }})</text>
+                                    </g>
+                                </g>
+                                <g v-for="(p, i) in allPinsLeft" :key="'pl'+i">
+                                    <text x="305" :y="getPinY(i) + 7" text-anchor="end" :fill="typeof p === 'number' ? '#e2e8f0' : '#ef4444'" font-size="18" font-weight="900">{{ typeof p === 'number' ? 'P'+p : p }}</text>
+                                    <circle cx="347" :cy="getPinY(i)" r="6" fill="#cbd5e1" stroke="#ffffff" stroke-width="1.5" />
+                                    <circle cx="347" :cy="getPinY(i)" r="2.5" fill="#111" />
+                                </g>
+                                <g v-for="(p, i) in allPinsRight" :key="'pr'+i">
+                                    <text x="695" :y="getPinY(i) + 7" :fill="typeof p === 'number' ? '#e2e8f0' : '#ef4444'" font-size="18" font-weight="900">{{ typeof p === 'number' ? 'P'+p : p }}</text>
+                                    <circle cx="653" :cy="getPinY(i)" r="6" fill="#cbd5e1" stroke="#ffffff" stroke-width="1.5" />
+                                    <circle cx="653" :cy="getPinY(i)" r="2.5" fill="#111" />
+                                </g>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="p-2 bg-[#0f172a] overflow-x-auto custom-scrollbar">
-                        <table class="w-full border border-[#475569] border-collapse bg-[#1e293b] text-center rounded-lg overflow-hidden shadow-sm">
-                            <thead>
-                                <tr class="bg-[#090d16] border-b border-[#475569]">
-                                    <th rowspan="2" class="border-r border-[#475569] w-10 bg-[#1e293b] font-black text-sm md:text-base text-amber-300 p-1">組別</th>
-                                    <th :colspan="j2Headers.length" class="p-1.5 border-r border-[#475569] font-black text-xs md:text-sm text-sky-300 bg-sky-950/60">
-                                        {{ taskData[currentTask].j2Header }}
-                                    </th>
-                                    <th :colspan="j3Headers.length" class="p-1.5 font-black text-xs md:text-sm text-red-400 bg-red-950/60">
-                                        {{ taskData[currentTask].j3Header }}
-                                    </th>
-                                </tr>
-                                <tr class="bg-[#0f172a] border-b border-[#475569] text-slate-200">
-                                    <th v-for="p in j2Headers" :key="p" class="p-1 border-r border-[#475569] font-mono-custom text-xs font-black italic text-slate-200">P{{p}}</th>
-                                    <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]'" class="p-1 font-mono-custom text-xs font-black italic text-slate-200">P{{p}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="setKey in sets" :key="setKey" :class="selectedSet === setKey ? 'bg-amber-400/25 ring-2 ring-amber-300 ring-inset' : ''" class="border-b border-[#475569] transition-all">
-                                    <td :class="selectedSet === setKey ? 'bg-amber-400 text-slate-950 font-black' : 'bg-[#090d16] text-white font-black'" class="border-r border-[#475569] text-base md:text-lg p-1">
-                                        {{ setKey }}
-                                    </td>
-                                    <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-emerald-950/90 ring-1 ring-emerald-400 ring-inset') : ''" class="border-r border-[#475569] p-0.5 h-8">
-                                        <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-emerald-300 font-black'" class="text-xs md:text-sm">
-                                            {{ getSignalName(setKey, 'left', p) }}
-                                        </span>
-                                    </td>
-                                    <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-sky-950/90 ring-1 ring-sky-400 ring-inset') : '']" class="p-0.5 h-8">
-                                        <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-sky-300 font-black'" class="text-xs md:text-sm">
-                                            {{ getSignalName(setKey, 'right', p) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
-                <!-- SVG 模擬器 -->
-                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] p-5 shadow-lg flex flex-col items-center max-w-[920px] mx-auto w-full">
-                    <div class="w-full flex items-center justify-between mb-3">
-                        <h3 class="text-white font-black text-base md:text-lg flex items-center gap-2.5">
-                            <span class="text-amber-300 text-xl">🖥️</span> CPLD 3064 硬體腳位即時圖形模擬器
-                        </h3>
-                        <span class="text-xs text-sky-300 font-black bg-[#090d16] px-3 py-1 rounded-md border border-[#475569]">模擬輸出：A-G 段碼與驅動控制</span>
-                    </div>
-                    <div class="bg-neutral-900 rounded-2xl shadow-xl border-2 border-neutral-700 relative overflow-hidden w-full">
-                        <svg viewBox="0 0 1000 700" class="w-full h-auto p-3">
-                            <rect x="250" y="30" width="500" height="640" rx="4" fill="#171717" stroke="#FFFFFF" stroke-width="6" />
-                            <rect x="465" y="55" width="70" height="50" rx="2" fill="#262626" stroke="#444" />
-                            <text x="500" y="85" text-anchor="middle" fill="#555" font-size="14" font-weight="bold">Y1</text>
-                            <rect x="420" y="240" width="160" height="160" rx="4" fill="#111" stroke="#444" stroke-width="2" />
-                            <text x="500" y="330" text-anchor="middle" fill="#222" font-size="30" font-weight="900">U1</text>
-                            <path d="M420 260 L440 240" stroke="#444" stroke-width="2" />
-                            <rect x="430" y="560" width="140" height="70" rx="2" fill="#262626" stroke="#444" />
-                            <rect x="330" y="70" width="35" height="560" fill="#111" stroke="#444" />
-                            <rect x="635" y="70" width="35" height="560" fill="#111" stroke="#444" />
-                            <g v-for="(pin, i) in currentSetData.left.pins" :key="'svg-l'+i">
-                                <text x="240" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" text-anchor="end" fill="#60a5fa" font-size="22" font-weight="900">{{ currentSetData.left.signals[i] }}</text>
-                                <g v-if="currentSetData.left.resistors[i]">
-                                    <template v-if="currentTask === 1 && currentSetData.left.signals[i] === 'dp'">
-                                        <text x="40" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" fill="#60a5fa" font-size="26" font-weight="900">({{ currentSetData.left.resistors[i] }}</text>
-                                        <polyline :points="getResPoints(85, getPinY(allPinsLeft.indexOf(pin)))" fill="none" stroke="#60a5fa" stroke-width="2.5" />
-                                        <text x="155" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" fill="#60a5fa" font-size="26" font-weight="900">{{ currentSetData.left.resValue }})</text>
-                                    </template>
-                                    <text v-else x="210" :y="getPinY(allPinsLeft.indexOf(pin)) + 8" text-anchor="end" fill="#60a5fa" font-size="26" font-weight="900">({{ currentSetData.left.resistors[i] }} {{ currentSetData.left.resValue }})</text>
-                                </g>
-                            </g>
-                            <g v-for="(pin, i) in currentSetData.right.pins" :key="'svg-r'+i">
-                                <text x="760" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="22" font-weight="900">{{ currentSetData.right.labels[i] }}</text>
-                                <g v-if="currentSetData.right.resistors[i]">
-                                    <text x="785" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="26" font-weight="900">({{ currentSetData.right.resistors[i] }}</text>
-                                    <polyline :points="getResPoints(825, getPinY(allPinsRight.indexOf(pin)))" fill="none" stroke="#facc15" stroke-width="2.5" />
-                                    <text x="898" :y="getPinY(allPinsRight.indexOf(pin)) + 8" fill="#facc15" font-size="26" font-weight="900">{{ currentSetData.right.resValue }})</text>
-                                </g>
-                            </g>
-                            <g v-for="(p, i) in allPinsLeft" :key="'pl'+i">
-                                <text x="305" :y="getPinY(i) + 7" text-anchor="end" :fill="typeof p === 'number' ? '#e2e8f0' : '#ef4444'" font-size="18" font-weight="900">{{ typeof p === 'number' ? 'P'+p : p }}</text>
-                                <circle cx="347" :cy="getPinY(i)" r="6" fill="#cbd5e1" stroke="#ffffff" stroke-width="1.5" />
-                                <circle cx="347" :cy="getPinY(i)" r="2.5" fill="#111" />
-                            </g>
-                            <g v-for="(p, i) in allPinsRight" :key="'pr'+i">
-                                <text x="695" :y="getPinY(i) + 7" :fill="typeof p === 'number' ? '#e2e8f0' : '#ef4444'" font-size="18" font-weight="900">{{ typeof p === 'number' ? 'P'+p : p }}</text>
-                                <circle cx="653" :cy="getPinY(i)" r="6" fill="#cbd5e1" stroke="#ffffff" stroke-width="1.5" />
-                                <circle cx="653" :cy="getPinY(i)" r="2.5" fill="#111" />
-                            </g>
-                        </svg>
+                    <!-- 右欄：J2 與 J3 物理腳位映射對照表 (col-span-6) -->
+                    <div class="xl:col-span-6 bg-[#1e293b] rounded-2xl border-2 border-[#475569] shadow-lg overflow-hidden h-full flex flex-col justify-between">
+                        <div>
+                            <div class="p-3.5 bg-[#090d16] text-white flex items-center justify-between border-b-2 border-[#475569]">
+                                <h3 class="font-black text-sm md:text-base flex items-center gap-2 text-sky-300 tracking-tight">
+                                    <span class="text-lg">📊</span> J2 與 J3 物理腳位對照表<span class="text-amber-300 font-black text-xs md:text-sm">（題組 {{ selectedSet }}）</span>
+                                </h3>
+                                <span class="text-xs text-slate-200 font-mono-custom font-black bg-[#1e293b] px-2.5 py-0.5 rounded-md border border-[#475569]">Pin Map</span>
+                            </div>
+                            <div class="p-2.5 bg-[#0f172a] overflow-x-auto custom-scrollbar">
+                                <table class="w-full border border-[#475569] border-collapse bg-[#1e293b] text-center rounded-lg overflow-hidden shadow-sm">
+                                    <thead>
+                                        <tr class="bg-[#090d16] border-b border-[#475569]">
+                                            <th rowspan="2" class="border-r border-[#475569] w-9 bg-[#1e293b] font-black text-xs md:text-sm text-amber-300 p-1">組別</th>
+                                            <th :colspan="j2Headers.length" class="p-1 border-r border-[#475569] font-black text-xs text-sky-300 bg-sky-950/60">
+                                                {{ taskData[currentTask].j2Header }}
+                                            </th>
+                                            <th :colspan="j3Headers.length" class="p-1 font-black text-xs text-red-400 bg-red-950/60">
+                                                {{ taskData[currentTask].j3Header }}
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-[#0f172a] border-b border-[#475569] text-slate-200">
+                                            <th v-for="p in j2Headers" :key="p" class="p-0.5 border-r border-[#475569] font-mono-custom text-[11px] font-black italic text-slate-200">P{{p}}</th>
+                                            <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]'" class="p-0.5 font-mono-custom text-[11px] font-black italic text-slate-200">P{{p}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="setKey in sets" :key="setKey" :class="selectedSet === setKey ? 'bg-amber-400/25 ring-2 ring-amber-300 ring-inset' : ''" class="border-b border-[#475569] transition-all">
+                                            <td :class="selectedSet === setKey ? 'bg-amber-400 text-slate-950 font-black' : 'bg-[#090d16] text-white font-black'" class="border-r border-[#475569] text-sm md:text-base p-1">
+                                                {{ setKey }}
+                                            </td>
+                                            <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-emerald-950/90 ring-1 ring-emerald-400 ring-inset') : ''" class="border-r border-[#475569] p-0 h-10 md:h-12">
+                                                <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-emerald-300 font-black'" class="text-[11px] md:text-xs">
+                                                    {{ getSignalName(setKey, 'left', p) }}
+                                                </span>
+                                            </td>
+                                            <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-sky-950/90 ring-1 ring-sky-400 ring-inset') : '']" class="p-0 h-10 md:h-12">
+                                                <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-sky-300 font-black'" class="text-[11px] md:text-xs">
+                                                    {{ getSignalName(setKey, 'right', p) }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 簡短學習對照提示 -->
+                        <div class="p-3 bg-[#090d16] border-t border-[#475569] text-xs font-bold text-slate-300 flex items-center justify-between">
+                            <span class="text-amber-400">💡 提示：點擊上方題組 A~E，即時觀察左側 IC 引腳與右側對照表連動變化！</span>
+                            <span class="text-sky-400">100% 腳位同步</span>
+                        </div>
                     </div>
                 </div>
 
