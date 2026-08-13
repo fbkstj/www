@@ -3,25 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數位電子乙級學習導覽</title>
+    <title>數位電子乙級學習導覽系統</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Vue 3 CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
         :root {
-            --font-main: 'Outfit', 'Noto Sans TC', sans-serif;
+            --bg-main: #0f172a;
+            --panel-bg: #1e293b;
+            --card-bg: #334155;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-yellow: #facc15;
+            --accent-red: #f87171;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
         }
 
         body {
-            font-family: var(--font-main);
-            background-color: #f8fafc;
-            color: #0f172a;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             font-size: 16px;
+            line-height: 1.5;
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -29,24 +42,24 @@
             height: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+            background: rgba(15, 23, 42, 0.6);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #475569;
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #64748b;
         }
         
         .font-mono-custom {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
         }
 
         /* 呼吸燈動畫 */
         @keyframes pulse-custom {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(220, 38, 38, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 0 28px rgba(220, 38, 38, 0.8); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(245, 158, 11, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 28px rgba(245, 158, 11, 0.85); }
         }
         .animate-mnemonic {
             animation: pulse-custom 2s infinite ease-in-out;
@@ -57,7 +70,7 @@
 
         /* AHDL 代碼樣式 */
         .ahdl-code {
-            background-color: #0f172a;
+            background-color: #090d16;
             color: #f8fafc;
             font-family: 'JetBrains Mono', monospace;
             padding: 1.8rem;
@@ -65,163 +78,167 @@
             line-height: 1.7;
             font-size: 1rem;
             tab-size: 4;
+            border: 1px solid #334155;
         }
         .ahdl-keyword { color: #38bdf8; font-weight: bold; }
         .ahdl-comment { color: #4ade80; font-style: italic; }
-        .ahdl-string { color: #fbbf24; }
+        .ahdl-string { color: #facc15; }
 
         .step-number {
             width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%); color: white; border-radius: 50%; font-weight: 900; flex-shrink: 0;
-            font-size: 1.05rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            font-size: 1.05rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
         }
         .resistor-node {
-            background: #f0f9ff; border: 2px solid #0284c7; color: #0369a1;
-            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; font-weight: 900; font-size: 1.2rem; shadow: 0 2px 6px rgba(2,132,199,0.15);
+            background: #0f172a; border: 2px solid #38bdf8; color: #38bdf8;
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; font-size: 1.25rem; shadow: 0 2px 8px rgba(56,189,248,0.25);
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900">
+<body class="min-h-screen bg-[#0f172a] text-slate-100">
     <div id="app" class="flex flex-col min-h-screen">
         
-        <!-- 頂部全寬控制 Header (Glassmorphism Sticky Bar) -->
-        <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md text-white border-b border-slate-800 shadow-xl">
-            <div class="max-w-[1750px] mx-auto px-4 md:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <!-- 頂部全寬 Header (與工業電子術科對齊風格) -->
+        <header class="bg-[#090d16] border-b border-[#334155] sticky top-0 z-50 shadow-xl px-4 md:px-6 py-3">
+            <div class="max-w-[1750px] mx-auto flex flex-wrap items-center justify-between gap-4">
                 
-                <!-- 標題與返回按鈕 -->
-                <div class="flex items-center gap-4">
-                    <a href="index.html" class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-sm font-extrabold transition-all border border-slate-700 shadow-sm">
-                        &larr; 返回首頁
-                    </a>
-                    <h1 class="text-xl md:text-2xl font-black text-white flex items-center gap-2.5 tracking-tight">
-                        <span class="text-yellow-400 text-2xl md:text-3xl">⚡</span> 數位電子乙級學習導覽
-                    </h1>
+                <!-- 標題與目前題組標籤 -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl font-bold shadow-inner">
+                        ⚡
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">數位電子乙級 學習導覽系統</h1>
+                            <span class="px-3 py-0.5 bg-sky-950 text-sky-400 border border-sky-600/50 rounded-lg text-xs font-mono-custom font-extrabold hidden sm:inline-block">
+                                {{ taskData[currentTask].name }} (口訣: {{ taskData[currentTask].mnemonic }})
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 核心模式切換與試題選擇 -->
-                <div class="flex flex-wrap items-center gap-3">
+                <!-- 頂部右側選單按鈕區 -->
+                <div class="flex flex-wrap items-center gap-2 md:gap-3">
                     
-                    <!-- 導覽模式 (Logic vs Layout) -->
-                    <div class="flex bg-slate-800 p-1.5 rounded-2xl border border-slate-700 shadow-inner">
-                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-sky-600 text-white shadow-md font-black' : 'text-slate-300 hover:text-white font-bold'" class="px-4 py-2 text-sm md:text-base rounded-xl transition-all flex items-center gap-2">
-                            <span class="text-lg">⚡</span> 腳位邏輯模擬
+                    <!-- 導覽模式切換 (邏輯 vs 布局) -->
+                    <div class="flex bg-[#1e293b] p-1 rounded-xl border border-[#334155]">
+                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-3.5 py-1.5 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5">
+                            <span>⚡</span> 腳位邏輯模擬
                         </button>
-                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-sky-600 text-white shadow-md font-black' : 'text-slate-300 hover:text-white font-bold'" class="px-4 py-2 text-sm md:text-base rounded-xl transition-all flex items-center gap-2">
-                            <span class="text-lg">📐</span> 硬體布局指引
+                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-[#0284c7] text-white font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-3.5 py-1.5 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5">
+                            <span>📐</span> 硬體布局指引
                         </button>
                     </div>
 
                     <!-- 試題選擇 (試題一 vs 試題二) -->
-                    <div class="flex bg-slate-800 p-1.5 rounded-2xl border border-slate-700 shadow-inner">
-                        <button @click="setTask(1)" :class="currentTask === 1 ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:text-white'" class="px-4 py-2 text-sm md:text-base font-black rounded-xl transition-all flex items-center gap-1.5">
+                    <div class="flex bg-[#1e293b] p-1 rounded-xl border border-[#334155]">
+                        <button @click="setTask(1)" :class="currentTask === 1 ? 'bg-teal-600 text-white font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-3.5 py-1.5 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1">
                             <span>📘</span> 試題一
                         </button>
-                        <button @click="setTask(2)" :class="currentTask === 2 ? 'bg-teal-600 text-white shadow-md' : 'text-slate-300 hover:text-white'" class="px-4 py-2 text-sm md:text-base font-black rounded-xl transition-all flex items-center gap-1.5">
+                        <button @click="setTask(2)" :class="currentTask === 2 ? 'bg-teal-600 text-white font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-3.5 py-1.5 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1">
                             <span>📙</span> 試題二
                         </button>
                     </div>
 
-                    <!-- 口訣徽章 -->
-                    <div class="px-5 py-2 bg-red-600 text-white text-sm md:text-base font-black italic rounded-2xl border-2 border-white/30 shadow-lg animate-mnemonic tracking-widest flex items-center gap-2">
-                        <span class="text-lg">🔑</span> 口訣：{{ taskData[currentTask].mnemonic }}
-                    </div>
-                </div>
-            </div>
-
-            <!-- 題組切換 Chips (僅在邏輯模擬模式時顯示) -->
-            <div v-if="viewMode === 'logic'" class="bg-slate-950/90 border-t border-slate-800/80 px-4 md:px-6 py-2.5">
-                <div class="max-w-[1750px] mx-auto flex items-center gap-3 overflow-x-auto custom-scrollbar">
-                    <span class="text-xs md:text-sm text-slate-300 font-extrabold uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
-                        <span>🎯</span> 物理偏移題組選取：
-                    </span>
-                    <button
-                        v-for="set in sets"
-                        :key="set"
-                        @click="selectedSet = set"
-                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-lg ring-2 ring-amber-200 scale-105' : 'bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white font-extrabold'"
-                        class="px-4 py-1.5 text-sm md:text-base rounded-xl transition-all flex items-center gap-1.5 shrink-0 border border-slate-700/80"
-                    >
-                        <span class="font-mono-custom">0{{ sets.indexOf(set) + 1 }}</span>
-                        <span>題組 {{ set }}</span>
-                        <span v-if="selectedSet === set" class="text-sm ml-0.5">✔</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 硬體視圖切換 (僅在布局指引模式時顯示) -->
-            <div v-else class="bg-slate-950/90 border-t border-slate-800/80 px-4 md:px-6 py-2.5">
-                <div class="max-w-[1750px] mx-auto flex items-center gap-4">
-                    <span class="text-xs md:text-sm text-slate-300 font-extrabold uppercase tracking-wider shrink-0 flex items-center gap-1">
-                        <span>🔍</span> 硬體視圖切換：
-                    </span>
-                    <div class="flex bg-slate-800 p-1 rounded-xl border border-slate-700">
-                        <button @click="currentSide = 'front'" :class="currentSide === 'front' ? 'bg-white text-slate-950 font-black shadow-md' : 'text-slate-300 hover:text-white font-bold'" class="px-5 py-1.5 text-xs md:text-sm rounded-lg transition-all">📷 正面佈局</button>
-                        <button @click="currentSide = 'back'" :class="currentSide === 'back' ? 'bg-white text-slate-950 font-black shadow-md' : 'text-slate-300 hover:text-white font-bold'" class="px-5 py-1.5 text-xs md:text-sm rounded-lg transition-all">🔍 背面佈局</button>
-                    </div>
+                    <!-- 返回首頁按鈕 (黃色 Accent 風格) -->
+                    <a href="index.html" class="flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs md:text-sm transition-all shadow-md">
+                        <span>🏠</span> 返回首頁
+                    </a>
                 </div>
             </div>
         </header>
 
-        <!-- 主內容區塊 -->
-        <main class="flex-1 max-w-[1750px] w-full mx-auto p-4 md:p-6 lg:p-8 space-y-7">
+        <!-- 主內容區域 -->
+        <main class="flex-1 max-w-[1750px] w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
             
+            <!-- 題組選擇區塊 (對照工業電子 Choice Bar 風格) -->
+            <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border border-[#334155] rounded-2xl p-4 md:p-5 shadow-lg space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-amber-400 font-extrabold text-sm md:text-base flex items-center gap-2">
+                        <span>📑</span> 選擇官方試題組 ( 1 ~ 5 題組物理偏移 )：
+                    </h3>
+                    <span class="text-xs text-slate-400 font-mono-custom hidden sm:inline-block">CPLD 3064 Pin Selection</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2.5 md:gap-4">
+                    <button
+                        v-for="set in sets"
+                        :key="set"
+                        @click="selectedSet = set"
+                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-xl ring-4 ring-amber-400/30 scale-[1.02]' : 'bg-[#334155] text-slate-200 hover:bg-[#475569] hover:text-white font-extrabold'"
+                        class="py-3 md:py-3.5 px-2 text-sm md:text-base rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 border border-slate-600/60"
+                    >
+                        <span>題組 {{ sets.indexOf(set) + 1 }}</span>
+                        <span class="text-xs opacity-90">({{ set }}組)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 硬體視圖選擇區塊 (僅在布局模式顯示) -->
+            <div v-else class="bg-[#1e293b] border border-[#334155] rounded-2xl p-4 md:p-5 shadow-lg flex items-center justify-between">
+                <h3 class="text-amber-400 font-extrabold text-sm md:text-base flex items-center gap-2">
+                    <span>🔍</span> 切換硬體 PCB 佈局視圖：
+                </h3>
+                <div class="flex bg-[#0f172a] p-1 rounded-xl border border-[#334155]">
+                    <button @click="currentSide = 'front'" :class="currentSide === 'front' ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-5 py-2 text-xs md:text-sm rounded-lg transition-all">📷 正面佈局</button>
+                    <button @click="currentSide = 'back'" :class="currentSide === 'back' ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'text-slate-400 hover:text-white font-bold'" class="px-5 py-2 text-xs md:text-sm rounded-lg transition-all">🔍 背面佈局</button>
+                </div>
+            </div>
+
             <!-- 【模式一：腳位邏輯模擬】 -->
-            <div v-if="viewMode === 'logic'" class="space-y-7 fade-in">
+            <div v-if="viewMode === 'logic'" class="space-y-6 fade-in">
                 
-                <!-- 題組重點提示與說明卡片 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row gap-5 items-start md:items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-3xl font-bold shrink-0 shadow-inner">
-                            💡
+                <!-- 題組重點提示卡片 -->
+                <div class="bg-[#1e293b] rounded-2xl border border-[#334155] p-5 md:p-6 shadow-lg flex items-center gap-5">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl font-bold shrink-0 shadow-inner">
+                        💡
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2.5">
+                            <span class="px-3 py-0.5 bg-amber-400 text-slate-950 rounded-lg text-xs font-black">題組 {{ selectedSet }}</span>
+                            <h3 class="text-white font-extrabold text-base md:text-lg">{{ taskData[currentTask].name }} — 腳位分配重點</h3>
                         </div>
-                        <div>
-                            <div class="flex items-center gap-2.5 mb-1.5">
-                                <span class="px-3 py-1 bg-amber-400 text-slate-950 rounded-lg text-xs md:text-sm font-black shadow-sm">題組 {{ selectedSet }}</span>
-                                <h3 class="text-slate-900 font-black text-lg md:text-xl tracking-tight">{{ taskData[currentTask].name }} — 腳位分配重點</h3>
-                            </div>
-                            <p class="text-slate-700 text-base md:text-lg font-bold leading-relaxed">{{ currentSetData.focus }}</p>
-                        </div>
+                        <p class="text-slate-300 text-sm md:text-base font-bold leading-relaxed">{{ currentSetData.focus }}</p>
                     </div>
                 </div>
 
                 <!-- 物理接腳對照表 (J2 & J3 Pin Mapping Table) -->
-                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-                    <div class="p-4 md:p-5 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
-                        <h3 class="font-black text-base md:text-lg flex items-center gap-2.5 tracking-tight">
-                            <span class="text-sky-400 text-xl">📊</span> J2 與 J3 物理腳位映射對照表 (目前選擇：題組 {{ selectedSet }})
+                <div class="bg-[#1e293b] rounded-2xl border border-[#334155] shadow-lg overflow-hidden">
+                    <div class="p-4 md:p-5 bg-[#090d16] text-white flex items-center justify-between border-b border-[#334155]">
+                        <h3 class="font-black text-base md:text-lg flex items-center gap-2.5 text-sky-400">
+                            <span>📊</span> J2 與 J3 物理腳位映射對照表 (目前選擇：題組 {{ selectedSet }})
                         </h3>
-                        <span class="text-xs md:text-sm text-slate-400 font-mono-custom bg-slate-800 px-3 py-1 rounded-lg">CPLD 3064 Pinout Map</span>
+                        <span class="text-xs text-slate-400 font-mono-custom bg-[#1e293b] px-3 py-1 rounded-lg border border-[#334155]">CPLD 3064 Pinout Map</span>
                     </div>
-                    <div class="p-4 md:p-5 bg-slate-50 overflow-x-auto custom-scrollbar">
-                        <table class="w-full border-2 border-slate-900 border-collapse bg-white text-center rounded-xl overflow-hidden shadow-sm">
+                    <div class="p-4 md:p-5 bg-[#0f172a] overflow-x-auto custom-scrollbar">
+                        <table class="w-full border-2 border-[#475569] border-collapse bg-[#1e293b] text-center rounded-xl overflow-hidden shadow-sm">
                             <thead>
-                                <tr class="bg-slate-100 border-b-2 border-slate-900">
-                                    <th rowspan="2" class="border-r-2 border-slate-900 w-20 bg-slate-200 font-black text-xl text-slate-900">組別</th>
-                                    <th :colspan="j2Headers.length" class="p-3 border-r-2 border-slate-900 font-black text-xl md:text-2xl text-sky-800 bg-sky-50/70">
+                                <tr class="bg-[#090d16] border-b-2 border-[#475569]">
+                                    <th rowspan="2" class="border-r-2 border-[#475569] w-20 bg-[#1e293b] font-black text-xl text-amber-400">組別</th>
+                                    <th :colspan="j2Headers.length" class="p-3 border-r-2 border-[#475569] font-black text-xl text-sky-400 bg-sky-950/40">
                                         {{ taskData[currentTask].j2Header }}
                                     </th>
-                                    <th :colspan="j3Headers.length" class="p-3 font-black text-xl md:text-2xl text-red-600 bg-red-50/70">
+                                    <th :colspan="j3Headers.length" class="p-3 font-black text-xl text-red-400 bg-red-950/40">
                                         {{ taskData[currentTask].j3Header }}
                                     </th>
                                 </tr>
-                                <tr class="bg-slate-50 border-b-2 border-slate-900 text-slate-700">
-                                    <th v-for="p in j2Headers" :key="p" class="p-2.5 border-r border-slate-300 font-mono-custom text-base md:text-lg font-black w-14 italic">P{{p}}</th>
-                                    <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-slate-300'" class="p-2.5 font-mono-custom text-base md:text-lg font-black w-14 italic">P{{p}}</th>
+                                <tr class="bg-[#0f172a] border-b-2 border-[#475569] text-slate-300">
+                                    <th v-for="p in j2Headers" :key="p" class="p-2.5 border-r border-[#334155] font-mono-custom text-base font-black w-14 italic text-slate-400">P{{p}}</th>
+                                    <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-[#334155]'" class="p-2.5 font-mono-custom text-base font-black w-14 italic text-slate-400">P{{p}}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="setKey in sets" :key="setKey" :class="selectedSet === setKey ? 'bg-amber-100/80 ring-2 ring-amber-400 ring-inset' : ''" class="border-b border-slate-800 transition-all">
-                                    <td :class="selectedSet === setKey ? 'bg-amber-300 text-slate-950 font-black' : 'bg-slate-100 text-slate-900 font-extrabold'" class="border-r-2 border-slate-900 text-2xl p-2.5">
+                                <tr v-for="setKey in sets" :key="setKey" :class="selectedSet === setKey ? 'bg-amber-500/20 ring-2 ring-amber-400 ring-inset' : ''" class="border-b border-[#334155] transition-all">
+                                    <td :class="selectedSet === setKey ? 'bg-amber-400 text-slate-950 font-black' : 'bg-[#090d16] text-slate-200 font-extrabold'" class="border-r-2 border-[#475569] text-2xl p-2.5">
                                         {{ setKey }}
                                     </td>
-                                    <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-100 ring-2 ring-red-500 ring-inset' : 'bg-emerald-100 ring-2 ring-emerald-500 ring-inset') : ''" class="border-r border-slate-300 p-2.5 h-16">
-                                        <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-700 underline decoration-red-600 decoration-[3.5px] underline-offset-4 font-black' : 'text-emerald-800 font-black'" class="text-xl md:text-2xl">
+                                    <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-950/80 ring-2 ring-red-500 ring-inset' : 'bg-emerald-950/80 ring-2 ring-emerald-500 ring-inset') : ''" class="border-r border-[#334155] p-2.5 h-16">
+                                        <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-400 underline decoration-red-500 decoration-[3.5px] underline-offset-4 font-black' : 'text-emerald-400 font-black'" class="text-xl md:text-2xl">
                                             {{ getSignalName(setKey, 'left', p) }}
                                         </span>
                                     </td>
-                                    <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-slate-300', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-100 ring-2 ring-red-500 ring-inset' : 'bg-sky-100 ring-2 ring-sky-500 ring-inset') : '']" class="p-2 h-16">
-                                        <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-700 underline decoration-red-600 decoration-[3.5px] underline-offset-4 font-black' : 'text-sky-800 font-black'" class="text-xl md:text-2xl">
+                                    <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-[#334155]', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-950/80 ring-2 ring-red-500 ring-inset' : 'bg-sky-950/80 ring-2 ring-sky-500 ring-inset') : '']" class="p-2 h-16">
+                                        <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-400 underline decoration-red-500 decoration-[3.5px] underline-offset-4 font-black' : 'text-sky-400 font-black'" class="text-xl md:text-2xl">
                                             {{ getSignalName(setKey, 'right', p) }}
                                         </span>
                                     </td>
@@ -232,12 +249,12 @@
                 </div>
 
                 <!-- SVG 模擬器 -->
-                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden p-5 md:p-6 flex flex-col items-center">
+                <div class="bg-[#1e293b] rounded-2xl border border-[#334155] p-5 md:p-6 shadow-lg flex flex-col items-center">
                     <div class="w-full flex items-center justify-between mb-4">
-                        <h3 class="text-slate-900 font-black text-lg md:text-xl flex items-center gap-2.5">
-                            <span class="text-teal-600 text-2xl">🖥️</span> CPLD 3064 硬體腳位即時圖形模擬器
+                        <h3 class="text-white font-extrabold text-base md:text-lg flex items-center gap-2.5">
+                            <span class="text-amber-400 text-2xl">🖥️</span> CPLD 3064 硬體腳位即時圖形模擬器
                         </h3>
-                        <span class="text-xs md:text-sm text-slate-600 font-extrabold bg-slate-100 px-3.5 py-1.5 rounded-lg border border-slate-200">模擬輸出：A-G 段碼與驅動控制</span>
+                        <span class="text-xs md:text-sm text-sky-400 font-bold bg-[#090d16] px-3.5 py-1.5 rounded-lg border border-[#334155]">模擬輸出：A-G 段碼與驅動控制</span>
                     </div>
                     <div class="bg-neutral-900 rounded-3xl shadow-2xl border border-neutral-800 relative overflow-hidden w-full max-w-[1050px]">
                         <svg viewBox="0 0 1000 700" class="w-full h-auto p-4">
@@ -287,33 +304,33 @@
                 <div class="grid grid-cols-1 gap-6">
                     
                     <!-- Quartus II 邏輯電路設計圖 -->
-                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-                        <button @click="showCircuit = !showCircuit" class="w-full flex items-center justify-between p-5 bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                    <div class="bg-[#1e293b] rounded-2xl border border-[#334155] shadow-lg overflow-hidden">
+                        <button @click="showCircuit = !showCircuit" class="w-full flex items-center justify-between p-5 bg-[#090d16] text-white hover:bg-slate-800 transition-colors">
                             <div class="flex items-center gap-3">
                                 <span class="text-sky-400 text-2xl font-bold">📐</span>
                                 <h3 class="text-lg md:text-xl font-black tracking-tight">
                                     {{ currentTask === 1 ? '試題一' : '試題二' }}：內部電路設計圖 (Quartus II 邏輯圖)
                                 </h3>
                             </div>
-                            <span class="text-sm font-extrabold px-4 py-1.5 bg-slate-800 rounded-lg border border-slate-700">{{ showCircuit ? '▲ 隱藏設計圖' : '▼ 展開設計圖' }}</span>
+                            <span class="text-sm font-extrabold px-4 py-1.5 bg-[#1e293b] text-sky-400 rounded-lg border border-[#334155]">{{ showCircuit ? '▲ 隱藏設計圖' : '▼ 展開設計圖' }}</span>
                         </button>
-                        <div v-show="showCircuit" class="p-5 bg-slate-100 border-t border-slate-200 text-center overflow-x-auto custom-scrollbar">
-                            <div class="inline-block min-w-full bg-white p-5 rounded-2xl shadow-inner border border-slate-200">
-                                <img :src="'https://lh3.googleusercontent.com/d/' + taskData[currentTask].circuitImg" :alt="taskData[currentTask].name + '內部電路圖'" class="max-w-full h-auto mx-auto rounded-xl shadow-md border border-slate-200">
+                        <div v-show="showCircuit" class="p-5 bg-[#0f172a] border-t border-[#334155] text-center overflow-x-auto custom-scrollbar">
+                            <div class="inline-block min-w-full bg-[#1e293b] p-5 rounded-2xl shadow-inner border border-[#334155]">
+                                <img :src="'https://lh3.googleusercontent.com/d/' + taskData[currentTask].circuitImg" :alt="taskData[currentTask].name + '內部電路圖'" class="max-w-full h-auto mx-auto rounded-xl shadow-md border border-slate-600">
                             </div>
                         </div>
                     </div>
 
                     <!-- 試題二：AHDL 原始檔 -->
-                    <div v-if="currentTask === 2" class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-                        <button @click="showAhdl = !showAhdl" class="w-full flex items-center justify-between p-5 bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                    <div v-if="currentTask === 2" class="bg-[#1e293b] rounded-2xl border border-[#334155] shadow-lg overflow-hidden">
+                        <button @click="showAhdl = !showAhdl" class="w-full flex items-center justify-between p-5 bg-[#090d16] text-white hover:bg-slate-800 transition-colors">
                             <div class="flex items-center gap-3">
                                 <span class="text-emerald-400 text-2xl font-bold">⌨</span>
                                 <h3 class="text-lg md:text-xl font-black tracking-tight">試題二：自訂顯示器元件 (AHDL 原始碼)</h3>
                             </div>
-                            <span class="text-sm font-extrabold px-4 py-1.5 bg-slate-800 rounded-lg border border-slate-700">{{ showAhdl ? '▲ 隱藏程式碼' : '▼ 展開程式碼' }}</span>
+                            <span class="text-sm font-extrabold px-4 py-1.5 bg-[#1e293b] text-emerald-400 rounded-lg border border-[#334155]">{{ showAhdl ? '▲ 隱藏程式碼' : '▼ 展開程式碼' }}</span>
                         </button>
-                        <div v-show="showAhdl" class="p-6 bg-slate-950 border-t border-slate-800">
+                        <div v-show="showAhdl" class="p-6 bg-[#090d16] border-t border-[#334155]">
                             <div class="ahdl-code overflow-x-auto custom-scrollbar">
                                 <pre><span class="ahdl-keyword">SUBDESIGN</span> 7Asegment
 (
@@ -347,22 +364,22 @@
                 
                 <!-- 左側 PCB 實體圖 (col-span-8) -->
                 <div class="lg:col-span-8">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
+                    <div class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-[#334155] sticky top-24">
                         <div class="mb-4 flex items-center justify-between px-1">
-                            <span class="text-sm font-black text-slate-700 uppercase tracking-wider font-mono-custom">{{ taskData[currentTask].name }}：{{ currentSide === 'front' ? '正面佈局圖' : '背面佈局圖' }}</span>
-                            <span class="text-xs md:text-sm font-black text-sky-700 bg-sky-100 px-3.5 py-1.5 rounded-full border border-sky-200">以實體 PCB 格數對齊為準</span>
+                            <span class="text-sm font-black text-amber-400 uppercase tracking-wider font-mono-custom">{{ taskData[currentTask].name }}：{{ currentSide === 'front' ? '正面佈局圖' : '背面佈局圖' }}</span>
+                            <span class="text-xs md:text-sm font-black text-sky-400 bg-sky-950 px-3.5 py-1.5 rounded-full border border-sky-800">以實體 PCB 格數對齊為準</span>
                         </div>
-                        <div class="relative overflow-hidden rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center min-h-[500px] md:min-h-[600px] shadow-inner p-3">
-                            <img :src="'https://lh3.googleusercontent.com/d/' + layoutConfig[currentTask][currentSide]" class="max-w-full h-auto shadow-xl rounded-xl border border-slate-300">
+                        <div class="relative overflow-hidden rounded-2xl bg-[#0f172a] border border-[#334155] flex items-center justify-center min-h-[500px] md:min-h-[600px] shadow-inner p-3">
+                            <img :src="'https://lh3.googleusercontent.com/d/' + layoutConfig[currentTask][currentSide]" class="max-w-full h-auto shadow-xl rounded-xl border border-slate-700">
                         </div>
                         <div class="mt-6 flex flex-col sm:flex-row gap-4">
-                            <div class="flex-1 p-4 bg-red-50 rounded-xl border border-red-200 shadow-sm">
-                                <p class="text-base text-red-950 font-black mb-1 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span> 紅色標註線</p>
-                                <p class="text-sm text-red-800 font-bold">關鍵定位基準線與對齊中心點。</p>
+                            <div class="flex-1 p-4 bg-red-950/40 rounded-xl border border-red-800/60 shadow-sm">
+                                <p class="text-base text-red-400 font-black mb-1 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span> 紅色標註線</p>
+                                <p class="text-sm text-slate-300 font-bold">關鍵定位基準線與對齊中心點。</p>
                             </div>
-                            <div class="flex-1 p-4 bg-amber-50 rounded-xl border border-amber-200 shadow-sm">
-                                <p class="text-base text-amber-950 font-black mb-1 flex items-center gap-2"><span class="w-3 h-3 bg-amber-500 rounded-full"></span> 橘色標註線</p>
-                                <p class="text-sm text-amber-800 font-bold">精確裝配間距（以格數為單位計算）。</p>
+                            <div class="flex-1 p-4 bg-amber-950/40 rounded-xl border border-amber-800/60 shadow-sm">
+                                <p class="text-base text-amber-400 font-black mb-1 flex items-center gap-2"><span class="w-3 h-3 bg-amber-500 rounded-full"></span> 橘色標註線</p>
+                                <p class="text-sm text-slate-300 font-bold">精確裝配間距（以格數為單位計算）。</p>
                             </div>
                         </div>
                     </div>
@@ -372,49 +389,49 @@
                 <div class="lg:col-span-4 space-y-6">
                     
                     <!-- 一、定位基準 -->
-                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                        <h2 class="font-black mb-4 flex items-center text-slate-900 text-lg md:text-xl">
-                            <span class="mr-3 text-red-500 text-2xl">📍</span> 一、 核心定位基準
+                    <section class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-[#334155]">
+                        <h2 class="font-black mb-4 flex items-center text-white text-lg md:text-xl">
+                            <span class="mr-3 text-red-400 text-2xl">📍</span> 一、 核心定位基準
                         </h2>
-                        <div class="text-sm md:text-base text-slate-700 leading-relaxed font-bold space-y-2.5" v-html="layoutConfig[currentTask].posDesc"></div>
+                        <div class="text-sm md:text-base text-slate-300 leading-relaxed font-bold space-y-2.5" v-html="layoutConfig[currentTask].posDesc"></div>
                     </section>
 
                     <!-- 二、安裝口訣 -->
-                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                        <h2 class="font-black mb-4 flex items-center text-slate-900 text-lg md:text-xl">
-                            <span class="mr-3 text-sky-600 text-2xl">🔢</span> 二、 限流電阻安裝順序
+                    <section class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-[#334155]">
+                        <h2 class="font-black mb-4 flex items-center text-white text-lg md:text-xl">
+                            <span class="mr-3 text-sky-400 text-2xl">🔢</span> 二、 限流電阻安裝順序
                         </h2>
                         <div class="flex flex-wrap gap-2.5 mb-3">
-                            <div v-for="num in taskData[currentTask].mnemonicArr" :key="num" class="resistor-node shadow-sm">{{ num }}</div>
+                            <div v-for="num in taskData[currentTask].mnemonicArr" :key="num" class="resistor-node shadow-md">{{ num }}</div>
                         </div>
-                        <p class="text-xs md:text-sm text-slate-600 italic bg-slate-50 py-2 px-3.5 rounded-xl font-bold border border-slate-200">對應顯示器 A-G 段碼 (上至下順序排列)</p>
+                        <p class="text-xs md:text-sm text-slate-400 italic bg-[#0f172a] py-2 px-3.5 rounded-xl font-bold border border-[#334155]">對應顯示器 A-G 段碼 (上至下順序排列)</p>
                     </section>
 
                     <!-- 三、組裝程序 -->
-                    <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                        <h2 class="font-black mb-5 flex items-center text-slate-900 text-lg md:text-xl">
-                            <span class="mr-3 text-teal-600 text-2xl">🛤️</span> 三、 {{ layoutConfig[currentTask].stepTitle }}
+                    <section class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-[#334155]">
+                        <h2 class="font-black mb-5 flex items-center text-white text-lg md:text-xl">
+                            <span class="mr-3 text-teal-400 text-2xl">🛤️</span> 三、 {{ layoutConfig[currentTask].stepTitle }}
                         </h2>
                         <div class="space-y-6 relative">
-                            <div class="absolute left-[17px] top-2 bottom-2 w-0.5 bg-slate-200"></div>
+                            <div class="absolute left-[17px] top-2 bottom-2 w-0.5 bg-[#334155]"></div>
                             <div v-for="(s, idx) in layoutConfig[currentTask].steps" :key="idx" class="flex gap-4 items-start relative">
-                                <div class="step-number shadow-sm">{{ idx + 1 }}</div>
+                                <div class="step-number shadow-md">{{ idx + 1 }}</div>
                                 <div>
-                                    <h3 class="text-base font-black text-slate-950">{{ s.t }}</h3>
-                                    <p class="text-sm text-slate-600 mt-1 leading-relaxed font-bold" v-html="s.d"></p>
+                                    <h3 class="text-base font-black text-white">{{ s.t }}</h3>
+                                    <p class="text-sm text-slate-300 mt-1 leading-relaxed font-bold" v-html="s.d"></p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
                     <!-- 品質控管點 -->
-                    <section class="bg-amber-50/95 p-6 rounded-2xl border border-amber-200 shadow-sm">
-                        <h2 class="font-black mb-3 text-amber-950 text-base md:text-lg flex items-center">
-                            <span class="mr-3 text-amber-600 text-xl">🛡️</span> 品質控管點 (QC)
+                    <section class="bg-amber-950/30 p-6 rounded-2xl border border-amber-500/40 shadow-lg">
+                        <h2 class="font-black mb-3 text-amber-400 text-base md:text-lg flex items-center">
+                            <span class="mr-3 text-xl">🛡️</span> 品質控管點 (QC)
                         </h2>
                         <ul class="space-y-2">
-                            <li v-for="q in layoutConfig[currentTask].qc" :key="q" class="flex items-start text-xs md:text-sm text-amber-950 font-extrabold leading-snug">
-                                <span class="mr-2.5 mt-0.5 text-amber-600">▶</span> {{ q }}
+                            <li v-for="q in layoutConfig[currentTask].qc" :key="q" class="flex items-start text-xs md:text-sm text-amber-200 font-extrabold leading-snug">
+                                <span class="mr-2.5 mt-0.5 text-amber-400">▶</span> {{ q }}
                             </li>
                         </ul>
                     </section>
@@ -477,16 +494,16 @@
                         back: "1jxRXkz9K4etE1qt77FA7EEEE90GtDMyl",
                         posDesc: `
                             <ul class="space-y-2.5">
-                                <li><strong class="text-slate-950">1. CPLD 3064 基準</strong><br>右下引腳距下邊界 <span class="text-amber-600 font-black">5 格</span>。</li>
-                                <li><strong class="text-slate-950">2. 顯示區間隔</strong><br>CPLD 右側距電阻焊盤 <span class="text-amber-600 font-black">3 格</span>。</li>
-                                <li><strong class="text-slate-950">3. 電晶體控制區</strong><br>距顯示器上緣 <span class="text-amber-600 font-black">3 格</span>。</li>
+                                <li><strong class="text-white">1. CPLD 3064 基準</strong><br>右下引腳距下邊界 <span class="text-amber-400 font-black">5 格</span>。</li>
+                                <li><strong class="text-white">2. 顯示區間隔</strong><br>CPLD 右側距電阻焊盤 <span class="text-amber-400 font-black">3 格</span>。</li>
+                                <li><strong class="text-white">3. 電晶體控制區</strong><br>距顯示器上緣 <span class="text-amber-400 font-black">3 格</span>。</li>
                             </ul>
                         `,
                         stepTitle: "反面佈線程序",
                         steps: [
-                            { t: "匯流排佈局", d: "垂直與水平走線距邊界維持 <span class='text-sky-700 font-black'>5 格</span>。" },
-                            { t: "段碼轉折區", d: "電阻與 IC 間距控制在 <span class='text-sky-700 font-black'>3 格</span> 內。" },
-                            { t: "掃描線轉彎", d: "預留 <span class='text-sky-700 font-black'>3 格</span> 空間防止信號短路。" }
+                            { t: "匯流排佈局", d: "垂直與水平走線距邊界維持 <span class='text-sky-400 font-black'>5 格</span>。" },
+                            { t: "段碼轉折區", d: "電阻與 IC 間距控制在 <span class='text-sky-400 font-black'>3 格</span> 內。" },
+                            { t: "掃描線轉彎", d: "預留 <span class='text-sky-400 font-black'>3 格</span> 空間防止信號短路。" }
                         ],
                         qc: ["電阻順序 1627354", "CS9013 極性不可插反"]
                     },
@@ -495,16 +512,16 @@
                         back: "18xx6xycR1n0dAqMDJ9QNhtrgIGCNbg-l",
                         posDesc: `
                             <ul class="space-y-2.5">
-                                <li><strong class="text-slate-950">1. 矩陣按鍵</strong><br>R8-R10 焊接跨距 <span class="text-amber-600 font-black">3 格</span>，右距 CPLD 為 <span class="text-amber-600 font-black">9 格</span>。</li>
-                                <li><strong class="text-slate-950">2. 核心基準</strong><br>底部引腳距零件框 <span class="text-amber-600 font-black">11 格</span>。</li>
-                                <li><strong class="text-slate-950">3. 顯示限流區</strong><br>CPLD 往右算 <span class="text-amber-600 font-black">3 格</span> 進入 R1-R7。</li>
+                                <li><strong class="text-white">1. 矩陣按鍵</strong><br>R8-R10 焊接跨距 <span class="text-amber-400 font-black">3 格</span>，右距 CPLD 為 <span class="text-amber-400 font-black">9 格</span>。</li>
+                                <li><strong class="text-white">2. 核心基準</strong><br>底部引腳距零件框 <span class="text-amber-400 font-black">11 格</span>。</li>
+                                <li><strong class="text-white">3. 顯示限流區</strong><br>CPLD 往右算 <span class="text-amber-400 font-black">3 格</span> 進入 R1-R7。</li>
                             </ul>
                         `,
                         stepTitle: "反面佈線程序",
                         steps: [
-                            { t: "橫向匯流排", d: "下方長線需跨 <span class='text-sky-700 font-black'>12 格</span> 後轉折。" },
-                            { t: "縱向平行走線", d: "CPLD 正下方有一組 <span class='text-sky-700 font-black'>11 格</span> 平行線。" },
-                            { t: "電源環繞線", d: "粗線與信號線需保 <span class='text-sky-700 font-black'>2 格</span> 距離。" }
+                            { t: "橫向匯流排", d: "下方長線需跨 <span class='text-sky-400 font-black'>12 格</span> 後轉折。" },
+                            { t: "縱向平行走線", d: "CPLD 正下方有一組 <span class='text-sky-400 font-black'>11 格</span> 平行線。" },
+                            { t: "電源環繞線", d: "粗線與信號線需保 <span class='text-sky-400 font-black'>2 格</span> 距離。" }
                         ],
                         qc: ["Keypad 極性方向確認", "嚴守 9/11/12 格走線限制"]
                     }
