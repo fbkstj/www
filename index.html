@@ -48,24 +48,21 @@
             overflow: visible;
         }
 
-        /* ---------- Top Navbar Header (Glassmorphism) ---------- */
+        /* ---------- Top Navbar Header ---------- */
         .sidebar {
             width: 100%;
-            height: 56px;
+            height: 52px;
             position: sticky;
             top: 0;
             z-index: 10000;
-            background: linear-gradient(90deg, rgba(13, 148, 136, 0.92) 0%, rgba(2, 132, 199, 0.92) 100%);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
             color: #ffffff;
             padding: 0 1.5rem;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
             box-sizing: border-box;
             overflow: visible;
         }
@@ -292,123 +289,6 @@
             height: 100%;
             border: none;
             display: block;
-        }
-
-        /* ---------- Search Bar & Category Chips Filter Bar ---------- */
-        .filter-bar-wrap {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-box {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .search-box .search-icon {
-            position: absolute;
-            left: 14px;
-            color: #94a3b8;
-            pointer-events: none;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.75rem 2.8rem 0.75rem 2.7rem;
-            border-radius: 10px;
-            border: 1.5px solid #cbd5e1;
-            font-size: 0.95rem;
-            font-family: inherit;
-            color: var(--text-main);
-            background: #f8fafc;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .search-box input:focus {
-            background: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
-        }
-
-        .clear-search-btn {
-            position: absolute;
-            right: 12px;
-            background: #cbd5e1;
-            color: #475569;
-            border: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.75rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
-        }
-
-        .clear-search-btn:hover {
-            background: #94a3b8;
-            color: #ffffff;
-        }
-
-        .category-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            align-items: center;
-        }
-
-        .chip {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-            padding: 0.45rem 1rem;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: inherit;
-        }
-
-        .chip:hover {
-            background: #e2e8f0;
-            color: #0f172a;
-            transform: translateY(-1px);
-        }
-
-        .chip.active {
-            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
-            color: #ffffff;
-            border-color: transparent;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-        }
-
-        .filter-footer-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            border-top: 1px solid #f1f5f9;
-            padding-top: 0.6rem;
-            margin-top: 0.2rem;
-        }
-
-        .card.filtered-out {
-            display: none !important;
         }
 
         /* Grid Cards Layout */
@@ -734,20 +614,9 @@
     </aside>
 
     <main class="content" id="mainContent">
-        <!-- 關鍵字搜尋與熱門分類過濾列 -->
-        <div class="filter-bar-wrap" id="filterBarWrap">
-            <div class="search-box">
-                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="text" id="searchInput" placeholder="搜尋課程、題庫、模擬器與工具（如：MQTT、Arduino、國旗歌、輪值表、CPLD）..." oninput="handleFilterChange()">
-                <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" title="清除搜尋">✕</button>
-            </div>
-            <div class="category-chips" id="categoryChips">
-                <button class="chip active" data-filter="all" onclick="setCategoryFilter('all', this)">✨ 全部資源</button>
-                 <!-- 輪值表產生器 -->
-            <div class="card map" data-cat="admin" data-tags="輪值表 實習處 行政 留守 產生器 排班 roster">
+        <div class="grid" id="cardGrid">
+            <!-- 輪值表產生器 -->
+            <div class="card map" data-cat="map">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -765,7 +634,7 @@
             </div>
 
             <!-- 工業電子量測互動教學系統 -->
-            <div class="card award" data-cat="skill" data-tags="工業電子 量測 直流 交流 電路 乙級 術科 模擬 industrial electronics">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
@@ -783,7 +652,7 @@
             </div>
 
             <!-- 課程地圖 -->
-            <div class="card map" data-cat="admin" data-tags="課程地圖 資訊科 電子科 112 113 114 115 學年 coursemap">
+            <div class="card map" data-cat="map">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 4L9 7"/></svg>
@@ -828,9 +697,8 @@
                     <span class="category-tag">課程規劃</span>
                 </div>
             </div>
-
             <!-- 數位電子乙級設定 -->
-            <div class="card award" data-cat="skill" data-tags="數位乙級 評審表 設定 評分表 七段 四位數 CPLD 術科 digi el">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -848,7 +716,7 @@
             </div>
 
             <!-- CPLD 綜合導覽系統 -->
-            <div class="card award" data-cat="simulation" data-tags="CPLD 數位乙級 學習導覽 腳位 物理 布局 模擬 cpld simulator">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -866,7 +734,7 @@
             </div>
 
             <!-- Quartus MegaWizard 教學 -->
-            <div class="card award" data-cat="simulation" data-tags="Quartus MegaWizard 精靈 影片 教學 電路 AHDL">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
@@ -882,9 +750,8 @@
                     <button class="go-link" data-src="CPLD/index.html">進入教學 &rarr;</button>
                 </div>
             </div>
-
             <!-- Arduino 模擬教學平台 -->
-            <div class="card feature" data-cat="simulation" data-tags="Arduino 模擬 平台 LED 流水燈 蜂鳴器 音效 卡農 天空之城 國旗歌 瑪利歐 tetris music">
+            <div class="card feature" data-cat="feature">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -893,7 +760,7 @@
                 </div>
                 <div class="card-body">
                     <h3>楊梅高中 Arduino 模擬教學平台</h3>
-                    <p>線上 Arduino 程式開發與硬體即時模擬。支援 15 顆 LED 流水燈、雙按鈕與蜂鳴器音效控制。內含課程講義、11 大音樂範例（卡農、天空之城、國旗歌）與 AI 提示語範例。</p>
+                    <p>線上 Arduino 程式開發與硬體即時模擬。支援 15 顆 LED 流水燈、雙按鈕與蜂鳴器音效控制。內含課程講義與 10 大主題 AI 提示語範例。</p>
                 </div>
                 <div class="card-footer">
                     <span class="category-tag">模擬平台</span>
@@ -901,8 +768,10 @@
                 </div>
             </div>
 
+
+
             <!-- PCB 元件佈局指引 -->
-            <div class="card award" data-cat="skill" data-tags="PCB 佈局 指引 元件 裝配 定位 手冊 pcb layout">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
@@ -920,7 +789,7 @@
             </div>
 
             <!-- FPGA 矩陣鍵盤與七段顯示器模擬 -->
-            <div class="card award" data-cat="simulation" data-tags="FPGA 矩陣 鍵盤 七段 顯示器 鎖存器 模擬 fpga keypad">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" ry="2"/><path d="M7 2v20M12 2v20M17 2v20M2 7h20M2 12h20M2 17h20"/></svg>
@@ -938,7 +807,7 @@
             </div>
 
             <!-- MIT App Inventor 練習題全集 (含模擬器) -->
-            <div class="card award" data-cat="practice" data-tags="App Inventor 練習 題庫 3D 積木 模擬器 程序 畢氏定理 因數 防呆 金字塔 水果 階層 MQTT 智慧居家 10531262 practice">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -956,7 +825,7 @@
             </div>
 
             <!-- MIT App Inventor 上機測驗 (學生版) -->
-            <div class="card award" data-cat="practice" data-tags="App Inventor 測驗 學生 上機 考試 exam">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
@@ -974,7 +843,7 @@
             </div>
 
             <!-- MIT App Inventor 上機測驗 (完整解答版) -->
-            <div class="card award" data-cat="practice" data-tags="App Inventor 解答 完整 拼圖 積木 官方 answers">
+            <div class="card award" data-cat="award">
                 <div class="card-top">
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M9 11l3 3L22 4"/></svg>
@@ -990,14 +859,6 @@
                     <button class="go-link" data-src="app_inventor_answers.html">查看解答 &rarr;</button>
                 </div>
             </div>
-
-            <!-- 無搜尋結果提示訊息 -->
-            <div class="empty-search-msg" id="emptySearchMsg" style="display: none; grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 16px;">
-                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
-                <h4 style="font-size: 1.2rem; color: #334155; margin-bottom: 0.4rem; font-weight: 700;">找不到符合的課程或工具</h4>
-                <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.2rem;">請嘗試簡化關鍵字或點擊「✨ 全部資源」切換分類</p>
-                <button onclick="clearSearch(); setCategoryFilter('all', document.querySelector('.chip[data-filter=all]'));" style="background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%); color: white; border: none; padding: 0.65rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(2,132,199,0.25);">重置搜尋與分類</button>
-            </div>
         </div>
 
         <div class="frame-wrap" id="frameWrap">
@@ -1011,7 +872,6 @@
 </div>
 
 <script>
-    const filterBarWrap = document.getElementById('filterBarWrap');
     const grid = document.getElementById('cardGrid');
     const frameWrap = document.getElementById('frameWrap');
     const mainFrame = document.getElementById('mainFrame');
@@ -1021,73 +881,7 @@
     const navSubItems = document.querySelectorAll('.nav-sub-item');
     const goLinkBtns = document.querySelectorAll('.go-link[data-src]');
 
-    // ---------- Real-time Keyword Search & Category Chip Filter ----------
-    let currentCategoryFilter = 'all';
-
-    function setCategoryFilter(category, element) {
-        currentCategoryFilter = category;
-        document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
-        if (element) element.classList.add('active');
-        handleFilterChange();
-    }
-
-    function clearSearch() {
-        const input = document.getElementById('searchInput');
-        if (input) input.value = '';
-        const clearBtn = document.getElementById('clearSearchBtn');
-        if (clearBtn) clearBtn.style.display = 'none';
-        handleFilterChange();
-    }
-
-    function handleFilterChange() {
-        const input = document.getElementById('searchInput');
-        const query = input ? input.value.trim().toLowerCase() : '';
-        const clearBtn = document.getElementById('clearSearchBtn');
-        if (clearBtn) clearBtn.style.display = query.length > 0 ? 'flex' : 'none';
-
-        const cards = document.querySelectorAll('#cardGrid .card');
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const cardCat = card.getAttribute('data-cat') || '';
-            const cardTags = (card.getAttribute('data-tags') || '').toLowerCase();
-            const cardTitle = (card.querySelector('h3') ? card.querySelector('h3').innerText : '').toLowerCase();
-            const cardText = (card.querySelector('p') ? card.querySelector('p').innerText : '').toLowerCase();
-
-            const fullContent = cardTitle + ' ' + cardText + ' ' + cardTags;
-
-            // 1. Check Category Chip Filter
-            let categoryMatch = true;
-            if (currentCategoryFilter !== 'all') {
-                categoryMatch = (cardCat === currentCategoryFilter);
-            }
-
-            // 2. Check Keyword Search
-            let keywordMatch = true;
-            if (query.length > 0) {
-                const keywords = query.split(/\s+/);
-                keywordMatch = keywords.every(kw => fullContent.includes(kw));
-            }
-
-            if (categoryMatch && keywordMatch) {
-                card.classList.remove('filtered-out');
-                visibleCount++;
-            } else {
-                card.classList.add('filtered-out');
-            }
-        });
-
-        const matchCountEl = document.getElementById('matchCount');
-        if (matchCountEl) matchCountEl.innerText = visibleCount;
-
-        const emptyMsg = document.getElementById('emptySearchMsg');
-        if (emptyMsg) {
-            emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
-        }
-    }
-
     function showGrid() {
-        if (filterBarWrap) filterBarWrap.style.display = 'flex';
         grid.classList.remove('hide');
         frameWrap.classList.remove('show');
         mainContent.classList.remove('is-framed');
@@ -1095,11 +889,10 @@
     }
 
     function showFrame(src) {
-        const cacheBusterSrc = src.includes('?') ? src + '&v=124' : src + '?v=124';
+        const cacheBusterSrc = src.includes('?') ? src + '&v=123' : src + '?v=123';
         if (!mainFrame.src.includes(src)) {
             mainFrame.src = cacheBusterSrc;
         }
-        if (filterBarWrap) filterBarWrap.style.display = 'none';
         grid.classList.add('hide');
         frameWrap.classList.add('show');
         mainContent.classList.add('is-framed');
