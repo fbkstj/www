@@ -151,11 +151,11 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-4 md:p-5 space-y-5">
             
-            <!-- 題組選擇區塊 -->
+            <!-- 題組選擇區塊 (按鍵內文字極致放大) -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-4 md:p-5 shadow-lg space-y-3">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-amber-300 font-black text-base md:text-lg flex items-center gap-2 tracking-wide">
-                        <span class="text-xl">📑</span> 選擇官方試題組<span class="text-white font-black text-base md:text-lg">（ 1 ~ 5 題組物理偏移 ）</span>：
+                    <h3 class="text-amber-300 font-black text-base md:text-xl flex items-center gap-2 tracking-wide">
+                        <span class="text-2xl">📑</span> 選擇官方試題組<span class="text-white font-black text-base md:text-xl">（ 1 ~ 5 題組物理偏移 ）</span>：
                     </h3>
                     <span class="text-xs font-mono-custom font-black text-slate-300 bg-[#090d16] px-3.5 py-1 rounded-lg border border-[#475569] hidden md:inline-block">CPLD 3064 Pin Selection</span>
                 </div>
@@ -164,11 +164,11 @@
                         v-for="set in sets"
                         :key="set"
                         @click="selectedSet = set"
-                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-xl ring-2 ring-amber-300 scale-[1.02] border-2 border-amber-200' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
-                        class="py-2.5 md:py-3 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5"
+                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-2xl ring-4 ring-amber-300/60 scale-[1.03] border-2 border-amber-100' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
+                        class="py-3 md:py-4 px-2 md:px-3 rounded-2xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"
                     >
-                        <span class="text-base md:text-lg font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
-                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-base md:text-lg' : 'text-amber-300 font-black text-base md:text-lg'" class="tracking-wider">
+                        <span class="text-lg md:text-2xl font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
+                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-xl md:text-2xl' : 'text-amber-300 font-black text-xl md:text-2xl'" class="tracking-wider">
                             （{{ set }}組）
                         </span>
                     </button>
@@ -196,14 +196,14 @@
                     </div>
                     <div class="space-y-1">
                         <div class="flex items-center gap-2.5">
-                            <span class="px-3 py-0.5 bg-amber-400 text-slate-950 rounded-lg text-xs md:text-sm font-black shadow-sm">題組 {{ selectedSet }}</span>
-                            <h3 class="text-white font-black text-base md:text-lg tracking-tight">{{ taskData[currentTask].name }} — 腳位分配重點</h3>
+                            <span class="px-3.5 py-1 bg-amber-400 text-slate-950 rounded-xl text-sm md:text-base font-black shadow-sm">題組 {{ selectedSet }}</span>
+                            <h3 class="text-white font-black text-base md:text-xl tracking-tight">{{ taskData[currentTask].name }} — 腳位分配重點</h3>
                         </div>
-                        <p class="text-amber-200 text-base md:text-lg font-black leading-snug tracking-wide">{{ currentSetData.focus }}</p>
+                        <p class="text-amber-200 text-lg md:text-xl font-black leading-snug tracking-wide">{{ currentSetData.focus }}</p>
                     </div>
                 </div>
 
-                <!-- 左右對照 Layout: 左側為 CPLD 3064 圖形模擬器，右側為 J2 & J3 物理腳位映射對照表 (極速對比連動關係) -->
+                <!-- 左右對照 Layout -->
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
                     
                     <!-- 左欄：SVG CPLD 3064 硬體腳位即時圖形模擬器 (col-span-6) -->
