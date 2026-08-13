@@ -127,7 +127,7 @@
                 <!-- 頂部右側選單區 -->
                 <div class="flex flex-wrap items-center gap-3">
                     
-                    <!-- 導覽模式切換 (三合一：邏輯模擬 / 硬體布局 / 評審表生成) -->
+                    <!-- 導覽模式切換 (三合一：邏輯模擬 / 硬體布局 / 評審表設定) -->
                     <div class="flex bg-[#1e293b] p-1 rounded-xl border-2 border-[#475569]">
                         <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
                             <span class="text-base md:text-lg">⚡</span> 腳位邏輯模擬
@@ -590,12 +590,114 @@
                     }
                 };
 
+                const taskData = {
+                    1: {
+                        name: "數位電子乙級：試題一",
+                        mnemonic: "1627354",
+                        mnemonicArr: [1, 6, 2, 7, 3, 5, 4],
+                        circuitImg: "1ZzNW2NaRD6DyNHcRPNPIiH_VlsThq8FF",
+                        j2Header: "J2 (D4 D3 D2 D1 dp)",
+                        j3Header: "J3 (d e c g b f a)",
+                        specialPins: { 'A': [29, 31], 'B': [31, 33], 'C': [31, 41], 'D': [24, 31], 'E': [27, 37] },
+                        sets: {
+                            A: { focus: "試題一 A 組：控制位數 P4-P9 ； 顯示段碼 P24-P31。", left: { pins: [4, 5, 6, 8, 9], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
+                            B: { focus: "試題一 B 組：控制位數 P16-P21 ； 顯示段碼 P31-P41。", left: { pins: [16, 18, 19, 20, 21], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
+                            C: { focus: "試題一 C 組：控制位數 P5-P11 ； 顯示段碼 P31-P41。", left: { pins: [5, 6, 8, 9, 11], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
+                            D: { focus: "試題一 D 組：控制位數 P14-P20 ； 顯示段碼 P24-P31。", left: { pins: [14, 16, 18, 19, 20], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
+                            E: { focus: "試題一 E 組：控制位數 P8-P14 ； 顯示段碼 P27-P37。", left: { pins: [8, 9, 11, 12, 14], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [27, 28, 29, 31, 33, 34, 37], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } }
+                        }
+                    },
+                    2: {
+                        name: "數位電子乙級：試題二",
+                        mnemonic: "7612345",
+                        mnemonicArr: [7, 6, 1, 2, 3, 4, 5],
+                        circuitImg: "1saXfdRIj_N9TRXI9vhSkZu53MOmA7wZg",
+                        j2Header: "J2 (C0 C1 C2 R0 R1 R2 R3)",
+                        j3Header: "J3 (e d c b a f g)",
+                        specialPins: { 'A': [11, 12, 29, 31], 'B': [12, 14, 31, 33], 'C': [4, 12, 31, 41], 'D': [12, 21, 24, 31], 'E': [6, 16, 27, 37] },
+                        sets: {
+                            A: { focus: "試題二 A 組：掃描線 P4-P12 ； 段碼輸出 P24-P31。", left: { pins: [4, 5, 6, 8, 9, 11, 12], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
+                            B: { focus: "試題二 B 組：掃描線 P12-P21 ； 段碼輸出 P31-P41。", left: { pins: [12, 14, 16, 18, 19, 20, 21], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
+                            C: { focus: "試題二 C 組：掃描線 P4-P12 ； 段碼輸出 P31-P41。", left: { pins: [4, 5, 6, 8, 9, 11, 12], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
+                            D: { focus: "試題二 D 組：掃描線 P12-P21 ； 段碼輸出 P24-P31。", left: { pins: [12, 14, 16, 18, 19, 20, 21], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
+                            E: { focus: "試題二 E 組：掃描線 P6-P16 ； 段碼輸出 P27-P37。", left: { pins: [6, 8, 9, 11, 12, 14, 16], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [27, 28, 29, 31, 33, 34, 37], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } }
+                        }
+                    }
+                };
+
+                const layoutConfig = {
+                    1: {
+                        front: "1EYdxG-aYWfBQbe56aQXDCRRh3JYOik9r",
+                        back: "1jxRXkz9K4etE1qt77FA7EEEE90GtDMyl",
+                        posDesc: `
+                            <ul class="space-y-2">
+                                <li><strong class="text-white text-sm font-black">1. CPLD 3064 基準</strong><br>右下引腳距下邊界 <span class="text-amber-300 font-black text-base">5 格</span>。</li>
+                                <li><strong class="text-white text-sm font-black">2. 顯示區間隔</strong><br>CPLD 右側距電阻焊盤 <span class="text-amber-300 font-black text-base">3 格</span>。</li>
+                                <li><strong class="text-white text-sm font-black">3. 電晶體控制區</strong><br>距顯示器上緣 <span class="text-amber-300 font-black text-base">3 格</span>。</li>
+                            </ul>
+                        `,
+                        stepTitle: "反面佈線程序",
+                        steps: [
+                            { t: "匯流排佈局", d: "垂直與水平走線距邊界維持 <span class='text-sky-300 font-black text-xs'>5 格</span>。" },
+                            { t: "段碼轉折區", d: "電阻與 IC 間距控制在 <span class='text-sky-300 font-black text-xs'>3 格</span> 內。" },
+                            { t: "掃描線轉彎", d: "預留 <span class='text-sky-300 font-black text-xs'>3 格</span> 空間防止信號短路。" }
+                        ],
+                        qc: ["電阻順序 1627354", "CS9013 極性不可插反"]
+                    },
+                    2: {
+                        front: "16GKq4G9OJJj3yKDbkFQ8JWCZvT_v7CUk",
+                        back: "18xx6xycR1n0dAqMDJ9QNhtrgIGCNbg-l",
+                        posDesc: `
+                            <ul class="space-y-2">
+                                <li><strong class="text-white text-sm font-black">1. 矩陣按鍵</strong><br>R8-R10 焊接跨距 <span class="text-amber-300 font-black text-base">3 格</span>，右距 CPLD 為 <span class="text-amber-300 font-black text-base">9 格</span>。</li>
+                                <li><strong class="text-white text-sm font-black">2. 核心基準</strong><br>底部引腳距零件框 <span class="text-amber-300 font-black text-base">11 格</span>。</li>
+                                <li><strong class="text-white text-sm font-black">3. 顯示限流區</strong><br>CPLD 往右算 <span class="text-amber-300 font-black text-base">3 格</span> 進入 R1-R7。</li>
+                            </ul>
+                        `,
+                        stepTitle: "反面佈線程序",
+                        steps: [
+                            { t: "橫向匯流排", d: "下方長線需跨 <span class='text-sky-300 font-black text-xs'>12 格</span> 後轉折。" },
+                            { t: "縱向平行走線", d: "CPLD 正下方有一組 <span class='text-sky-300 font-black text-xs'>11 格</span> 平行線。" },
+                            { t: "電源環繞線", d: "粗線與信號線需保 <span class='text-sky-300 font-black text-xs'>2 格</span> 距離。" }
+                        ],
+                        qc: ["Keypad 極性方向確認", "嚴守 9/11/12 格走線限制"]
+                    }
+                };
+
+                const j2Headers = [4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21];
+                const j3Headers = [24, 25, 26, 27, 28, 29, 31, 33, 34, 37, 39, 40, 41];
+                const allPinsLeft = ["Vcc", 4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21, "GND"];
+                const allPinsRight = ["Vcc", 41, 40, 39, 37, 34, 33, 31, 29, 28, 27, 26, 25, 24, "GND"];
+
                 const setTask = (t) => {
                     currentTask.value = t;
                     selectedSet.value = 'A';
                     currentSide.value = 'front';
                     evalSubject.value = String(t);
                 };
+
+                const currentSetData = computed(() => taskData[currentTask.value].sets[selectedSet.value]);
+
+                const getPinY = (idx) => 70 + idx * 35;
+                const getResPoints = (x, y) => `${x},${y} ${x+10},${y} ${x+15},${y-6} ${x+22},${y+6} ${x+29},${y-6} ${x+36},${y+6} ${x+43},${y-6} ${x+50},${y+6} ${x+55},${y} ${x+65},${y}`;
+
+                const isSelected = (setKey, side, pin) => {
+                    const set = taskData[currentTask.value].sets[setKey];
+                    return side === 'left' ? set.left.pins.includes(pin) : set.right.pins.includes(pin);
+                };
+
+                const getSignalName = (setKey, side, pin) => {
+                    const set = taskData[currentTask.value].sets[setKey];
+                    if (side === 'left') {
+                        const idx = set.left.pins.indexOf(pin);
+                        return idx !== -1 ? set.left.signals[idx] : '';
+                    } else {
+                        const idx = set.right.pins.indexOf(pin);
+                        return idx !== -1 ? set.right.labels[idx] : '';
+                    }
+                };
+
+                const isSpec = (setKey, pin) => taskData[currentTask.value].specialPins[setKey]?.includes(pin);
 
                 const generatePDF = async () => {
                     const stStart = parseInt(stationStart.value);
@@ -761,109 +863,6 @@
                         isGeneratingPdf.value = false;
                     }
                 };
-                
-                const taskData = {
-                    1: {
-                        name: "數位電子乙級：試題一",
-                        mnemonic: "1627354",
-                        mnemonicArr: [1, 6, 2, 7, 3, 5, 4],
-                        circuitImg: "1ZzNW2NaRD6DyNHcRPNPIiH_VlsThq8FF",
-                        j2Header: "J2 (D4 D3 D2 D1 dp)",
-                        j3Header: "J3 (d e c g b f a)",
-                        specialPins: { 'A': [29, 31], 'B': [31, 33], 'C': [31, 41], 'D': [24, 31], 'E': [27, 37] },
-                        sets: {
-                            A: { focus: "試題一 A 組：控制位數 P4-P9 ； 顯示段碼 P24-P31。", left: { pins: [4, 5, 6, 8, 9], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
-                            B: { focus: "試題一 B 組：控制位數 P16-P21 ； 顯示段碼 P31-P41。", left: { pins: [16, 18, 19, 20, 21], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
-                            C: { focus: "試題一 C 組：控制位數 P5-P11 ； 顯示段碼 P31-P41。", left: { pins: [5, 6, 8, 9, 11], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
-                            D: { focus: "試題一 D 組：控制位數 P14-P20 ； 顯示段碼 P24-P31。", left: { pins: [14, 16, 18, 19, 20], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } },
-                            E: { focus: "試題一 E 組：控制位數 P8-P14 ； 顯示段碼 P27-P37。", left: { pins: [8, 9, 11, 12, 14], signals: ['D4', 'D3', 'D2', 'D1', 'dp'], resistors: ['', '', '', '', 'R8'], resValue: "220" }, right: { pins: [27, 28, 29, 31, 33, 34, 37], labels: ['d', 'e', 'c', 'g', 'b', 'f', 'a'], resistors: ['R4', 'R5', 'R3', 'R7', 'R2', 'R6', 'R1'], resValue: "220" } }
-                        }
-                    },
-                    2: {
-                        name: "數位電子乙級：試題二",
-                        mnemonic: "7612345",
-                        mnemonicArr: [7, 6, 1, 2, 3, 4, 5],
-                        circuitImg: "1saXfdRIj_N9TRXI9vhSkZu53MOmA7wZg",
-                        j2Header: "J2 (C0 C1 C2 R0 R1 R2 R3)",
-                        j3Header: "J3 (e d c b a f g)",
-                        specialPins: { 'A': [11, 12, 29, 31], 'B': [12, 14, 31, 33], 'C': [4, 12, 31, 41], 'D': [12, 21, 24, 31], 'E': [6, 16, 27, 37] },
-                        sets: {
-                            A: { focus: "試題二 A 組：掃描線 P4-P12 ； 段碼輸出 P24-P31。", left: { pins: [4, 5, 6, 8, 9, 11, 12], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
-                            B: { focus: "試題二 B 組：掃描線 P12-P21 ； 段碼輸出 P31-P41。", left: { pins: [12, 14, 16, 18, 19, 20, 21], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
-                            C: { focus: "試題二 C 組：掃描線 P4-P12 ； 段碼輸出 P31-P41。", left: { pins: [4, 5, 6, 8, 9, 11, 12], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [31, 33, 34, 37, 39, 40, 41], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
-                            D: { focus: "試題二 D 組：掃描線 P12-P21 ； 段碼輸出 P24-P31。", left: { pins: [12, 14, 16, 18, 19, 20, 21], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [24, 25, 26, 27, 28, 29, 31], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } },
-                            E: { focus: "試題二 E 組：掃描線 P6-P16 ； 段碼輸出 P27-P37。", left: { pins: [6, 8, 9, 11, 12, 14, 16], signals: ['C0', 'C1', 'C2', 'R0', 'R1', 'R2', 'R3'], resistors: ['R8', 'R9', 'R10', '', '', '', ''], resValue: "2.2K 接地" }, right: { pins: [27, 28, 29, 31, 33, 34, 37], labels: ['e', 'd', 'c', 'b', 'a', 'f', 'g'], resistors: ['R5', 'R4', 'R3', 'R2', 'R1', 'R6', 'R7'], resValue: "220" } }
-                        }
-                    }
-                };
-
-                const layoutConfig = {
-                    1: {
-                        front: "1EYdxG-aYWfBQbe56aQXDCRRh3JYOik9r",
-                        back: "1jxRXkz9K4etE1qt77FA7EEEE90GtDMyl",
-                        posDesc: `
-                            <ul class="space-y-2">
-                                <li><strong class="text-white text-sm font-black">1. CPLD 3064 基準</strong><br>右下引腳距下邊界 <span class="text-amber-300 font-black text-base">5 格</span>。</li>
-                                <li><strong class="text-white text-sm font-black">2. 顯示區間隔</strong><br>CPLD 右側距電阻焊盤 <span class="text-amber-300 font-black text-base">3 格</span>。</li>
-                                <li><strong class="text-white text-sm font-black">3. 電晶體控制區</strong><br>距顯示器上緣 <span class="text-amber-300 font-black text-base">3 格</span>。</li>
-                            </ul>
-                        `,
-                        stepTitle: "反面佈線程序",
-                        steps: [
-                            { t: "匯流排佈局", d: "垂直與水平走線距邊界維持 <span class='text-sky-300 font-black text-xs'>5 格</span>。" },
-                            { t: "段碼轉折區", d: "電阻與 IC 間距控制在 <span class='text-sky-300 font-black text-xs'>3 格</span> 內。" },
-                            { t: "掃描線轉彎", d: "預留 <span class='text-sky-300 font-black text-xs'>3 格</span> 空間防止信號短路。" }
-                        ],
-                        qc: ["電阻順序 1627354", "CS9013 極性不可插反"]
-                    },
-                    2: {
-                        front: "16GKq4G9OJJj3yKDbkFQ8JWCZvT_v7CUk",
-                        back: "18xx6xycR1n0dAqMDJ9QNhtrgIGCNbg-l",
-                        posDesc: `
-                            <ul class="space-y-2">
-                                <li><strong class="text-white text-sm font-black">1. 矩陣按鍵</strong><br>R8-R10 焊接跨距 <span class="text-amber-300 font-black text-base">3 格</span>，右距 CPLD 為 <span class="text-amber-300 font-black text-base">9 格</span>。</li>
-                                <li><strong class="text-white text-sm font-black">2. 核心基準</strong><br>底部引腳距零件框 <span class="text-amber-300 font-black text-base">11 格</span>。</li>
-                                <li><strong class="text-white text-sm font-black">3. 顯示限流區</strong><br>CPLD 往右算 <span class="text-amber-300 font-black text-base">3 格</span> 進入 R1-R7。</li>
-                            </ul>
-                        `,
-                        stepTitle: "反面佈線程序",
-                        steps: [
-                            { t: "橫向匯流排", d: "下方長線需跨 <span class='text-sky-300 font-black text-xs'>12 格</span> 後轉折。" },
-                            { t: "縱向平行走線", d: "CPLD 正下方有一組 <span class='text-sky-300 font-black text-xs'>11 格</span> 平行線。" },
-                            { t: "電源環繞線", d: "粗線與信號線需保 <span class='text-sky-300 font-black text-xs'>2 格</span> 距離。" }
-                        ],
-                        qc: ["Keypad 極性方向確認", "嚴守 9/11/12 格走線限制"]
-                    }
-                };
-
-                const j2Headers = [4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21];
-                const j3Headers = [24, 25, 26, 27, 28, 29, 31, 33, 34, 37, 39, 40, 41];
-                const allPinsLeft = ["Vcc", 4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21, "GND"];
-                const allPinsRight = ["Vcc", 41, 40, 39, 37, 34, 33, 31, 29, 28, 27, 26, 25, 24, "GND"];
-
-                const setTask = (t) => { currentTask.value = t; selectedSet.value = 'A'; currentSide.value = 'front'; evalSubject.value = String(t); };
-                const currentSetData = computed(() => taskData[currentTask.value].sets[selectedSet.value]);
-
-                const getPinY = (idx) => 70 + idx * 35;
-                const getResPoints = (x, y) => `${x},${y} ${x+10},${y} ${x+15},${y-6} ${x+22},${y+6} ${x+29},${y-6} ${x+36},${y+6} ${x+43},${y-6} ${x+50},${y+6} ${x+55},${y} ${x+65},${y}`;
-
-                const isSelected = (setKey, side, pin) => {
-                    const set = taskData[currentTask.value].sets[setKey];
-                    return side === 'left' ? set.left.pins.includes(pin) : set.right.pins.includes(pin);
-                };
-
-                const getSignalName = (setKey, side, pin) => {
-                    const set = taskData[currentTask.value].sets[setKey];
-                    if (side === 'left') {
-                        const idx = set.left.pins.indexOf(pin);
-                        return idx !== -1 ? set.left.signals[idx] : '';
-                    } else {
-                        const idx = set.right.pins.indexOf(pin);
-                        return idx !== -1 ? set.right.labels[idx] : '';
-                    }
-                };
-
-                const isSpec = (setKey, pin) => taskData[currentTask.value].specialPins[setKey]?.includes(pin);
 
                 return {
                     currentTask, viewMode, currentSide, selectedSet, sets, taskData, layoutConfig,
