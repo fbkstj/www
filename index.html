@@ -889,8 +889,8 @@
     }
 
     function showFrame(src) {
-        const cacheBusterSrc = src.includes('?') ? src + '&v=145' : src + '?v=145';
-        if (!mainFrame.src.includes(src)) {
+        const cacheBusterSrc = src.includes('?') ? src + '&v=146' : src + '?v=146';
+        if (mainFrame.src !== cacheBusterSrc) {
             mainFrame.src = cacheBusterSrc;
         }
         grid.classList.add('hide');
