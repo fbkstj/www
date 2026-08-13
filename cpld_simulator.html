@@ -149,9 +149,9 @@
         </header>
 
         <!-- 主內容區域 -->
-        <main class="flex-1 max-w-[1850px] w-full mx-auto p-4 md:p-5 space-y-5">
+        <main class="flex-1 max-w-[1850px] w-full mx-auto p-4 md:p-5 space-y-4">
             
-            <!-- 題組選擇區塊 (按鍵內文字極致放大) -->
+            <!-- 題組選擇區塊 -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-4 md:p-5 shadow-lg space-y-3">
                 <div class="flex items-center justify-between">
                     <h3 class="text-amber-300 font-black text-base md:text-xl flex items-center gap-2 tracking-wide">
@@ -187,20 +187,14 @@
             </div>
 
             <!-- 【模式一：腳位邏輯模擬】 -->
-            <div v-if="viewMode === 'logic'" class="space-y-5 fade-in">
+            <div v-if="viewMode === 'logic'" class="space-y-4 fade-in">
                 
-                <!-- 題組重點提示卡片 -->
-                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] p-4 md:p-5 shadow-lg flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-amber-400/20 border-2 border-amber-400 text-amber-300 flex items-center justify-center text-2xl font-black shrink-0 shadow-inner">
-                        💡
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2.5">
-                            <span class="px-3.5 py-1 bg-amber-400 text-slate-950 rounded-xl text-sm md:text-base font-black shadow-sm">題組 {{ selectedSet }}</span>
-                            <h3 class="text-white font-black text-base md:text-xl tracking-tight">{{ taskData[currentTask].name }} — 腳位分配重點</h3>
-                        </div>
-                        <p class="text-amber-200 text-lg md:text-xl font-black leading-snug tracking-wide">{{ currentSetData.focus }}</p>
-                    </div>
+                <!-- 題組重點提示卡片 (改為一行顯示，縮小高度) -->
+                <div class="bg-[#1e293b] rounded-xl border-2 border-[#475569] py-2.5 px-4 shadow-lg flex flex-wrap items-center gap-3">
+                    <span class="text-amber-300 text-xl shrink-0">💡</span>
+                    <span class="px-3 py-0.5 bg-amber-400 text-slate-950 rounded-lg text-xs md:text-sm font-black shadow-sm shrink-0">題組 {{ selectedSet }}</span>
+                    <span class="text-white font-black text-base md:text-lg shrink-0">{{ taskData[currentTask].name }} — 腳位分配重點：</span>
+                    <span class="text-amber-200 text-base md:text-xl font-black tracking-wide shrink-0">{{ currentSetData.focus }}</span>
                 </div>
 
                 <!-- 左右對照 Layout -->
