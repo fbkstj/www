@@ -161,6 +161,92 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
+            <!-- 官方測試參考資料下載橫幅 (勞動部技能檢定中心 wdasec.gov.tw) -->
+            <div class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 md:p-4 shadow-xl space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#475569]/70 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl text-emerald-400">📥</span>
+                        <h3 class="text-white font-black text-sm md:text-base tracking-wide flex items-center gap-1.5">
+                            勞動部技能檢定中心 官方測試參考資料
+                            <span class="text-amber-300 font-mono-custom text-xs bg-[#090d16] px-2 py-0.5 rounded border border-[#475569]">職類代號：11700 數位電子乙級</span>
+                        </h3>
+                    </div>
+                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="text-xs font-black text-sky-300 hover:text-sky-200 bg-[#090d16] hover:bg-slate-800 px-3 py-1 rounded-lg border border-[#475569] transition-all flex items-center gap-1">
+                        <span>🌐 技能檢定中心官網 (owinform.wdasec.gov.tw)</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+
+                <!-- 4 核心官方下載按鈕組 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3">
+                    
+                    <!-- 1. 乙級 學科參考資料 -->
+                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-[#475569] hover:border-emerald-400 rounded-xl transition-all group shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-400/80 text-emerald-400 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform shrink-0">
+                                📘
+                            </div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black text-white group-hover:text-emerald-300 transition-colors">乙級 學科參考資料</h4>
+                                <p class="text-[11px] text-slate-300 font-extrabold">代號 11700 完整題庫</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-white rounded-lg text-xs font-black shadow-sm flex items-center gap-1 shrink-0">
+                            <span>下載</span> 📥
+                        </span>
+                    </a>
+
+                    <!-- 2. 乙級 術科參考資料 -->
+                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-[#475569] hover:border-emerald-400 rounded-xl transition-all group shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-400/80 text-emerald-400 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform shrink-0">
+                                📙
+                            </div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black text-white group-hover:text-emerald-300 transition-colors">乙級 術科參考資料</h4>
+                                <p class="text-[11px] text-slate-300 font-extrabold">試題一 / 試題二規範</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-white rounded-lg text-xs font-black shadow-sm flex items-center gap-1 shrink-0">
+                            <span>下載</span> 📥
+                        </span>
+                    </a>
+
+                    <!-- 3. 術科 (Library 及燒錄檔) -->
+                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-[#475569] hover:border-emerald-400 rounded-xl transition-all group shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-400/80 text-emerald-400 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform shrink-0">
+                                💾
+                            </div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black text-white group-hover:text-emerald-300 transition-colors">術科 Library及燒錄檔</h4>
+                                <p class="text-[11px] text-slate-300 font-extrabold">Quartus 元件庫與程式</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-600 group-hover:bg-emerald-500 text-white rounded-lg text-xs font-black shadow-sm flex items-center gap-1 shrink-0">
+                            <span>下載</span> 📥
+                        </span>
+                    </a>
+
+                    <!-- 4. 修訂對照表 (113/10/26 修訂) -->
+                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-[#475569] hover:border-amber-400 rounded-xl transition-all group shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-400/80 text-amber-300 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform shrink-0">
+                                📝
+                            </div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black text-white group-hover:text-amber-300 transition-colors">乙級 術科修訂對照表</h4>
+                                <p class="text-[11px] text-amber-300 font-extrabold">113/10/26 修訂對照</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-amber-500 group-hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black shadow-sm flex items-center gap-1 shrink-0">
+                            <span>下載</span> 📥
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+
             <!-- 題組選擇區塊 (僅在邏輯模擬模式顯示) -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 shadow-lg space-y-2.5 max-w-[1450px] mx-auto w-full">
                 <div class="flex items-center justify-between px-1">
@@ -668,6 +754,36 @@
                 const j3Headers = [24, 25, 26, 27, 28, 29, 31, 33, 34, 37, 39, 40, 41];
                 const allPinsLeft = ["Vcc", 4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21, "GND"];
                 const allPinsRight = ["Vcc", 41, 40, 39, 37, 34, 33, 31, 29, 28, 27, 26, 25, 24, "GND"];
+
+                const setTask = (t) => {
+                    currentTask.value = t;
+                    selectedSet.value = 'A';
+                    currentSide.value = 'front';
+                    evalSubject.value = String(t);
+                };
+
+                const currentSetData = computed(() => taskData[currentTask.value].sets[selectedSet.value]);
+
+                const getPinY = (idx) => 70 + idx * 35;
+                const getResPoints = (x, y) => `${x},${y} ${x+10},${y} ${x+15},${y-6} ${x+22},${y+6} ${x+29},${y-6} ${x+36},${y+6} ${x+43},${y-6} ${x+50},${y+6} ${x+55},${y} ${x+65},${y}`;
+
+                const isSelected = (setKey, side, pin) => {
+                    const set = taskData[currentTask.value].sets[setKey];
+                    return side === 'left' ? set.left.pins.includes(pin) : set.right.pins.includes(pin);
+                };
+
+                const getSignalName = (setKey, side, pin) => {
+                    const set = taskData[currentTask.value].sets[setKey];
+                    if (side === 'left') {
+                        const idx = set.left.pins.indexOf(pin);
+                        return idx !== -1 ? set.left.signals[idx] : '';
+                    } else {
+                        const idx = set.right.pins.indexOf(pin);
+                        return idx !== -1 ? set.right.labels[idx] : '';
+                    }
+                };
+
+                const isSpec = (setKey, pin) => taskData[currentTask.value].specialPins[setKey]?.includes(pin);
 
                 const generatePDF = async () => {
                     const stStart = parseInt(stationStart.value);
