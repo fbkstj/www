@@ -537,7 +537,6 @@
                     <div>
                         <div class="nav-sub-list">
                             <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
-                            <button class="nav-sub-item" data-src="digi_el.html">數位乙級評審表設定</button>
                             <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
                             <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
                             <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
@@ -697,24 +696,6 @@
                     <span class="category-tag">課程規劃</span>
                 </div>
             </div>
-            <!-- 數位電子乙級設定 -->
-            <div class="card award" data-cat="award">
-                <div class="card-top">
-                    <div class="card-icon">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <span class="badge-year">線上設定</span>
-                </div>
-                <div class="card-body">
-                    <h3>數位乙級評審表設定</h3>
-                    <p>線上配置數位電子乙級考題指定表參數，包含四位數顯示裝置與鍵盤輸入顯示裝置、CPLD 接腳分配、七段顯示器組合等。一鍵生成考生大批評分表 PDF 檔案。</p>
-                </div>
-                <div class="card-footer">
-                    <span class="category-tag">術科檢定</span>
-                    <button class="go-link" data-src="digi_el.html">進入設定 &rarr;</button>
-                </div>
-            </div>
-
             <!-- CPLD 綜合導覽系統 -->
             <div class="card award" data-cat="award">
                 <div class="card-top">
@@ -725,7 +706,7 @@
                 </div>
                 <div class="card-body">
                     <h3>數位乙級學習導覽</h3>
-                    <p>包含「腳位邏輯模擬」與「硬體布局指引」雙模式。支援試題一、二全題組 CPLD 3064 物理偏移腳位對照、電阻裝配順序、Quartus 邏輯圖、AHDL 原始碼與精確 PCB 實體格數定位走線手冊。</p>
+                    <p>包含「腳位邏輯模擬」、「硬體布局指引」與「評審表設定」三合一系統。支援試題一、二全題組 CPLD 3064 物理偏移腳位對照、電阻裝配順序、Quartus 邏輯圖、AHDL 原始碼與精確 PCB 實體格數定位走線手冊。</p>
                 </div>
                 <div class="card-footer">
                     <span class="category-tag">模擬與布局</span>
@@ -889,7 +870,7 @@
     }
 
     function showFrame(src) {
-        const cacheBusterSrc = src.includes('?') ? src + '&v=155' : src + '?v=155';
+        const cacheBusterSrc = src.includes('?') ? src + '&v=156' : src + '?v=156';
         if (mainFrame.src !== cacheBusterSrc) {
             mainFrame.src = cacheBusterSrc;
         }
