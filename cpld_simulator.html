@@ -142,24 +142,24 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 題組選擇區塊 (按鈕寬度變窄至 max-w-[1050px] 置中，字體變大) -->
-            <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg space-y-2.5 max-w-[1050px] mx-auto w-full">
+            <!-- 題組選擇區塊 (按鈕內字體再加大 1 倍：text-2xl md:text-3xl 與 text-3xl md:text-4xl) -->
+            <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-4 shadow-lg space-y-3 max-w-[1250px] mx-auto w-full">
                 <div class="flex items-center justify-between px-1">
-                    <h3 class="text-amber-300 font-black text-sm md:text-base flex items-center gap-1.5 tracking-wide">
-                        <span class="text-lg">📑</span> 選擇官方試題組<span class="text-white font-black text-xs md:text-sm">（ 1 ~ 5 題組物理偏移 ）</span>：
+                    <h3 class="text-amber-300 font-black text-base md:text-lg flex items-center gap-2 tracking-wide">
+                        <span class="text-xl">📑</span> 選擇官方試題組<span class="text-white font-black text-sm md:text-base">（ 1 ~ 5 題組物理偏移 ）</span>：
                     </h3>
-                    <span class="text-[11px] font-mono-custom font-black text-slate-300 bg-[#090d16] px-2.5 py-0.5 rounded-lg border border-[#475569] hidden md:inline-block">CPLD 3064 Pin Selection</span>
+                    <span class="text-xs font-mono-custom font-black text-slate-300 bg-[#090d16] px-3 py-0.5 rounded-lg border border-[#475569] hidden md:inline-block">CPLD 3064 Pin Selection</span>
                 </div>
-                <div class="grid grid-cols-5 gap-2 md:gap-3">
+                <div class="grid grid-cols-5 gap-2.5 md:gap-4">
                     <button
                         v-for="set in sets"
                         :key="set"
                         @click="selectedSet = set"
-                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-xl ring-2 ring-amber-300 scale-[1.03] border-2 border-amber-100' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
-                        class="py-2.5 md:py-3 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5"
+                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-2xl ring-4 ring-amber-300/60 scale-[1.04] border-2 border-amber-100' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
+                        class="py-3.5 md:py-4 px-2.5 md:px-3.5 rounded-2xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"
                     >
-                        <span class="text-base md:text-lg font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
-                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-lg md:text-xl' : 'text-amber-300 font-black text-lg md:text-xl'" class="tracking-wider">
+                        <span class="text-xl md:text-3xl font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
+                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-2xl md:text-3xl' : 'text-amber-300 font-black text-2xl md:text-3xl'" class="tracking-wider">
                             （{{ set }}組）
                         </span>
                     </button>
@@ -167,7 +167,7 @@
             </div>
 
             <!-- 硬體視圖選擇區塊 (僅在布局模式顯示) -->
-            <div v-else class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg flex items-center justify-between max-w-[1050px] mx-auto w-full">
+            <div v-else class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg flex items-center justify-between max-w-[1250px] mx-auto w-full">
                 <h3 class="text-amber-300 font-black text-sm md:text-base flex items-center gap-1.5">
                     <span class="text-lg">🔍</span> 切換硬體 PCB 佈局視圖：
                 </h3>
