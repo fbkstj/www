@@ -142,9 +142,9 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 題組選擇區塊 -->
-            <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg space-y-2">
-                <div class="flex items-center justify-between">
+            <!-- 題組選擇區塊 (按鈕寬度變窄至 max-w-[1050px] 置中，字體變大) -->
+            <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg space-y-2.5 max-w-[1050px] mx-auto w-full">
+                <div class="flex items-center justify-between px-1">
                     <h3 class="text-amber-300 font-black text-sm md:text-base flex items-center gap-1.5 tracking-wide">
                         <span class="text-lg">📑</span> 選擇官方試題組<span class="text-white font-black text-xs md:text-sm">（ 1 ~ 5 題組物理偏移 ）</span>：
                     </h3>
@@ -155,11 +155,11 @@
                         v-for="set in sets"
                         :key="set"
                         @click="selectedSet = set"
-                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-lg ring-2 ring-amber-300 scale-[1.02] border-2 border-amber-100' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
-                        class="py-2 md:py-2.5 px-1.5 md:px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1"
+                        :class="selectedSet === set ? 'bg-amber-400 text-slate-950 font-black shadow-xl ring-2 ring-amber-300 scale-[1.03] border-2 border-amber-100' : 'bg-[#334155] text-white hover:bg-[#475569] hover:text-white font-black border-2 border-[#475569]'"
+                        class="py-2.5 md:py-3 px-2 rounded-xl transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5"
                     >
-                        <span class="text-sm md:text-base font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
-                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-sm md:text-base' : 'text-amber-300 font-black text-sm md:text-base'" class="tracking-wider">
+                        <span class="text-base md:text-lg font-black">題組 {{ sets.indexOf(set) + 1 }}</span>
+                        <span :class="selectedSet === set ? 'text-slate-950 font-black text-lg md:text-xl' : 'text-amber-300 font-black text-lg md:text-xl'" class="tracking-wider">
                             （{{ set }}組）
                         </span>
                     </button>
@@ -167,7 +167,7 @@
             </div>
 
             <!-- 硬體視圖選擇區塊 (僅在布局模式顯示) -->
-            <div v-else class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg flex items-center justify-between">
+            <div v-else class="bg-[#1e293b] border-2 border-[#475569] rounded-xl p-3 shadow-lg flex items-center justify-between max-w-[1050px] mx-auto w-full">
                 <h3 class="text-amber-300 font-black text-sm md:text-base flex items-center gap-1.5">
                     <span class="text-lg">🔍</span> 切換硬體 PCB 佈局視圖：
                 </h3>
@@ -356,10 +356,10 @@
                 </div>
             </div>
 
-            <!-- 【模式二：硬體布局指引】 (復原 PCB 實體圖為完整原圖尺寸) -->
+            <!-- 【模式二：硬體布局指引】 -->
             <div v-else class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-5 fade-in">
                 
-                <!-- 左側 PCB 實體圖 (原圖 100% 完整清晰尺寸) -->
+                <!-- 左側 PCB 實體圖 -->
                 <div class="lg:col-span-8">
                     <div class="bg-[#1e293b] p-4 rounded-xl shadow-lg border-2 border-[#475569] sticky top-16">
                         <div class="mb-3 flex items-center justify-between px-1">
@@ -382,7 +382,7 @@
                     </div>
                 </div>
 
-                <!-- 右側步驟與 QC 品質控管指引 (col-span-4) -->
+                <!-- 右側步驟與 QC 品質控管指引 -->
                 <div class="lg:col-span-4 space-y-4">
                     
                     <!-- 一、定位基準 -->
