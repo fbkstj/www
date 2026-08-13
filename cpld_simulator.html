@@ -161,9 +161,11 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 官方測試參考資料檔案直接下載區 (勞動部技能檢定中心 wdasec.gov.tw) -->
-            <div class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 md:p-4 shadow-xl space-y-3">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#475569]/70 pb-2">
+            <!-- 官方測試參考資料檔案直接下載區 (可隱藏折疊) -->
+            <div class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 md:p-4 shadow-xl space-y-2.5">
+                
+                <!-- 可點擊折疊標題列 -->
+                <div @click="showOfficialDownloads = !showOfficialDownloads" class="flex flex-wrap items-center justify-between gap-2 cursor-pointer select-none border-b border-[#475569]/70 pb-2 hover:opacity-90 transition-opacity">
                     <div class="flex items-center gap-2">
                         <span class="text-xl text-emerald-400">📥</span>
                         <h3 class="text-white font-black text-sm md:text-base tracking-wide flex items-center gap-1.5">
@@ -171,14 +173,19 @@
                             <span class="text-amber-300 font-mono-custom text-xs bg-[#090d16] px-2 py-0.5 rounded border border-[#475569]">職類代號：11700 數位電子乙級</span>
                         </h3>
                     </div>
-                    <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" class="text-xs font-black text-sky-300 hover:text-sky-200 bg-[#090d16] hover:bg-slate-800 px-3 py-1 rounded-lg border border-[#475569] transition-all flex items-center gap-1">
-                        <span>🌐 技能檢定中心官網 (owinform.wdasec.gov.tw)</span>
-                        <span>↗</span>
-                    </a>
+                    <div class="flex items-center gap-2">
+                        <a href="https://owinform.wdasec.gov.tw/" target="_blank" rel="noopener noreferrer" @click.stop class="text-xs font-black text-sky-300 hover:text-sky-200 bg-[#090d16] hover:bg-slate-800 px-3 py-1 rounded-lg border border-[#475569] transition-all flex items-center gap-1">
+                            <span>🌐 技能檢定中心官網 (owinform.wdasec.gov.tw)</span>
+                            <span>↗</span>
+                        </a>
+                        <button type="button" class="text-xs font-black px-3 py-1 bg-[#090d16] text-amber-300 hover:text-amber-200 rounded-lg border border-[#475569] hover:bg-slate-800 transition-all flex items-center gap-1">
+                            <span>{{ showOfficialDownloads ? '▲ 隱藏下載' : '▼ 展開下載' }}</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- 3 核心官方檔案直接下載按鈕組 (非連結，點擊直接下載檔案) -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-3">
+                <!-- 3 核心官方檔案直接下載按鈕組 (折疊區域) -->
+                <div v-show="showOfficialDownloads" class="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-3 pt-1 fade-in">
                     
                     <!-- 1. 乙級 術科參考資料 (直接下載 117002B13.pdf) -->
                     <a href="117002B13.pdf" download="117002B13_數位乙級術科參考資料.pdf" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-emerald-500/80 hover:border-emerald-400 rounded-xl transition-all group shadow-md">
@@ -642,6 +649,7 @@
                 const sets = ['A', 'B', 'C', 'D', 'E'];
                 const showCircuit = ref(true); 
                 const showAhdl = ref(true); 
+                const showOfficialDownloads = ref(true);
 
                 // 評審表設定 state
                 const evalSubject = ref('1');
@@ -936,7 +944,7 @@
 
                 return {
                     currentTask, viewMode, currentSide, selectedSet, sets, taskData, layoutConfig,
-                    j2Headers, j3Headers, allPinsLeft, allPinsRight, showCircuit, showAhdl,
+                    j2Headers, j3Headers, allPinsLeft, allPinsRight, showCircuit, showAhdl, showOfficialDownloads,
                     setTask, currentSetData, getPinY, getResPoints, isSelected, getSignalName, isSpec, goHome,
                     evalSubject, evalCpld, evalDisplay, stationStart, testNoStart, candidateCount, isGeneratingPdf, generatePDF
                 };
