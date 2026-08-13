@@ -356,37 +356,37 @@
                 </div>
             </div>
 
-            <!-- 【模式二：硬體布局指引】 (PCB 實體圖精確微縮 1/8) -->
+            <!-- 【模式二：硬體布局指引】 (PCB 實體圖精確減少 1/8 尺寸，變為 7/8 舒適大小) -->
             <div v-else class="grid grid-cols-1 lg:grid-cols-12 gap-4 fade-in">
                 
-                <!-- 左側 PCB 實體圖 (等比例微縮至 1/8, 高度維持精緻的 max-h-[180px] ~ max-h-[220px]) -->
-                <div class="lg:col-span-6 xl:col-span-5">
-                    <div class="bg-[#1e293b] p-3 rounded-xl shadow-lg border-2 border-[#475569] sticky top-16">
+                <!-- 左側 PCB 實體圖 (原圖尺寸減少 1/8 成為 7/8 尺寸：max-h-[380px] ~ [420px]) -->
+                <div class="lg:col-span-7 xl:col-span-7">
+                    <div class="bg-[#1e293b] p-3.5 rounded-xl shadow-lg border-2 border-[#475569] sticky top-16">
                         <div class="mb-2 flex items-center justify-between px-1">
                             <span class="text-xs md:text-sm font-black text-amber-300 uppercase tracking-wider font-mono-custom">{{ taskData[currentTask].name }}：{{ currentSide === 'front' ? '正面佈局圖' : '背面佈局圖' }}</span>
-                            <span class="text-[11px] font-black text-sky-300 bg-sky-950 px-2.5 py-0.5 rounded-full border border-sky-700">PCB 格數對齊</span>
+                            <span class="text-xs font-black text-sky-300 bg-sky-950 px-3 py-1 rounded-full border border-sky-700">以實體 PCB 格數對齊為準</span>
                         </div>
-                        <div class="relative overflow-hidden rounded-xl bg-[#0f172a] border-2 border-[#475569] flex items-center justify-center p-2 shadow-inner min-h-[180px] max-h-[260px]">
-                            <img :src="'https://lh3.googleusercontent.com/d/' + layoutConfig[currentTask][currentSide]" class="max-h-[220px] w-auto h-auto object-contain shadow-xl rounded-lg border border-slate-600">
+                        <div class="relative overflow-hidden rounded-xl bg-[#0f172a] border-2 border-[#475569] flex items-center justify-center p-3 shadow-inner min-h-[360px] max-h-[460px]">
+                            <img :src="'https://lh3.googleusercontent.com/d/' + layoutConfig[currentTask][currentSide]" class="max-h-[380px] md:max-h-[420px] w-auto h-auto object-contain shadow-xl rounded-xl border border-slate-600">
                         </div>
-                        <div class="mt-2.5 flex flex-col sm:flex-row gap-2">
-                            <div class="flex-1 p-2 bg-red-950/60 rounded-lg border border-red-700/80 shadow-md">
-                                <p class="text-xs text-red-300 font-black mb-0.5 flex items-center gap-1"><span class="w-2 h-2 bg-red-400 rounded-full"></span> 紅色標註線</p>
-                                <p class="text-[11px] text-white font-bold">定位基準線與中心點。</p>
+                        <div class="mt-3 flex flex-col sm:flex-row gap-3">
+                            <div class="flex-1 p-2.5 bg-red-950/60 rounded-lg border border-red-700/80 shadow-md">
+                                <p class="text-xs text-red-300 font-black mb-0.5 flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-red-400 rounded-full"></span> 紅色標註線</p>
+                                <p class="text-xs text-white font-bold">關鍵定位基準線與對齊中心點。</p>
                             </div>
-                            <div class="flex-1 p-2 bg-amber-950/60 rounded-lg border border-amber-700/80 shadow-md">
-                                <p class="text-xs text-amber-300 font-black mb-0.5 flex items-center gap-1"><span class="w-2 h-2 bg-amber-400 rounded-full"></span> 橘色標註線</p>
-                                <p class="text-[11px] text-white font-bold">裝配間距（格數）。</p>
+                            <div class="flex-1 p-2.5 bg-amber-950/60 rounded-lg border border-amber-700/80 shadow-md">
+                                <p class="text-xs text-amber-300 font-black mb-0.5 flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span> 橘色標註線</p>
+                                <p class="text-xs text-white font-bold">精確裝配間距（以格數為單位計算）。</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 右側步驟與 QC 品質控管指引 (col-span-6 / 7) -->
-                <div class="lg:col-span-6 xl:col-span-7 space-y-3">
+                <!-- 右側步驟與 QC 品質控管指引 (col-span-5) -->
+                <div class="lg:col-span-5 xl:col-span-5 space-y-3">
                     
                     <!-- 一、定位基準 -->
-                    <section class="bg-[#1e293b] p-3 rounded-xl shadow-lg border-2 border-[#475569]">
+                    <section class="bg-[#1e293b] p-3.5 rounded-xl shadow-lg border-2 border-[#475569]">
                         <h2 class="font-black mb-1.5 flex items-center text-white text-sm md:text-base">
                             <span class="mr-1.5 text-red-400 text-lg">📍</span> 一、 核心定位基準
                         </h2>
@@ -394,41 +394,41 @@
                     </section>
 
                     <!-- 二、安裝口訣 -->
-                    <section class="bg-[#1e293b] p-3 rounded-xl shadow-lg border-2 border-[#475569]">
+                    <section class="bg-[#1e293b] p-3.5 rounded-xl shadow-lg border-2 border-[#475569]">
                         <h2 class="font-black mb-1.5 flex items-center text-white text-sm md:text-base">
                             <span class="mr-1.5 text-sky-300 text-lg">🔢</span> 二、 限流電阻安裝順序
                         </h2>
-                        <div class="flex flex-wrap gap-1.5 mb-1.5">
+                        <div class="flex flex-wrap gap-2 mb-2">
                             <div v-for="num in taskData[currentTask].mnemonicArr" :key="num" class="resistor-node shadow-md">{{ num }}</div>
                         </div>
-                        <p class="text-[11px] text-slate-200 italic bg-[#0f172a] py-1 px-2.5 rounded-lg font-extrabold border border-[#475569]">對應顯示器 A-G 段碼（上至下順序排列）</p>
+                        <p class="text-xs text-slate-200 italic bg-[#0f172a] py-1.5 px-3 rounded-lg font-extrabold border border-[#475569]">對應顯示器 A-G 段碼（上至下順序排列）</p>
                     </section>
 
                     <!-- 三、組裝程序 -->
-                    <section class="bg-[#1e293b] p-3 rounded-xl shadow-lg border-2 border-[#475569]">
+                    <section class="bg-[#1e293b] p-3.5 rounded-xl shadow-lg border-2 border-[#475569]">
                         <h2 class="font-black mb-2.5 flex items-center text-white text-sm md:text-base">
                             <span class="mr-1.5 text-teal-400 text-lg">🛤️</span> 三、 {{ layoutConfig[currentTask].stepTitle }}
                         </h2>
-                        <div class="space-y-2.5 relative">
+                        <div class="space-y-3 relative">
                             <div class="absolute left-[14px] top-2 bottom-2 w-0.5 bg-[#475569]"></div>
-                            <div v-for="(s, idx) in layoutConfig[currentTask].steps" :key="idx" class="flex gap-2.5 items-start relative">
+                            <div v-for="(s, idx) in layoutConfig[currentTask].steps" :key="idx" class="flex gap-3 items-start relative">
                                 <div class="step-number shadow-md">{{ idx + 1 }}</div>
                                 <div>
-                                    <h3 class="text-xs font-black text-white">{{ s.t }}</h3>
-                                    <p class="text-[11px] text-slate-200 mt-0.5 leading-relaxed font-bold" v-html="s.d"></p>
+                                    <h3 class="text-xs md:text-sm font-black text-white">{{ s.t }}</h3>
+                                    <p class="text-xs text-slate-200 mt-0.5 leading-relaxed font-bold" v-html="s.d"></p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
                     <!-- 品質控管點 -->
-                    <section class="bg-amber-950/40 p-3 rounded-xl border-2 border-amber-400 shadow-lg">
+                    <section class="bg-amber-950/40 p-3.5 rounded-xl border-2 border-amber-400 shadow-lg">
                         <h2 class="font-black mb-1.5 text-amber-300 text-xs md:text-sm flex items-center">
                             <span class="mr-1.5 text-base">🛡️</span> 品質控管點（QC）
                         </h2>
                         <ul class="space-y-1">
                             <li v-for="q in layoutConfig[currentTask].qc" :key="q" class="flex items-start text-xs text-amber-100 font-black leading-snug">
-                                <span class="mr-1 mt-0.5 text-amber-400 text-xs">▶</span> {{ q }}
+                                <span class="mr-1.5 mt-0.5 text-amber-400 text-xs">▶</span> {{ q }}
                             </li>
                         </ul>
                     </section>
