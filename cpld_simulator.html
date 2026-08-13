@@ -203,43 +203,43 @@
                     </div>
                 </div>
 
-                <!-- 物理接腳對照表 (J2 & J3 Pin Mapping Table - 等比例舒適縮小) -->
-                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] shadow-lg overflow-hidden">
-                    <div class="p-3.5 bg-[#090d16] text-white flex items-center justify-between border-b-2 border-[#475569]">
-                        <h3 class="font-black text-base md:text-lg flex items-center gap-2 text-sky-300 tracking-tight">
-                            <span class="text-xl">📊</span> J2 與 J3 物理腳位映射對照表<span class="text-amber-300 font-black text-sm md:text-base">（目前選擇：題組 {{ selectedSet }}）</span>
+                <!-- 物理接腳對照表 (J2 & J3 Pin Mapping Table - 壓縮寬度至原來的1/2, max-w-[900px] 置中) -->
+                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] shadow-lg overflow-hidden max-w-[920px] mx-auto w-full">
+                    <div class="p-3 bg-[#090d16] text-white flex items-center justify-between border-b-2 border-[#475569]">
+                        <h3 class="font-black text-sm md:text-base flex items-center gap-2 text-sky-300 tracking-tight">
+                            <span class="text-lg">📊</span> J2 與 J3 物理腳位對照表<span class="text-amber-300 font-black text-xs md:text-sm">（題組 {{ selectedSet }}）</span>
                         </h3>
-                        <span class="text-xs md:text-sm text-slate-200 font-mono-custom font-black bg-[#1e293b] px-3 py-1 rounded-lg border border-[#475569]">CPLD 3064 Pinout Map</span>
+                        <span class="text-xs text-slate-200 font-mono-custom font-black bg-[#1e293b] px-2.5 py-0.5 rounded-md border border-[#475569]">CPLD 3064</span>
                     </div>
-                    <div class="p-3.5 bg-[#0f172a] overflow-x-auto custom-scrollbar">
-                        <table class="w-full border-2 border-[#475569] border-collapse bg-[#1e293b] text-center rounded-xl overflow-hidden shadow-md">
+                    <div class="p-2 bg-[#0f172a] overflow-x-auto custom-scrollbar">
+                        <table class="w-full border border-[#475569] border-collapse bg-[#1e293b] text-center rounded-lg overflow-hidden shadow-sm">
                             <thead>
-                                <tr class="bg-[#090d16] border-b-2 border-[#475569]">
-                                    <th rowspan="2" class="border-r-2 border-[#475569] w-16 bg-[#1e293b] font-black text-lg md:text-xl text-amber-300 p-2">組別</th>
-                                    <th :colspan="j2Headers.length" class="p-2.5 border-r-2 border-[#475569] font-black text-lg md:text-xl text-sky-300 bg-sky-950/60">
+                                <tr class="bg-[#090d16] border-b border-[#475569]">
+                                    <th rowspan="2" class="border-r border-[#475569] w-10 bg-[#1e293b] font-black text-sm md:text-base text-amber-300 p-1">組別</th>
+                                    <th :colspan="j2Headers.length" class="p-1.5 border-r border-[#475569] font-black text-xs md:text-sm text-sky-300 bg-sky-950/60">
                                         {{ taskData[currentTask].j2Header }}
                                     </th>
-                                    <th :colspan="j3Headers.length" class="p-2.5 font-black text-lg md:text-xl text-red-400 bg-red-950/60">
+                                    <th :colspan="j3Headers.length" class="p-1.5 font-black text-xs md:text-sm text-red-400 bg-red-950/60">
                                         {{ taskData[currentTask].j3Header }}
                                     </th>
                                 </tr>
-                                <tr class="bg-[#0f172a] border-b-2 border-[#475569] text-slate-200">
-                                    <th v-for="p in j2Headers" :key="p" class="p-2 border-r border-[#475569] font-mono-custom text-sm md:text-base font-black italic text-slate-200">P{{p}}</th>
-                                    <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]'" class="p-2 font-mono-custom text-sm md:text-base font-black italic text-slate-200">P{{p}}</th>
+                                <tr class="bg-[#0f172a] border-b border-[#475569] text-slate-200">
+                                    <th v-for="p in j2Headers" :key="p" class="p-1 border-r border-[#475569] font-mono-custom text-xs font-black italic text-slate-200">P{{p}}</th>
+                                    <th v-for="(p, idx) in j3Headers" :key="p" :class="idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]'" class="p-1 font-mono-custom text-xs font-black italic text-slate-200">P{{p}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="setKey in sets" :key="setKey" :class="selectedSet === setKey ? 'bg-amber-400/25 ring-2 ring-amber-300 ring-inset' : ''" class="border-b border-[#475569] transition-all">
-                                    <td :class="selectedSet === setKey ? 'bg-amber-400 text-slate-950 font-black' : 'bg-[#090d16] text-white font-black'" class="border-r-2 border-[#475569] text-xl md:text-2xl p-2">
+                                    <td :class="selectedSet === setKey ? 'bg-amber-400 text-slate-950 font-black' : 'bg-[#090d16] text-white font-black'" class="border-r border-[#475569] text-base md:text-lg p-1">
                                         {{ setKey }}
                                     </td>
-                                    <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-2 ring-red-400 ring-inset' : 'bg-emerald-950/90 ring-2 ring-emerald-400 ring-inset') : ''" class="border-r border-[#475569] p-1.5 h-11 md:h-12">
-                                        <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[3px] underline-offset-4 font-black' : 'text-emerald-300 font-black'" class="text-base md:text-lg">
+                                    <td v-for="p in j2Headers" :key="p" :class="isSelected(setKey, 'left', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-emerald-950/90 ring-1 ring-emerald-400 ring-inset') : ''" class="border-r border-[#475569] p-0.5 h-8">
+                                        <span v-if="isSelected(setKey, 'left', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-emerald-300 font-black'" class="text-xs md:text-sm">
                                             {{ getSignalName(setKey, 'left', p) }}
                                         </span>
                                     </td>
-                                    <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-2 ring-red-400 ring-inset' : 'bg-sky-950/90 ring-2 ring-sky-400 ring-inset') : '']" class="p-1.5 h-11 md:h-12">
-                                        <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[3px] underline-offset-4 font-black' : 'text-sky-300 font-black'" class="text-base md:text-lg">
+                                    <td v-for="(p, idx) in j3Headers" :key="p" :class="[idx === j3Headers.length - 1 ? '' : 'border-r border-[#475569]', isSelected(setKey, 'right', p) ? (isSpec(setKey, p) ? 'bg-red-950/90 ring-1 ring-red-400 ring-inset' : 'bg-sky-950/90 ring-1 ring-sky-400 ring-inset') : '']" class="p-0.5 h-8">
+                                        <span v-if="isSelected(setKey, 'right', p)" :class="isSpec(setKey, p) ? 'text-red-300 underline decoration-red-400 decoration-[2px] underline-offset-2 font-black' : 'text-sky-300 font-black'" class="text-xs md:text-sm">
                                             {{ getSignalName(setKey, 'right', p) }}
                                         </span>
                                     </td>
@@ -250,14 +250,14 @@
                 </div>
 
                 <!-- SVG 模擬器 -->
-                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] p-5 shadow-lg flex flex-col items-center">
+                <div class="bg-[#1e293b] rounded-2xl border-2 border-[#475569] p-5 shadow-lg flex flex-col items-center max-w-[920px] mx-auto w-full">
                     <div class="w-full flex items-center justify-between mb-3">
-                        <h3 class="text-white font-black text-lg md:text-xl flex items-center gap-2.5">
-                            <span class="text-amber-300 text-2xl">🖥️</span> CPLD 3064 硬體腳位即時圖形模擬器
+                        <h3 class="text-white font-black text-base md:text-lg flex items-center gap-2.5">
+                            <span class="text-amber-300 text-xl">🖥️</span> CPLD 3064 硬體腳位即時圖形模擬器
                         </h3>
-                        <span class="text-xs md:text-sm text-sky-300 font-black bg-[#090d16] px-3.5 py-1.5 rounded-lg border border-[#475569]">模擬輸出：A-G 段碼與驅動控制</span>
+                        <span class="text-xs text-sky-300 font-black bg-[#090d16] px-3 py-1 rounded-md border border-[#475569]">模擬輸出：A-G 段碼與驅動控制</span>
                     </div>
-                    <div class="bg-neutral-900 rounded-3xl shadow-2xl border-2 border-neutral-700 relative overflow-hidden w-full max-w-[950px]">
+                    <div class="bg-neutral-900 rounded-2xl shadow-xl border-2 border-neutral-700 relative overflow-hidden w-full">
                         <svg viewBox="0 0 1000 700" class="w-full h-auto p-3">
                             <rect x="250" y="30" width="500" height="640" rx="4" fill="#171717" stroke="#FFFFFF" stroke-width="6" />
                             <rect x="465" y="55" width="70" height="50" rx="2" fill="#262626" stroke="#444" />
