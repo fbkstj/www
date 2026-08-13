@@ -91,49 +91,49 @@
 <body class="min-h-screen bg-[#0f172a] text-white">
     <div id="app" class="flex flex-col min-h-screen">
         
-        <!-- 頂部全寬 Header -->
-        <header class="bg-[#090d16] border-b-2 border-[#475569] sticky top-0 z-50 shadow-xl px-3 md:px-5 py-1.5">
-            <div class="max-w-[1850px] mx-auto flex flex-wrap items-center justify-between gap-2">
+        <!-- 頂部全寬 Header (字體與按鈕增加 1.5 倍大) -->
+        <header class="bg-[#090d16] border-b-2 border-[#475569] sticky top-0 z-50 shadow-xl px-4 md:px-6 py-2.5 md:py-3">
+            <div class="max-w-[1850px] mx-auto flex flex-wrap items-center justify-between gap-3">
                 
                 <!-- 標題與醒目標示徽章 -->
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-amber-400/20 border-2 border-amber-400 text-amber-300 flex items-center justify-center text-lg font-black shadow-sm">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-amber-400/20 border-2 border-amber-400 text-amber-300 flex items-center justify-center text-2xl font-black shadow-sm">
                         ⚡
                     </div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <h1 class="text-base md:text-lg font-black text-white tracking-tight">數位電子乙級 學習導覽系統</h1>
-                        <span class="px-2.5 py-0.5 bg-sky-950/90 text-sky-300 border-2 border-sky-400 rounded-lg text-xs md:text-sm font-mono-custom font-black shadow-sm">
-                            {{ taskData[currentTask].name }}<span class="text-amber-300 font-black text-xs md:text-sm ml-1">（口訣：{{ taskData[currentTask].mnemonic }}）</span>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">數位電子乙級 學習導覽系統</h1>
+                        <span class="px-3.5 py-1 bg-sky-950/90 text-sky-300 border-2 border-sky-400 rounded-xl text-sm md:text-lg font-mono-custom font-black shadow-sm">
+                            {{ taskData[currentTask].name }}<span class="text-amber-300 font-black text-sm md:text-lg ml-1.5">（口訣：{{ taskData[currentTask].mnemonic }}）</span>
                         </span>
                     </div>
                 </div>
 
-                <!-- 頂部右側選單區 -->
-                <div class="flex flex-wrap items-center gap-2">
+                <!-- 頂部右側選單區 (按鈕與文字放大 1.5 倍) -->
+                <div class="flex flex-wrap items-center gap-3">
                     
                     <!-- 導覽模式切換 -->
-                    <div class="flex bg-[#1e293b] p-0.5 rounded-lg border-2 border-[#475569]">
-                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md ring-1 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3 py-1 text-xs md:text-sm rounded-md transition-all flex items-center gap-1">
-                            <span class="text-sm">⚡</span> 腳位邏輯模擬
+                    <div class="flex bg-[#1e293b] p-1 rounded-xl border-2 border-[#475569]">
+                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                            <span class="text-base md:text-lg">⚡</span> 腳位邏輯模擬
                         </button>
-                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-[#0284c7] text-white font-black shadow-md ring-1 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3 py-1 text-xs md:text-sm rounded-md transition-all flex items-center gap-1">
-                            <span class="text-sm">📐</span> 硬體布局指引
+                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                            <span class="text-base md:text-lg">📐</span> 硬體布局指引
                         </button>
                     </div>
 
                     <!-- 試題選擇 -->
-                    <div class="flex bg-[#1e293b] p-0.5 rounded-lg border-2 border-[#475569]">
-                        <button @click="setTask(1)" :class="currentTask === 1 ? 'bg-teal-600 text-white font-black shadow-md ring-1 ring-teal-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3 py-1 text-xs md:text-sm rounded-md transition-all flex items-center gap-1">
-                            <span>📘</span> 試題一
+                    <div class="flex bg-[#1e293b] p-1 rounded-xl border-2 border-[#475569]">
+                        <button @click="setTask(1)" :class="currentTask === 1 ? 'bg-teal-600 text-white font-black shadow-md ring-2 ring-teal-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                            <span class="text-base">📘</span> 試題一
                         </button>
-                        <button @click="setTask(2)" :class="currentTask === 2 ? 'bg-teal-600 text-white font-black shadow-md ring-1 ring-teal-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3 py-1 text-xs md:text-sm rounded-md transition-all flex items-center gap-1">
-                            <span>📙</span> 試題二
+                        <button @click="setTask(2)" :class="currentTask === 2 ? 'bg-teal-600 text-white font-black shadow-md ring-2 ring-teal-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                            <span class="text-base">📙</span> 試題二
                         </button>
                     </div>
 
                     <!-- 返回首頁按鈕 -->
-                    <a href="index.html" class="flex items-center gap-1 px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-lg text-xs md:text-sm transition-all shadow-md border-2 border-amber-300">
-                        <span>🏠</span> 首頁
+                    <a href="index.html" class="flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm md:text-base transition-all shadow-md border-2 border-amber-300">
+                        <span class="text-base">🏠</span> 首頁
                     </a>
                 </div>
             </div>
@@ -142,7 +142,7 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 題組選擇區塊 (按鈕內字體再加大 1 倍：text-2xl md:text-3xl 與 text-3xl md:text-4xl) -->
+            <!-- 題組選擇區塊 -->
             <div v-if="viewMode === 'logic'" class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-4 shadow-lg space-y-3 max-w-[1250px] mx-auto w-full">
                 <div class="flex items-center justify-between px-1">
                     <h3 class="text-amber-300 font-black text-base md:text-lg flex items-center gap-2 tracking-wide">
