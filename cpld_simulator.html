@@ -669,36 +669,6 @@
                 const allPinsLeft = ["Vcc", 4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 19, 20, 21, "GND"];
                 const allPinsRight = ["Vcc", 41, 40, 39, 37, 34, 33, 31, 29, 28, 27, 26, 25, 24, "GND"];
 
-                const setTask = (t) => {
-                    currentTask.value = t;
-                    selectedSet.value = 'A';
-                    currentSide.value = 'front';
-                    evalSubject.value = String(t);
-                };
-
-                const currentSetData = computed(() => taskData[currentTask.value].sets[selectedSet.value]);
-
-                const getPinY = (idx) => 70 + idx * 35;
-                const getResPoints = (x, y) => `${x},${y} ${x+10},${y} ${x+15},${y-6} ${x+22},${y+6} ${x+29},${y-6} ${x+36},${y+6} ${x+43},${y-6} ${x+50},${y+6} ${x+55},${y} ${x+65},${y}`;
-
-                const isSelected = (setKey, side, pin) => {
-                    const set = taskData[currentTask.value].sets[setKey];
-                    return side === 'left' ? set.left.pins.includes(pin) : set.right.pins.includes(pin);
-                };
-
-                const getSignalName = (setKey, side, pin) => {
-                    const set = taskData[currentTask.value].sets[setKey];
-                    if (side === 'left') {
-                        const idx = set.left.pins.indexOf(pin);
-                        return idx !== -1 ? set.left.signals[idx] : '';
-                    } else {
-                        const idx = set.right.pins.indexOf(pin);
-                        return idx !== -1 ? set.right.labels[idx] : '';
-                    }
-                };
-
-                const isSpec = (setKey, pin) => taskData[currentTask.value].specialPins[setKey]?.includes(pin);
-
                 const generatePDF = async () => {
                     const stStart = parseInt(stationStart.value);
                     const tNoStart = String(testNoStart.value).trim();
