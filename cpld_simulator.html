@@ -128,16 +128,19 @@
                 <!-- 頂部右側選單區 -->
                 <div class="flex flex-wrap items-center gap-3">
                     
-                    <!-- 導覽模式切換 (三合一：邏輯模擬 / 硬體布局 / 評審表設定) -->
+                    <!-- 導覽模式切換 (四合一：邏輯模擬 / 硬體布局 / 評審表設定 / 修訂對照表) -->
                     <div class="flex bg-[#1e293b] p-1 rounded-xl border-2 border-[#475569]">
-                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                        <button @click="viewMode = 'logic'" :class="viewMode === 'logic' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3.5 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
                             <span class="text-base md:text-lg">⚡</span> 腳位邏輯模擬
                         </button>
-                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                        <button @click="viewMode = 'layout'" :class="viewMode === 'layout' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3.5 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
                             <span class="text-base md:text-lg">📐</span> 硬體布局指引
                         </button>
-                        <button @click="viewMode = 'eval'" :class="viewMode === 'eval' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-4 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                        <button @click="viewMode = 'eval'" :class="viewMode === 'eval' ? 'bg-[#0284c7] text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-100 hover:text-white font-bold hover:bg-[#334155]'" class="px-3.5 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
                             <span class="text-base md:text-lg">📋</span> 評審表設定
+                        </button>
+                        <button @click="openRevisionModal()" :class="showRevisionModal ? 'bg-amber-500 text-slate-950 font-black shadow-md ring-2 ring-amber-300' : 'text-amber-300 hover:text-white font-bold hover:bg-[#334155]'" class="px-3.5 py-2 text-sm md:text-base rounded-lg transition-all flex items-center gap-1.5">
+                            <span class="text-base md:text-lg">📑</span> 修訂對照表
                         </button>
                     </div>
 
@@ -162,7 +165,7 @@
         <!-- 主內容區域 -->
         <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-4 space-y-3">
             
-            <!-- 官方測試參考資料檔案直接下載區 (可隱藏折疊) -->
+            <!-- 官方測試參考資料檔案直接下載與線上查閱區 (可隱藏折疊) -->
             <div class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl p-3.5 md:p-4 shadow-xl space-y-2.5">
                 
                 <!-- 可點擊折疊標題列 -->
@@ -170,7 +173,7 @@
                     <div class="flex items-center gap-2">
                         <span class="text-xl text-emerald-400">📥</span>
                         <h3 class="text-white font-black text-sm md:text-base tracking-wide flex items-center gap-1.5">
-                            勞動部技能檢定中心 官方測試參考資料（直接檔案下載）
+                            勞動部技能檢定中心 官方測試參考資料
                             <span class="text-amber-300 font-mono-custom text-xs bg-[#090d16] px-2 py-0.5 rounded border border-[#475569]">職類代號：11700 數位電子乙級</span>
                         </h3>
                     </div>
@@ -180,12 +183,12 @@
                             <span>↗</span>
                         </a>
                         <button type="button" class="text-xs font-black px-3 py-1 bg-[#090d16] text-amber-300 hover:text-amber-200 rounded-lg border border-[#475569] hover:bg-slate-800 transition-all flex items-center gap-1">
-                            <span>{{ showOfficialDownloads ? '▲ 隱藏下載' : '▼ 展開下載' }}</span>
+                            <span>{{ showOfficialDownloads ? '▲ 隱藏資料' : '▼ 展開資料' }}</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- 3 核心官方檔案直接下載按鈕組 (折疊區域) -->
+                <!-- 3 核心官方資料項目組 (折疊區域) -->
                 <div v-show="showOfficialDownloads" class="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-3 pt-1 fade-in">
                     
                     <!-- 1. 乙級 術科參考資料 (直接下載 117002B13.pdf) -->
@@ -220,21 +223,21 @@
                         </span>
                     </a>
 
-                    <!-- 3. 修訂對照表 (113/10/26 修訂) (直接下載 117002B21.pdf) -->
-                    <a href="117002B21.pdf" download="117002B21_乙級術科1131026修訂對照表.pdf" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-amber-500/80 hover:border-amber-400 rounded-xl transition-all group shadow-md">
+                    <!-- 3. 修訂對照表 (網頁化線上檢視 113/10/26 修訂) -->
+                    <button type="button" @click="openRevisionModal()" class="flex items-center justify-between p-3 bg-[#0f172a] hover:bg-[#334155] border-2 border-amber-500/80 hover:border-amber-400 rounded-xl transition-all group shadow-md text-left w-full">
                         <div class="flex items-center gap-2.5">
                             <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-400 text-amber-300 flex items-center justify-center text-lg font-bold group-hover:scale-105 transition-transform shrink-0">
                                 📝
                             </div>
                             <div>
                                 <h4 class="text-xs md:text-sm font-black text-white group-hover:text-amber-300 transition-colors">乙級 術科修訂對照表</h4>
-                                <p class="text-[11px] text-amber-300 font-extrabold">117002B21.pdf (113/10/26)</p>
+                                <p class="text-[11px] text-amber-300 font-extrabold">113/10/26 最新修訂（網頁化線上查閱）</p>
                             </div>
                         </div>
                         <span class="px-2.5 py-1 bg-amber-500 group-hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black shadow-sm flex items-center gap-1 shrink-0">
-                            <span>直接下載</span> 📥
+                            <span>線上查閱</span> 📖
                         </span>
-                    </a>
+                    </button>
 
                 </div>
                 
@@ -244,7 +247,9 @@
                         <span class="text-amber-300 font-bold">💡 113/10/26 修訂考場技巧：</span>
                         <span class="text-slate-200">測試前可用桌面上 <code class="text-sky-300 font-mono-custom bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">SKC_DEtest.pof</code> 燒錄測試 CPLD 各 I/O 腳位功能正常，並於 30 分鐘內確認耗材。</span>
                     </div>
-                    <span class="text-sky-400 font-mono-custom font-black shrink-0">規章第 3 頁修訂載明</span>
+                    <button @click="openRevisionModal()" class="text-sky-400 hover:text-sky-300 font-mono-custom font-black shrink-0 underline underline-offset-2">
+                        查看完整修訂對照表 ➔
+                    </button>
                 </div>
             </div>
 
@@ -675,10 +680,154 @@
             </div>
 
         </main>
+
+        <!-- ================= 113/10/26 修正對照表 網頁化線上檢視 Modal ================= -->
+        <div v-if="showRevisionModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/80 backdrop-blur-sm fade-in">
+            <div class="bg-[#0f172a] border-2 border-[#475569] rounded-2xl w-full max-w-[1500px] h-[90vh] max-h-[920px] flex flex-col shadow-2xl overflow-hidden">
+                
+                <!-- Modal Header -->
+                <div class="bg-[#090d16] border-b-2 border-[#475569] p-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-400/20 border-2 border-amber-400 text-amber-300 flex items-center justify-center text-xl font-black">
+                            📝
+                        </div>
+                        <div>
+                            <h2 class="text-lg md:text-xl font-black text-white flex items-center gap-2">
+                                數位電子乙級 術科測試應檢資料 修正對照表
+                                <span class="bg-amber-400 text-slate-950 text-xs px-2 py-0.5 rounded font-black">113.10.26 最新修訂</span>
+                            </h2>
+                            <p class="text-xs text-slate-300 font-bold">113.10.26 修正後內容 與 112.03.12 原內容 逐項條文對照與重要考點提醒</p>
+                        </div>
+                    </div>
+
+                    <!-- 搜尋框與關閉按鈕 -->
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:w-64">
+                            <input 
+                                type="text" 
+                                v-model="revisionSearch" 
+                                placeholder="🔍 搜尋條文關鍵字（如: 跳線, 扣分）..." 
+                                class="w-full bg-[#1e293b] border-2 border-[#475569] focus:border-amber-400 text-white rounded-xl px-3 py-1.5 text-xs outline-none font-bold"
+                            >
+                            <button v-if="revisionSearch" @click="revisionSearch = ''" class="absolute right-2.5 top-1.5 text-slate-400 hover:text-white text-xs font-black">✕</button>
+                        </div>
+                        <button @click="showRevisionModal = false" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-black text-xs md:text-sm border border-slate-600 transition-all shrink-0">
+                            ✕ 關閉視窗
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 章節分類 Filter Tabs -->
+                <div class="bg-[#1e293b] border-b border-[#475569] px-4 py-2 flex items-center gap-1.5 overflow-x-auto custom-scrollbar shrink-0">
+                    <button 
+                        @click="selectedRevisionCategory = '全部'"
+                        :class="selectedRevisionCategory === '全部' ? 'bg-amber-400 text-slate-950 font-black ring-2 ring-amber-300 shadow-md' : 'bg-[#090d16] text-slate-300 hover:text-white font-bold border border-[#475569]'"
+                        class="px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all"
+                    >
+                        全部章節 ({{ revisionDataList.length }})
+                    </button>
+                    <button 
+                        v-for="cat in revisionCategories"
+                        :key="cat"
+                        @click="selectedRevisionCategory = cat"
+                        :class="selectedRevisionCategory === cat ? 'bg-amber-400 text-slate-950 font-black ring-2 ring-amber-300 shadow-md' : 'bg-[#090d16] text-slate-300 hover:text-white font-bold border border-[#475569]'"
+                        class="px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-all"
+                    >
+                        {{ cat }}
+                    </button>
+                </div>
+
+                <!-- 對照表主體列表 -->
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 custom-scrollbar bg-[#090d16]/70">
+                    <div v-if="filteredRevisions.length === 0" class="text-center py-12 text-slate-400">
+                        <p class="text-3xl mb-2">🔍</p>
+                        <p class="font-black text-base">找不到符合「{{ revisionSearch }}」的修訂條文</p>
+                    </div>
+
+                    <div 
+                        v-for="item in filteredRevisions" 
+                        :key="item.id" 
+                        class="bg-[#1e293b] border-2 border-[#475569] rounded-2xl overflow-hidden shadow-xl space-y-3 p-4 md:p-5"
+                    >
+                        <!-- 卡片標題 -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#475569] pb-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="bg-sky-500/20 text-sky-300 border border-sky-400 px-2.5 py-0.5 rounded-lg text-xs font-black">
+                                    {{ item.chapter }} (P.{{ item.page }})
+                                </span>
+                                <h3 class="text-base md:text-lg font-black text-white">
+                                    {{ item.title }}
+                                </h3>
+                            </div>
+                            <span class="bg-amber-400/20 text-amber-300 border border-amber-400 px-2.5 py-0.5 rounded-lg text-xs font-mono-custom font-black">
+                                🔖 {{ item.tag }}
+                            </span>
+                        </div>
+
+                        <!-- 重點提要 Banner -->
+                        <div class="bg-[#090d16] p-3 rounded-xl border border-amber-500/30 text-xs md:text-sm text-amber-200 font-bold flex items-start gap-2">
+                            <span class="text-amber-400 shrink-0 text-base">💡</span>
+                            <div>
+                                <strong class="text-amber-300">修訂重點提示：</strong>
+                                {{ item.summary }}
+                            </div>
+                        </div>
+
+                        <!-- 左右對照 Grid -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 pt-1">
+                            
+                            <!-- 修正後內容 (113.10.26) -->
+                            <div class="bg-[#0f172a] rounded-xl border-2 border-emerald-500/70 p-4 space-y-2 shadow-inner">
+                                <div class="flex items-center justify-between border-b border-emerald-500/40 pb-2">
+                                    <span class="text-emerald-400 font-black text-xs md:text-sm flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+                                        修正後內容（113.10.26 最新版本）
+                                    </span>
+                                    <span class="bg-emerald-950 text-emerald-300 text-[11px] px-2 py-0.5 rounded border border-emerald-600 font-bold">現行標準</span>
+                                </div>
+                                <div class="text-xs md:text-sm text-slate-100 leading-relaxed space-y-1" v-html="item.revised"></div>
+                            </div>
+
+                            <!-- 原內容 (112.03.12) -->
+                            <div class="bg-[#0f172a]/60 rounded-xl border-2 border-slate-600 p-4 space-y-2 opacity-85 shadow-inner">
+                                <div class="flex items-center justify-between border-b border-slate-600 pb-2">
+                                    <span class="text-slate-400 font-black text-xs md:text-sm flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
+                                        原內容（112.03.12 舊版）
+                                    </span>
+                                    <span class="bg-slate-800 text-slate-400 text-[11px] px-2 py-0.5 rounded border border-slate-600 font-bold">歷史比對</span>
+                                </div>
+                                <div class="text-xs md:text-sm text-slate-300 leading-relaxed space-y-1" v-html="item.original"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="bg-[#090d16] border-t-2 border-[#475569] p-3 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span>📌 資料來源：勞動部勞動力發展署技能檢定中心 數位電子乙級技術士術科測試參考資料</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="117002B21.pdf" download="117002B21_乙級術科1131026修訂對照表.pdf" class="text-amber-300 hover:text-amber-200 underline flex items-center gap-1 font-black">
+                            <span>下載官方 PDF 原始檔備份 📥</span>
+                        </a>
+                        <button @click="showRevisionModal = false" class="px-4 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-xl font-black transition-all">
+                            關閉
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <script>
         const { createApp, ref, computed } = Vue;
+
+        const REVISION_DATA = [{"id": 1, "chapter": "壹、試題使用說明", "page": "1-2", "title": "六、試題抽題規定（抽題與崗位安排規則）", "tag": "抽題與崗位", "summary": "明確規範抽題現場設備、電腦抽籤操作介面、應檢人見證與崗位入座交錯規則（左、右不得為相同試題）。", "revised": "<b>六、 試題抽題規定：</b><br>\n(一) 由監評人員主持公開抽題（無監評人員親自在場主持抽題時，該場次之測試無效），術科抽題現場應準備電腦及印表機相關設備各1 套，每一場次術科測試均應包含試題所列2 題，術科測試辦理單位之試務人員依應檢人數準備試題套數，並事先將2 題試題交錯置於崗位上（<span class=\"text-amber-300 font-bold\">左、右不得為相同試題，且每題均應平均使用</span>），應依時間配當表辦理抽題，並將電腦設置到抽題操作介面，會同監評人員、代表抽籤之應檢人及其第2 順位編號應檢人為見證，全程參與抽題，處理電腦操作及列印簽名事項。應檢人依抽題結果進行測試，遲到者或缺席者不得有異議。<br><br>\n(二) 籤條項目分3 次抽選：<br>\n1. <b>抽試題編號：</b>測試當場由已報到術科測試編號最小號之應檢人為代表抽籤，抽出其中1 題試題應試，並依該試題所對應之崗位順序入座，其餘應檢人則依術科測試編號之順序（含遲到及缺考）接續依各該崗位所對應之試題進行測試（例如：奇數崗位為試題一，偶數崗位為試題二，代表抽籤之應檢人抽到試題二，即入座第2 崗位；次號入座第3 崗位，餘依此類推）。<br>\n2. <b>抽子板CPLD 指定接腳：</b>由A－E 共5 種組合抽1 組測試，當場次應檢人測試同一組；非指定接腳由應檢人自行規劃。<br>\n3. <b>抽七段顯示器顯示內容：</b>由J－N 共5 種組合抽1 組測試，當場次應檢人測試同一組。", "original": "<b>六、 試題抽題規定：</b><br>\n(一) 由監評人員主持公開抽題（無監評人員親自在場主持抽題時，該場次之測試無效），術科測試現場應準備電腦及印表機相關設備各1 套，術科測試辦理單位之試務人員依應檢人數設定試題套數並事先排定於工作崗位上（每題均應平均使用），依時間配當表辦理抽題，將電腦設置到抽題操作介面，會同監評人員、應檢人，全程參與抽題，處理電腦操作及列印簽證（測試列印用紙監評人員需事先簽證，若有列印失誤，應檢人需拿原先列印失誤者更換列印用紙）事項。應檢人依抽題結果進行測試，遲到者或缺席者不得有異議。<br><br>\n(二) 每一場次術科測試均應包含所列試題2 題，測試當場由該場次術科測試編號最小號應檢人為代表抽籤（遲到者，依順序遞補術科測試編號最小號應檢人代表抽籤），籤條項目分3 次抽選：<br>\n1. 抽試題編號：抽籤代表人抽出其中1 題試題應試（術科測試編號最小號應檢人依抽定試題的第一個崗位入座），其餘應檢人則依術科測試編號之順序（含遲到及缺考）接續依各崗位所對應之試題編號進行測試。<br>\n2. 抽子板指定接腳：由A – E 共5 種組合抽1 組測試；非指定接腳由應檢人自行規劃。<br>\n3. 抽七段顯示器顯示內容：由J – N 共5 種組合抽1 組測試。"}, {"id": 2, "chapter": "貳、應檢人須知", "page": "4-6", "title": "一、檢定內容與二、注意事項（考場紀律、設備檢查與SKC_DEtest測試檔）", "tag": "考場須知與SKC_DEtest", "summary": "新增 30 分鐘內清點耗材設備、使用桌面 SKC_DEtest.pof 驗證 CPLD 功能、列印用紙失誤更換扣分規定及作業規則扣考條款。", "revised": "<b>一、 檢定內容：</b><br>\n測試時間為 6 小時（含檢查材料時間）。完成電路圖、零件佈置圖、佈線圖及晶片電路設計（應檢人於測試中，應隨時存檔，以為備用）。<br><br>\n<b>二、 重點注意事項修正：</b><br>\n(七) 測試列印用紙 2 張、CPLD 零件及二片電路板等均應有監評人員簽證，方為有效。另應檢人若將監評人員簽證之列印用紙列印失誤（正、反面均可列印），請向監評人員更換，並按評審表規定扣分。<br>\n(八) <span class=\"text-amber-300 font-bold\">術科測試辦理單位準備 CPLD 測試板，可利用電腦桌面上 CPLD I/O 接腳測試板之燒錄檔（SKC_DEtest.pof）確認取得 CPLD 各 I/O 接腳功能正常。</span><br>\n(十三) 應檢人若故意損壞機具、設備，除應負賠償責任外，應予以扣考，不得繼續應檢，其術科測試成績以不及格論。<br>\n(十四) 通電檢驗若發生短路現象（如無熔絲開關跳脫或插座保險絲熔斷者），即應停止測試，不得重修，應予以扣考。<br>\n(十七) <span class=\"text-amber-300 font-bold\">在測試開始 30 分鐘內應自行檢查及清點器具、設備、材料，如有毀損、不良及短缺者，應立即提出更換或補發</span>，並由監評人員立即處理，測試開始 30 分鐘後，不得再提出疑義。另機具設備因應檢人操作疏失致故障者，應檢人須自行排除，不另加給測試時間。<br>\n(二十) 應檢人於術科測試結束或提前棄權離場時，應將試題、評審表、成品、工件及未用完之測試材料等繳交監評人員。未能於規定時間內完成者或提前棄權離場者需於術科測試評審表之不予評分項目欄位內簽名及填寫離場時間。繳件出場後，不得再進場。", "original": "<b>一、 檢定內容：</b><br>\n(一) 原規定於資料夾命名寫在應檢人須知中（後移至各試題動作要求）。<br><br>\n<b>二、 舊版注意事項：</b><br>\n(四) 測試列印用紙、CPLD 零件及二片電路板等均應有監評人員簽證。<br>\n(五) 術科測試辦理單位準備 CPLD 測試板，可利用電腦桌面上 SKC_DEtest.pof 確認 CPLD 功能。<br>\n(十三) 舊版僅簡述 30 分鐘內檢查清點，未詳細載明操作疏失故障自行排除且不另加給時間之規定。<br>\n(十六) 應檢人於術科測試結束後，應將成品、圖件及未用完之測試材料等繳交監評人員。中途離場者亦同。"}, {"id": 3, "chapter": "參、工作規則", "page": "9", "title": "一、電腦製圖規則（項次重新整理與圖框設定）", "tag": "電腦製圖規則", "summary": "將「未依規定建立資料夾」移至試題動作要求中，電腦製圖規則精簡為 5 大項次，並強化圖框 Title: 測試編號-崗位編號 與 Date 設定要求。", "revised": "<b>一、 電腦製圖規則（修正後 5 項）：</b><br>\n1. 零件佈置圖與佈線圖（需存成 PDF 檔供監評人員檢核），列印應以原尺寸（1：1）列印，否則不予評分。（符號：✕）<br>\n2. 零件佈置應平均分佈於電路板上，零件之外緣不得超出母板，否則不予評分。（符號：✕）<br>\n3. <span class=\"text-amber-300 font-bold\">零件佈置圖與佈線圖右下角的繪製者資訊需設定，包含術科測試編號-崗位編號（標註於圖框的 Title）、測試日期（標註於圖框的 Date），不完整每項扣 10 分。</span>（符號：☆）<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<i>範例：Title 填寫 <code>12345678-12</code>、Date 填寫 <code>2026-10-26</code></i><br>\n4. 零件代號標示應與母板材料表之編號相符。（符號：○）<br>\n5. 佈線圖中之佈線應與圖邊緣成水平或垂直，折角應 90 度或 135 度。（符號：○）", "original": "<b>一、 電腦製圖規則（原 6 項）：</b><br>\n1. 零件佈置圖與佈線圖（需存成 PDF 檔供監評人員檢核），列印應以原尺寸（1：1）列印，否則不予評分。<br>\n2. 零件佈置應平均分佈於電路板上，零件之外緣不得超出母板，否則不予評分。<br>\n3. <span class=\"line-through text-slate-400\">未依規定建立資料夾，每項扣 10 分。</span>（舊版列於製圖規則第3項）<br>\n4. 零件佈置圖與佈線圖右下角繪製者資訊設定...不完整每項扣 10 分。<br>\n5. 零件代號標示應與母板材料表之編號相符。<br>\n6. 佈線圖中之佈線應與圖邊緣成水平或垂直，折角應 90 度或 135 度。"}, {"id": 4, "chapter": "參、工作規則", "page": "11", "title": "三、裝配規則（新增跳線直線拉線與電阻方向基準）", "tag": "裝配規則與跳線", "summary": "【極重要新規】第 3 項新增「電路連接所需之跳線需使用 2 點間直線拉線」；第 5 項明確電阻安裝方向以顯示器顯示方向為基準，鍵盤數目字方向亦同；母板銅柱明確納入組裝要求。", "revised": "<b>三、 裝配規則（修正後重點）：</b><br>\n1. 電路連接所需之跳線長短可自行剪裁，但應裝置於電路板零件面，銅箔面不得使用跳線或零件，零件面可使用跳線但不得跨過零件或其他跳線，電路板兩面不得用導線繞過板外緣連接，否則不予評分。（符號：✕）<br>\n2. 萬用板上零件安裝之位置需與繪製之「零件佈置圖」相同。（符號：✕）<br>\n3. <span class=\"text-emerald-300 font-bold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500\">【新增第3項 ☆】電路連接所需之跳線需使用 2 點間直線拉線。</span><br>\n4. 萬用板成品需與 PCB 佈線圖完全相同，兩者不一致時每條接線（元件接腳與接腳間的接線）扣 2 分。（符號：○）<br>\n5. <span class=\"text-amber-300 font-bold\">電阻器安裝於電路板時，色碼之讀法必須由左而右，由上而下方一致，<u>以顯示器顯示方向為基準，鍵盤數目字方向亦同</u>。</span>（符號：○）<br>\n6. 被動零件裝配應與電路板密貼，電晶體需與電路板留有 3-5mm 之高度。（符號：○）<br>\n7. IC、鍵盤、石英振盪器及七段顯示器均需使用腳座，不可直接焊於電路板上，腳座應與電路板密貼。（符號：○）<br>\n8. 零件接腳彎曲後不得延伸至銅箔圓點邊緣外。（符號：○）<br>\n9. <span class=\"text-sky-300 font-bold\">母電路板的塑膠（銅）柱應完成組裝。</span>（符號：○）", "original": "<b>三、 裝配規則（原內容）：</b><br>\n1. 電路連接所需之跳線長短可自行剪裁...<br>\n2. 萬用板上零件安裝之位置需與繪製之「零件佈置圖」相同。<br>\n3. <span class=\"text-slate-400\">（舊版無「2點間直線拉線」條款）</span>萬用板成品需與 PCB 佈線圖完全相同...扣2分。<br>\n4. 電阻器安裝於電路板時，色碼之讀法必須由左而右，由上而下方一致。<br>\n5. 被動零件裝配應與電路板密貼，電晶體需與電路板留有 3-5mm 之高度。<br>\n6. IC、鍵盤、石英振盪器及七段顯示器均需使用腳座...<br>\n7. 零件接腳彎曲後不得延伸至銅箔圓點邊緣外。<br>\n8. 母電路板的塑膠銅柱應完成組裝。"}, {"id": 5, "chapter": "肆、自備工具表", "page": "12", "title": "應檢人自備工具表（規格紅字細緻化標註）", "tag": "自備工具表", "summary": "尖嘴鉗/斜口鉗明確標註為 6\" 電子用；電烙鐵明確標註 30W 含烙鐵架及海綿；備註欄標明數量得視個人需要增加。", "revised": "<b>應檢人自備工具表（113.10.26 規格修正）：</b><br>\n• 項次 3：尖嘴鉗 — <span class=\"text-amber-300 font-bold\">6\" 電子用</span> (支 / 1)<br>\n• 項次 4：斜口鉗 — <span class=\"text-amber-300 font-bold\">6\" 電子用</span> (支 / 1)<br>\n• 項次 7：電烙鐵 — <span class=\"text-amber-300 font-bold\">30W</span> 含烙鐵架及海綿 (套 / 1)<br>\n• 備註欄註記：<span class=\"text-sky-300 font-bold\">數量得視個人需要增加</span>（項次 1~9 皆適用）", "original": "<b>應檢人自備工具表（原內容）：</b><br>\n• 項次 3：尖嘴鉗 — 電子用 (支 / 1)<br>\n• 項次 4：斜口鉗 — 電子用 (支 / 1)<br>\n• 項次 7：電烙鐵 — 含烙鐵架及海綿 (套 / 1)<br>\n• 備註欄空白。"}, {"id": 6, "chapter": "伍、試題一 (110201)", "page": "14-16", "title": "試題一動作要求、七段字型呈現與子板電路圖修正", "tag": "試題一動作與電路圖", "summary": "明定資料夾建立於 D 槽（崗位編號_Layout 與 崗位編號_CPLD，否則每項扣10分）；新增 0~9 七段顯示器標準字型；修正子電路板圖 P14 引腳標示為 I/O（修正舊版 IO 誤植）。", "revised": "<b>試題一動作要求與圖表（修正後）：</b><br>\n1. <b>資料夾建立規定：</b><br>\n&nbsp;&nbsp;&nbsp;&nbsp;應檢人應於資料碟（如 D 槽）中，建立兩個資料夾，否則每項扣 10 分：<br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 第一個資料夾名稱為：<code>崗位編號_Layout</code>，放置電路圖與佈線圖設計專案。<br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 第二個資料夾名稱為：<code>崗位編號_CPLD</code>，放置 CPLD 電路設計專案。<br>\n2. <b>七段顯示器標準字型呈現：</b>新增 <code>0 1 2 3 4 5 6 7 8 9</code> 完整七段標準字型對照圖。<br>\n3. <b>扣分標準明確：</b>四位數七段顯示器同一節段在 4 位數都不正確扣 25 分；不同位數不同段每字扣 25 分；一個錯誤僅扣一次不重複扣分。<br>\n4. <b>子電路板電路圖修正：</b>U1 (EPM3064A) 之 Pin 14 標示修正為標準 <code>I/O</code>（原誤植為 IO），標題明確標註為「試題一：四位數顯示裝置」。", "original": "<b>試題一動作要求與圖表（原內容）：</b><br>\n1. 舊版動作要求僅列出 LED1 亮燈扣5分、未依抽定子板接腳少一腳扣10分（資料夾規定原放在工作規則）。<br>\n2. 舊版無 0~9 七段字型標準範例圖。<br>\n3. 子電路板圖中 Pin 14 誤植為 <span class=\"line-through text-red-400\">IO</span>，標題原誤植為「鍵盤輸入顯示裝置」。"}, {"id": 7, "chapter": "伍、試題二 (110202)", "page": "22-23", "title": "試題二動作要求、按鍵栓鎖與 0~9,*,# 七段字型呈現", "tag": "試題二動作與字型", "summary": "明定 D 槽雙資料夾規範；明確載明「鍵盤每一個數字符號應顯示並栓鎖於七段顯示器，若未能栓鎖則扣 25 分」；載明 0~9,*,# 七段標準字型圖。", "revised": "<b>試題二動作要求與字型（修正後）：</b><br>\n1. <b>資料夾建立規定：</b>應於資料碟（如 D 槽）中建立 <code>崗位編號_Layout</code> 與 <code>崗位編號_CPLD</code> 兩個資料夾，否則每項扣 10 分。<br>\n2. <b>鍵盤輸入與栓鎖評分要求：</b><br>\n&nbsp;&nbsp;&nbsp;&nbsp;按下鍵盤，七段顯示器應出現對應之數字符號並須栓鎖於顯示器上，其中“＊”及“＃”顯示內容為由當日抽籤指定（J~N組）。<br>\n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"text-amber-300 font-bold\">鍵盤每一個數字符號應顯示並栓鎖於七段顯示器，若未能栓鎖則扣 25 分。</span><br>\n&nbsp;&nbsp;&nbsp;&nbsp;同一個節段內容顯示不正確，則每一節段扣 25 分；不同數字符號不同段顯示不正確，則每字扣 25 分。<br>\n3. <b>字型呈現：</b>列出 <code>0 1 2 3 4 5 6 7 8 9 * #</code> 標準七段字型對照圖。", "original": "<b>試題二動作要求與字型（原內容）：</b><br>\n1. 舊版資料夾規定未放在動作要求。<br>\n2. 舊版條文漏列「若未能栓鎖則扣 25 分」之精確罰則文字，修正後正式補齊。<br>\n3. 七段字型呈現格式調整。"}, {"id": 8, "chapter": "陸、評審表 & 柒、時間配當表", "page": "30-31", "title": "評審表扣分項目對齊、紅字註記與時間配當表", "tag": "評審表與時間配當", "summary": "評審表電腦製圖扣分項次改為「第3項規定(10分)」與「第4、5項規定(2分)」；裝配規則改為「第3項規定(10分)」與「第4~9項規定(2分)」；時間配當表載明上午測試含「測試開始 30 分鐘內檢查材料等時間」。", "revised": "<b>評審表與時間配當表修正重點：</b><br>\n1. <b>評審表扣分依據調整：</b><br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 電腦製圖：1.依照「電腦製圖規則」第3項規定（扣10分）；2.依照第4、5項規定（扣2分）。最高扣20分。<br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 裝配規則：1.依照「裝配規則」第3項規定（扣10分）；2.依照第4~9項規定（扣2分）。最高扣20分。<br>\n&nbsp;&nbsp;&nbsp;&nbsp;• <span class=\"text-red-400 font-bold\">紅字重要備註：</span>實扣分數不得超過該大項最高扣分；應檢人若因各項扣分時，應於扣分備註欄註記原因；有塗改處應由塗改人員於塗改處簽全名。<br>\n2. <b>時間配當表修訂：</b><br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 上午測試 09:00－12:00（特別加註：<span class=\"text-amber-300 font-bold\">含測試開始 30 分鐘內檢查材料等時間</span>）。<br>\n&nbsp;&nbsp;&nbsp;&nbsp;• 下午 16:00－17:00 載明：監評人員進行評分、成績統計、登錄、檢核及彌封等作業。", "original": "<b>評審表與時間配當表原內容：</b><br>\n1. 舊版評審表電腦製圖扣分項次寫「第3、4項」與「第5、6項」；裝配規則寫「第3~8項」。<br>\n2. 舊版備註無紅字強調塗改簽全名與最高扣分上限提醒。<br>\n3. 舊版時間配當表上午測試未加註 30 分鐘檢查材料說明。"}];
 
         createApp({
             setup() {
@@ -691,6 +840,38 @@
                 const showAhdl = ref(true); 
                 const showOfficialDownloads = ref(true);
                 const selectedKeypad = ref(null);
+
+                // 修訂對照表 state
+                const showRevisionModal = ref(false);
+                const revisionSearch = ref('');
+                const selectedRevisionCategory = ref('全部');
+                const revisionDataList = ref(REVISION_DATA);
+
+                const revisionCategories = [
+                    '壹、試題使用說明',
+                    '貳、應檢人須知',
+                    '參、工作規則',
+                    '肆、自備工具表',
+                    '伍、試題一 (110201)',
+                    '伍、試題二 (110202)',
+                    '陸、評審表 & 柒、時間配當表'
+                ];
+
+                const filteredRevisions = computed(() => {
+                    return revisionDataList.value.filter(item => {
+                        const matchCat = selectedRevisionCategory.value === '全部' || item.chapter.includes(selectedRevisionCategory.value) || selectedRevisionCategory.value.includes(item.chapter);
+                        const matchSearch = !revisionSearch.value || 
+                            item.title.toLowerCase().includes(revisionSearch.value.toLowerCase()) ||
+                            item.summary.toLowerCase().includes(revisionSearch.value.toLowerCase()) ||
+                            item.revised.toLowerCase().includes(revisionSearch.value.toLowerCase()) ||
+                            item.tag.toLowerCase().includes(revisionSearch.value.toLowerCase());
+                        return matchCat && matchSearch;
+                    });
+                });
+
+                const openRevisionModal = () => {
+                    showRevisionModal.value = true;
+                };
 
                 // 評審表設定 state
                 const evalSubject = ref('1');
@@ -1009,6 +1190,7 @@
                     currentTask, viewMode, currentSide, selectedSet, sets, taskData, layoutConfig,
                     j2Headers, j3Headers, allPinsLeft, allPinsRight, showCircuit, showAhdl, showOfficialDownloads,
                     selectedKeypad, evalSignerName, copyQSF,
+                    showRevisionModal, revisionSearch, selectedRevisionCategory, revisionCategories, revisionDataList, filteredRevisions, openRevisionModal,
                     setTask, currentSetData, getPinY, getResPoints, isSelected, getSignalName, isSpec, goHome,
                     evalSubject, evalCpld, evalDisplay, stationStart, testNoStart, candidateCount, isGeneratingPdf, generatePDF
                 };
