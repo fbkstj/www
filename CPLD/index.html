@@ -1,237 +1,986 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>數位乙級 CPLD Quartus 操作教學</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0f1117;--sf:#1a1d27;--sf2:#22263a;--bd:#2e3350;--a1:#6c63ff;--a2:#00d4aa;--tx:#e8eaf0;--mu:#8b92a8;}
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
-    header{background:linear-gradient(135deg,#1a1d27,#12152a);border-bottom:1px solid var(--bd);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
-    .logo{display:flex;align-items:center;gap:12px;}
-    .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#6c63ff,#00d4aa);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-    .logo-text{font-size:1.1rem;font-weight:700;}
-    .logo-sub{font-size:.72rem;color:var(--mu);margin-top:2px;}
-    .back-btn{color:var(--mu);text-decoration:none;font-size:.9rem;font-weight:500;padding:8px 14px;border-radius:8px;border:1px solid var(--bd);transition:all .2s;}
-    .back-btn:hover{color:var(--tx);background:var(--sf2);border-color:var(--a1);}
-    .hero{background:linear-gradient(160deg,#12152a,#1a1d27,#0f1117);padding:60px 2rem 50px;text-align:center;position:relative;overflow:hidden;}
-    .hero::before{content:"";position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(108,99,255,.12),transparent 70%);pointer-events:none;}
-    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4);color:#a89fff;border-radius:50px;padding:5px 14px;font-size:.8rem;font-weight:600;margin-bottom:20px;}
-    .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;background:linear-gradient(135deg,#fff 30%,#a89fff 70%,#00d4aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:16px;}
-    .hero p{color:var(--mu);font-size:1rem;max-width:560px;margin:0 auto 32px;line-height:1.7;}
-    .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;}
-    .stat-num{font-size:1.6rem;font-weight:900;color:var(--a2);text-align:center;}
-    .stat-lbl{font-size:.75rem;color:var(--mu);margin-top:2px;text-align:center;}
-    .nav-tabs{display:flex;justify-content:center;gap:12px;padding:28px 2rem 0;border-bottom:1px solid var(--bd);}
-    .tab-btn{padding:10px 28px;border:none;cursor:pointer;background:transparent;color:var(--mu);font-size:1rem;font-weight:600;font-family:inherit;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .2s;display:flex;align-items:center;gap:8px;}
-    .tab-btn:hover{color:var(--tx);}
-    .tab-btn.active{color:var(--a1);border-bottom-color:var(--a1);}
-    .tab-indicator{font-size:.72rem;background:var(--a1);color:#fff;border-radius:50px;padding:2px 8px;font-weight:700;}
-    .tab-indicator2{background:var(--a2);color:#0f1117;}
-    main{max-width:1100px;margin:0 auto;padding:40px 2rem 80px;}
-    .topic-section{display:none;}
-    .topic-section.active{display:block;}
-    .section-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;}
-    .section-num{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;flex-shrink:0;}
-    .section-title{font-size:1.5rem;font-weight:800;}
-    .section-sub{color:var(--mu);font-size:.88rem;margin-top:4px;}
-    .video-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:28px;box-shadow:0 8px 32px rgba(0,0,0,.4);}
-    .video-card-header{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;}
-    .video-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-    .video-card-title{font-weight:700;font-size:1rem;}
-    .video-card-meta{color:var(--mu);font-size:.8rem;margin-top:2px;}
-    video{width:100%;display:block;background:#000;max-height:520px;}
-    .video-footer{padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-    .tag{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:50px;}
-    .tag-purple{background:rgba(108,99,255,.15);color:#a89fff;border:1px solid rgba(108,99,255,.3);}
-    .tag-green{background:rgba(0,212,170,.12);color:#00d4aa;border:1px solid rgba(0,212,170,.3);}
-    .tag-yellow{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3);}
-    .diagram-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:28px;}
-    .diagram-card-header{padding:14px 20px;border-bottom:1px solid var(--bd);font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:8px;}
-    .diagram-card img{width:100%;display:block;background:#fff;cursor:zoom-in;transition:transform .2s;}
-    .diagram-card img:hover{transform:scale(1.01);}
-    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:28px;}
-    .info-item{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;}
-    .info-item-label{font-size:.75rem;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-    .info-item-value{font-size:.95rem;font-weight:700;color:var(--tx);line-height:1.5;}
-    .component-list{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:20px 24px;margin-bottom:28px;}
-    .component-list h3{font-size:.95rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-    .component-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;}
-    .component-chip{display:flex;align-items:center;gap:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:.85rem;font-weight:500;}
-    .chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    .lecture-bar{background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(0,212,170,.08));border:1px solid var(--bd);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;}
-    .lecture-info h4{font-size:1rem;font-weight:700;}
-    .lecture-info p{color:var(--mu);font-size:.83rem;margin-top:4px;}
-    .lecture-btn{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;padding:10px 22px;border-radius:10px;font-weight:700;font-size:.9rem;transition:all .2s;}
-    .lecture-btn:hover{transform:translateY(-2px);}
-    .lecture-btn-1{background:linear-gradient(135deg,#6c63ff,#9c89ff);box-shadow:0 4px 16px rgba(108,99,255,.3);}
-    .lecture-btn-2{background:linear-gradient(135deg,#00d4aa,#00b48a);box-shadow:0 4px 16px rgba(0,212,170,.3);}
-    footer{text-align:center;padding:28px;border-top:1px solid var(--bd);color:var(--mu);font-size:.82rem;}
-    .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;padding:20px;}
-    .lightbox.open{display:flex;}
-    .lightbox img{max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;}
-    .lightbox-close{position:absolute;top:20px;right:24px;font-size:2rem;color:#fff;cursor:pointer;background:none;border:none;line-height:1;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quartus MegaWizard 精靈與 AHDL 電路設計教學系統 | 數位電子乙級</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700;900&family=Noto+Sans+TC:wght@500;700;900&family=JetBrains+Mono:wght@600;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --panel-bg: #111827;
+            --card-bg: #1f2937;
+            --accent-sky: #38bdf8;
+            --accent-amber: #facc15;
+            --accent-emerald: #34d399;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-main);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .font-mono-custom {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        .fade-in { animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* AHDL Code Highlight */
+        .ahdl-code {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: 2px solid #374151;
+        }
+        .ahdl-kw { color: #38bdf8; font-weight: 900; }
+        .ahdl-cmt { color: #10b981; font-style: italic; font-weight: 700; }
+        .ahdl-str { color: #facc15; font-weight: 900; }
+        .ahdl-hl { background-color: rgba(250, 204, 21, 0.22); border-left: 4px solid #facc15; padding-left: 8px; }
+
+        .seven-seg-box {
+            position: relative;
+            width: 54px;
+            height: 78px;
+            background: #030712;
+            border-radius: 8px;
+            border: 1px solid #374151;
+        }
+        .seg-seg {
+            position: absolute;
+            background: #1f2937;
+            border-radius: 3px;
+            transition: background-color 0.15s ease;
+        }
+        .seg-seg.active {
+            background: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.85);
+        }
+        .seg-a { top: 5px; left: 10px; right: 10px; height: 6px; }
+        .seg-b { top: 9px; right: 5px; width: 6px; height: 27px; }
+        .seg-c { top: 41px; right: 5px; width: 6px; height: 27px; }
+        .seg-d { bottom: 5px; left: 10px; right: 10px; height: 6px; }
+        .seg-e { top: 41px; left: 5px; width: 6px; height: 27px; }
+        .seg-f { top: 9px; left: 5px; width: 6px; height: 27px; }
+        .seg-g { top: 35px; left: 10px; right: 10px; height: 6px; }
+    </style>
 </head>
-<body>
-<header>
-  <div class="logo">
-    <div class="logo-icon">⚡</div>
-    <div><div class="logo-text">CPLD Quartus 教學</div><div class="logo-sub">數位電子乙級技術士</div></div>
-  </div>
-  <a href="../index.html" class="back-btn">← 返回首頁</a>
-</header>
-<div class="hero">
-  <div class="hero-badge">🎓 114年 數位乙級檢定</div>
-  <h1>Quartus MegaWizard<br>精靈 CPLD 實作教學</h1>
-  <p>使用 Altera Quartus II MegaWizard Plug-In Manager 精靈元件，快速完成數位乙級第一題與第二題的 CPLD 電路設計與 PCB 佈線。</p>
-  <div class="hero-stats">
-    <div><div class="stat-num">2</div><div class="stat-lbl">題組教學</div></div>
-    <div><div class="stat-num">2</div><div class="stat-lbl">操作影片</div></div>
-    <div><div class="stat-num">11</div><div class="stat-lbl">講義頁面</div></div>
-    <div><div class="stat-num">AHDL</div><div class="stat-lbl">設計語言</div></div>
-  </div>
-</div>
-<div class="nav-tabs">
-  <button class="tab-btn active" onclick="switchTab(1)" id="tab1">🔷 第一題 <span class="tab-indicator">B組</span></button>
-  <button class="tab-btn" onclick="switchTab(2)" id="tab2">🟢 第二題 <span class="tab-indicator tab-indicator2">E組</span></button>
-</div>
-<main>
-  <!-- 第一題 -->
-  <div class="topic-section active" id="section1">
-    <div class="section-header">
-      <div class="section-num" style="background:linear-gradient(135deg,#6c63ff,#9c89ff);">①</div>
-      <div>
-        <div class="section-title">第一題：七段顯示器循環計數（B組）</div>
-        <div class="section-sub">計數器除頻 ／ 2TO4 解碼器 ／ MUX4TO1 多工器 ／ 8bit 陣列輸出</div>
-      </div>
-    </div>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-item-label">📋 題目分組</div><div class="info-item-value">114年數位乙級 — B 組</div></div>
-      <div class="info-item"><div class="info-item-label">🔧 設計工具</div><div class="info-item-value">Quartus II + MegaWizard 精靈</div></div>
-      <div class="info-item"><div class="info-item-label">📡 輸出腳位</div><div class="info-item-value">D0~D3（PIN 4~8）DSS[7..0]（PIN 9~31）</div></div>
-      <div class="info-item"><div class="info-item-label">⏱️ 時脈設定</div><div class="info-item-value">CLK → 4MHz ÷ 2¹² = 1KHz</div></div>
-    </div>
-    <div class="component-list">
-      <h3>🧩 使用的 MegaWizard 精靈元件</h3>
-      <div class="component-grid">
-        <div class="component-chip"><div class="chip-dot" style="background:#6c63ff;"></div>Up Counter（上數計數器）</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#00d4aa;"></div>2TO4 解碼器</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#fbbf24;"></div>MUX4TO1 多工器</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#ff6b6b;"></div>8bit 常數 LPM_CONSTANT</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#a89fff;"></div>INPUT（PIN_43 CLK）</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#60efbc;"></div>OUTPUT（D0~D3, DSS）</div>
-      </div>
-    </div>
-    <div class="diagram-card">
-      <div class="diagram-card-header">🖼️ CPLD 電路方塊圖（第一題）<span style="color:var(--mu);font-size:.8rem;font-weight:400;margin-left:8px;">點擊可放大</span></div>
-      <img src="數乙第一題CPLD.png" alt="第一題 CPLD 電路圖" onclick="openLightbox(this.src)" title="點擊放大">
-    </div>
-    <div class="video-card">
-      <div class="video-card-header">
-        <div class="video-icon" style="background:rgba(108,99,255,.2);">▶</div>
-        <div>
-          <div class="video-card-title">📹 操作示範影片 — 第一題 PCB 佈線（B組）</div>
-          <div class="video-card-meta">114年數位乙級檢定 · 精靈繪圖設計 + PCB 完整流程</div>
+<body class="min-h-screen bg-[#090d16] text-slate-100 flex flex-col">
+    <div id="app" class="flex flex-col min-h-screen">
+
+        <!-- 頂部 Header -->
+        <header class="bg-[#0f172a] border-b-2 border-[#334155] sticky top-0 z-50 shadow-2xl px-4 md:px-6 py-3">
+            <div class="max-w-[1850px] mx-auto flex flex-wrap items-center justify-between gap-3">
+                
+                <!-- Logo & 標題 -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 border border-sky-400 text-white flex items-center justify-center text-2xl font-black shadow-lg">
+                        ⚡
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2.5">
+                            <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">Quartus MegaWizard 精靈電路設計</h1>
+                            <span class="px-2.5 py-0.5 bg-sky-950 text-sky-300 border border-sky-500/60 rounded-lg text-xs font-mono-custom font-black">
+                                EPM3064 CPLD
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-300 font-bold mt-0.5">數位電子乙級技術士 · MegaWizard 精靈與 AHDL 邏輯電路實作</p>
+                    </div>
+                </div>
+
+                <!-- 導覽切換按鈕區 -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    
+                    <!-- 4 大模式切換選單 -->
+                    <div class="flex bg-[#1e293b] p-1 rounded-xl border border-slate-700">
+                        <button 
+                            @click="activeTab = 'task1'" 
+                            :class="activeTab === 'task1' ? 'bg-sky-600 text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-300 hover:text-white font-bold hover:bg-slate-700'"
+                            class="px-3.5 py-2 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5"
+                        >
+                            <span>📘</span> 試題一：四位數顯示
+                        </button>
+                        <button 
+                            @click="activeTab = 'task2'" 
+                            :class="activeTab === 'task2' ? 'bg-sky-600 text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-300 hover:text-white font-bold hover:bg-slate-700'"
+                            class="px-3.5 py-2 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5"
+                        >
+                            <span>📙</span> 試題二：鍵盤與AHDL
+                        </button>
+                        <button 
+                            @click="activeTab = 'components'" 
+                            :class="activeTab === 'components' ? 'bg-sky-600 text-white font-black shadow-md ring-2 ring-sky-300' : 'text-slate-300 hover:text-white font-bold hover:bg-slate-700'"
+                            class="px-3.5 py-2 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5"
+                        >
+                            <span>🧩</span> 6大精靈元件庫
+                        </button>
+                        <button 
+                            @click="activeTab = 'slides'" 
+                            :class="activeTab === 'slides' ? 'bg-amber-500 text-slate-950 font-black shadow-md ring-2 ring-amber-300' : 'text-amber-300 hover:text-white font-bold hover:bg-slate-700'"
+                            class="px-3.5 py-2 text-xs md:text-sm rounded-lg transition-all flex items-center gap-1.5"
+                        >
+                            <span>📖</span> 簡老師 11 頁講義
+                        </button>
+                    </div>
+
+                    <!-- 串聯 CPLD 模擬系統 -->
+                    <a href="../cpld_simulator.html" class="flex items-center gap-1 px-3.5 py-2 bg-[#1e293b] hover:bg-slate-700 text-teal-300 font-black rounded-xl text-xs md:text-sm border border-teal-500/60 transition-all shadow-md">
+                        <span>📊</span> 腳位佈局模擬器 ➔
+                    </a>
+
+                    <!-- 返回首頁按鈕 -->
+                    <a href="../index.html" target="_top" @click.prevent="goHome" class="flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs md:text-sm transition-all shadow-md border-2 border-amber-300">
+                        <span>🏠</span> 首頁
+                    </a>
+
+                </div>
+
+            </div>
+        </header>
+
+        <!-- 主內容區 -->
+        <main class="flex-1 max-w-[1850px] w-full mx-auto p-3 md:p-6 space-y-5">
+            
+            <!-- Hero 頂部重點橫幅 -->
+            <div class="bg-gradient-to-r from-slate-900 via-[#131b2e] to-slate-900 border-2 border-slate-700/80 rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-3xl">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 bg-amber-400/20 text-amber-300 border border-amber-400/60 rounded-full text-xs font-black">
+                                🎓 數位電子乙級術科 核心軟體實作
+                            </span>
+                            <span class="text-xs text-slate-400 font-bold">Quartus II 9.1 / 13.0 + EPM3064ALC44-10</span>
+                        </div>
+                        <h2 class="text-xl md:text-3xl font-black text-white tracking-tight">
+                            Quartus MegaWizard 精靈化設計 & AHDL 核心解析
+                        </h2>
+                        <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-bold">
+                            使用 Altera MegaWizard Plug-In Manager 快速生成計數除頻器（LPM_COUNTER）、解碼器（LPM_DECODE）、多工器（LPM_MUX）與栓鎖器（LPM_LATCH），並搭配 AHDL 表格法自訂七段顯示元件，高效率通過數位電子乙級術科！
+                        </p>
+                    </div>
+
+                    <!-- 統計指標 Badge 組合 -->
+                    <div class="flex items-center gap-3 shrink-0">
+                        <div class="bg-[#090d16] border border-sky-500/40 rounded-xl p-3 text-center min-w-[90px] shadow-inner">
+                            <div class="text-xl md:text-2xl font-mono-custom font-black text-sky-400">2 大</div>
+                            <div class="text-[11px] text-slate-400 font-bold">試題完整解析</div>
+                        </div>
+                        <div class="bg-[#090d16] border border-emerald-500/40 rounded-xl p-3 text-center min-w-[90px] shadow-inner">
+                            <div class="text-xl md:text-2xl font-mono-custom font-black text-emerald-400">6 個</div>
+                            <div class="text-[11px] text-slate-400 font-bold">MegaWizard元件</div>
+                        </div>
+                        <div class="bg-[#090d16] border border-amber-500/40 rounded-xl p-3 text-center min-w-[90px] shadow-inner">
+                            <div class="text-xl md:text-2xl font-mono-custom font-black text-amber-300">11 頁</div>
+                            <div class="text-[11px] text-slate-400 font-bold">精華實作講義</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= 【TAB 1: 試題一 四位數循環顯示】 ================= -->
+            <div v-if="activeTab === 'task1'" class="space-y-5 fade-in">
+                
+                <!-- 試題一頂部概覽卡片 -->
+                <div class="bg-[#1e293b] border-2 border-slate-700 rounded-2xl p-4 md:p-5 shadow-xl space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 pb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400 text-sky-300 flex items-center justify-center text-xl font-black">
+                                ①
+                            </span>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-black text-white">試題一：四位數循環顯示裝置（11700-110201）</h3>
+                                <p class="text-xs text-sky-300 font-bold">計數器除頻（12-bit）➔ 2TO4解碼掃描（D0~D3）➔ MUX4TO1多工器輪播七段常數（DSS[7..0]）</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-slate-200">CLK: PIN 43 (4 MHz)</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-amber-300">掃描頻率: 976 Hz</span>
+                        </div>
+                    </div>
+
+                    <!-- 電路方塊圖展示與 Lightbox 放大 -->
+                    <div class="bg-[#090d16] rounded-xl border-2 border-slate-700 p-3 space-y-2">
+                        <div class="flex items-center justify-between px-2">
+                            <span class="text-xs font-black text-sky-300 flex items-center gap-1.5">
+                                <span>📐</span> Quartus II 試題一 CPLD 電路方塊設計圖
+                            </span>
+                            <span class="text-[11px] text-slate-400 font-bold bg-slate-800 px-2.5 py-0.5 rounded border border-slate-600">
+                                點擊圖片可全螢幕放大預覽 🔍
+                            </span>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-zoom-in overflow-hidden" @click="openImageModal('數乙第一題CPLD.png', '試題一 CPLD 電路方塊圖')">
+                            <img src="數乙第一題CPLD.png" alt="試題一 CPLD 電路方塊圖" class="w-full h-auto max-h-[460px] object-contain mx-auto hover:scale-[1.01] transition-transform">
+                        </div>
+                    </div>
+
+                    <!-- 試題一 4 大實作精靈步驟指南 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
+                        
+                        <!-- Step 1: LPM_COUNTER -->
+                        <div class="bg-[#0f172a] border border-sky-500/50 rounded-xl p-4 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 bg-sky-500/20 text-sky-300 border border-sky-400 rounded text-xs font-black">Step 1</span>
+                                <span class="text-xs font-mono-custom text-slate-400 font-bold">LPM_COUNTER</span>
+                            </div>
+                            <h4 class="text-sm font-black text-white">12位元計數除頻器 (C12)</h4>
+                            <ul class="text-xs text-slate-300 space-y-1 font-bold">
+                                <li>• <strong class="text-amber-300">Data Width:</strong> 12 bits</li>
+                                <li>• <strong class="text-emerald-300">類型:</strong> Up Counter (上數)</li>
+                                <li>• <strong class="text-sky-300">Clock:</strong> 接外部 4MHz (PIN 43)</li>
+                                <li>• <strong class="text-sky-300">輸出:</strong> q[11..10] 送解碼與多工</li>
+                            </ul>
+                        </div>
+
+                        <!-- Step 2: LPM_DECODE -->
+                        <div class="bg-[#0f172a] border border-teal-500/50 rounded-xl p-4 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 bg-teal-500/20 text-teal-300 border border-teal-400 rounded text-xs font-black">Step 2</span>
+                                <span class="text-xs font-mono-custom text-slate-400 font-bold">LPM_DECODE</span>
+                            </div>
+                            <h4 class="text-sm font-black text-white">2TO4 顯示位元解碼器</h4>
+                            <ul class="text-xs text-slate-300 space-y-1 font-bold">
+                                <li>• <strong class="text-amber-300">LPM_WIDTH:</strong> 2 bits</li>
+                                <li>• <strong class="text-emerald-300">LPM_DECODES:</strong> 4 outputs</li>
+                                <li>• <strong class="text-sky-300">輸入:</strong> data[1..0] ← q[11..10]</li>
+                                <li>• <strong class="text-sky-300">輸出:</strong> eq0~eq3 依序致能 D0~D3</li>
+                            </ul>
+                        </div>
+
+                        <!-- Step 3: LPM_CONSTANT -->
+                        <div class="bg-[#0f172a] border border-amber-500/50 rounded-xl p-4 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-400 rounded text-xs font-black">Step 3</span>
+                                <span class="text-xs font-mono-custom text-slate-400 font-bold">LPM_CONSTANT</span>
+                            </div>
+                            <h4 class="text-sm font-black text-white">8-bit 七段顯示常數 (4組)</h4>
+                            <ul class="text-xs text-slate-300 space-y-1 font-bold">
+                                <li>• <strong class="text-amber-300">常數設定:</strong> 建立 4 顆常數元件</li>
+                                <li>• <strong class="text-emerald-300">數值範例:</strong> 7, 5, 3, 1 (依題組)</li>
+                                <li>• <strong class="text-sky-300">LPM_CVALUE:</strong> 填入 8 位元段碼值</li>
+                                <li>• <strong class="text-sky-300">輸出:</strong> 分別接至 MUX data0x~data3x</li>
+                            </ul>
+                        </div>
+
+                        <!-- Step 4: LPM_MUX -->
+                        <div class="bg-[#0f172a] border border-indigo-500/50 rounded-xl p-4 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-400 rounded text-xs font-black">Step 4</span>
+                                <span class="text-xs font-mono-custom text-slate-400 font-bold">LPM_MUX</span>
+                            </div>
+                            <h4 class="text-sm font-black text-white">4TO1 8-bit 資料多工器</h4>
+                            <ul class="text-xs text-slate-300 space-y-1 font-bold">
+                                <li>• <strong class="text-amber-300">Data Width:</strong> 8 bits</li>
+                                <li>• <strong class="text-emerald-300">Number of Inputs:</strong> 4 inputs</li>
+                                <li>• <strong class="text-sky-300">選擇端:</strong> sel[1..0] ← q[11..10]</li>
+                                <li>• <strong class="text-sky-300">輸出:</strong> result[7..0] 輸出至 DSS</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- 頻率計算器小工具 -->
+                    <div class="bg-[#090d16] p-4 rounded-xl border border-slate-700 flex flex-wrap items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-black text-amber-300 flex items-center gap-1.5">
+                                <span>🧮</span> 掃描除頻公式與視覺暫留原理
+                            </h4>
+                            <p class="text-xs text-slate-300 font-bold">
+                                4 MHz (石英震盪) ÷ \(2^{12}\) (4096) = <strong class="text-sky-300 font-mono-custom text-sm">976.56 Hz</strong>（總掃描頻率）➔ 4 位數輪掃每位數約 <strong class="text-emerald-300 font-mono-custom text-sm">244.14 Hz</strong>（每 4.1ms 完成一輪），人眼視覺暫留無閃爍！
+                            </p>
+                        </div>
+                        <a href="../cpld_simulator.html" class="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-black transition-all shadow shrink-0">
+                            前往試題一題組腳位模擬 ➔
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================= 【TAB 2: 試題二 鍵盤輸入與 AHDL 實作】 ================= -->
+            <div v-else-if="activeTab === 'task2'" class="space-y-5 fade-in">
+                
+                <!-- 試題二頂部概覽卡片 -->
+                <div class="bg-[#1e293b] border-2 border-slate-700 rounded-2xl p-4 md:p-5 shadow-xl space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 pb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400 text-emerald-300 flex items-center justify-center text-xl font-black">
+                                ②
+                            </span>
+                            <div>
+                                <h3 class="text-lg md:text-xl font-black text-white">試題二：鍵盤輸入顯示裝置（11700-110202）</h3>
+                                <p class="text-xs text-emerald-300 font-bold">4x3矩陣鍵盤掃描 ➔ OR3按鍵偵測 ➔ LPM_LATCH 4位元鎖存 ➔ AHDL自訂七段元件解碼</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-slate-200">掃描: R0~R3 (高有效)</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-amber-300">鎖存: LATCH4 (gate)</span>
+                        </div>
+                    </div>
+
+                    <!-- 電路方塊圖展示與 Lightbox 放大 -->
+                    <div class="bg-[#090d16] rounded-xl border-2 border-slate-700 p-3 space-y-2">
+                        <div class="flex items-center justify-between px-2">
+                            <span class="text-xs font-black text-emerald-300 flex items-center gap-1.5">
+                                <span>📐</span> Quartus II 試題二 CPLD 電路方塊設計圖
+                            </span>
+                            <span class="text-[11px] text-slate-400 font-bold bg-slate-800 px-2.5 py-0.5 rounded border border-slate-600">
+                                點擊圖片可全螢幕放大預覽 🔍
+                            </span>
+                        </div>
+                        <div class="bg-white rounded-lg p-2 cursor-zoom-in overflow-hidden" @click="openImageModal('數乙第二題CPLD.png', '試題二 CPLD 電路方塊圖')">
+                            <img src="數乙第二題CPLD.png" alt="試題二 CPLD 電路方塊圖" class="w-full h-auto max-h-[460px] object-contain mx-auto hover:scale-[1.01] transition-transform">
+                        </div>
+                    </div>
+
+                    <!-- 互動 4x3 鍵盤矩陣與 AHDL TABLE 即時模擬對照器 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-2 items-stretch">
+                        
+                        <!-- 左側：4x3 虛擬按鍵與即時七段圖形 (col-span-5) -->
+                        <div class="lg:col-span-5 bg-[#0f172a] border border-slate-700 rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+                                    <h4 class="text-sm font-black text-amber-300 flex items-center gap-1.5">
+                                        <span>🎹</span> 4x3 矩陣鍵盤按鈕模擬
+                                    </h4>
+                                    <span class="text-[11px] text-slate-400 font-bold">點擊鍵位觀察解碼</span>
+                                </div>
+                                
+                                <!-- 4x3 按鍵 Grid -->
+                                <div class="grid grid-cols-3 gap-2.5 max-w-[280px] mx-auto py-2">
+                                    <button 
+                                        v-for="k in keypadList" 
+                                        :key="k.key"
+                                        @click="selectedKey = k.key"
+                                        :class="selectedKey === k.key ? 'bg-amber-400 text-slate-950 font-black ring-4 ring-amber-300 shadow-xl scale-105' : 'bg-[#1e293b] text-sky-300 hover:text-white hover:bg-slate-700 font-black border border-slate-600'"
+                                        class="h-12 rounded-xl text-lg font-mono-custom transition-all flex flex-col items-center justify-center"
+                                    >
+                                        <span>{{ k.key }}</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 當前按鍵對應狀態與七段顯示預覽 -->
+                            <div class="bg-[#090d16] p-3 rounded-xl border border-slate-700 flex items-center justify-between">
+                                <div class="space-y-1 text-xs">
+                                    <div>當前按鍵：<strong class="text-amber-300 font-mono-custom text-base">{{ currentKeyData.key }}</strong></div>
+                                    <div>掃描列 (Row)：<strong class="text-sky-300 font-mono-custom">{{ currentKeyData.row }}</strong></div>
+                                    <div>讀取行 (Col)：<strong class="text-emerald-300 font-mono-custom">{{ currentKeyData.col }}</strong></div>
+                                    <div>AHDL 代碼：<strong class="text-pink-400 font-mono-custom">{{ currentKeyData.hex }}</strong></div>
+                                </div>
+
+                                <!-- 七段顯示器 SVG / DOM 預覽 -->
+                                <div class="flex flex-col items-center gap-1">
+                                    <span class="text-[10px] text-slate-400 font-bold">七段輸出</span>
+                                    <div class="seven-seg-box">
+                                        <div class="seg-seg seg-a" :class="{ active: currentKeyData.segs.a }"></div>
+                                        <div class="seg-seg seg-b" :class="{ active: currentKeyData.segs.b }"></div>
+                                        <div class="seg-seg seg-c" :class="{ active: currentKeyData.segs.c }"></div>
+                                        <div class="seg-seg seg-d" :class="{ active: currentKeyData.segs.d }"></div>
+                                        <div class="seg-seg seg-e" :class="{ active: currentKeyData.segs.e }"></div>
+                                        <div class="seg-seg seg-f" :class="{ active: currentKeyData.segs.f }"></div>
+                                        <div class="seg-seg seg-g" :class="{ active: currentKeyData.segs.g }"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右側：AHDL 7Asegment 原始碼 (col-span-7) -->
+                        <div class="lg:col-span-7 bg-[#0f172a] border border-slate-700 rounded-xl p-4 space-y-2 flex flex-col justify-between">
+                            <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                                <h4 class="text-sm font-black text-sky-300 flex items-center gap-1.5">
+                                    <span>💻</span> 自訂顯示元件 7Asegment.tdf (AHDL 語法)
+                                </h4>
+                                <button @click="copyAhdlCode" class="text-xs bg-[#1e293b] hover:bg-slate-700 text-amber-300 px-3 py-1 rounded-lg border border-slate-600 font-mono-custom font-black transition-all">
+                                    📋 複製 AHDL 程式碼
+                                </button>
+                            </div>
+
+                            <div class="ahdl-code overflow-x-auto custom-scrollbar flex-1">
+                                <pre><span class="ahdl-kw">SUBDESIGN</span> 7Asegment
+(
+    i[3..0]       : <span class="ahdl-kw">INPUT</span>;
+    a,b,c,d,e,f,g : <span class="ahdl-kw">OUTPUT</span>;
+)
+<span class="ahdl-kw">BEGIN</span>
+    <span class="ahdl-kw">TABLE</span> i[3..0] => a,b,c,d,e,f,g;
+<span :class="selectedKey === '1' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"0"</span> => 1,0,0,1,1,1,1;  <span class="ahdl-cmt">-- 按 "1" 顯示 1</span></span>
+<span :class="selectedKey === '4' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"1"</span> => 1,0,0,1,1,0,0;  <span class="ahdl-cmt">-- 按 "4" 顯示 4</span></span>
+<span :class="selectedKey === '7' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"2"</span> => 0,0,0,1,1,1,1;  <span class="ahdl-cmt">-- 按 "7" 顯示 7</span></span>
+<span :class="selectedKey === '*' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"3"</span> => 1,1,1,0,0,1,0;  <span class="ahdl-cmt">-- 按 "*" 顯示 *</span></span>
+<span :class="selectedKey === '2' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"4"</span> => 0,0,1,0,0,1,0;  <span class="ahdl-cmt">-- 按 "2" 顯示 2</span></span>
+<span :class="selectedKey === '5' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"5"</span> => 0,1,0,0,1,0,0;  <span class="ahdl-cmt">-- 按 "5" 顯示 5</span></span>
+<span :class="selectedKey === '8' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"6"</span> => 0,0,0,0,0,0,0;  <span class="ahdl-cmt">-- 按 "8" 顯示 8</span></span>
+<span :class="selectedKey === '0' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"7"</span> => 0,0,0,0,0,0,1;  <span class="ahdl-cmt">-- 按 "0" 顯示 0</span></span>
+<span :class="selectedKey === '3' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"8"</span> => 0,0,0,0,1,1,0;  <span class="ahdl-cmt">-- 按 "3" 顯示 3</span></span>
+<span :class="selectedKey === '6' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"9"</span> => 0,1,0,0,0,0,0;  <span class="ahdl-cmt">-- 按 "6" 顯示 6</span></span>
+<span :class="selectedKey === '9' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"A"</span> => 0,0,1,1,1,0,0;  <span class="ahdl-cmt">-- 按 "9" 顯示 9</span></span>
+<span :class="selectedKey === '#' ? 'ahdl-hl' : ''">        <span class="ahdl-str">H"B"</span> => 1,1,0,0,1,1,0;  <span class="ahdl-cmt">-- 按 "#" 顯示 #</span></span>
+    <span class="ahdl-kw">END TABLE</span>;
+<span class="ahdl-kw">END</span>;</pre>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================= 【TAB 3: MegaWizard 6 大精靈元件參數庫】 ================= -->
+            <div v-else-if="activeTab === 'components'" class="space-y-5 fade-in">
+                
+                <div class="bg-[#1e293b] border-2 border-slate-700 rounded-2xl p-4 md:p-6 shadow-xl space-y-4">
+                    <div class="border-b border-slate-700 pb-3">
+                        <h3 class="text-xl font-black text-white flex items-center gap-2">
+                            <span>🧩</span> Quartus II MegaWizard 6 大核心精靈元件速查庫
+                        </h3>
+                        <p class="text-xs text-slate-300 font-bold mt-0.5">點擊各元件卡片查看精靈分類路徑、參數設定、引腳連線定義與考場避坑技巧</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        
+                        <!-- 1. LPM_COUNTER -->
+                        <div class="bg-[#0f172a] border border-sky-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-sky-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-sky-400 bg-sky-950 px-2 py-0.5 rounded border border-sky-600">Arithmetic</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">LPM_COUNTER</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">1. 計數除頻器 (C12)</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>精靈路徑:</strong> <code class="text-sky-300 bg-slate-900 px-1 py-0.5 rounded">Arithmetic &gt; LPM_COUNTER</code></div>
+                                <div>⚙️ <strong>重要參數:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>Data width = 12 bits</li>
+                                    <li>Up counter only (向上計數)</li>
+                                    <li>勾選 clock、q 輸出、clk_en (使能)</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 試題一 clk_en 預設接高電位；試題二 clk_en 可由外部開關控制。</div>
+                            </div>
+                        </div>
+
+                        <!-- 2. LPM_DECODE -->
+                        <div class="bg-[#0f172a] border border-teal-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-teal-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-teal-400 bg-teal-950 px-2 py-0.5 rounded border border-teal-600">Gates</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">LPM_DECODE</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">2. 解碼器 (DECODE24)</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>精靈路徑:</strong> <code class="text-teal-300 bg-slate-900 px-1 py-0.5 rounded">Gates &gt; LPM_DECODE</code></div>
+                                <div>⚙️ <strong>重要參數:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>LPM_WIDTH = 2 (輸入2位元)</li>
+                                    <li>LPM_DECODES = 4 (輸出4位元 eq0~eq3)</li>
+                                    <li>輸出為 Active High (高有效)</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 用於試題一 D0~D3 掃描，以及試題二鍵盤 R0~R3 輪流送高電位。</div>
+                            </div>
+                        </div>
+
+                        <!-- 3. LPM_MUX -->
+                        <div class="bg-[#0f172a] border border-amber-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-amber-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-600">Gates</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">LPM_MUX</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">3. 多工器 (MUX4TO1)</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>精靈路徑:</strong> <code class="text-amber-300 bg-slate-900 px-1 py-0.5 rounded">Gates &gt; LPM_MUX</code></div>
+                                <div>⚙️ <strong>重要參數:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>Width of data input = 8 bits</li>
+                                    <li>Number of data inputs = 4 (data0x..data3x)</li>
+                                    <li>sel[1..0] 由 q[11..10] 控制</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 需注意 8-bit bus 命名（如 <code>data0x[7..0]</code>），避免引腳線寬不匹配。</div>
+                            </div>
+                        </div>
+
+                        <!-- 4. LPM_CONSTANT -->
+                        <div class="bg-[#0f172a] border border-rose-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-rose-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-rose-400 bg-rose-950 px-2 py-0.5 rounded border border-rose-600">Gates</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">LPM_CONSTANT</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">4. 8-bit 常數產生器</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>精靈路徑:</strong> <code class="text-rose-300 bg-slate-900 px-1 py-0.5 rounded">Gates &gt; LPM_CONSTANT</code></div>
+                                <div>⚙️ <strong>重要參數:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>LPM_WIDTH = 8 bits</li>
+                                    <li>填入 10 進制或 16 進制段碼數值</li>
+                                    <li>每題共需建立 4 顆常數</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 依抽到的 J~N 顯示組別填入正確數字對應之 8-bit 段碼。</div>
+                            </div>
+                        </div>
+
+                        <!-- 5. LPM_LATCH -->
+                        <div class="bg-[#0f172a] border border-indigo-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-indigo-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-indigo-400 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-600">Storage</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">LPM_LATCH</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">5. 4位元栓鎖器 (LATCH4)</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>精靈路徑:</strong> <code class="text-indigo-300 bg-slate-900 px-1 py-0.5 rounded">Storage &gt; LPM_LATCH</code></div>
+                                <div>⚙️ <strong>重要參數:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>Data width = 4 bits</li>
+                                    <li>啟用 gate 控制端（由 OR3 驅動）</li>
+                                    <li>data[3..0] ← q[13..10]</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 試題二核心！按鍵放開後 gate=0，仍能穩定鎖存顯示。</div>
+                            </div>
+                        </div>
+
+                        <!-- 6. AHDL 7Asegment -->
+                        <div class="bg-[#0f172a] border border-purple-500/60 rounded-xl p-4 space-y-3 shadow-lg hover:border-purple-400 transition-all">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-purple-400 bg-purple-950 px-2 py-0.5 rounded border border-purple-600">AHDL</span>
+                                <span class="font-mono-custom text-xs text-slate-400 font-bold">7Asegment.tdf</span>
+                            </div>
+                            <h4 class="text-base font-black text-white">6. AHDL 自訂七段元件</h4>
+                            <div class="space-y-1.5 text-xs text-slate-200 font-bold">
+                                <div>📍 <strong>建立方式:</strong> <code class="text-purple-300 bg-slate-900 px-1 py-0.5 rounded">File &gt; New &gt; AHDL Design File</code></div>
+                                <div>⚙️ <strong>重要步驟:</strong></div>
+                                <ul class="list-disc list-inside text-slate-300 pl-1 space-y-0.5">
+                                    <li>存檔檔名必須與 SUBDESIGN 一致（<code>7Asegment.tdf</code>）</li>
+                                    <li>執行 <code>File &gt; Create/Update &gt; Create Symbol</code></li>
+                                    <li>在電路圖中雙擊即可放置該元件</li>
+                                </ul>
+                                <div>💡 <strong>考場要點:</strong> 語法結尾必須有 <code>END TABLE;</code> 與 <code>END;</code>。</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================= 【TAB 4: 簡樹桐老師 11 頁核心講義（互動投影片）】 ================= -->
+            <div v-else-if="activeTab === 'slides'" class="space-y-5 fade-in">
+                
+                <div class="bg-[#1e293b] border-2 border-slate-700 rounded-2xl p-4 md:p-6 shadow-xl space-y-4">
+                    
+                    <!-- 講義 Header 與切換模式 -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 pb-3">
+                        <div>
+                            <h3 class="text-lg md:text-xl font-black text-white flex items-center gap-2">
+                                <span>📖</span> Altera MegaWizard + AHDL 投影片講義
+                                <span class="bg-amber-400 text-slate-950 text-xs px-2 py-0.5 rounded font-black">簡樹桐老師 編著</span>
+                            </h3>
+                            <p class="text-xs text-slate-300 font-bold">市立楊梅高中 · 數位邏輯與 CPLD 實作（共 11 頁全彩精華投影片）</p>
+                        </div>
+                        
+                        <!-- 模式切換：單頁投影片模式 vs 展開全部清單 -->
+                        <div class="flex items-center gap-2">
+                            <button 
+                                @click="slideViewMode = (slideViewMode === 'slider' ? 'list' : 'slider')" 
+                                class="px-3.5 py-1.5 bg-[#0f172a] hover:bg-slate-700 text-sky-300 rounded-lg text-xs font-black border border-slate-600 transition-all flex items-center gap-1"
+                            >
+                                <span>{{ slideViewMode === 'slider' ? '📑 切換為全部展開' : '🎞️ 切換為投影片輪播' }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 1. 投影片輪播模式 (Slider Mode) -->
+                    <div v-if="slideViewMode === 'slider'" class="space-y-4">
+                        
+                        <!-- 快速頁碼導覽列 (1~11) -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar p-1.5 bg-[#090d16] rounded-xl border border-slate-700">
+                            <button 
+                                v-for="n in 11" 
+                                :key="n"
+                                @click="currentSlideIndex = n"
+                                :class="currentSlideIndex === n ? 'bg-amber-400 text-slate-950 font-black ring-2 ring-amber-300 shadow' : 'bg-slate-800 text-slate-300 hover:text-white font-bold'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-mono-custom shrink-0 transition-all"
+                            >
+                                P.{{ n }}
+                            </button>
+                        </div>
+
+                        <!-- 單張投影片卡片 -->
+                        <div class="bg-[#0f172a] border-2 border-slate-700 rounded-xl p-5 md:p-7 shadow-2xl space-y-4 min-h-[380px] flex flex-col justify-between">
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400 text-sky-300 flex items-center justify-center font-mono-custom font-black text-sm">
+                                            {{ currentSlideIndex }}
+                                        </span>
+                                        <h4 class="text-base md:text-lg font-black text-white">
+                                            {{ slidesData[currentSlideIndex - 1].title }}
+                                        </h4>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-mono-custom font-bold">Slide {{ currentSlideIndex }} / 11</span>
+                                </div>
+
+                                <!-- 投影片動態內容 -->
+                                <div class="text-xs md:text-sm text-slate-200 leading-relaxed font-bold space-y-2" v-html="slidesData[currentSlideIndex - 1].content"></div>
+                            </div>
+
+                            <!-- 下方切換按鈕 -->
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                                <button 
+                                    @click="prevSlide" 
+                                    :disabled="currentSlideIndex === 1"
+                                    class="px-4 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 border border-slate-600"
+                                >
+                                    ◀ 上一頁
+                                </button>
+                                <span class="text-xs text-amber-300 font-bold">點擊按鈕或上方頁籤切換講義</span>
+                                <button 
+                                    @click="nextSlide" 
+                                    :disabled="currentSlideIndex === 11"
+                                    class="px-4 py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-30 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 shadow"
+                                >
+                                    下一頁 ▶
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 2. 全部展開列表模式 (List Mode) -->
+                    <div v-else class="space-y-4">
+                        <div 
+                            v-for="(s, idx) in slidesData" 
+                            :key="idx"
+                            class="bg-[#0f172a] border border-slate-700 rounded-xl p-4 md:p-5 space-y-2.5 shadow-md"
+                        >
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-md bg-sky-500/20 text-sky-300 flex items-center justify-center font-mono-custom font-black text-xs">
+                                        {{ idx + 1 }}
+                                    </span>
+                                    <h4 class="text-sm md:text-base font-black text-white">{{ s.title }}</h4>
+                                </div>
+                                <span class="text-[11px] text-slate-400 font-mono-custom">頁碼: P.{{ idx + 1 }}</span>
+                            </div>
+                            <div class="text-xs md:text-sm text-slate-200 leading-relaxed font-bold space-y-1.5" v-html="s.content"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Lightbox 圖片放大預覽 Modal -->
+        <div v-if="lightboxImg" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm fade-in" @click="closeImageModal">
+            <div class="relative max-w-[95vw] max-h-[92vh] flex flex-col items-center" @click.stop>
+                <button @click="closeImageModal" class="absolute -top-10 right-0 text-white hover:text-amber-300 text-2xl font-black transition-colors">
+                    ✕ 關閉 (ESC)
+                </button>
+                <div class="bg-white p-2 rounded-xl shadow-2xl overflow-auto max-h-[85vh]">
+                    <img :src="lightboxImg" :alt="lightboxTitle" class="max-w-full h-auto object-contain rounded">
+                </div>
+                <p class="text-xs text-slate-300 font-bold mt-2">{{ lightboxTitle }}</p>
+            </div>
         </div>
-      </div>
-      <video controls preload="metadata">
-        <source src="114年數位乙級檢定第1題精靈繪圖設計-PCB-B組.mp4" type="video/mp4">
-        您的瀏覽器不支援 HTML5 video。
-      </video>
-      <div class="video-footer">
-        <span class="tag tag-purple">MegaWizard 精靈設計</span>
-        <span class="tag tag-yellow">Quartus II</span>
-        <span class="tag tag-green">PCB 佈線</span>
-        <span class="tag tag-purple">AHDL</span>
-      </div>
+
     </div>
-    <div class="lecture-bar">
-      <div class="lecture-info">
-        <h4>📖 Altera MegaWizard AHDL Keyboard 講義</h4>
-        <p>包含 MegaWizard 精靈各元件操作說明、AHDL 語法範例與鍵盤輸入設計（11 頁）</p>
-      </div>
-      <a href="megawizard_slides.html" class="lecture-btn lecture-btn-1">📖 線上閱讀講義</a>
-    </div>
-  </div>
-  <!-- 第二題 -->
-  <div class="topic-section" id="section2">
-    <div class="section-header">
-      <div class="section-num" style="background:linear-gradient(135deg,#00d4aa,#00b48a);color:#0f1117;">②</div>
-      <div>
-        <div class="section-title">第二題：七段顯示器鎖存顯示（E組）</div>
-        <div class="section-sub">除頻計數器 ／ 2TO4 解碼器 ／ 4位元鎖存器 ／ 自訂七段顯示元件</div>
-      </div>
-    </div>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-item-label">📋 題目分組</div><div class="info-item-value">114年數位乙級 — E 組</div></div>
-      <div class="info-item"><div class="info-item-label">🔧 設計工具</div><div class="info-item-value">Quartus II + MegaWizard 精靈</div></div>
-      <div class="info-item"><div class="info-item-label">📡 輸出腳位</div><div class="info-item-value">R0~R3（PIN 11~16）a~g（PIN 27~37）</div></div>
-      <div class="info-item"><div class="info-item-label">⏱️ 時脈設定</div><div class="info-item-value">CLK → 4MHz ÷ 2¹² = 1KHz，clk_en 由 OR3 控制</div></div>
-    </div>
-    <div class="component-list">
-      <h3>🧩 使用的 MegaWizard 精靈元件</h3>
-      <div class="component-grid">
-        <div class="component-chip"><div class="chip-dot" style="background:#00d4aa;"></div>Up Counter（上數計數器）</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#6c63ff;"></div>2TO4 解碼器</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#fbbf24;"></div>Latch4（4位元鎖存器）</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#ff6b6b;"></div>7Segment（七段顯示自訂元件）</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#a89fff;"></div>OR3 邏輯閘</div>
-        <div class="component-chip"><div class="chip-dot" style="background:#60efbc;"></div>INPUT C0/C1/C2（PIN 6/8/9）</div>
-      </div>
-    </div>
-    <div class="diagram-card">
-      <div class="diagram-card-header">🖼️ CPLD 電路方塊圖（第二題）<span style="color:var(--mu);font-size:.8rem;font-weight:400;margin-left:8px;">點擊可放大</span></div>
-      <img src="數乙第二題CPLD.png" alt="第二題 CPLD 電路圖" onclick="openLightbox(this.src)" title="點擊放大">
-    </div>
-    <div class="video-card">
-      <div class="video-card-header">
-        <div class="video-icon" style="background:rgba(0,212,170,.2);">▶</div>
-        <div>
-          <div class="video-card-title">📹 操作示範影片 — 第二題 PCB 佈線（E組）</div>
-          <div class="video-card-meta">114年數位乙級檢定 · 精靈繪圖設計 + PCB 完整流程</div>
-        </div>
-      </div>
-      <video controls preload="metadata">
-        <source src="114年數位乙級檢定第2題精靈繪圖設計-PCB-E組.mp4" type="video/mp4">
-        您的瀏覽器不支援 HTML5 video。
-      </video>
-      <div class="video-footer">
-        <span class="tag tag-green">MegaWizard 精靈設計</span>
-        <span class="tag tag-yellow">Quartus II</span>
-        <span class="tag tag-green">PCB 佈線</span>
-        <span class="tag tag-purple">自訂七段元件</span>
-      </div>
-    </div>
-    <div class="lecture-bar">
-      <div class="lecture-info">
-        <h4>📖 Altera MegaWizard AHDL Keyboard 講義</h4>
-        <p>包含 MegaWizard 精靈各元件操作說明、AHDL 語法範例與鍵盤輸入設計（11 頁）</p>
-      </div>
-      <a href="megawizard_slides.html" class="lecture-btn lecture-btn-2">📖 線上閱讀講義</a>
-    </div>
-  </div>
-</main>
-<footer>楊梅高中 實習處 · 數位電子乙級 CPLD 教學資源 · Quartus II MegaWizard</footer>
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="放大圖">
-</div>
-<script>
-  function switchTab(n) {
-    document.querySelectorAll(".topic-section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll(".tab-btn").forEach(b => { b.classList.remove("active"); b.style.color = ""; });
-    document.getElementById("section"+n).classList.add("active");
-    var btn = document.getElementById("tab"+n);
-    btn.classList.add("active");
-    btn.style.color = n===2 ? "#00d4aa" : "";
-    document.querySelectorAll("video").forEach(v => v.pause());
-  }
-  function openLightbox(src) { document.getElementById("lightbox-img").src=src; document.getElementById("lightbox").classList.add("open"); }
-  function closeLightbox() { document.getElementById("lightbox").classList.remove("open"); }
-  document.addEventListener("keydown", e => { if(e.key==="Escape") closeLightbox(); });
-</script>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const activeTab = ref('task1');
+                const slideViewMode = ref('slider');
+                const currentSlideIndex = ref(1);
+                const lightboxImg = ref(null);
+                const lightboxTitle = ref('');
+
+                // 4x3 鍵盤清單與對照資料
+                const keypadList = [
+                    { key: '1', row: 'R0', col: 'C0', hex: 'H"0"', segs: { a:0, b:1, c:1, d:0, e:0, f:0, g:0 } },
+                    { key: '2', row: 'R0', col: 'C1', hex: 'H"4"', segs: { a:1, b:1, c:0, d:1, e:1, f:0, g:1 } },
+                    { key: '3', row: 'R0', col: 'C2', hex: 'H"8"', segs: { a:1, b:1, c:1, d:1, e:0, f:0, g:1 } },
+                    { key: '4', row: 'R1', col: 'C0', hex: 'H"1"', segs: { a:0, b:1, c:1, d:0, e:0, f:1, g:1 } },
+                    { key: '5', row: 'R1', col: 'C1', hex: 'H"5"', segs: { a:1, b:0, c:1, d:1, e:0, f:1, g:1 } },
+                    { key: '6', row: 'R1', col: 'C2', hex: 'H"9"', segs: { a:1, b:0, c:1, d:1, e:1, f:1, g:1 } },
+                    { key: '7', row: 'R2', col: 'C0', hex: 'H"2"', segs: { a:1, b:1, c:1, d:0, e:0, f:0, g:0 } },
+                    { key: '8', row: 'R2', col: 'C1', hex: 'H"6"', segs: { a:1, b:1, c:1, d:1, e:1, f:1, g:1 } },
+                    { key: '9', row: 'R2', col: 'C2', hex: 'H"A"', segs: { a:1, b:1, c:1, d:1, e:0, f:1, g:1 } },
+                    { key: '*', row: 'R3', col: 'C0', hex: 'H"3"', segs: { a:0, b:0, c:0, d:1, e:1, f:0, g:1 } },
+                    { key: '0', row: 'R3', col: 'C1', hex: 'H"7"', segs: { a:1, b:1, c:1, d:1, e:1, f:1, g:0 } },
+                    { key: '#', row: 'R3', col: 'C2', hex: 'H"B"', segs: { a:0, b:0, c:1, d:1, e:1, f:0, g:1 } }
+                ];
+
+                const selectedKey = ref('5');
+                const currentKeyData = computed(() => {
+                    return keypadList.find(k => k.key === selectedKey.value) || keypadList[0];
+                });
+
+                // 簡樹桐老師 11 頁講義完整資料
+                const slidesData = [
+                    {
+                        title: "1. 封面與技術規格",
+                        content: `
+                            <div class="bg-gradient-to-r from-sky-950/60 to-indigo-950/60 p-4 rounded-xl border border-sky-600/50 space-y-2">
+                                <h5 class="text-base font-black text-sky-300">Altera MegaWizard + AHDL 七段顯示與鍵盤掃描實作</h5>
+                                <p>🏫 <strong>製作者：</strong>簡樹桐老師 ／ 市立楊梅高中</p>
+                                <p>📚 <strong>課程類別：</strong>數位邏輯與 CPLD 實作</p>
+                                <p>🔧 <strong>晶片型號：</strong>EPM3064ALC44-10 ｜ 時脈頻率：4 MHz</p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2 py-0.5 bg-slate-900 rounded text-xs text-amber-300 border border-slate-700">LPM_COUNTER (C12)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 rounded text-xs text-teal-300 border border-slate-700">LPM_DECODE (DECODE24)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 rounded text-xs text-sky-300 border border-slate-700">LPM_LATCH (LATCH4)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 rounded text-xs text-purple-300 border border-slate-700">7Asegment (AHDL自建)</span>
+                                </div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "2. 整體架構說明",
+                        content: `
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-200">
+                                <li><strong class="text-sky-300">C12：</strong>12位元遞增計數器，提供掃描節拍與顯示資料來源。</li>
+                                <li><strong class="text-teal-300">q[11..10] ➔ DECODE24 ➔ R0~R3：</strong>鍵盤列掃描輸出（高有效）。</li>
+                                <li><strong class="text-amber-300">q[13..10] ➔ LATCH4.data[3..0]：</strong>顯示資料來源輸入。</li>
+                                <li><strong class="text-emerald-300">LATCH4.gate ← OR3(C0,C1,C2)：</strong>任一按鍵按下觸發資料鎖存。</li>
+                                <li><strong class="text-purple-300">LATCH4.q[3..0] ➔ 7Asegment：</strong>AHDL 自建七段顯示器解碼輸出 a~g。</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "3. MegaWizard 元件設定詳解",
+                        content: `
+                            <div class="space-y-2">
+                                <div><strong class="text-sky-300">🧩 C12 / LPM_COUNTER:</strong> Data width = 12，Up Counter，開啟 clock、clk_en、q。clock ← CLK（4 MHz），clk_en ← NOT(外部使能)。</div>
+                                <div><strong class="text-teal-300">🧩 DECODE24 / LPM_DECODE:</strong> LPM_WIDTH = 2，LPM_DECODES = 4。data[1..0] ← q[11..10] ➔ eq0~eq3 ➔ R0~R3。</div>
+                                <div><strong class="text-indigo-300">🧩 LATCH4 / LPM_LATCH:</strong> Data width = 4，啟用 gate（由 OR3 控制）。data[3..0] ← q[13..10]，輸出 q[3..0] ➔ 7Asegment。</div>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "4. 4 MHz 掃描頻率分析",
+                        content: `
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-200">
+                                <li>q[11..10] 產生掃描頻率：<code>4 MHz / 4096 ≈ 976.56 Hz</code>。</li>
+                                <li>四列輪掃 ➔ 每列約 <code>976 / 4 ≈ 244.14 Hz</code>。</li>
+                                <li>約 4.1 ms 完成一輪完整掃描，肉眼顯示穩定不閃爍。</li>
+                                <li>高位 (q[13..10]) 慢速變化，用於顯示資料或模擬鍵盤自動輸入。</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "5. 鍵盤掃描的定義與原理",
+                        content: `
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-200">
+                                <li><strong>定義：</strong>鍵盤掃描（Keyboard Scanning）是以行與列構成矩陣，透過控制端逐列輸出訊號、逐行讀取輸入狀態。</li>
+                                <li>每個交叉點有一顆按鍵，按下時導通列與行。</li>
+                                <li><strong>R0~R3：</strong>由 DECODE24 提供掃描信號（高有效）。</li>
+                                <li><strong>C0~C2：</strong>行輸入端，未按時=0，按下導通=1。</li>
+                                <li><strong>OR3(C0,C1,C2)：</strong>任一鍵按下即觸發 LATCH 鎖存資料。</li>
+                                <li><strong>優點：</strong>大幅節省 I/O 腳位、顯示穩定、可整合顯示與掃描。</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "6. 鍵盤掃描實體接線與順序",
+                        content: `
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-200">
+                                <li><strong>掃描順序：</strong>1 4 7 * ➔ 2 5 8 0 ➔ 3 6 9 #。</li>
+                                <li><strong>R0~R3 為列輸出：</strong>由 DECODE24 控制，高有效。</li>
+                                <li><strong>C0~C2 為行輸入：</strong>預設接下拉電阻接地，按下時導通為 1。</li>
+                                <li><strong>OR3(C0, C1, C2)：</strong>任一按鍵按下即觸發 LATCH4.gate 鎖存引腳。</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "7. 鍵盤掃描信號對應表",
+                        content: `
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-center text-xs border border-slate-700 bg-slate-900 rounded">
+                                    <thead class="bg-slate-800 text-sky-300">
+                                        <tr><th class="p-1 border border-slate-700">q[13]</th><th class="p-1 border border-slate-700">q[12]</th><th class="p-1 border border-slate-700">q[11]</th><th class="p-1 border border-slate-700">q[10]</th><th class="p-1 border border-slate-700">掃描列</th><th class="p-1 border border-slate-700">對應鍵位</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700 font-bold text-amber-300">R0</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">1 (C0) ／ 2 (C1) ／ 3 (C2)</td></tr>
+                                        <tr><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700 font-bold text-amber-300">R1</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">4 (C0) ／ 5 (C1) ／ 6 (C2)</td></tr>
+                                        <tr><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">0</td><td class="p-1 border border-slate-700 font-bold text-amber-300">R2</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">7 (C0) ／ 8 (C1) ／ 9 (C2)</td></tr>
+                                        <tr><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700">1</td><td class="p-1 border border-slate-700 font-bold text-amber-300">R3</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">* (C0) ／ 0 (C1) ／ # (C2)</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "8. 為什麼 q[13..10] 接到 LATCH4",
+                        content: `
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-200">
+                                <li>q[13..10] 為計數器高位，頻率較低、變化較慢，適合作為顯示資料來源。</li>
+                                <li>高位輸出每次組合代表不同 4-bit 資料（0000~1111）。</li>
+                                <li>當 OR3 為高時，LATCH4 鎖存該組資料 ➔ 穩定顯示於七段顯示器上。</li>
+                                <li>q[13]/q[12] 亦可接至 C2/C1 模擬按鍵信號，自動觸發更新。</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "9. 鍵盤掃描對應與七段顯示",
+                        content: `
+                            <div class="space-y-2">
+                                <p><strong>掃描列 (R0~R3) 與行 (C0~C2) 矩陣對應：</strong></p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-center text-xs border border-slate-700 bg-slate-900 rounded">
+                                        <thead class="bg-slate-800 text-sky-300">
+                                            <tr><th class="p-1 border border-slate-700">掃描列</th><th class="p-1 border border-slate-700">C0 (行1)</th><th class="p-1 border border-slate-700">C1 (行2)</th><th class="p-1 border border-slate-700">C2 (行3)</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td class="p-1 border border-slate-700 font-bold text-amber-300">R0</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">1</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">2</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">3</td></tr>
+                                            <tr><td class="p-1 border border-slate-700 font-bold text-amber-300">R1</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">4</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">5</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">6</td></tr>
+                                            <tr><td class="p-1 border border-slate-700 font-bold text-amber-300">R2</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">7</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">8</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">9</td></tr>
+                                            <tr><td class="p-1 border border-slate-700 font-bold text-amber-300">R3</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">*</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">0</td><td class="p-1 border border-slate-700 text-emerald-300 font-bold">#</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="text-xs text-slate-300 pt-1"><strong>AHDL 鍵值編碼對應 (H"X")：</strong><br>
+                                • H"0"➔1, H"1"➔4, H"2"➔7, H"3"➔* （第一行 C0）<br>
+                                • H"4"➔2, H"5"➔5, H"6"➔8, H"7"➔0 （第二行 C1）<br>
+                                • H"8"➔3, H"9"➔6, H"A"➔9, H"B"➔# （第三行 C2）</p>
+                            </div>
+                        `
+                    },
+                    {
+                        title: "10. AHDL：7Asegment 完整程式碼",
+                        content: `
+                            <p class="text-xs text-slate-300 mb-1">自訂七段顯示元件 AHDL 原始碼：</p>
+                            <pre class="ahdl-code text-xs">SUBDESIGN 7Asegment
+(
+    i[3..0]       : INPUT;
+    a,b,c,d,e,f,g : OUTPUT;
+)
+BEGIN
+    TABLE i[3..0] => a,b,c,d,e,f,g;
+        H"0" => 1,0,0,1,1,1,1;  -- 按 1
+        H"1" => 1,0,0,1,1,0,0;  -- 按 4
+        H"2" => 0,0,0,1,1,1,1;  -- 按 7
+        H"3" => 1,1,1,0,0,1,0;  -- 按 *
+        H"4" => 0,0,1,0,0,1,0;  -- 按 2
+        H"5" => 0,1,0,0,1,0,0;  -- 按 5
+        H"6" => 0,0,0,0,0,0,0;  -- 按 8
+        H"7" => 0,0,0,0,0,0,1;  -- 按 0
+        H"8" => 0,0,0,0,1,1,0;  -- 按 3
+        H"9" => 0,1,0,0,0,0,0;  -- 按 6
+        H"A" => 0,0,1,1,1,0,0;  -- 按 9
+        H"B" => 1,1,0,0,1,1,0;  -- 按 #
+    END TABLE;
+END;</pre>
+                        `
+                    },
+                    {
+                        title: "11. 整體運作流程總結",
+                        content: `
+                            <ol class="list-decimal list-inside space-y-1.5 text-slate-200">
+                                <li><strong>時脈產生：</strong>C12 產生時脈（4 MHz）與高位資料來源 q[13..10]。</li>
+                                <li><strong>列掃描：</strong>q[11..10] 控制 DECODE24，依序掃描 R0 ➔ R1 ➔ R2 ➔ R3。</li>
+                                <li><strong>行讀取：</strong>鍵盤輸入 C0~C2 回傳按鍵狀態（高有效）。</li>
+                                <li><strong>栓鎖觸發：</strong>任一鍵按下 ➔ OR3=1 ➔ 觸發 LATCH4.gate ➔ 鎖存 q[13..10] 的資料。</li>
+                                <li><strong>解碼輸出：</strong>LATCH4 輸出 q[3..0] ➔ 送入 7Asegment 解碼 ➔ 七段顯示器輸出 a~g。</li>
+                                <li><strong>更新機制：</strong>顯示內容依鍵盤實際按下更新，或透過模擬輸入持續自動變化。</li>
+                            </ol>
+                        `
+                    }
+                ];
+
+                const prevSlide = () => {
+                    if (currentSlideIndex.value > 1) currentSlideIndex.value--;
+                };
+                const nextSlide = () => {
+                    if (currentSlideIndex.value < 11) currentSlideIndex.value++;
+                };
+
+                const openImageModal = (src, title) => {
+                    lightboxImg.value = src;
+                    lightboxTitle.value = title;
+                };
+                const closeImageModal = () => {
+                    lightboxImg.value = null;
+                    lightboxTitle.value = '';
+                };
+
+                const copyAhdlCode = () => {
+                    const code = `SUBDESIGN 7Asegment
+(
+    i[3..0]       : INPUT;
+    a,b,c,d,e,f,g : OUTPUT;
+)
+BEGIN
+    TABLE i[3..0] => a,b,c,d,e,f,g;
+        H"0" => 1,0,0,1,1,1,1;  -- 1
+        H"1" => 1,0,0,1,1,0,0;  -- 4
+        H"2" => 0,0,0,1,1,1,1;  -- 7
+        H"3" => 1,1,1,0,0,1,0;  -- *
+        H"4" => 0,0,1,0,0,1,0;  -- 2
+        H"5" => 0,1,0,0,1,0,0;  -- 5
+        H"6" => 0,0,0,0,0,0,0;  -- 8
+        H"7" => 0,0,0,0,0,0,1;  -- 0
+        H"8" => 0,0,0,0,1,1,0;  -- 3
+        H"9" => 0,1,0,0,0,0,0;  -- 6
+        H"A" => 0,0,1,1,1,0,0;  -- 9
+        H"B" => 1,1,0,0,1,1,0;  -- #
+    END TABLE;
+END;`;
+                    navigator.clipboard.writeText(code).then(() => {
+                        alert('已複製 7Asegment.tdf (AHDL) 完整原始碼至剪貼簿！');
+                    }).catch(err => {
+                        alert('複製失敗：' + err);
+                    });
+                };
+
+                const goHome = () => {
+                    if (window.parent && window.parent !== window && window.parent.location) {
+                        window.parent.location.hash = '';
+                    } else {
+                        window.location.href = '../index.html';
+                    }
+                };
+
+                // 監聽 ESC 鍵關閉 Lightbox
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeImageModal();
+                });
+
+                return {
+                    activeTab, slideViewMode, currentSlideIndex, slidesData, prevSlide, nextSlide,
+                    keypadList, selectedKey, currentKeyData, copyAhdlCode,
+                    lightboxImg, lightboxTitle, openImageModal, closeImageModal, goHome
+                };
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
