@@ -70,8 +70,8 @@
 
         .seven-seg-box {
             position: relative;
-            width: 52px;
-            height: 76px;
+            width: 48px;
+            height: 72px;
             background: #030712;
             border-radius: 8px;
             border: 1px solid #374151;
@@ -86,14 +86,14 @@
             background: #ef4444;
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.85);
         }
-        .seg-a { top: 5px; left: 9px; right: 9px; height: 6px; }
-        .seg-b { top: 9px; right: 5px; width: 6px; height: 26px; }
-        .seg-c { top: 40px; right: 5px; width: 6px; height: 26px; }
-        .seg-d { bottom: 5px; left: 9px; right: 9px; height: 6px; }
-        .seg-e { top: 40px; left: 5px; width: 6px; height: 26px; }
-        .seg-f { top: 9px; left: 5px; width: 6px; height: 26px; }
-        .seg-g { top: 34px; left: 9px; right: 9px; height: 6px; }
-        .seg-dp { bottom: 5px; right: 2px; width: 6px; height: 6px; border-radius: 50%; }
+        .seg-a { top: 4px; left: 8px; right: 8px; height: 6px; }
+        .seg-b { top: 8px; right: 4px; width: 6px; height: 25px; }
+        .seg-c { top: 38px; right: 4px; width: 6px; height: 25px; }
+        .seg-d { bottom: 4px; left: 8px; right: 8px; height: 6px; }
+        .seg-e { top: 38px; left: 4px; width: 6px; height: 25px; }
+        .seg-f { top: 8px; left: 4px; width: 6px; height: 25px; }
+        .seg-g { top: 33px; left: 8px; right: 8px; height: 6px; }
+        .seg-dp { bottom: 4px; right: 2px; width: 6px; height: 6px; border-radius: 50%; }
 
         /* J-N Big 7-Seg */
         .jn-seg-box {
@@ -104,6 +104,32 @@
             border-radius: 6px;
             border: 1px solid #334155;
         }
+
+        /* 12 glyphs mini 7-seg */
+        .glyph-box {
+            position: relative;
+            width: 38px;
+            height: 56px;
+            background: #000;
+            border-radius: 6px;
+            border: 1px solid #374151;
+        }
+        .glyph-seg {
+            position: absolute;
+            background: #182030;
+            border-radius: 2px;
+        }
+        .glyph-seg.active {
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+        }
+        .g-a { top: 3px; left: 6px; right: 6px; height: 4px; }
+        .g-b { top: 6px; right: 3px; width: 4px; height: 20px; }
+        .g-c { top: 29px; right: 3px; width: 4px; height: 20px; }
+        .g-d { bottom: 3px; left: 6px; right: 6px; height: 4px; }
+        .g-e { top: 29px; left: 3px; width: 4px; height: 20px; }
+        .g-f { top: 6px; left: 3px; width: 4px; height: 20px; }
+        .g-g { top: 25px; left: 6px; right: 6px; height: 4px; }
     </style>
 </head>
 <body class="min-h-screen bg-[#090d16] text-slate-100 flex flex-col">
@@ -200,10 +226,10 @@
                             <span class="text-xs text-slate-400 font-bold">Quartus II 9.1 / 13.0 + EPM3064ALC44-10</span>
                         </div>
                         <h2 class="text-xl md:text-2xl font-black text-white tracking-tight">
-                            Quartus MegaWizard 精靈化設計 & J~N 顯示組別解析
+                            Quartus MegaWizard 精靈化設計 & 官方標準字型規範
                         </h2>
                         <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-bold">
-                            使用 Altera MegaWizard Plug-In Manager 快速生成計數除頻器（LPM_COUNTER）、解碼器（LPM_DECODE）、多工器（LPM_MUX）與栓鎖器（LPM_LATCH），並完整支援 J～N 共 5 種抽測顯示組合與 AHDL 自訂七段元件！
+                            使用 Altera MegaWizard Plug-In Manager 快速生成計數除頻器（LPM_COUNTER）、解碼器（LPM_DECODE）、多工器（LPM_MUX）與栓鎖器（LPM_LATCH），並完整支援 J～N 抽測組別、12 字符標準七段字型與栓鎖扣分規範！
                         </p>
                     </div>
 
@@ -214,8 +240,8 @@
                             <div class="text-[10px] text-slate-400 font-bold">試題完整解析</div>
                         </div>
                         <div class="bg-[#090d16] border border-amber-500/40 rounded-xl p-2.5 text-center min-w-[80px] shadow-inner">
-                            <div class="text-lg md:text-xl font-mono-custom font-black text-amber-300">J～N</div>
-                            <div class="text-[10px] text-slate-400 font-bold">5種顯示組合</div>
+                            <div class="text-lg md:text-xl font-mono-custom font-black text-amber-300">12 鍵</div>
+                            <div class="text-[10px] text-slate-400 font-bold">標準字型對照</div>
                         </div>
                         <div class="bg-[#090d16] border border-emerald-500/40 rounded-xl p-2.5 text-center min-w-[80px] shadow-inner">
                             <div class="text-lg md:text-xl font-mono-custom font-black text-emerald-400">6 個</div>
@@ -229,7 +255,7 @@
                 </div>
             </div>
 
-            <!-- ================= 【TAB: J~N 顯示組別 (NEW ADDED)】 ================= -->
+            <!-- ================= 【TAB: J~N 顯示組別】 ================= -->
             <div v-if="activeTab === 'jn_group'" class="space-y-5 fade-in">
                 <div class="bg-[#1e293b] border-2 border-amber-400/60 rounded-2xl p-4 md:p-6 shadow-2xl space-y-5">
                     
@@ -249,7 +275,7 @@
                             </div>
                         </div>
                         <span class="px-3 py-1 bg-red-950 text-red-300 border border-red-500/60 rounded-lg text-xs font-bold">
-                            ⚠️ 官方評審關鍵依據
+                            ⚠️ 未依抽籤組別顯示則「不予評分」
                         </span>
                     </div>
 
@@ -389,61 +415,18 @@
 
                     </div>
 
-                    <!-- 完整 J~N 官方對照總表 -->
-                    <div class="bg-[#0f172a] rounded-xl border border-slate-700 p-4 space-y-2.5">
-                        <h4 class="text-sm font-black text-white flex items-center gap-2">
-                            <span>📋</span> 勞動部技檢中心官方 J～N 抽測規定完整對照表
-                        </h4>
-                        <div class="overflow-x-auto custom-scrollbar">
-                            <table class="w-full text-xs text-left border-collapse border border-slate-700">
-                                <thead class="bg-slate-800 text-sky-300 font-mono-custom">
-                                    <tr>
-                                        <th class="p-2 border border-slate-700 text-center">組合</th>
-                                        <th class="p-2 border border-slate-700">試題一 顯示內容與小數點 (dp)</th>
-                                        <th class="p-2 border border-slate-700 text-center">試題二「*」鍵字型</th>
-                                        <th class="p-2 border border-slate-700 text-center">試題二「#」鍵字型</th>
-                                        <th class="p-2 border border-slate-700">AHDL 抽題差異重點</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-800 text-slate-200 font-bold">
-                                    <tr :class="selectedJn === 'J' ? 'bg-amber-400/10' : ''">
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom font-black text-amber-300 text-sm">J</td>
-                                        <td class="p-2 border border-slate-700"><strong>應考日期 . 崗位編號</strong>（例：16.07，小數點在第2位）</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-emerald-300">c, d, e (小寫u底)</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-sky-300">c, d, e, g (方框底)</td>
-                                        <td class="p-2 border border-slate-700 text-[11px] text-slate-400">H"3"=>1,1,0,0,0,1,1 ; H"B"=>1,1,0,0,0,1,0</td>
-                                    </tr>
-                                    <tr :class="selectedJn === 'K' ? 'bg-amber-400/10' : ''">
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom font-black text-amber-300 text-sm">K</td>
-                                        <td class="p-2 border border-slate-700"><strong>崗位編號 . 術科測試編號後2碼</strong>（例：07.89，小數點在第2位）</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-emerald-300">d, e, g (匚字左底)</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-sky-300">c, d, g (コ字右底)</td>
-                                        <td class="p-2 border border-slate-700 text-[11px] text-slate-400">H"3"=>1,1,1,0,0,1,0 ; H"B"=>1,1,0,0,1,1,0</td>
-                                    </tr>
-                                    <tr :class="selectedJn === 'L' ? 'bg-amber-400/10' : ''">
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom font-black text-amber-300 text-sm">L</td>
-                                        <td class="p-2 border border-slate-700"><strong>試題編號 . 術科測試編號後3碼</strong>（例：1.789，小數點在第1位）</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-emerald-300">E (大寫E: a,d,e,f,g)</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-sky-300">H (大寫H: b,c,e,f,g)</td>
-                                        <td class="p-2 border border-slate-700 text-[11px] text-slate-400">H"3"=>0,1,1,0,0,0,0 ; H"B"=>1,0,0,1,0,0,0</td>
-                                    </tr>
-                                    <tr :class="selectedJn === 'M' ? 'bg-amber-400/10' : ''">
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom font-black text-amber-300 text-sm">M</td>
-                                        <td class="p-2 border border-slate-700"><strong>術科測試編號後3碼 . 試題編號</strong>（例：789.1，小數點在第3位）</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-emerald-300">n (上凸門字: a,b,f)</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-sky-300">U (下凹字: c,d,e)</td>
-                                        <td class="p-2 border border-slate-700 text-[11px] text-slate-400">H"3"=>0,0,1,1,1,0,1 ; H"B"=>1,1,0,0,0,1,1</td>
-                                    </tr>
-                                    <tr :class="selectedJn === 'N' ? 'bg-amber-400/10' : ''">
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom font-black text-amber-300 text-sm">N</td>
-                                        <td class="p-2 border border-slate-700"><strong>崗位編號 . 應考日期</strong>（例：07.16，小數點在第2位）</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-emerald-300">] (右半框: a,b,c,d)</td>
-                                        <td class="p-2 border border-slate-700 text-center font-mono-custom text-sky-300">[ (左半框/C: a,d,e,f)</td>
-                                        <td class="p-2 border border-slate-700 text-[11px] text-slate-400">H"3"=>0,0,0,0,1,1,1 ; H"B"=>0,1,1,0,0,0,1</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <!-- 官方扣分紅線警戒區 -->
+                    <div class="bg-red-950/40 border-2 border-red-500/70 rounded-xl p-4 md:p-5 space-y-2.5 text-xs text-slate-200">
+                        <div class="flex items-center gap-2 text-red-400 font-black text-sm">
+                            <span>⚠️</span> 官方評審關鍵紅線（未能栓鎖扣 25 分、段碼錯誤每字扣 25 分）：
                         </div>
+                        <ul class="space-y-1.5 font-bold list-disc list-inside text-slate-300">
+                            <li><strong class="text-red-300">組別錯誤直接不予評分：</strong>七段顯示器未依測試當日抽籤指定的題組顯示其內容（例如抽到 J 組卻顯示 K 組或其他組別內容），<span class="text-red-400 font-black">則不予評分</span>。</li>
+                            <li><strong class="text-amber-300">栓鎖要求（-25 分）：</strong>鍵盤每一個數字符號應顯示並栓鎖於七段顯示器，<span class="text-red-400 font-black">若未能栓鎖則扣 25 分</span>。</li>
+                            <li><strong class="text-amber-300">節段顯示錯誤（每字扣 25 分）：</strong>
+                                同一個節段內容顯示不正確，則每一節段扣 25 分（如 a 節段在 12 個數字符號顯示都不正確扣 25 分）；不同數字符號不同段顯示不正確，則每字扣 25 分（如數字 3 的 b 段錯、數字 5 的 f 段錯，共扣 50 分）。一個錯誤僅扣一次不重複扣分。
+                            </li>
+                        </ul>
                     </div>
 
                 </div>
@@ -586,6 +569,43 @@
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-slate-200">掃描: R0~R3 (高有效)</span>
                             <span class="px-3 py-1 bg-slate-900 border border-slate-600 rounded-lg text-xs font-mono-custom font-bold text-amber-300">鎖存: LATCH4 (gate)</span>
+                        </div>
+                    </div>
+
+                    <!-- 12 個數字符號標準七段顯示字型速查列 (NEW ADDED FROM EXAM SHEET) -->
+                    <div class="bg-[#090d16] border border-amber-500/50 rounded-xl p-3 md:p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                                <span>📟</span> （三）按下鍵盤，七段顯示器應出現對應數字符號並須栓鎖（12 字符標準字型）：
+                            </h4>
+                            <span class="text-[10px] text-slate-400 font-bold">點擊下方任一字型可即時載入模擬</span>
+                        </div>
+
+                        <!-- 12 個七段字型橫向列表 -->
+                        <div class="grid grid-cols-6 sm:grid-cols-12 gap-1.5 pt-1">
+                            <div 
+                                v-for="g in standardGlyphs" 
+                                :key="g.char"
+                                @click="selectedKey = g.char"
+                                :class="selectedKey === g.char ? 'border-amber-400 bg-amber-950/40 ring-2 ring-amber-300' : 'border-slate-700 bg-slate-900 hover:border-slate-500'"
+                                class="p-1.5 rounded-lg border flex flex-col items-center gap-1 cursor-pointer transition-all"
+                            >
+                                <span class="text-xs font-mono-custom font-black" :class="selectedKey === g.char ? 'text-amber-300' : 'text-slate-300'">{{ g.char }}</span>
+                                <div class="glyph-box">
+                                    <div class="glyph-seg g-a" :class="{ active: g.segs.a }"></div>
+                                    <div class="glyph-seg g-b" :class="{ active: g.segs.b }"></div>
+                                    <div class="glyph-seg g-c" :class="{ active: g.segs.c }"></div>
+                                    <div class="glyph-seg g-d" :class="{ active: g.segs.d }"></div>
+                                    <div class="glyph-seg g-e" :class="{ active: g.segs.e }"></div>
+                                    <div class="glyph-seg g-f" :class="{ active: g.segs.f }"></div>
+                                    <div class="glyph-seg g-g" :class="{ active: g.segs.g }"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] text-slate-400 font-bold flex flex-wrap justify-between pt-1">
+                            <span>💡 注意：<strong class="text-amber-300 font-mono-custom">"6"</strong> (含頂部 a 段)、<strong class="text-amber-300 font-mono-custom">"9"</strong> (含底部 d 段)。</span>
+                            <span>「*」及「#」依當日抽籤 J~N 指定</span>
                         </div>
                     </div>
 
@@ -959,11 +979,27 @@
 
         createApp({
             setup() {
-                const activeTab = ref('jn_group'); // 預設展示全新 J~N 顯示組別
+                const activeTab = ref('task2'); // 預設顯示試題二
                 const slideViewMode = ref('slider');
                 const currentSlideIndex = ref(1);
                 const lightboxImg = ref(null);
                 const lightboxTitle = ref('');
+
+                // 官方標準 12 字字符號七段字型資料 (0~9, *, #)
+                const standardGlyphs = [
+                    { char: '0', segs: { a:1, b:1, c:1, d:1, e:1, f:1, g:0 } },
+                    { char: '1', segs: { a:0, b:1, c:1, d:0, e:0, f:0, g:0 } },
+                    { char: '2', segs: { a:1, b:1, c:0, d:1, e:1, f:0, g:1 } },
+                    { char: '3', segs: { a:1, b:1, c:1, d:1, e:0, f:0, g:1 } },
+                    { char: '4', segs: { a:0, b:1, c:1, d:0, e:0, f:1, g:1 } },
+                    { char: '5', segs: { a:1, b:0, c:1, d:1, e:0, f:1, g:1 } },
+                    { char: '6', segs: { a:1, b:0, c:1, d:1, e:1, f:1, g:1 } }, // 包含 a 段
+                    { char: '7', segs: { a:1, b:1, c:1, d:0, e:0, f:0, g:0 } },
+                    { char: '8', segs: { a:1, b:1, c:1, d:1, e:1, f:1, g:1 } },
+                    { char: '9', segs: { a:1, b:1, c:1, d:1, e:0, f:1, g:1 } }, // 包含 d 段
+                    { char: '*', segs: { a:0, b:0, c:0, d:1, e:1, f:0, g:1 } }, // 預設 K組 匚
+                    { char: '#', segs: { a:0, b:0, c:1, d:1, e:0, f:0, g:1 } }  // 預設 K組 コ
+                ];
 
                 // J~N 顯示組別定義資料 (官方 117002B13.pdf 標準)
                 const jnGroupList = [
@@ -1301,7 +1337,7 @@ END;`;
                 });
 
                 return {
-                    activeTab, jnGroupList, selectedJn, currentJnData,
+                    activeTab, jnGroupList, selectedJn, currentJnData, standardGlyphs,
                     slideViewMode, currentSlideIndex, slidesData, prevSlide, nextSlide,
                     keypadList, selectedKey, currentKeyData, copyAhdlCode,
                     lightboxImg, lightboxTitle, openImageModal, closeImageModal, goHome
