@@ -595,16 +595,19 @@
                 <button class="nav-item" data-cat="video">
                     <span class="nav-item-text">
                         <span class="nav-title">教學影片</span>
-                        <span class="nav-desc">線上影音教學與實作示範</span>
+                        <span class="nav-desc">KiCad 電路板設計與數位電子乙級教學</span>
                     </span>
                     <span class="chevron">&#9656;</span>
                 </button>
                 <div class="nav-sub" data-group="video">
                     <div>
                         <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">KiCad 第1集：原理圖繪製與 ERC 電氣檢查</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">KiCad 第2集：電路圖繪製</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">KiCad 第3集：PCB 佈局 上</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">KiCad 第4集：PCB 佈局 下與電氣檢查</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">KiCad 第5集：PCB 布線與列印輸出</button>
                             <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片</button>
-                            <button class="nav-sub-item" data-src="CPLD/index.html">數位乙級第1題 (PCB-B組) 示範影片</button>
-                            <button class="nav-sub-item" data-src="CPLD/index.html">數位乙級第2題 (PCB-E組) 示範影片</button>
                         </div>
                     </div>
                 </div>
@@ -859,6 +862,44 @@
                     <button class="go-link" data-src="app_inventor_answers.html">查看解答 &rarr;</button>
                 </div>
             </div>
+            <!-- KiCad 電路板設計教學影片全集 -->
+            <div class="card video" data-cat="video">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <span class="badge-year">影音教學</span>
+                </div>
+                <div class="card-body">
+                    <h3>【數位電子乙級】KiCad 電路板設計教學全集 (第1~5集)</h3>
+                    <p>由簡樹桐老師親自錄製！包含第一集原理圖與 ERC 檢查、第二集電路圖繪製、第三/四集 PCB 佈局與電氣檢查，以及第五集 PCB 布線與列印輸出完整示範。</p>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 1 集：原理圖繪製與 ERC 電氣檢查</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 2 集：電路圖繪製</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 3 集：PCB 佈局 (上)</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/J_SE8ae60kg">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 4 集：PCB 佈局 (下) 與電氣檢查</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 5 集：PCB 布線與列印輸出</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">觀看影片 &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin-top: 1.2rem;">
+                    <span class="category-tag">KiCad 電路板教學</span>
+                </div>
+            </div>
         </div>
 
         <div class="frame-wrap" id="frameWrap">
@@ -889,7 +930,7 @@
     }
 
     function showFrame(src) {
-        const cacheBusterSrc = src.includes('?') ? src + '&v=162' : src + '?v=162';
+        const cacheBusterSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&v=162' : src + '?v=162');
         if (mainFrame.src !== cacheBusterSrc) {
             mainFrame.src = cacheBusterSrc;
         }
