@@ -602,11 +602,11 @@
                 <div class="nav-sub" data-group="video">
                     <div>
                         <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">KiCad 第1集：原理圖繪製與 ERC 電氣檢查</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">KiCad 第2集：電路圖繪製</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">KiCad 第3集：PCB 佈局 上</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">KiCad 第4集：PCB 佈局 下與電氣檢查</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">KiCad 第5集：PCB 布線與列印輸出</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">KiCad 第1集：原理圖繪製與 ERC 檢查 ↗️</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">KiCad 第2集：電路圖繪製 ↗️</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">KiCad 第3集：PCB 佈局 上 ↗️</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">KiCad 第4集：PCB 佈局 下與電氣檢查 ↗️</button>
+                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">KiCad 第5集：PCB 布線與列印輸出 ↗️</button>
                             <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片</button>
                         </div>
                     </div>
@@ -988,6 +988,20 @@
             showGrid();
             if (updateHash) history.pushState(null, '', location.pathname + location.search);
             return;
+        }
+
+        if (src.includes('youtube.com') || src.includes('youtu.be')) {
+            let videoId = '';
+            if (src.includes('/embed/')) {
+                videoId = src.split('/embed/')[1].split('?')[0];
+            } else if (src.includes('v=')) {
+                videoId = src.split('v=')[1].split('&')[0];
+            } else if (src.includes('youtu.be/')) {
+                videoId = src.split('youtu.be/')[1].split('?')[0];
+            }
+            if (videoId) {
+                window.open(`https://youtu.be/${videoId}`, '_blank');
+            }
         }
 
         showFrame(src);
