@@ -903,7 +903,13 @@
         </div>
 
         <div class="frame-wrap" id="frameWrap">
-            <iframe id="mainFrame" title="內容框架"></iframe>
+            <div id="frameBar" style="display: none; background: #0f172a; color: #ffffff; padding: 10px 16px; font-size: 0.92rem; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <span id="frameTitle">🎬 簡樹桐老師 影片教學</span>
+                <a id="ytDirectLink" href="#" target="_blank" rel="noopener noreferrer" style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px;">
+                    ↗️ 直接在 YouTube 獨立開啓觀看
+                </a>
+            </div>
+            <iframe id="mainFrame" title="內容框架" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
         <footer id="pageFooter">
@@ -930,9 +936,32 @@
     }
 
     function showFrame(src) {
-        const cacheBusterSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&v=162' : src + '?v=162');
-        if (mainFrame.src !== cacheBusterSrc) {
-            mainFrame.src = cacheBusterSrc;
+        const frameBar = document.getElementById('frameBar');
+        const ytDirectLink = document.getElementById('ytDirectLink');
+
+        let targetSrc = src;
+        if (src.includes('youtube.com') || src.includes('youtu.be')) {
+            let videoId = '';
+            if (src.includes('/embed/')) {
+                videoId = src.split('/embed/')[1].split('?')[0];
+            } else if (src.includes('v=')) {
+                videoId = src.split('v=')[1].split('&')[0];
+            } else if (src.includes('youtu.be/')) {
+                videoId = src.split('youtu.be/')[1].split('?')[0];
+            }
+
+            if (videoId) {
+                targetSrc = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+                if (ytDirectLink) ytDirectLink.href = `https://youtu.be/${videoId}`;
+                if (frameBar) frameBar.style.display = 'flex';
+            }
+        } else {
+            if (frameBar) frameBar.style.display = 'none';
+            targetSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&v=162' : src + '?v=162');
+        }
+
+        if (mainFrame.src !== targetSrc) {
+            mainFrame.src = targetSrc;
         }
         grid.classList.add('hide');
         frameWrap.classList.add('show');
