@@ -623,16 +623,21 @@
                 </button>
                 <div class="nav-sub" data-group="project">
                     <div>
-                        <div style="padding: 6px 12px; font-weight: 800; color: #1e293b; font-size: 0.88rem; background: #f1f5f9; border-bottom: 1px solid #cbd5e1; border-radius: 6px 6px 0 0; display: flex; align-items: center; gap: 6px;">
-                            🤖 代理AI 課程 (第一課～第六課)
-                        </div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/rSP5i_iQf1A">第 01 節課：AI 概論與生成式模型基礎 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/9bqhw57e68M">第 02 節課：ChatGPT 與提示詞工程 (Prompt Engineering) ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/3MrM0oEprrM">第 03 節課：LLM 大語言模型實作與應用案例 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/9o9PYi-9Jcg">第 04 節課：Python 與 AI 自動化腳本實用技能 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/uo3HXrOh4VI">第 05 節課：AI 工具整合與工作流優化 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/_GAU2tUi3L0">第 06 節課：AI 專案成果總結與未來展望 ↗️</button>
+                        <!-- 第 1 層選項：代理AI -->
+                        <div class="nav-sub-group">
+                            <button class="nav-sub-header-btn" onclick="toggleSubGroup(this)" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f1f5f9; border: none; border-bottom: 1px solid #cbd5e1; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s;">
+                                <span>🤖 代理AI</span>
+                                <span class="sub-chevron" style="font-size: 0.75rem; transition: transform 0.2s;">▾</span>
+                            </button>
+                            <!-- 第 2 層選單：第一課 ～ 第六課 -->
+                            <div class="nav-sub-child-list" style="display: flex; flex-direction: column; gap: 2px; padding: 0.4rem; background: #ffffff; border-left: 3px solid #3b82f6; margin-left: 8px;">
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/rSP5i_iQf1A">第一課（第01節）：AI 概論與生成式模型基礎 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/9bqhw57e68M">第二課（第02節）：ChatGPT 與提示詞工程 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/3MrM0oEprrM">第三課（第03節）：LLM 大語言模型實作與應用 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/9o9PYi-9Jcg">第四課（第04節）：Python 與 AI 自動化腳本 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/uo3HXrOh4VI">第五課（第05節）：AI 工具整合與工作流優化 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/_GAU2tUi3L0">第六課（第06節）：AI 專案成果總結與未來展望 ↗️</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -999,6 +1004,16 @@
     const navItems = document.querySelectorAll('.nav-item');
     const navSubItems = document.querySelectorAll('.nav-sub-item');
     const goLinkBtns = document.querySelectorAll('.go-link[data-src]');
+
+    function toggleSubGroup(btn) {
+        const childList = btn.nextElementSibling;
+        const chevron = btn.querySelector('.sub-chevron');
+        if (childList) {
+            const isHidden = childList.style.display === 'none';
+            childList.style.display = isHidden ? 'flex' : 'none';
+            if (chevron) chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+    }
 
     function showGrid() {
         grid.classList.remove('hide');
