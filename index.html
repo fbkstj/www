@@ -213,6 +213,56 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* 右側彈出式第 2 層選單 (Flyout Submenu) */
+        .nav-sub-group {
+            position: relative;
+        }
+
+        .nav-sub-child-list {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            z-index: 999999;
+            min-width: 320px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem;
+            display: none !important;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            pointer-events: none;
+            margin-left: 4px;
+        }
+
+        .nav-sub-group::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 0;
+            width: 15px;
+            height: 100%;
+        }
+
+        .nav-sub-group:hover .nav-sub-child-list {
+            display: flex !important;
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .nav-sub-header-btn:hover {
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%) !important;
+            color: #ffffff !important;
+        }
+        .nav-sub-header-btn:hover .sub-chevron {
+            color: #ffffff !important;
+        }
+
         .nav-sub-list {
             display: flex;
             flex-direction: column;
@@ -622,15 +672,15 @@
                     <span class="chevron">&#9656;</span>
                 </button>
                 <div class="nav-sub" data-group="project">
-                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
                         <!-- 第 1 層第 1 個選項：ESP32實驗板 -->
                         <div class="nav-sub-group">
-                            <button class="nav-sub-header-btn" onclick="toggleSubGroup(this)" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f1f5f9; border: none; border-bottom: 1px solid #cbd5e1; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s;">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
                                 <span>📟 ESP32實驗板</span>
-                                <span class="sub-chevron" style="font-size: 0.75rem; transition: transform 0.2s;">▾</span>
-                            </button>
-                            <!-- 第 2 層選單：第一課 ～ 第六課 -->
-                            <div class="nav-sub-child-list" style="display: flex; flex-direction: column; gap: 2px; padding: 0.4rem; background: #ffffff; border-left: 3px solid #3b82f6; margin-left: 8px;">
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
                                 <button class="nav-sub-item" data-src="https://www.youtube.com/embed/rSP5i_iQf1A">第一課（第01節）：AI 概論與生成式模型基礎 ↗️</button>
                                 <button class="nav-sub-item" data-src="https://www.youtube.com/embed/9bqhw57e68M">第二課（第02節）：ChatGPT 與提示詞工程 ↗️</button>
                                 <button class="nav-sub-item" data-src="https://www.youtube.com/embed/3MrM0oEprrM">第三課（第03節）：LLM 大語言模型實作與應用 ↗️</button>
@@ -642,12 +692,13 @@
 
                         <!-- 第 1 層第 2 個選項：影像辨識 -->
                         <div class="nav-sub-group">
-                            <button class="nav-sub-header-btn" onclick="toggleSubGroup(this)" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f1f5f9; border: none; border-bottom: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s;">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
                                 <span>📷 影像辨識</span>
-                                <span class="sub-chevron" style="font-size: 0.75rem; transition: transform 0.2s;">▾</span>
-                            </button>
-                            <div class="nav-sub-child-list" style="display: flex; flex-direction: column; gap: 2px; padding: 0.4rem; background: #ffffff; border-left: 3px solid #10b981; margin-left: 8px;">
-                                <span style="font-size: 0.82rem; color: #64748b; padding: 6px 10px;">🎥 影像辨識單元與教材規劃中...</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <span style="font-size: 0.85rem; color: #64748b; padding: 8px 12px; font-weight: 600;">🎥 影像辨識單元與教材規劃中...</span>
                             </div>
                         </div>
                     </div>
