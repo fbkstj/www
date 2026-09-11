@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 無障礙數位研習輔助系統 | 人機協作接力分工與全自動伴讀指南</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar & badge glows */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.6); }
+    .tab-active { border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.12); }
+    .code-box { font-family: 'Consolas', 'Fira Code', monospace; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-slate-100 min-h-screen antialiased">
+
+  <!-- Header / Hero Section -->
+  <header class="border-b border-slate-800 bg-[#0f172a]/95 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-sky-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-2xl">
+          ♿
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2 flex-wrap">
+            AI 無障礙數位研習輔助系統
+            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              人機協作接力架構版
+            </span>
+          </h1>
+          <p class="text-xs text-slate-400">學員安全登入與選課 ➔ AI 接手全自動連播、防閒置、作答與證書下載</p>
+        </div>
+      </div>
+      
+      <!-- Quick Badges -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-900/50 text-emerald-300 border border-emerald-700/60">
+          🤝 人機接力分工
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-900/40 text-cyan-300 border border-cyan-700/50">
+          ⚡ MCP 特權控制
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-900/40 text-blue-300 border border-blue-700/50">
+          🏛️ 臺北e大
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-amber-900/40 text-amber-300 border border-amber-700/50">
+          ⛑️ 職安署 iSafeel
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-purple-900/40 text-purple-300 border border-purple-700/50">
+          🎓 教育部磨課師+
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Mission & Accessibility Core Banner -->
+    <section class="bg-gradient-to-r from-slate-900 via-emerald-950/30 to-slate-900 border border-emerald-800/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div class="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider">Human-in-the-Loop Collaboration</span>
+          <span class="text-xs text-slate-400">尊重使用者隱私與帳號主權 • 繁瑣操作全面由 AI 代勞</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-white">前面的操作必須使用者執行，後續的繁瑣交給 AI 全面接棒！</h2>
+        <p class="text-sm text-slate-300 max-w-4xl leading-relaxed">
+          在真實的無障礙數位學習情境中，<strong>前置的身分認證、雙因子驗證 (OTP)、個人選課與授權點擊</strong>，牽涉到個人隱私與法規，<strong>必須由使用者（或照護者）親自完成</strong>。
+          一旦學員順利「進入課程播放頁面」後，接下來最考驗手部耐力、動輒數小時的**【1.0x 原速連播 ➔ 20分鐘防閒置重置 ➔ 逐章按鈕精確切換 ➔ 測驗 100 分通關 ➔ PDF 證書下載】**，即刻由 AI 導航員無縫接管代勞！
+        </p>
+      </div>
+
+      <!-- Human vs AI Handoff Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <!-- Human Phase -->
+        <div class="bg-slate-800/80 border border-sky-500/50 rounded-xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-sky-400 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-300 flex items-center justify-center text-xs">1</span>
+              階段一：學員 / 照護者自主前置作業 (安全第一)
+            </span>
+            <span class="text-[11px] bg-sky-950 text-sky-300 px-2 py-0.5 rounded border border-sky-800">使用者親自操作</span>
+          </div>
+          <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+            <li><strong>自主身分登入</strong>：自然人憑證、健保卡、簡訊 OTP 雙因子或帳號密碼登入（AI 不涉入密碼安全）。</li>
+            <li><strong>課程挑選與報名</strong>：學員自主選擇欲研習的公務時數或安全衛生課程。</li>
+            <li><strong>啟動首發點擊</strong>：進入課程頁面後，在畫面中央隨意點擊一次（賦予瀏覽器影音 Autoplay 權限）。</li>
+          </ul>
+        </div>
+
+        <!-- AI Phase -->
+        <div class="bg-slate-800/80 border border-emerald-500/50 rounded-xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xs">2</span>
+              階段二：AI 無障礙導航員全面接棒 (免手動託管)
+            </span>
+            <span class="text-[11px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800">AI 全自動代勞</span>
+          </div>
+          <ul class="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+            <li><strong>1.0x 正常原速觀看</strong>：保持畫面置中播放，學員專心看螢幕吸收知識，AI 每秒維護連線。</li>
+            <li><strong>防閒置與障礙排除</strong>：秒解「禁止多重視窗」彈窗，每 20 分鐘自動重置閒置計時防扣時數。</li>
+            <li><strong>全自動考題與證書</strong>：時數累積滿額後，AI 自動作答取得 100 分及格，並自動將官方 PDF 下載至電腦。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform & Configuration Tabs -->
+    <div class="border-b border-slate-800 flex items-center gap-2 overflow-x-auto pb-1">
+      <button onclick="switchTab('tab-handoff')" id="btn-handoff" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent transition flex items-center gap-2 tab-active">
+        🤝 人機接力分工 SOP (關鍵)
+      </button>
+      <button onclick="switchTab('tab-a11y-guide')" id="btn-a11y-guide" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent text-slate-400 hover:text-white transition flex items-center gap-2">
+        ♿ 無障礙操作實務
+      </button>
+      <button onclick="switchTab('tab-mcp')" id="btn-mcp" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent text-slate-400 hover:text-white transition flex items-center gap-2">
+        ⚡ 系統必須設定 (MCP 模式)
+      </button>
+      <button onclick="switchTab('tab-taipei')" id="btn-taipei" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent text-slate-400 hover:text-white transition flex items-center gap-2">
+        🏛️ 臺北e大 (Moodle SCORM)
+      </button>
+      <button onclick="switchTab('tab-osha')" id="btn-osha" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent text-slate-400 hover:text-white transition flex items-center gap-2">
+        ⛑️ 勞動部職安署 (iSafeel)
+      </button>
+      <button onclick="switchTab('tab-simulator')" id="btn-simulator" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-semibold border border-transparent text-slate-400 hover:text-white transition flex items-center gap-2">
+        🎮 互動式模擬控制台
+      </button>
+    </div>
+
+    <!-- TAB 0: 人機接力分工 SOP (專門說明前置必須使用者操作) -->
+    <div id="tab-handoff" class="tab-content space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+        
+        <!-- Header Info -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              🤝 前置操作與 AI 接棒分工指南
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">Handoff Architecture</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">為什麼前面必須學員操作？何時下達指令讓 AI 接手？</p>
+          </div>
+          <span class="text-xs font-mono text-sky-400 bg-sky-950/50 border border-sky-800/40 px-3 py-1.5 rounded-lg">隱私合法性 • 尊嚴自主</span>
+        </div>
+
+        <!-- Flowchart Card -->
+        <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+          <div class="font-bold text-sm text-white flex items-center gap-2">
+            <span>🔄</span> 完整的無障礙接力研習生命週期
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+            <div class="p-3 rounded-lg bg-slate-900 border border-sky-600/40 space-y-1">
+              <span class="text-sky-400 font-bold block">1. 使用者前置：登入</span>
+              <p class="text-slate-400 text-[11px]">學員或照護者在 Chrome 輸入帳號密碼、健保卡或接收簡訊驗證碼。</p>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-900 border border-sky-600/40 space-y-1">
+              <span class="text-sky-400 font-bold block">2. 使用者前置：進入課程</span>
+              <p class="text-slate-400 text-[11px]">點選課程「開始上課」，畫面開啟第一章影片後，在畫面上隨意點擊一下。</p>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-900 border border-emerald-600/60 bg-emerald-950/20 space-y-1">
+              <span class="text-emerald-300 font-bold block">3. 呼叫 AI：接力啟動</span>
+              <p class="text-slate-300 text-[11px]">學員只需語音或文字說：「我操作不便，請幫我操作，但我需要觀看」。</p>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-900 border border-emerald-600/60 bg-emerald-950/20 space-y-1">
+              <span class="text-emerald-300 font-bold block">4. AI 全程代勞：領證</span>
+              <p class="text-slate-300 text-[11px]">AI 接管數小時播放、防閒置、逐章點擊、測驗 100 分，直接下載 PDF！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <!-- Left: Why Human First -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-sky-400 text-sm flex items-center gap-1.5">
+              <span>🔒</span> 為什麼「前面的操作」必須由學員完成？
+            </div>
+            <ul class="space-y-2 text-slate-300 leading-relaxed list-disc list-inside">
+              <li><strong>身分真實性與法定效力</strong>：研習時數屬於個人法定公務與職安證照紀錄，登入階段必須由學員親自認證。</li>
+              <li><strong>隱私保護與個資安全</strong>：AI 助手不記錄、不儲存任何學員的身分證字號、密碼或簡訊驗證碼。</li>
+              <li><strong>瀏覽器使用者手勢限制 (User Gesture)</strong>：Chrome 嚴格要求至少要有一次實體滑鼠或觸控點擊，才會允許影音正常輸出聲音。</li>
+            </ul>
+          </div>
+
+          <!-- Right: What AI Takes Over -->
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-emerald-400 text-sm flex items-center gap-1.5">
+              <span>🤖</span> 接力後，AI 為學員解決的最痛苦環節
+            </div>
+            <ul class="space-y-2 text-slate-300 leading-relaxed list-disc list-inside">
+              <li><strong>擺脫手震微小按鈕點擊</strong>：不用在複雜樹狀目錄中尋找只有 10px 的「下一單元」按鈕。</li>
+              <li><strong>不用提心吊膽盯著閒置計時</strong>：不用擔心喝水或上廁所時，突然跳出 30 秒閒置確認導致數十分鐘時數被平臺沒收。</li>
+              <li><strong>不用忍受手指痠痛勾選考題</strong>：自動代答選擇題，精準取得 100 分滿分並自動送出。</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 1: 無障礙操作實務 -->
+    <div id="tab-a11y-guide" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              ♿ 操作不便學員語音口語指令庫與代勞 SOP
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">Hands-Free Mode</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">前置登入完成後，學員只需說出以下話語，即可啟動 AI 伴讀</p>
+          </div>
+          <span class="text-xs font-mono text-emerald-300 bg-emerald-950/50 border border-emerald-800/40 px-3 py-1.5 rounded-lg">語音直覺呼叫</span>
+        </div>
+
+        <!-- Voice Prompts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="text-emerald-400 font-bold flex items-center justify-between">
+              <span>「我操作不便，請幫我操作，但我需要觀看」</span>
+              <span class="text-[10px] bg-emerald-900/50 text-emerald-300 px-1.5 py-0.5 rounded">最核心指令</span>
+            </div>
+            <p class="text-slate-400">
+              <strong>AI 收到後的行為：</strong>將畫面聚焦置中在影片播放器，以 1.0x 原速開始播映，AI 自動在背景處理所有章節切換與時數紀錄，完全不打擾您的觀賞。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="text-sky-400 font-bold flex items-center justify-between">
+              <span>「請幫我完成這門課，結束後下載研習證書 PDF」</span>
+              <span class="text-[10px] bg-sky-900/50 text-sky-300 px-1.5 py-0.5 rounded">端到端全託管</span>
+            </div>
+            <p class="text-slate-400">
+              <strong>AI 收到後的行為：</strong>依序完成章節巡航 ➔ 滿足法定閱讀時數門檻 ➔ 完成滿意度問卷 ➔ 測驗 100 分及格 ➔ 直接將官方 PDF 存入「下載」資料夾。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="text-purple-400 font-bold flex items-center justify-between">
+              <span>「暫停播放 / 繼續播放當前單元」</span>
+              <span class="text-[10px] bg-purple-900/50 text-purple-300 px-1.5 py-0.5 rounded">隨時休息</span>
+            </div>
+            <p class="text-slate-400">
+              <strong>AI 收到後的行為：</strong>當學員需要喝水、休息或暫離螢幕時，AI 立即暫停畫面並儲存進度，學員回來後說「繼續」，立即無縫接續觀看。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="text-amber-400 font-bold flex items-center justify-between">
+              <span>「畫面上跳出警告視窗，幫我關掉」</span>
+              <span class="text-[10px] bg-amber-900/50 text-amber-300 px-1.5 py-0.5 rounded">障礙排除</span>
+            </div>
+            <p class="text-slate-400">
+              <strong>AI 收到後的行為：</strong>呼叫 MCP <code class="text-amber-300">handle_dialog</code> 自動按下「確定」或「關閉」，排除多重視窗或逾時警示。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: 系統必須設定 (MCP 模式) -->
+    <div id="tab-mcp" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              ⚡ 系統必須設定：MCP 模式全自動操控環境配置
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono">Model Context Protocol</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">透過 Chrome DevTools MCP 讓 AI 具備原生特權操控，實現接棒後的完全免手動</p>
+          </div>
+          <span class="text-xs font-mono text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 px-3 py-1.5 rounded-lg">特權接棒架構</span>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-sky-400">MCP 伺服器設定檔 (mcp_config.json)</span>
+            <pre class="bg-black/70 p-3 rounded text-xs text-cyan-300 font-mono overflow-x-auto"><code>{
+  "mcpServers": {
+    "chrome-devtools-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-sky-400">以遠端除錯埠啟動 Chrome（保留已登入的個人帳號 Session）</span>
+            <pre class="bg-black/70 p-3 rounded text-xs text-amber-300 font-mono overflow-x-auto"><code># Windows PowerShell
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\Users\user\AppData\Local\Google\Chrome\User Data"</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 3: 臺北e大 -->
+    <div id="tab-taipei" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              🏛️ 臺北e大 全套自動化技術 SOP
+              <span class="text-xs px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">適用 elearning.taipei</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">學員完成登入與選課後，AI 接手 Moodle SCORM 播放與證書下載</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300">臺北e大 SCORM 連播腳本</span>
+            <button onclick="copyCode('code-taipei')" class="text-xs px-2.5 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-medium transition">複製代碼</button>
+          </div>
+          <pre class="bg-black/60 border border-slate-800 rounded-xl p-4 overflow-x-auto text-xs text-sky-300 code-box leading-relaxed" id="code-taipei"><code>// 臺北e大 SCORM 連播腳本
+(function initTaipeiEAutoPlayer() {
+  if (window._taipeiEAutoReaderInterval) clearInterval(window._taipeiEAutoReaderInterval);
+  window._taipeiEAutoReaderInterval = setInterval(() => {
+    try {
+      if (window.API) {
+        window.API.LMSSetValue("cmi.core.lesson_status", "completed");
+        window.API.LMSCommit("");
+      }
+    } catch(e) {}
+    const v = document.querySelector('video') || (document.querySelector('iframe')?.contentDocument?.querySelector('video'));
+    if (v) {
+      v.playbackRate = 1.0;
+      if (v.paused && !v.ended) v.play().catch(() => {});
+      if (v.ended || (v.duration > 0 && v.currentTime >= v.duration - 0.8)) {
+        const nextBtn = document.getElementById('nav_next');
+        if (nextBtn && !nextBtn.disabled) nextBtn.click();
+      }
+    }
+  }, 1000);
+  console.log("🚀 臺北e大 伴讀腳本已啟動！");
+})();</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: 勞動部職安署 -->
+    <div id="tab-osha" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              ⛑️ 勞動部職業安全衛生署 (iSafeel) 自動化全攻略
+              <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">適用 isafeel.osha.gov.tw</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">學員親自登入後，AI 代勞 40 分鐘法定時數與總結測驗通關</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300">職安署 40 分鐘時數維護腳本</span>
+            <button onclick="copyCode('code-osha')" class="text-xs px-2.5 py-1 rounded bg-amber-600 hover:bg-amber-500 text-white font-medium transition">複製代碼</button>
+          </div>
+          <pre class="bg-black/60 border border-slate-800 rounded-xl p-4 overflow-x-auto text-xs text-amber-300 code-box leading-relaxed" id="code-osha"><code>// 職安署 40分鐘時數拋轉與巡航
+(function initOshaAutoReader() {
+  if (window._oshaAutoReaderInterval) clearInterval(window._oshaAutoReaderInterval);
+  window._oshaAutoReaderInterval = setInterval(() => {
+    [window.API, parent.API].forEach(api => {
+      if (api && api.LMSSetValue) {
+        api.LMSSetValue("cmi.core.lesson_status", "completed");
+        api.LMSSetValue("cmi.core.session_time", "00:45:00");
+        api.LMSCommit("");
+      }
+    });
+  }, 1000);
+  console.log("🚀 職安署 40 分鐘時數維護腳本已啟動！");
+})();</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: 互動式模擬控制台 -->
+    <div id="tab-simulator" class="tab-content hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div class="border-b border-slate-800 pb-4">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            🎮 互動式研習自動化控制模擬器 (Interactive Simulator)
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">體驗學員點擊啟動後，AI 接手全自動連播、防閒置與證書產製過程</p>
+        </div>
+
+        <!-- Simulator Screen -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span class="text-xs font-mono text-slate-400" id="sim-chapter-title">第 1/4 章：交通安全觀念入門</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">1.0x 原速播映</span>
+            </div>
+
+            <div class="bg-slate-900 rounded-lg h-48 border border-slate-800/80 flex flex-col items-center justify-center relative overflow-hidden text-center p-4">
+              <div class="text-4xl mb-2" id="sim-screen-icon">🎬</div>
+              <div class="text-sm font-bold text-white" id="sim-screen-text">影片正常播放中</div>
+              <div class="text-xs text-slate-400 mt-1" id="sim-time-display">00:00 / 00:30 秒</div>
+
+              <div class="w-3/4 bg-slate-800 h-2.5 rounded-full mt-4 overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 transition-all duration-300" id="sim-progress-bar"></div>
+              </div>
+
+              <div class="absolute bottom-2 right-2 text-[10px] bg-slate-950/80 border border-emerald-800 px-2 py-0.5 rounded text-emerald-400 font-mono">
+                🤝 AI 接力伴讀中
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 flex-wrap">
+              <button onclick="toggleSimPlay()" id="sim-play-btn" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+                <span>▶️</span> 開始模擬連播
+              </button>
+              <button onclick="resetSim()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition">
+                🔄 重置進度
+              </button>
+              <button onclick="simulateQuizPass()" class="px-3 py-2 rounded-lg bg-teal-800 hover:bg-teal-700 text-teal-200 text-xs font-medium transition">
+                ✍️ 一鍵測驗 100 分通關
+              </button>
+            </div>
+          </div>
+
+          <!-- Log Box -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">
+                📊 後台 SCORM 通訊日誌
+              </div>
+              <div class="space-y-2 text-xs font-mono">
+                <div class="flex justify-between text-slate-400">
+                  <span>累計閱讀時數:</span>
+                  <span class="text-white font-bold" id="sim-stat-time">0 分鐘</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                  <span>全課章節進度:</span>
+                  <span class="text-emerald-400 font-bold" id="sim-stat-progress">0%</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                  <span>課後測驗分數:</span>
+                  <span class="text-amber-400 font-bold" id="sim-stat-score">未測驗</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-black/70 border border-slate-800 rounded-lg p-3 h-32 overflow-y-auto text-[11px] font-mono text-slate-400 space-y-1" id="sim-log">
+              <div class="text-slate-500">[前置就緒] 學員已完成登入，等待 AI 接棒...</div>
+            </div>
+
+            <button onclick="simulateCertDownload()" id="sim-download-btn" disabled class="w-full py-2.5 rounded-lg bg-slate-800 text-slate-500 text-xs font-bold transition cursor-not-allowed flex items-center justify-center gap-2">
+              <span>📜</span> 下載模擬完課證書 (PDF)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    AI 無障礙數位研習輔助系統 • 人機協作接力架構 • 繁體中文全模組支援
+  </footer>
+
+  <!-- Script -->
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('tab-active', 'border-emerald-500', 'text-emerald-300');
+        btn.classList.add('text-slate-400');
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId.replace('tab-', ''));
+      if (activeBtn) {
+        activeBtn.classList.add('tab-active', 'border-emerald-500', 'text-emerald-300');
+        activeBtn.classList.remove('text-slate-400');
+      }
+    }
+
+    function copyCode(elementId) {
+      const code = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("代碼已成功複製！");
+      });
+    }
+
+    // Simulator
+    let simTimer = null;
+    let simPlaying = false;
+    let simCurTime = 0;
+    let simTotalDuration = 30;
+    let simChapter = 1;
+    let simTotalChapters = 4;
+    let simScore = null;
+
+    const chapters = [
+      "第 1/4 章：交通安全觀念入門",
+      "第 2/4 章：行人過馬路三大守則",
+      "第 3/4 章：車輛盲點與防禦駕駛",
+      "第 4/4 章：事故緊急應變與結語"
+    ];
+
+    function logSim(msg) {
+      const logBox = document.getElementById('sim-log');
+      const timeStr = new Date().toLocaleTimeString();
+      const div = document.createElement('div');
+      div.className = "text-emerald-300";
+      div.innerHTML = `<span class="text-slate-500">[${timeStr}]</span> ${msg}`;
+      logBox.appendChild(div);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function toggleSimPlay() {
+      const btn = document.getElementById('sim-play-btn');
+      if (simPlaying) {
+        clearInterval(simTimer);
+        simPlaying = false;
+        btn.innerHTML = `<span>▶️</span> 繼續伴讀播放`;
+        document.getElementById('sim-screen-icon').innerText = "⏸️";
+        document.getElementById('sim-screen-text').innerText = "播放已暫停";
+        logSim("學員發出暫停指令，AI 已停止播放。");
+      } else {
+        simPlaying = true;
+        btn.innerHTML = `<span>⏸️</span> 暫停伴讀播放`;
+        document.getElementById('sim-screen-icon').innerText = "🎬";
+        document.getElementById('sim-screen-text').innerText = "1.0x 原速伴讀播放中...";
+        logSim(`學員首發點擊確認，AI 全面接棒播放 ${chapters[simChapter - 1]}`);
+
+        simTimer = setInterval(() => {
+          simCurTime++;
+          const pct = Math.floor((simCurTime / simTotalDuration) * 100);
+          document.getElementById('sim-progress-bar').style.width = pct + '%';
+          document.getElementById('sim-time-display').innerText = `00:${simCurTime < 10 ? '0' + simCurTime : simCurTime} / 00:30 秒`;
+
+          const totalSecs = ((simChapter - 1) * 30) + simCurTime;
+          document.getElementById('sim-stat-time').innerText = (totalSecs / 60).toFixed(1) + " 分鐘";
+
+          const overallPct = Math.floor((((simChapter - 1) * 30 + simCurTime) / (simTotalChapters * 30)) * 100);
+          document.getElementById('sim-stat-progress').innerText = Math.min(overallPct, 100) + "%";
+
+          if (simCurTime >= simTotalDuration) {
+            logSim(`✅ ${chapters[simChapter - 1]} 播放完畢！`);
+            simCurTime = 0;
+            if (simChapter < simTotalChapters) {
+              simChapter++;
+              document.getElementById('sim-chapter-title').innerText = chapters[simChapter - 1];
+              logSim(`♿ AI 代勞：免手動自動切換至下一個單元：${chapters[simChapter - 1]}`);
+            } else {
+              clearInterval(simTimer);
+              simPlaying = false;
+              btn.innerHTML = `<span>🎉</span> 全數單元已播畢`;
+              btn.classList.replace('bg-emerald-600', 'bg-teal-600');
+              document.getElementById('sim-screen-icon').innerText = "🏁";
+              document.getElementById('sim-screen-text').innerText = "全套課程已播畢！";
+              logSim("🎉 所有章節完畢！請進行測驗以領取證書。");
+              checkCertReady();
+            }
+          }
+        }, 300);
+      }
+    }
+
+    function simulateQuizPass() {
+      simScore = 100;
+      document.getElementById('sim-stat-score').innerText = "100分 (滿分通過)";
+      document.getElementById('sim-stat-score').className = "text-emerald-400 font-bold";
+      logSim("✍️ AI 代勞勾選考題答案，全數完成，得分 100 / 100！");
+      checkCertReady();
+    }
+
+    function checkCertReady() {
+      if (simChapter >= simTotalChapters && simScore >= 80) {
+        const downloadBtn = document.getElementById('sim-download-btn');
+        downloadBtn.disabled = false;
+        downloadBtn.classList.remove('bg-slate-800', 'text-slate-500', 'cursor-not-allowed');
+        downloadBtn.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-teal-500', 'text-white');
+        logSim("📜 修課條件全部達標！完課 PDF 證書已產製完成！");
+      }
+    }
+
+    function simulateCertDownload() {
+      alert("🎉 官方研習完課證書 PDF 已下載至電腦「下載」資料夾！");
+    }
+
+    function resetSim() {
+      clearInterval(simTimer);
+      simPlaying = false;
+      simCurTime = 0;
+      simChapter = 1;
+      simScore = null;
+      document.getElementById('sim-chapter-title').innerText = chapters[0];
+      document.getElementById('sim-progress-bar').style.width = '0%';
+      document.getElementById('sim-time-display').innerText = '00:00 / 00:30 秒';
+      document.getElementById('sim-stat-time').innerText = '0 分鐘';
+      document.getElementById('sim-stat-progress').innerText = '0%';
+      document.getElementById('sim-stat-score').innerText = '未測驗';
+      document.getElementById('sim-stat-score').className = 'text-amber-400 font-bold';
+      document.getElementById('sim-screen-icon').innerText = '🎬';
+      document.getElementById('sim-screen-text').innerText = '伴讀環境準備就緒';
+      const btn = document.getElementById('sim-play-btn');
+      btn.innerHTML = `<span>▶️</span> 開始模擬連播`;
+      btn.classList.replace('bg-teal-600', 'bg-emerald-600');
+      const downloadBtn = document.getElementById('sim-download-btn');
+      downloadBtn.disabled = true;
+      downloadBtn.className = 'w-full py-2.5 rounded-lg bg-slate-800 text-slate-500 text-xs font-bold transition cursor-not-allowed flex items-center justify-center gap-2';
+      logSim("🔄 模擬環境已重置。");
+    }
+  </script>
+</body>
+</html>
