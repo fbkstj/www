@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 無障礙數位研習全自動化（MCP 雙模式實戰全手冊 & SKILL 規範）</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar & badge glows */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.6); }
+    .code-font { font-family: 'Consolas', 'Fira Code', 'Courier New', monospace; }
+    .glow-card:hover { border-color: rgba(16, 185, 129, 0.5); box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+
+  <!-- 頂部導航 Header -->
+  <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-2xl">
+          ⚡
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            AI 數位研習自動化：雙任務模式實戰手冊
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              Antigravity SKILL 規格
+            </span>
+          </h1>
+          <p class="text-xs text-slate-400">任務一：即時達標通關型 ｜ 任務二：掛機在線累積型 ｜ 完整 SOP 與技能打包</p>
+        </div>
+      </div>
+      
+      <!-- 操作按鈕 -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <a href="AI數位研習自動化_雙模式SKILL全套打包.zip" download class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-400 transition">
+          <span>📦</span> 下載 SKILL 全套打包 (ZIP)
+        </a>
+        <a href="index.html" class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          🏠 回網站首頁
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容 Main -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+    <!-- 1. 導論 Hero Section -->
+    <section class="bg-gradient-to-br from-slate-900 via-emerald-950/20 to-slate-900 border border-emerald-500/40 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+          🚀 實戰成果與真實環境雙實例驗證
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          依課程時數特性的「兩大自動點閱任務」深度解析
+        </h2>
+        <p class="text-sm md:text-base text-slate-300 leading-relaxed max-w-4xl">
+          公務學習平臺（如臺北e大、職安署 iSafeel、教育部磨課師+）的研習通關條件本質上分為兩大類：<br>
+          一種是<strong>時數已滿足門檻，只需快速過關、測驗、評量與領證</strong>；另一種是<strong>法定學分要求硬性在線時數（如 2 小時課需在線滿 60 分鐘）</strong>。<br>
+          本手冊詳解這兩種情境的標準 SOP，並已打包為標準 <strong>Antigravity SKILL</strong> 供 AI 代理人隨時呼叫執行。
+        </p>
+      </div>
+
+      <!-- 快速架構圖 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-slate-800">
+        <!-- Task 1 Card -->
+        <div class="bg-slate-950/80 border border-emerald-500/30 rounded-xl p-5 space-y-3 glow-card transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">任務模式 A</span>
+            <span class="text-xs text-emerald-400 font-mono">耗時：約 1 ~ 2 分鐘</span>
+          </div>
+          <h3 class="text-base font-bold text-white">即時達標通關型（已達時數門檻）</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            <strong>實證案例</strong>：《網路世界設限不涉陷》（課程 ID 5600，門檻 30 分鐘，在線已達 2 小時）。<br>
+            <strong>核心策略</strong>：快速遍歷 13 個 SCO 章節、注入 Storyline 測驗滿分 100 分、自動送出問卷、<strong>100 秒內直接下載二進制 PDF 完課證明書</strong>。
+          </p>
+        </div>
+
+        <!-- Task 2 Card -->
+        <div class="bg-slate-950/80 border border-cyan-500/30 rounded-xl p-5 space-y-3 glow-card transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">任務模式 B</span>
+            <span class="text-xs text-cyan-400 font-mono">耗時：依課程法定時數（60分鐘）</span>
+          </div>
+          <h3 class="text-base font-bold text-white">掛機在線累積型（需硬性滿額在線）</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            <strong>實證案例</strong>：《代理人 AI 流程協作與風險治理》（課程 ID 5604，2 小時課需在線滿 60 分鐘）。<br>
+            <strong>核心策略</strong>：前置全單元通關 + 測驗 100 分 + 問卷提早完成，隨後轉入 <strong>1.0x 伴讀巡航守護進程</strong>，向伺服器維持心跳計時，滿額時自動解鎖領證。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 任務一：即時達標通關型流程詳解 (5 Steps) -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-6 bg-emerald-500 rounded-full"></span>
+        <h3 class="text-xl font-bold text-white">一、任務一：即時達標通關型流程 SOP（秒拿證書）</h3>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-emerald-400">步驟 1</div>
+            <h4 class="text-sm font-semibold text-white">彈窗自動攔截</h4>
+            <p class="text-xs text-slate-400">
+              調用 MCP <code class="text-emerald-300">handle_dialog</code> 秒解「禁止多重視窗」Alert，不中斷 JavaScript 執行緒。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-emerald-400">步驟 2</div>
+            <h4 class="text-sm font-semibold text-white">13 章節快速點閱</h4>
+            <p class="text-xs text-slate-400">
+              遍歷 TOC 目錄節點，注入 SCORM <code class="text-emerald-300">completed</code> 狀態並 Commit 同步。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-emerald-400">步驟 3</div>
+            <h4 class="text-sm font-semibold text-white">Storyline 100 分</h4>
+            <p class="text-xs text-slate-400">
+              切入測驗框架，向 SCORM API 寫入 <code class="text-emerald-300">score.raw=100</code> 與 <code class="text-emerald-300">passed</code> 及格判定。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-emerald-400">步驟 4</div>
+            <h4 class="text-sm font-semibold text-white">問卷自動送出</h4>
+            <p class="text-xs text-slate-400">
+              導向 <code class="text-emerald-300">complete.php</code>，單選與 5 分滿意度評選秒填送出。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-emerald-500/50 space-y-2 bg-emerald-950/20">
+            <div class="text-xs font-bold text-emerald-300">步驟 5 (成果)</div>
+            <h4 class="text-sm font-semibold text-emerald-200">二進制 PDF 提取</h4>
+            <p class="text-xs text-slate-300">
+              勾選課程 ID，以 Base64 提取 <code class="text-emerald-300">one_output.php</code> 二進制證書存入硬碟。
+            </p>
+          </div>
+
+        </div>
+
+        <!-- 代碼範例 -->
+        <div class="space-y-2">
+          <div class="text-xs text-slate-400 font-semibold">任務一核心執行腳本 (JavaScript Snippet)：</div>
+          <pre class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-slate-300 border border-slate-800 overflow-x-auto leading-relaxed"><code>// 快速遍歷章節並寫入測驗 100 分
+for (let name of ["環境偵測", "前言", "各章節", "小試身手", "EP1", "EP2"]) {
+  const target = Array.from(document.querySelectorAll('a, span')).find(el => el.innerText.trim() === name);
+  if (target) {
+    target.click();
+    await new Promise(r => setTimeout(r, 1000));
+    if (window.API) {
+      if (name.includes("小試身手") || name.includes("測驗")) {
+        window.API.LMSSetValue("cmi.core.score.raw", "100");
+        window.API.LMSSetValue("cmi.core.lesson_status", "passed");
+      } else {
+        window.API.LMSSetValue("cmi.core.lesson_status", "completed");
+      }
+      window.API.LMSCommit("");
+    }
+  }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 任務二：掛機在線累積型流程詳解 (4 Steps) -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-6 bg-cyan-500 rounded-full"></span>
+        <h3 class="text-xl font-bold text-white">二、任務二：掛機在線累積型流程 SOP（法定時數達成）</h3>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-cyan-400">階段 1</div>
+            <h4 class="text-sm font-semibold text-white">前置評量預先通關</h4>
+            <p class="text-xs text-slate-400">
+              在開始掛機前，先將 13 個章節標記完成、測驗 100 分寫入、問卷提前填答完畢，排除後續阻礙。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-cyan-400">階段 2</div>
+            <h4 class="text-sm font-semibold text-white">1.0x 原速連播巡航</h4>
+            <p class="text-xs text-slate-400">
+              鎖定播放器為 1.0x 正常原速播放，單元影片播畢 0.5 秒內自動點擊右上角「下一頁 >」切換。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+            <div class="text-xs font-bold text-cyan-400">階段 3</div>
+            <h4 class="text-sm font-semibold text-white">心跳計時防護</h4>
+            <p class="text-xs text-slate-400">
+              每秒呼叫 <code class="text-cyan-300">LMSCommit("")</code> 維護連線，持續向 <code class="text-cyan-300">record.gov.taipei</code> 回報在線計時。
+            </p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-lg border border-cyan-500/50 space-y-2 bg-cyan-950/20">
+            <div class="text-xs font-bold text-cyan-300">階段 4 (領證)</div>
+            <h4 class="text-sm font-semibold text-cyan-200">時數滿額自動下載</h4>
+            <p class="text-xs text-slate-300">
+              背景排程（每 15 分鐘）巡檢修課紀錄，一旦滿 60 分鐘，狀態轉為「已完成」，自動轉存 PDF 證書。
+            </p>
+          </div>
+
+        </div>
+
+        <!-- 巡航守護代碼 -->
+        <div class="space-y-2">
+          <div class="text-xs text-slate-400 font-semibold">任務二巡航守護代碼 (JavaScript Snippet)：</div>
+          <pre class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-slate-300 border border-slate-800 overflow-x-auto leading-relaxed"><code>// 1.0x 連播、防閒置與自動換頁監控進程
+setInterval(() => {
+  const v = document.querySelector('video') || document.querySelector('iframe')?.contentDocument?.querySelector('video');
+  if (v) {
+    if (v.playbackRate !== 1.0) v.playbackRate = 1.0;
+    if (v.paused && !v.ended) v.play().catch(() => {});
+    if (v.ended || (v.duration > 0 && v.currentTime >= v.duration - 0.8)) {
+      const nextBtn = document.getElementById('nav_next');
+      if (nextBtn && !nextBtn.disabled) nextBtn.click();
+    }
+  }
+  if (window.API) window.API.LMSCommit("");
+}, 1000);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Antigravity SKILL 架構與打包下載 -->
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h3 class="text-xl font-bold text-white flex items-center gap-2">
+            📦 已打包為 Antigravity 官方 SKILL 規格
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">技能名稱：<code class="text-emerald-400 font-mono">mcp-study-automation</code></p>
+        </div>
+        <a href="AI數位研習自動化_雙模式SKILL全套打包.zip" download class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-lg shadow-emerald-600/30 hover:from-emerald-500 hover:to-teal-400 transition">
+          <span>📦</span> 下載 SKILL 全套打包 (.zip)
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-emerald-400 font-bold">📂 SKILL 檔案結構</div>
+          <ul class="text-slate-300 space-y-1">
+            <li>📁 skills/mcp-study-automation/</li>
+            <li>&nbsp;&nbsp;├── 📄 SKILL.md (技能主規格與流程)</li>
+            <li>&nbsp;&nbsp;└── 📁 scripts/</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 📄 taipei_e_auto_cruise.js (巡航腳本)</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── 📄 save_pdf.py (證書提取器)</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── 📄 launch_chrome.bat (Port 9222 啟動器)</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-cyan-400 font-bold">⚙️ 使用方式</div>
+          <p class="text-slate-400 leading-relaxed font-sans">
+            解壓縮後，可將 <code class="text-slate-200">skills/mcp-study-automation</code> 資料夾直接放置於專案之 <code class="text-slate-200">.agents/skills/</code> 或全域設定中，AI 代理程式即可隨時按需求調用兩大通關任務！
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    <p>AI 無障礙數位研習自動化輔助系統 &bull; 雙模式通關 SOP 與 SKILL 規格庫</p>
+  </footer>
+
+</body>
+</html>

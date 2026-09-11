@@ -9,6 +9,9 @@ https://fbkstj.github.io/www/
 AI 數位研習無障礙伴讀系統：
 https://fbkstj.github.io/www/ai_course_automation_skills.html
 
+AI 數位研習 MCP 雙模式實戰手冊：
+https://fbkstj.github.io/www/mcp_course_automation_guide.html
+
 數位電子乙級評審表設定頁：
 https://fbkstj.github.io/www/digi_el.html
 
