@@ -670,17 +670,36 @@
                     <span class="chevron">&#9656;</span>
                 </button>
                 <div class="nav-sub" data-group="map">
-                    <div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="roster.html">輪值表產生器</button>
-                            <button class="nav-sub-item" data-src="coursemap112.html">課程地圖 112學年・列印版</button>
-                            <button class="nav-sub-item" data-src="coursemap_premium112.html">課程地圖 112學年・互動版</button>
-                            <button class="nav-sub-item" data-src="coursemap113.html">課程地圖 113學年・列印版</button>
-                            <button class="nav-sub-item" data-src="coursemap_premium113.html">課程地圖 113學年・互動版</button>
-                            <button class="nav-sub-item" data-src="coursemap114.html">課程地圖 114學年・列印版</button>
-                            <button class="nav-sub-item" data-src="coursemap_premium114.html">課程地圖 114學年・互動版</button>
-                            <button class="nav-sub-item" data-src="coursemap115.html">課程地圖 115學年・列印版</button>
-                            <button class="nav-sub-item" data-src="coursemap_premium115.html">課程地圖 115學年・互動版</button>
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：實習處行政管理 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📋 實習處行政管理</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="roster.html">輪值表產生器</button>
+                            </div>
+                        </div>
+
+                        <!-- 第 1 層第 2 個選項：各學年課程地圖 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>🗺️ 各學年課程地圖</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="coursemap112.html">課程地圖 112學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium112.html">課程地圖 112學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap113.html">課程地圖 113學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium113.html">課程地圖 113學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap114.html">課程地圖 114學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium114.html">課程地圖 114學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap115.html">課程地圖 115學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium115.html">課程地圖 115學年・互動版</button>
+                            </div>
                         </div>
                     </div>
                 </div>
