@@ -812,11 +812,6 @@
                 <span>🕒 網頁更新：</span><span class="updateTimeTop">2026-09-11 20:56</span>
             </div>
 
-            <button class="nav-item" id="ghLoginBtn" style="background: linear-gradient(135deg, #24292e, #1f2328); border: 1px solid rgba(255, 255, 255, 0.3); font-size: 0.85rem; color: #ffffff; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;" title="使用 GitHub 帳號登入">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                <span id="ghLoginText">GitHub 帳號登入</span>
-            </button>
-
             <button class="nav-item" id="shareBtn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.85rem;" title="複製目前頁面的獨立分享網址">
                 🔗 複製本頁獨立網址
             </button>
@@ -1385,97 +1380,6 @@
 
     // Check route on initial load
     checkHashRoute();
-
-    // GitHub Login Modal Implementation
-    const ghModal = document.getElementById('ghModal');
-    const ghLoginBtn = document.getElementById('ghLoginBtn');
-    const ghLoginText = document.getElementById('ghLoginText');
-    const closeGhModal = document.getElementById('closeGhModal');
-    const doGhLoginBtn = document.getElementById('doGhLoginBtn');
-    const ghUsernameInput = document.getElementById('ghUsernameInput');
-
-    function updateGhLoginState() {
-        const savedUser = localStorage.getItem('gh_user');
-        if (savedUser) {
-            if (ghLoginText) ghLoginText.innerText = `👤 ${savedUser} (登出)`;
-            if (ghLoginBtn) ghLoginBtn.title = `目前登入：${savedUser}（點擊可登出）`;
-        } else {
-            if (ghLoginText) ghLoginText.innerText = 'GitHub 帳號登入';
-            if (ghLoginBtn) ghLoginBtn.title = '使用 GitHub 帳號登入';
-        }
-    }
-
-    if (ghLoginBtn) {
-        ghLoginBtn.addEventListener('click', () => {
-            const savedUser = localStorage.getItem('gh_user');
-            if (savedUser) {
-                if (confirm(`目前已使用 GitHub 帳號「${savedUser}」登入。\n是否要登出？`)) {
-                    localStorage.removeItem('gh_user');
-                    updateGhLoginState();
-                    alert('已成功登出 GitHub 帳號！');
-                }
-            } else {
-                if (ghModal) ghModal.style.display = 'flex';
-                if (ghUsernameInput) ghUsernameInput.focus();
-            }
-        });
-    }
-
-    if (closeGhModal) {
-        closeGhModal.addEventListener('click', () => {
-            if (ghModal) ghModal.style.display = 'none';
-        });
-    }
-
-    function performGhLogin() {
-        const username = ghUsernameInput ? ghUsernameInput.value.trim() : '';
-        if (!username) {
-            alert('請輸入 GitHub 使用者名稱！');
-            return;
-        }
-        localStorage.setItem('gh_user', username);
-        updateGhLoginState();
-        if (ghModal) ghModal.style.display = 'none';
-        alert(`🎉 已成功使用 GitHub 帳號「${username}」登入系統！`);
-    }
-
-    if (doGhLoginBtn) {
-        doGhLoginBtn.addEventListener('click', performGhLogin);
-    }
-
-    if (ghUsernameInput) {
-        ghUsernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performGhLogin();
-        });
-    }
-
-    // Initialize GitHub login state
-    updateGhLoginState();
 </script>
-
-<!-- GitHub 登入對話框 Modal -->
-<div id="ghModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem;">
-    <div style="background: #ffffff; width: 100%; max-width: 420px; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.35); overflow: hidden; font-family: inherit;">
-        <div style="background: #24292e; color: #ffffff; padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem;">
-                <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                <span>GitHub 帳號登入</span>
-            </div>
-            <button id="closeGhModal" style="background: transparent; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
-        </div>
-        <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem;">
-            <p style="font-size: 0.92rem; color: #475569; margin: 0; line-height: 1.5;">
-                請輸入您的 <strong>GitHub 使用者名稱 (Username)</strong> 進行帳號登入與身分驗證：
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <label style="font-size: 0.85rem; font-weight: 700; color: #334155;">GitHub 使用者名稱</label>
-                <input type="text" id="ghUsernameInput" value="fbkstj" placeholder="例如：fbkstj" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s;" />
-            </div>
-            <button id="doGhLoginBtn" style="background: #24292e; color: #ffffff; padding: 0.8rem 1rem; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                🚀 確認登入 (Sign In)
-            </button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
