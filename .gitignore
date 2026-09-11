@@ -15,3 +15,6 @@ __pycache__/
 *.pyc
 .vscode/
 .idea/
+
+client_secrets.json
+yt_token.json

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 課程影片自動化剪輯與發布 - 完整實戰教學指南</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #0f172a;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --heading-color: #0f172a;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-color: #f8fafc;
+            --accent-green: #10b981;
+            --accent-amber: #d97706;
+            --accent-rose: #e11d48;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 專案雙向連動控制列 */
+        .project-nav-bar {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid #334155;
+            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .project-nav-title {
+            font-weight: 700;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .nav-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .nav-btn.primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .nav-btn.success {
+            background-color: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        .nav-btn.success:hover {
+            background-color: #047857;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0 0 1rem 0;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        nav.toc {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        nav.toc h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: var(--heading-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        nav.toc ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0;
+        }
+
+        nav.toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        nav.toc a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        section.card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        h2.section-title {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            color: white;
+            background-color: var(--primary-color);
+        }
+
+        .badge.warning { background-color: var(--accent-amber); color: #ffffff; }
+        .badge.danger { background-color: var(--accent-rose); }
+        .badge.success { background-color: var(--accent-green); }
+
+        .callout {
+            border-left: 4px solid var(--primary-color);
+            background-color: #eff6ff;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.25rem 0;
+        }
+
+        .callout.warning {
+            border-left-color: var(--accent-amber);
+            background-color: #fffbeb;
+        }
+
+        .callout.danger {
+            border-left-color: var(--accent-rose);
+            background-color: #fff1f2;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .step-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 頂部雙向專案切換與快捷連動列 -->
+<div class="project-nav-bar">
+    <div class="project-nav-title">
+        🔗 專案連動導覽面板
+    </div>
+    <div class="project-nav-links">
+        <a href="file:///d:/影片編輯/一鍵自動化執行.bat" class="nav-btn primary">
+            ⚡ 一鍵執行剪輯批次檔
+        </a>
+        <a href="file:///d:/影片編輯/AI課程影片全自動剪輯發布技能包_完整一鍵包.zip" class="nav-btn success">
+            📦 下載大滿貫技能包 ZIP
+        </a>
+        <a href="https://www.youtube.com/watch?v=CClkQXBeFHQ&list=PLZEegqKWxqrY" target="_blank" class="nav-btn">
+            🍿 開啟 YouTube 專屬播放清單
+        </a>
+        <a href="file:///d:/影片編輯/" class="nav-btn">
+            📂 開啟專案工作目錄 (d:\影片編輯)
+        </a>
+    </div>
+</div>
+
+<header>
+    <h1>🎬 AI 課程影片自動化剪輯與發布教學指南</h1>
+    <p>從影片整理、無聲裁切、Whisper 語音辨識、高職電機電子群專有名詞注入、單行字幕重構到 YouTube API 批次發布與跨電腦移植的完整實戰全紀錄</p>
+</header>
+
+<div class="container">
+
+    <!-- 目錄區 -->
+    <nav class="toc">
+        <h2>📑 本教學目錄 (Table of Contents)</h2>
+        <ul>
+            <li><a href="#sec-overview">1. 工作流全景圖與架構概述</a></li>
+            <li><a href="#sec-phase1">2. 第一階段：原始檔整理與標準化命名</a></li>
+            <li><a href="#sec-phase2">3. 第二階段：智能無聲裁切與噪音過濾</a></li>
+            <li><a href="#sec-phase3">4. 第三階段：Whisper 語音辨識與高職電機電子群專有名詞注入</a></li>
+            <li><a href="#sec-phase4">5. 第四階段：字幕重構黃金法則與美學規範</a></li>
+            <li><a href="#sec-phase5">6. 第五階段：FFmpeg 自動化壓製與片頭合成</a></li>
+            <li><a href="#sec-phase6">7. 第六階段：YouTube API 批次上傳與播放清單</a></li>
+            <li><a href="#sec-oauth">8. 【核心專題】Google OAuth2 7天 Token 續期與永久認證解決方案</a></li>
+            <li><a href="#sec-summary">9. 核心避坑總結與最佳實踐 CheckList</a></li>
+            <li><a href="#sec-migrate">10. 【跨電腦移植】在另一台電腦上安裝與使用本技能</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. 工作流架構 -->
+    <section id="sec-overview" class="card">
+        <h2 class="section-title">1. 工作流全景圖與架構概述</h2>
+        <p>本套自動化流程旨在將長達數小時的課堂側錄影片，透過 Python 腳本結合 AI 語音辨識技術，自動轉化為高質感、具備動態片頭、繁體中文字幕與 YouTube 專屬播放清單的完整線上課程。</p>
+
+        <div class="grid-2">
+            <div class="step-box">
+                <div class="step-number">01</div>
+                <h4>標準化輸入與裁切</h4>
+                <p>長影片自動分段、FFmpeg 靜音與過低音量偵測，剔除非授課無聲空白。</p>
+            </div>
+            <div class="step-box">
+                <div class="step-number">02</div>
+                <h4>AI 語音辨識與繁體化</h4>
+                <p>Faster-Whisper (CPU int8) VAD 斷句，結合 OpenCC 轉換為台灣習慣繁體用語。</p>
+            </div>
+            <div class="step-box">
+                <div class="step-number">03</div>
+                <h4>單行舒適字幕重構</h4>
+                <p>打破碎片切分，合併為 15~25 字單行長句，停留 3~6 秒，徹底解決閃爍問題。</p>
+            </div>
+            <div class="step-box">
+                <div class="step-number">04</div>
+                <h4>自動壓製與 YT 發布</h4>
+                <p>1080p 動態片頭繪製、ASS 陰影字幕燒錄，搭配 YouTube API 批次自動建置清單。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 原始檔整理 -->
+    <section id="sec-phase1" class="card">
+        <h2 class="section-title">2. 第一階段：原始檔整理與標準化命名</h2>
+        <p>良好的檔案結構是自動化腳本順利運作的基石。建立規範的目錄與命名習慣可大幅降低後續處理錯誤率。</p>
+
+        <h3>資料夾結構建議</h3>
+        <pre><code>d:\影片編輯\115-09-07-AI課程\
+├── 第01節課_45分鐘分段_000000至004500.mp4
+├── 第02節課_45分鐘分段_004500至013000.mp4
+├── ...
+└── output/
+    ├── transcriptions/    # 語音辨識原始 JSON 檔
+    ├── subtitles/         # 生成之 SRT 與 ASS 字幕檔
+    ├── covers/            # 1080p 片頭圖卡與 4 秒短片
+    └── final_videos/      # 最終壓製完成之 MP4 影片</code></pre>
+
+        <div class="callout">
+            <div class="callout-title">💡 命名關鍵技巧</div>
+            <p>使用具備明確集數序號（如 <code>第01節課</code>、<code>ep01</code>）的檔案名稱，方便 Python 使用正則表達式（Regex）自動解析與排序。</p>
+        </div>
+    </section>
+
+    <!-- 3. 無聲裁切 -->
+    <section id="sec-phase2" class="card">
+        <h2 class="section-title">3. 第二階段：智能無聲裁切與噪音過濾</h2>
+        <p>課堂影片常包含老師思考、寫板書或學生實作的無聲空白段落。過濾這些片段可提高影片節奏與觀看體驗。</p>
+
+        <h3>FFmpeg SilenceDetect 檢測參數</h3>
+        <p>利用 FFmpeg 的 <code>silencedetect</code> 音訊濾鏡偵測連續無聲段落：</p>
+        <pre><code>ffmpeg -i input.mp4 -af silencedetect=noise=-32dB:d=1.5 -f null -</code></pre>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>參數</th>
+                    <th>建議設定</th>
+                    <th>說明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>noise</code></td>
+                    <td><code>-32dB</code> ~ <code>-35dB</code></td>
+                    <td>噪音門檻。高於此分貝數視為有聲音，低於則視為靜音。</td>
+                </tr>
+                <tr>
+                    <td><code>d</code> (duration)</td>
+                    <td><code>1.5s</code> ~ <code>2.0s</code></td>
+                    <td>持續時間。無聲狀態超過此秒數時記錄時間點。</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 4. Whisper 語音辨識與詞庫注入 -->
+    <section id="sec-phase3" class="card">
+        <h2 class="section-title">4. 第三階段：Whisper 語音辨識與高職電機電子群專有名詞注入</h2>
+        <p>為大幅提升 AI 語音轉字幕對**台灣高職電機與電子群課程**專有名詞的精準度，我們在 Whisper 語音辨識階段引入了「領域 context 提示詞 (Domain Initial Prompt)」與「OpenCC 台灣繁體慣用詞對譯庫 (s2twp)」。</p>
+
+        <div class="callout">
+            <div class="callout-title">🎯 高職電機與電子群 & AI 專有名詞注入詞庫</div>
+            <p>在語音辨識時，特別針對以下三大類別術語進行提示與修正：</p>
+            <ul>
+                <li><strong>AI 與程式開發類</strong>：<code>Python</code>、<code>ChatGPT</code>、<code>提示詞 Prompt</code>、<code>LLM 大語言模型</code>、<code>生成式 AI</code>、<code>Gemini</code>、<code>Antigravity</code>、<code>自動化腳本</code>、<code>演算法</code>。</li>
+                <li><strong>高職電子電機與物聯網類</strong>：<code>Arduino</code>、<code>ESP32</code>、<code>微控制器 (MCU)</code>、<code>PCB 印刷電路板</code>、<code>物聯網 (IoT)</code>、<code>感測器 (Sensors)</code>、<code>數位電路</code>、<code>電子學</code>、<code>專題製作</code>。</li>
+                <li><strong>校園與技職教育類</strong>：<code>高職</code>、<code>電機與電子群</code>、<code>實習處</code>、<code>楊梅高中</code>。</li>
+            </ul>
+        </div>
+
+        <div class="callout danger">
+            <div class="callout-title">⚠️ 重大陷阱：Whisper 提示詞重複幻覺 (Prompt Hallucination)</div>
+            <p>在使用 Faster-Whisper 時，若傳入過長或過於複雜的 <code>initial_prompt</code>（如將幾十個名詞全部串在一起），一旦遇上影片中**低音量、靜音或老師未說話的空白段落**，Whisper 容易陷入死迴圈，將提示詞重複輸出，導致整集影片字幕壞死（僅剩幾行無效文字）。</p>
+        </div>
+
+        <h3>精簡高效的 Initial Prompt 注入範例</h3>
+        <pre><code>from faster_whisper import WhisperModel
+import opencc
+
+# 1. 初始化模型（CPU int8 穩定性最佳）
+model = WhisperModel("medium", device="cpu", compute_type="int8")
+converter = opencc.OpenCC('s2twp') # 台灣繁體慣用詞庫（自動將大陸用語轉為台灣習慣）
+
+# 2. 精簡注入「高職電機與電子群與 AI 領域 Prompt」
+domain_prompt = "這是台灣高職電機與電子群 AI 應用與實務課堂教學。專有名詞：AI、Python、ChatGPT、Prompt、LLM、生成式AI、ESP32、Arduino、物聯網、PCB、自動化。"
+
+segments, info = model.transcribe(
+    "video_path.mp4",
+    language="zh",
+    initial_prompt=domain_prompt,  # 精簡傳入，防死迴圈
+    beam_size=5,
+    vad_filter=True,               # 必須啟用 VAD 過濾靜音
+    vad_parameters=dict(
+        min_silence_duration_ms=1500,
+        speech_pad_ms=400
+    )
+)
+
+# 3. 轉譯並過濾潛在幻覺
+segs_data = []
+for s in segments:
+    tw_text = converter.convert(s.text.strip())
+    # 防護機制：過濾包含提示詞抬頭的幻覺字串
+    if tw_text and "專有名詞：" not in tw_text:
+        segs_data.append({"start": round(s.start, 2), "end": round(s.end, 2), "text": tw_text})</code></pre>
+    </section>
+
+    <!-- 5. 字幕黃金法則 -->
+    <section id="sec-phase4" class="card">
+        <h2 class="section-title">5. 第四階段：字幕重構黃金法則與美學規範</h2>
+        <p>預設語音辨識常輸出 3~5 個字的碎句，導致字幕快速換頁閃爍。必須經過「二次重構」才能達到電視/教學影片的閱讀品質。</p>
+
+        <div class="grid-2">
+            <div class="step-box">
+                <span class="badge success">原則 1</span>
+                <h4>堅持「單行顯示」</h4>
+                <p>嚴格禁止雙行折行或換行。畫面保持單行，乾淨不遮擋教學簡報內容。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge success">原則 2</span>
+                <h4>長度黃金區間 (15-25 字)</h4>
+                <p>將連續語音片段合併為 15~25 個繁體中文字的自然完整長句。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge success">原則 3</span>
+                <h4>舒適停留時間 (3-6 秒)</h4>
+                <p>每行字幕在螢幕上至少停留 3~6 秒，避免快閃造成觀眾視覺疲勞。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge success">原則 4</span>
+                <h4>高對比視覺美學</h4>
+                <p>採用微軟正黑體、純白文字、深色陰影外框（Outline 3, Shadow 2），確保清晰度。</p>
+            </div>
+        </div>
+
+        <h3>ASS 字幕樣式配置 (v4+ Styles)</h3>
+        <pre><code>[Script Info]
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Microsoft JhengHei,46,&H00FFFFFF,&H000000FF,&H00181818,&H80000000,-1,0,0,0,100,100,0,0,1,3,2,2,40,40,65,1</code></pre>
+    </section>
+
+    <!-- 6. FFmpeg 自動化壓製 -->
+    <section id="sec-phase5" class="card">
+        <h2 class="section-title">6. 第五階段：FFmpeg 自動化壓製與片頭合成</h2>
+        <p>利用 Python Pillow 繪製 1080p 動態封面（標註上課日期與學校資訊），並透過 FFmpeg 將 4 秒片頭與主影片拼接，同時燒錄 ASS 內嵌字幕。</p>
+
+        <h3>FFmpeg 複合濾鏡 (Filter Complex) 命令範例</h3>
+        <pre><code>ffmpeg -y \
+  -i intro_4s.mp4 \
+  -i lecture_main.mp4 \
+  -filter_complex \
+  "[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2[v0]; \
+   [1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2[v1]; \
+   [v0][0:a][v1][1:a]concat=n=2:v=1:a=1[vconcat][acontat]; \
+   [vconcat]ass='subtitles.ass'[outv]" \
+  -map "[outv]" -map "[acontat]" \
+  -c:v libx264 -preset ultrafast -crf 20 \
+  -c:a aac -ar 44100 -ac 2 -b:a 192k \
+  final_output.mp4</code></pre>
+    </section>
+
+    <!-- 7. YouTube API 自動化發布 -->
+    <section id="sec-phase6" class="card">
+        <h2 class="section-title">7. 第六階段：YouTube API 批次上傳與播放清單</h2>
+        <p>透過 Google OAuth 2.0 API 進行無人值守全自動發布，並掛載繁體中文 CC 字幕軌與自動建立播放清單。</p>
+    </section>
+
+    <!-- 8. OAuth 7天到期專題 -->
+    <section id="sec-oauth" class="card">
+        <h2 class="section-title">8. 【核心專題】Google OAuth2 7天 Token 續期與永久認證解決方案</h2>
+        
+        <div class="callout danger">
+            <div class="callout-title">🚨 經典踩坑：為什麼 Refresh Token 在 7 天後突然失效？</div>
+            <p>在 Google Cloud Console 中建立 OAuth 2.0 Client ID 時，若 GCP 專案的 **「OAuth 同意畫面 (OAuth Consent Screen)」發布狀態保持在『Testing (測試中)』**，Google 安全機制規定發出的 Refresh Token 最長有效期**限定為 7 天**。7 天一到，Token 即被強制撤銷，執行 API 時會拋出 <code>invalid_grant: Token has been expired or revoked</code> 錯誤。</p>
+        </div>
+
+        <h3>💡 三大核心解決方案 (3 Robust Solutions)</h3>
+
+        <div class="step-box" style="margin-bottom: 1.5rem;">
+            <span class="badge success">解法 A（推薦）</span>
+            <h4>Google Cloud 專案正式發布 (In Production) —— 免去 7 天限制</h4>
+            <p>登入 <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> &rarr; 選擇您的專案 &rarr; 進入 <strong>OAuth 同意畫面 (OAuth Consent Screen)</strong> &rarr; 將發布狀態 (Publishing Status) 從 <code>Testing</code> 點擊切換為 <strong><code>In Production (正式發布)</code></strong>。</p>
+            <p><em>註：若僅供個人或內部測試使用（User Type 為 External 但非公開商業應用），直接發布無須提交 Google 官方安全性人工審查，即可獲得永久有效的 Refresh Token。</em></p>
+        </div>
+
+        <div class="step-box" style="margin-bottom: 1.5rem;">
+            <span class="badge primary">解法 B</span>
+            <h4>Python 程式碼自動 Token 續期機制 (Auto-Refresh Routine)</h4>
+            <p>在 Python 程式中，使用 <code>google.auth.transport.requests.Request()</code>，每次發起 API 呼叫前檢查 Token 狀態。若已過期但 refresh_token 仍有效，自動向 Google OAuth 伺服器申請新的 access_token 並回寫更新 <code>yt_token.json</code>：</p>
+            <pre><code>from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+import os
+
+token_path = r"d:\影片編輯\yt_token.json"
+SCOPES = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
+
+def get_valid_youtube_credentials():
+    if not os.path.exists(token_path):
+        raise FileNotFoundError(f"找不到 Token 檔案: {token_path}")
+        
+    creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+    
+    # 核心自動續期邏輯
+    if creds.expired and creds.refresh_token:
+        print("🔄 Token 已過期，正在向 Google API 自動申請續期 (Refresh Token)...")
+        creds.refresh(Request())
+        
+        # 回寫更新後的權限 JSON 檔
+        with open(token_path, "w", encoding="utf-8") as f:
+            f.write(creds.to_json())
+        print("✅ Token 續期成功並已更新存檔！")
+        
+    return creds</code></pre>
+        </div>
+
+        <div class="step-box">
+            <span class="badge warning">解法 C</span>
+            <h4>OAuth Code 快捷重新授權驗證腳本 (Fast Re-auth Fallback)</h4>
+            <p>若 Token 已超過 7 天遭到 Google 強制失效，可透過備份的 <code>client_secrets.json</code>（內含 <code>client_id</code> 與 <code>client_secret</code>），執行快捷認證腳本，只需在瀏覽器開啟驗證網址授權後，複製 URL 中的 <code>code</code> 貼回程式，即可 3 秒內重新產生最新的 <code>yt_token.json</code>：</p>
+            <pre><code>from google_auth_oauthlib.flow import InstalledAppFlow
+
+# 使用原本的 client_secrets.json 重新換取 Token
+flow = InstalledAppFlow.from_client_secrets_file('client_secrets.json', SCOPES)
+flow.redirect_uri = 'http://127.0.0.1:8080/'
+
+# 取得授權網址
+auth_url, _ = flow.authorization_url(prompt='consent', access_type='offline')
+print(f"請在瀏覽器開啟授權網址:\n{auth_url}")
+
+# 使用使用者貼回的 code 直接完成交換
+auth_code = input("請貼上瀏覽器回傳 URL 中的 code 參數值: ")
+flow.fetch_token(code=auth_code)
+
+with open('yt_token.json', 'w', encoding='utf-8') as f:
+    f.write(flow.credentials.to_json())
+print("🎉 成功重新產生 yt_token.json！")</code></pre>
+        </div>
+    </section>
+
+    <!-- 9. 避坑總結 CheckList -->
+    <section id="sec-summary" class="card">
+        <h2 class="section-title">9. 核心避坑總結與最佳實踐 CheckList</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>步驟階段</th>
+                    <th>常見問題 / 踩坑點</th>
+                    <th>最佳實踐 (Best Practice) 解決方案</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>專有名詞辨識</strong></td>
+                    <td>英文縮寫或高職電機專業術語被誤判為同音中文字</td>
+                    <td>注入專屬 <code>domain_prompt</code>（包含 Python, ESP32, Arduino, LLM 等）並搭配 OpenCC 轉台灣繁體。</td>
+                </tr>
+                <tr>
+                    <td><strong>OAuth 認證</strong></td>
+                    <td>Refresh Token 7 天後拋出 invalid_grant 強制失效</td>
+                    <td>GCP 切換至 Production 發布；程式加入 <code>creds.refresh(Request())</code> 自動續期。</td>
+                </tr>
+                <tr>
+                    <td><strong>語音辨識</strong></td>
+                    <td>Whisper 提示詞迴圈幻覺導致字幕壞死</td>
+                    <td>避免傳入過長 Initial Prompt；採用 CPU int8 模式 + VAD Filter。</td>
+                </tr>
+                <tr>
+                    <td><strong>字幕顯示</strong></td>
+                    <td>字幕字數太少（3-5字）換頁太快閃爍</td>
+                    <td>重構成 15-25 字單行長句，確保停留時間 3-6 秒。</td>
+                </tr>
+                <tr>
+                    <td><strong>字幕排版</strong></td>
+                    <td>多行折行遮擋教學簡報畫面</td>
+                    <td>全程維護「單行顯示」，MarginV 設定 65px 以上離底高。</td>
+                </tr>
+                <tr>
+                    <td><strong>影片壓製</strong></td>
+                    <td>FFmpeg ASS 濾鏡路徑轉義失敗</td>
+                    <td>Windows 路徑斜線轉為正斜線，並轉義冒號：<code>replace('\\', '/').replace(':', '\\:')</code>。</td>
+                </tr>
+                <tr>
+                    <td><strong>YT 自動化</strong></td>
+                    <td>新增播放清單項目回報 Video Not Found</td>
+                    <td>影片上傳與加入清單間加入 2 秒延遲，並移除 <code>position</code> 參數。</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 10. 跨電腦移植 -->
+    <section id="sec-migrate" class="card">
+        <h2 class="section-title">10. 【跨電腦移植】在另一台電腦上安裝與使用本技能</h2>
+        <p>若您需要換一台全新電腦（Windows）操作本自動化技能，請依循以下 4 個簡單步驟設定：</p>
+
+        <div class="step-box" style="margin-bottom: 1.25rem;">
+            <span class="badge success">步驟 1</span>
+            <h4>安裝核心依賴軟體 (Python & FFmpeg)</h4>
+            <ul>
+                <li><strong>Python 3.10+</strong>：請先下載並安裝 Python，勾選 <code>Add python.exe to PATH</code>。</li>
+                <li><strong>FFmpeg</strong>：下載 FFmpeg 解壓縮後，將 <code>bin</code> 目錄路徑加入 Windows 系統環境變數 PATH 中（確保命令列可直接執行 <code>ffmpeg</code> 與 <code>ffprobe</code>）。</li>
+            </ul>
+        </div>
+
+        <div class="step-box" style="margin-bottom: 1.25rem;">
+            <span class="badge primary">步驟 2</span>
+            <h4>一鍵安裝 Python 第三方套件</h4>
+            <p>開啟命令提示字元 (cmd) 或 PowerShell，執行以下指令安裝所需套件：</p>
+            <pre><code>pip install faster-whisper opencc-python-reimplemented Pillow google-api-python-client google-auth-httplib2 google-auth-oauthlib</code></pre>
+        </div>
+
+        <div class="step-box" style="margin-bottom: 1.25rem;">
+            <span class="badge warning">步驟 3</span>
+            <h4>複製技能檔與認證金鑰</h4>
+            <p>在新電腦上建立工作目錄（如 <code>d:\影片編輯</code>），並將舊電腦上的以下檔案複製過來：</p>
+            <ul>
+                <li><code>SKILL.md</code> 及技能專案資料夾（放置於 <code>edit/episodes/teaching-video-pipeline/</code>）</li>
+                <li><code>client_secrets.json</code> 與 <code>yt_token.json</code>（Google OAuth 授權憑證）</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <span class="badge success">步驟 4</span>
+            <h4>放入原始影片並啟動自動化流程</h4>
+            <p>將新錄製的課堂 MP4 影片放入該目錄，執行一鍵自動化處理腳本：</p>
+            <pre><code>python process_1150907_ai_course.py</code></pre>
+            <p>腳本將全自動完成：<strong>語音辨識 &rarr; 繁體化 &rarr; 單行長句字幕重構 &rarr; 1080p 動態片頭繪製 &rarr; 硬字幕壓製 &rarr; YouTube API 發布與播放清單建置</strong>！</p>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>AI 課程自動化剪輯與發布全流程指南 | 桃園市立楊梅高級中等學校 實習處 製作發行</p>
+</footer>
+
+</body>
+</html>
