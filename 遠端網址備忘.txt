@@ -2,7 +2,28 @@
 簡老師的教學網站 - 遠端與本機網址備忘錄
 ========================================================================
 
-【遠端 Netlify 網站網址】
+【官方 GitHub Pages 正式網址】
+首頁：
+https://fbkstj.github.io/www/
+
+AI 數位研習無障礙伴讀系統：
+https://fbkstj.github.io/www/ai_course_automation_skills.html
+
+數位電子乙級評審表設定頁：
+https://fbkstj.github.io/www/digi_el.html
+
+數位電子乙級 CPLD 接腳模擬器：
+https://fbkstj.github.io/www/cpld_simulator.html
+
+數位電子乙級 PCB 佈局定位指引：
+https://fbkstj.github.io/www/pcb_layout.html
+
+楊梅高中實習處輪值表產生器：
+https://fbkstj.github.io/www/roster.html
+
+========================================================================
+
+【遠端 Netlify 備用網站網址】
 首頁：
 https://stjwww.netlify.app/
 
