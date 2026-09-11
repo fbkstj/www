@@ -1200,7 +1200,7 @@
             }
         } else {
             if (frameBar) frameBar.style.display = 'none';
-            targetSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&v=162' : src + '?v=162');
+            targetSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&t=' + Date.now() : src + '?t=' + Date.now());
         }
 
         if (mainFrame.src !== targetSrc) {
