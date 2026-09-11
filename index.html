@@ -610,16 +610,35 @@
                     <span class="chevron">&#9656;</span>
                 </button>
                 <div class="nav-sub" data-group="award">
-                    <div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
-                            <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
-                            <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
-                            <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
-                            <button class="nav-sub-item" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
-                            <button class="nav-sub-item" data-src="app_inventor_practice.html">App Inventor 練習題庫全集</button>
-                            <button class="nav-sub-item" data-src="app_inventor.html">App Inventor 上機測驗</button>
-                            <button class="nav-sub-item" data-src="app_inventor_answers.html">App Inventor 完整解答</button>
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：數位電子乙級 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>🛠️ 數位電子乙級</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
+                                <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
+                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
+                                <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
+                                <button class="nav-sub-item" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
+                            </div>
+                        </div>
+
+                        <!-- 第 1 層第 2 個選項：App Inventor 檢定 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📱 App Inventor 檢定</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="app_inventor_practice.html">App Inventor 練習題庫全集</button>
+                                <button class="nav-sub-item" data-src="app_inventor.html">App Inventor 上機測驗</button>
+                                <button class="nav-sub-item" data-src="app_inventor_answers.html">App Inventor 完整解答</button>
+                            </div>
                         </div>
                     </div>
                 </div>
