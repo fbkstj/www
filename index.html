@@ -671,19 +671,38 @@
                 <button class="nav-item" data-cat="video">
                     <span class="nav-item-text">
                         <span class="nav-title">教學影片</span>
-                        <span class="nav-desc">KiCad 電路板設計與數位電子乙級教學</span>
+                        <span class="nav-desc">數乙第一題 KiCad 與 CPLD 教學</span>
                     </span>
                     <span class="chevron">&#9656;</span>
                 </button>
                 <div class="nav-sub" data-group="video">
-                    <div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">【數乙第一題】KiCad 第1集：原理圖繪製與 ERC 檢查 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">【數乙第一題】KiCad 第2集：電路圖繪製 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">【數乙第一題】KiCad 第3集：PCB 佈局 上 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">【數乙第一題】KiCad 第4集：PCB 佈局 下與電氣檢查 ↗️</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">【數乙第一題】KiCad 第5集：PCB 布線與列印輸出 ↗️</button>
-                            <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片</button>
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：數乙第一題 KiCad -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📐 數乙第一題 KiCad</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">第 1 集：原理圖繪製與 ERC 檢查 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">第 2 集：電路圖繪製 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">第 3 集：PCB 佈局 上 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">第 4 集：PCB 佈局 下與電氣檢查 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">第 5 集：PCB 布線與列印輸出 ↗️</button>
+                            </div>
+                        </div>
+
+                        <!-- 第 1 層第 2 個選項：Quartus MegaWizard -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>⚡ Quartus MegaWizard</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片 ↗️</button>
+                            </div>
                         </div>
                     </div>
                 </div>
