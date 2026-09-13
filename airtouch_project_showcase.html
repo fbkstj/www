@@ -132,7 +132,7 @@
     <div class="max-w-5xl mx-auto">
       <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs sm:text-sm font-semibold mb-6 shadow-inner">
         <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span>高中職「專題製作與創意競賽」精選代表作 • AI 視覺邊緣運算 × 系統底層穿透</span>
+        <span>高中職「專題製作與創意競賽」代表作 • AI 視覺 × 語音控制 × 影音雙軌全畫面錄影</span>
       </div>
 
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 text-white leading-tight">
@@ -143,7 +143,7 @@
       </h1>
 
       <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed text-balance">
-        僅需一顆普通的 USB WebCam 鏡頭，透過 <strong class="text-cyan-300 font-semibold">MediaPipe 21點 3D 姿態向量幾何</strong>，打造揮手即暫停、快轉、調音量，並透過 <strong class="text-emerald-300 font-semibold">Win32 底層訊息穿透與真實樣板比對</strong> 秒殺 YouTube 廣告的隔空神操作！
+        僅需一顆普通 USB 鏡頭，透過 <strong class="text-cyan-300 font-semibold">MediaPipe 21點 3D 姿態向量幾何</strong> 實現隔空揮手暫停/快轉/調音量；透過 <strong class="text-emerald-300 font-semibold">Win32 穿透技術</strong> 秒殺 YouTube 廣告；更全新升級 <strong class="text-amber-300 font-semibold">全螢幕影音雙軌錄製</strong> 與 <strong class="text-rose-300 font-semibold">🎙️ 語音控制「關閉程式」</strong> 免觸退出！
       </p>
 
       <!-- 核心關鍵指標 -->
@@ -467,7 +467,41 @@
       </div>
     </section>
 
-    <!-- ============================================================== -->
+            <!-- 里程碑 6：影音雙軌全螢幕錄製與語音控制關閉 -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-purple-500/20 text-purple-400 border border-purple-500/40 shrink-0 mt-0.5">6</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>終極人機互動體驗：全螢幕影音雙軌錄製與「關閉程式」語音辨識退出</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/30">影音合流 × 語音控制</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-cyan-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-microphone-lines"></i> 🎙️ 語音辨識控制 (免按 ESC 退出)：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    除了鍵盤 <code>[ESC]</code> 鍵外，整合了多執行緒語音辨識引擎。使用者在鏡頭前示範完畢後，只要對著麥克風清晰說出<strong>「關閉程式」</strong>、<strong>「退出」</strong>或<strong>「結束」</strong>，系統自動發出提示音確認，並在畫面上浮現綠色 HUD 提示橫幅，優雅自動釋放所有鏡頭與多媒體資源並安全關閉！
+                  </p>
+                </div>
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-compact-disc"></i> 🎥 影音雙軌全畫面錄製 (Video + Audio)：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    突破傳統錄影工具只有畫面沒有聲音的限制！無論是全螢幕工具 <code>run_screen_recorder.bat</code> 或是 AirTouch 視窗按 <code>[R]</code> 鍵，均啟動背景音訊串流並行錄製麥克風與系統音效。錄製結束時自動呼叫 FFmpeg 在 0.2 秒內極速封裝為標準 AAC/H.264 MP4 檔案，完美記錄操作時的聲音與 YouTube 音樂！
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================== -->
     <!-- 區塊 3：手勢系統與熱鍵對照表 (Interaction & Gestures) -->
     <!-- ============================================================== -->
     <section id="gestures" class="scroll-mt-24">
@@ -550,6 +584,11 @@
               <td class="py-2.5 font-bold text-cyan-400">[A]</td>
               <td class="text-slate-300">全自動廣告跳過背景守護</td>
               <td class="text-slate-400">啟動 / 關閉定時掃描 YouTube 廣告引擎</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-rose-400">🎙️ 語音「關閉程式」</td>
+              <td class="text-slate-300">語音聲控安全退出程式</td>
+              <td class="text-slate-400">響起確認雙音效，自動存檔並優雅關閉視窗</td>
             </tr>
             <tr>
               <td class="py-2.5 font-bold text-cyan-400">[ESC]</td>
