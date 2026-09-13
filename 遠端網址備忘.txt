@@ -9,7 +9,7 @@ https://fbkstj.github.io/www/
 AI 研習 MCP 雙模式實戰手冊：
 https://fbkstj.github.io/www/mcp_course_automation_guide.html
 
-AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
+【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 https://fbkstj.github.io/www/ai_vision_course_guide.html
 
 數位電子乙級評審表設定：
@@ -30,7 +30,7 @@ https://fbkstj.github.io/www/roster.html
 首頁：
 https://stjwww.netlify.app/
 
-AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
+【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 https://stjwww.netlify.app/ai_vision_course_guide.html
 
 數位電子乙級評審表設定：
@@ -51,7 +51,7 @@ https://stjwww.netlify.app/roster.html
 首頁：
 http://127.0.0.1:18456/
 
-AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
+【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 http://127.0.0.1:18456/ai_vision_course_guide.html
 
 數位電子乙級評審表設定：
