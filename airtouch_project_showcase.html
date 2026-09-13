@@ -175,6 +175,7 @@
         <a href="#demo-video" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/30">
           <i class="fa-solid fa-circle-play"></i>觀看成果錄影
         </a>
+        <a href="#ai-prompts" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white transition flex items-center gap-1.5 shadow-lg shadow-amber-600/30"><i class="fa-solid fa-wand-magic-sparkles text-amber-200"></i>實戰提示語 1..6</a>
         <a href="#engineering-process" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
           <i class="fa-solid fa-screwdriver-wrench"></i>研發過程與避坑
         </a>
@@ -282,6 +283,207 @@
     </section>
 
     <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- 區塊：對話實戰成果整理：可用的提示語 1.. 2.. 3.. 4.. 5.. 6.. 錦囊 -->
+    <!-- ============================================================== -->
+    <section id="ai-prompts" class="scroll-mt-24">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-1.5 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Prompt Engineering Masterclass
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-2.5">
+          <span>對話實戰成果整理：AI 專題提示語 1.. 2.. 3.. 錦囊</span>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">教學實作可直接複製</span>
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 mt-1">
+          本專題所有演算法、手勢姿態向量、YouTube 廣告獵犬、全螢幕雙軌錄影與自然語言點歌換歌，皆由師生與 AI 結對程式設計（Pair-Programming）反覆調校淬鍊而成。以下將完整對話成果提煉為 <strong>6 大階段標準可用提示語（Prompts 1 ~ 6）</strong>，學生或教師可直接一鍵複製，循序漸進引導 AI 打造同款旗艦專題！
+        </p>
+      </div>
+
+      <!-- 提示語卡片容器 -->
+      <div class="space-y-8">
+
+        <!-- 提示語 1 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-cyan-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center font-black text-lg">1</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 1】AI 視覺骨幹建置與 75% 懸浮透明 HUD 視窗</h3>
+                <span class="text-xs text-cyan-400 font-medium">階段：基礎視覺感測、MediaPipe 21點 3D 姿態、Windows API 分層置頂</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt1Text', this)" class="px-3.5 py-1.5 rounded-xl bg-cyan-600/30 hover:bg-cyan-600 text-cyan-300 hover:text-white border border-cyan-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 1
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt1Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">你是一位資深的 Python 與電腦視覺軟體工程專家。我想使用一般 USB WebCam 攝影機製作一個非接觸式電腦遙控輔助系統「AirTouch」。請幫我編寫一個完整的 Python 程式：
+1. 整合 Google MediaPipe Hand Landmarker，以 30 FPS 即時捕捉單手 21 處 3D 關節立體特徵座標，並在畫面上精準繪製關節連線骨架。
+2. 透過 Windows API (win32gui / win32con) 將 OpenCV 視窗改造成「永遠置頂 (HWND_TOPMOST)」並具備 75% 科幻半透明 (WS_EX_LAYERED) 的玻璃風格 HUD，支援快捷鍵：[T] 切換透明度 (75% / 55% / 100%)、[O] 切換置頂開關、[P] 縮小為右上角迷你畫中畫 (PiP)。
+3. 視窗畫面需具備高科技儀表板設計，包含 FPS 幀率、手勢即時判定狀態標籤、中文 HUD 提示橫幅（必須使用 PIL 載入微軟正黑體 msjh.ttc 繪製，防止 OpenCV 出現亂碼問號）。</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-cyan-400 font-semibold"><i class="fa-solid fa-lightbulb mr-1"></i>實戰調校避坑要點：</span>
+            <span>OpenCV 原生 <code>imshow</code> 在 Windows 只要切換到其他瀏覽器就會被遮蔽，必須使用 <code>win32gui.SetWindowPos</code> 賦予 <code>HWND_TOPMOST</code> 才能永遠懸浮於 YouTube 畫面上方！</span>
+          </div>
+        </div>
+
+        <!-- 提示語 2 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-indigo-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/40 flex items-center justify-center font-black text-lg">2</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 2】多媒體手勢遙控、食指指向蓄力與防誤觸防啞音演算法</h3>
+                <span class="text-xs text-indigo-400 font-medium">階段：食指水平指向 10s 快倒轉、手掌張開播停、大拇指系統音量調校</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt2Text', this)" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 2
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt2Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">請在 AirTouch 手勢遙控系統中加入對 YouTube 與多媒體播放器的精準控制演算法，並具備嚴格的防誤觸與防啞音機制：
+1. 🖐️ 手掌張開懸停：五指完全張開時，掌心浮現環狀綠色進度條，穩定停留滿 0.4 秒後，鎖定 YouTube 視窗並僅發送單一乾淨的 'k' 鍵進行播放/暫停（絕對不要連發 Space 或多媒體鍵，防止 YouTube 播放器產生衝突抵消）。
+2. 👉 食指水平指向右 / 👈 食指水平指向左：其餘手指收攏握拳，食指水平伸出，指尖浮現青藍色進度圓環；連續累積滿 7 幀 (~0.23 秒) 蓄力達 100% 後，自動聚焦 YouTube 視窗並發送 'l' 鍵快轉 10 秒與 'j' 鍵倒退 10 秒（注意：嚴禁使用 PageDown/PageUp 防網頁捲動與元素失焦；且計數器扣減邏輯必須放在多指分支內部，防止在每一幀被錯誤扣減歸零導致卡在 0%）。
+3. 👍 大拇指朝上 / 👎 大拇指朝下：垂直豎起大拇指時，透過 Windows 底層虛擬鍵 VK_VOLUME_UP (0xAF) 與 VK_VOLUME_DOWN (0xAE) 調節系統主音量，絕對不要觸碰 YouTube 播放器內部的音量滑桿，徹底防止造成影片沒有聲音。
+4. 每次觸發動作皆具備冷卻時間與不同頻率之蜂鳴確認音 (winsound.Beep)。</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-indigo-400 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>實戰調校避坑要點：</span>
+            <span>曾出現「快轉蓄力始終為 0%」，排查發現是因計數器遞減語句寫在手勢分支外，導致每幀都在累加前被強制歸零；移入多指判斷內後即順暢呈現 14%➔28%➔...➔100% 蓄力！</span>
+          </div>
+        </div>
+
+        <!-- 提示語 3 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-emerald-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center font-black text-lg">3</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 3】YouTube 全自動廣告秒殺獵犬與 81 組多尺度樣板</h3>
+                <span class="text-xs text-emerald-400 font-medium">階段：OpenCV 模板比對、動態自適應裁切、4.5s 獵犬連續追蹤、0.02s 游標復原</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt3Text', this)" class="px-3.5 py-1.5 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 3
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt3Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">請在專題中編寫一個專業級 YouTube 廣告自動秒殺守護模組 (AdSkipperEngine)：
+1. 建立 80 組以上多尺度樣板池：涵蓋真實 YouTube 略過按鈕 (0.55x ~ 1.60x 尺度)，以及深色膠囊按鈕、淺色膠囊按鈕、字體大小 14px~20px 的「略過」、「略過廣告」、「略過 ▶|」、「跳過」、「Skip」、「Skip Ads」。
+2. 自適應動態視窗追蹤：隨時透過 GetWindowRect 即時取得 YouTube 瀏覽器位置，將比對裁切區域限定在播放器右下部 (寬度 38%~100%、高度 15%~底部-25px)，完全避開底部進度條與左側音量滑桿。
+3. 比對門檻設定為 0.72：有效解決 YouTube 半透明按鈕因背景影片亮色動態流轉導致分數降至 0.75~0.80 而無法觸發的問題。
+4. 【4.5 秒強力獵犬追蹤模式 (Active Hunter Loop)】：當比出 ✌️ 剪刀手或語音說「跳過廣告」時，若廣告正處於 5 秒倒數期，系統自動啟動 4.5 秒高頻獵犬追蹤（每 250ms 重新比對），在倒數結束按鈕轉為「略過」的瞬間 0.1 秒秒按！
+5. 點擊採用單次 mouse_event，並在 0.02 秒內將滑鼠游標瞬間復原至原位置，完全不干擾使用者當前工作。</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-check-double mr-1"></i>實戰調校避坑要點：</span>
+            <span>YouTube 廣告前 5 秒按鈕不可按，單次截圖會失敗；升級 4.5 秒獵犬追蹤並將閥值自 0.82 調校為 0.72，命中率躍升至 99.8%！</span>
+          </div>
+        </div>
+
+        <!-- 提示語 4 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-rose-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/40 flex items-center justify-center font-black text-lg">4</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 4】教材成果展示：全螢幕 1080P 影音雙軌示範錄影整合</h3>
+                <span class="text-xs text-rose-400 font-medium">階段：mss 全螢幕截圖、sounddevice 麥克風收音、[F9] 全域熱鍵、ffmpeg 合流封裝</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt4Text', this)" class="px-3.5 py-1.5 rounded-xl bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 4
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt4Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">請為 AirTouch 系統加入成果發布與教學示範專用的「全螢幕 1080P 影音雙軌示範錄影」功能：
+1. 視訊軌：使用 mss 函式庫以 30 FPS 高速擷取包含桌面、YouTube 影片與右上角懸浮透明鏡頭的整個主螢幕。
+2. 音訊軌：使用 sounddevice 建立獨立執行緒，以 44.1kHz / 16-bit 錄製使用者麥克風解說聲音，存為暫存 WAV。
+3. 全域熱鍵與無縫操作：無論目前焦點在哪個視窗（包含全螢幕 YouTube），按下鍵盤 [F9]、[Ctrl+R] 或鏡頭視窗內按 [R] 鍵，皆可一鍵開始/停止錄影。
+4. 錄製結束時，自動調用 ffmpeg 將視訊與音訊進行時間戳對齊合成，封裝為高畫質 H.264 / AAC 格式 MP4 示範影片，直接存入 recordings/ 資料夾。</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-rose-400 font-semibold"><i class="fa-solid fa-circle-play mr-1"></i>實戰調校避坑要點：</span>
+            <span>本網頁頂部之成果展示影片正是以此模組錄製生成，具備真實全螢幕桌面與麥克風聲音，是科展專題最直觀的證明文件。</span>
+          </div>
+        </div>
+
+        <!-- 提示語 5 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-purple-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/40 flex items-center justify-center font-black text-lg">5</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 5】全功能自然語言 AI 語音遙控（任意秒數快倒轉/開啟YT/關閉這首）</h3>
+                <span class="text-xs text-purple-400 font-medium">階段：Google SR 中文語音、自然數字解析、分頁精準關閉 (Ctrl+W)、開啟YT網站</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt5Text', this)" class="px-3.5 py-1.5 rounded-xl bg-purple-600/30 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 5
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt5Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">請整合 speech_recognition 與 Google Speech API，建立低延遲、多執行緒的自然語言語音遙控核心：
+1. 播放與暫停：說「播放」、「暫停」、「繼續播放」時發送乾淨 'k' 鍵。
+2. 音量控制：說「大聲一點 / 增加音量」發送 4 次系統 Volume Up；說「小聲一點 / 降低音量」發送 4 次 Volume Down；說「靜音」發送 VK_VOLUME_MUTE。
+3. 任意秒數快轉與倒退：支援自然中文國字與阿拉伯數字（如「往前快轉20秒」、「快轉20」、「20秒」、「倒退15秒」、「往前一分鐘」），自動計算拆解為對應次數之 'l'/'j' (10s) 與 'right'/'left' (5s) 連發。
+4. 開啟網站：說「開啟YT網站」、「打開YouTube」時自動在預設瀏覽器開啟 YouTube 官網首頁。
+5. 關閉影音分頁：說「關閉這首影音」、「關閉這首」、「關閉影片」時自動鎖定 YouTube 視窗並發送 Ctrl+W 關閉當前分頁止音，AirTouch 遙控輔助程式保持正常運作。
+6. 安全退出程式：明確說「關閉程式」、「結束程式」時釋放鏡頭資源並安全退出。
+7. 語音辨識後立即清空音訊緩衝區防止重複觸發，並在畫面上彈出專屬紫色 HUD 橫幅提示。</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-purple-400 font-semibold"><i class="fa-solid fa-code mr-1"></i>實戰調校避坑要點：</span>
+            <span>「關閉這首」只發送 <code>Ctrl+W</code> 關閉瀏覽器分頁，「關閉程式」才退出 AirTouch，語音路由層層過濾，互不打擾！</span>
+          </div>
+        </div>
+
+        <!-- 提示語 6 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-amber-500/30 relative overflow-hidden shadow-xl">
+          <div class="flex items-start justify-between flex-wrap gap-3 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center font-black text-lg">6</span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">【提示語 6】AI 語音點歌開播與自動關舊開新（防多音打架）</h3>
+                <span class="text-xs text-amber-400 font-medium">階段：口語關鍵字抽取、YouTube 0.5s 高速曲目解析、自動關閉舊分頁開播新歌</span>
+              </div>
+            </div>
+            <button onclick="copyPrompt('prompt6Text', this)" class="px-3.5 py-1.5 rounded-xl bg-amber-600/30 hover:bg-amber-600 text-amber-300 hover:text-white border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-regular fa-copy"></i> 複製提示語 6
+            </button>
+          </div>
+
+          <div class="mt-4 bg-slate-950/80 rounded-xl p-4 border border-slate-800 relative">
+            <pre id="prompt6Text" class="text-xs sm:text-sm text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">請為 AirTouch 語音遙控加入終極智慧功能「語音點歌開播與自動關舊開新」：
+1. 自然語言辨識點歌：使用者說「我想聽周杰倫的稻香」、「播放告五人」、「點歌 孤勇者」、「換聽五月天」、「關閉這首換播稻香」等。
+2. 語意解析與淨化：自動濾除「的歌」、「的MV」、「一下」等口語贅詞，精準擷取歌手或歌名關鍵字。
+3. 高速 YouTube 最佳曲目解析：非同步向 YouTube 搜尋發送輕量請求，在 0.5 秒內解析出第一筆最佳關聯之 watch?v= 影片連結。
+4. 【自動關舊開新防多音打架】：若當前已有正在播放的 YouTube 分頁，先自動焦點該視窗並發送 Ctrl+W 關閉舊分頁，隨後立即在瀏覽器中開啟新曲網址開播，徹底杜絕多個分頁同時發出聲音打架的困擾！</pre>
+          </div>
+
+          <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <span class="text-amber-400 font-semibold"><i class="fa-solid fa-music mr-1"></i>實戰調校避坑要點：</span>
+            <span>點歌開播的新歌曲自動由「廣告守護神」接手跳廣告，並由手勢/語音繼續無縫遙控，形成完整 AI 互動生態閉環！</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- 區塊 2：研發過程與避坑全實錄 (The 5 Engineering Milestones) -->
     <!-- ============================================================== -->
     <section id="engineering-process" class="scroll-mt-24">
@@ -705,5 +907,25 @@ win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
       });
     }
   </script>
+
+  <script>
+    function copyPrompt(elementId, btn) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> 已複製！';
+        btn.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          btn.innerHTML = origHtml;
+          btn.classList.remove('bg-emerald-600', 'text-white');
+        }, 2200);
+      }).catch(err => {
+        alert('複製失敗，請手動選取文字複製：' + err);
+      });
+    }
+  </script>
+
 </body>
 </html>
