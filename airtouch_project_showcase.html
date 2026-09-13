@@ -199,82 +199,105 @@
       <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
         <div>
           <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
-            <i class="fa-solid fa-video"></i> Live Demonstration
+            <i class="fa-solid fa-video"></i> Live Demonstration (Full Screen 1080P)
           </div>
-          <h2 class="text-2xl sm:text-3xl font-black text-white">專題實機成果錄影 (Live Demo)</h2>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">專題全螢幕實機實錄 (1080P Full HD)</h2>
         </div>
-        <span class="text-xs text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl font-mono">
-          Format: 640x480 H.264 MP4 | Real-time AI HUD
+        <span class="text-xs text-emerald-400 bg-emerald-950/70 border border-emerald-800/80 px-3 py-1.5 rounded-xl font-mono flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-check"></i> 1080P Full HD (1920x1080) | 雙軌音畫同步實錄 | 02:09
         </span>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <!-- 影片播放器 (佔 7 格) -->
         <div class="lg:col-span-7">
-          <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-black relative group">
-            <video id="airtouchVideo" controls poster="airtouch_poster.jpg" preload="metadata" class="w-full aspect-[4/3] object-contain bg-slate-950">
+          <div class="rounded-2xl overflow-hidden border border-cyan-500/40 shadow-2xl bg-black relative group shadow-cyan-950/40">
+            <video id="airtouchVideo" controls poster="airtouch_poster.jpg" preload="metadata" class="w-full aspect-video object-contain bg-slate-950">
               <source src="airtouch_demo_web.mp4" type="video/mp4">
               您的瀏覽器不支援 HTML5 影片播放，請下載影片檔案觀賞。
             </video>
           </div>
-          <div class="text-xs text-slate-400 mt-2 flex items-center justify-between">
-            <span><i class="fa-solid fa-circle-info mr-1 text-cyan-400"></i>此影片由系統內建之 <strong>[R] 鍵錄影功能</strong> 自動擷取與編碼生成。</span>
-            <a href="airtouch_demo_web.mp4" download class="text-cyan-400 hover:underline font-semibold"><i class="fa-solid fa-download mr-1"></i>下載 MP4</a>
+          <div class="text-xs text-slate-400 mt-2 flex items-center justify-between flex-wrap gap-2">
+            <span><i class="fa-solid fa-circle-info mr-1 text-cyan-400"></i>錄影規格：全螢幕 1920x1080 桌面 + 麥克風音訊雙軌同步封裝（由內建 <strong>[F9]/[R] 鍵錄影引擎</strong> 輸出）。</span>
+            <a href="airtouch_demo_web.mp4" download="airtouch_demo_web.mp4" class="text-cyan-400 hover:text-cyan-300 hover:underline font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> 下載 1080P 原始 MP4 (15.9 MB)
+            </a>
           </div>
 
           <!-- 快捷跳轉時間戳 -->
-          <div class="mt-4 glass-card p-3.5 rounded-xl border border-slate-800">
-            <div class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
-              <i class="fa-solid fa-bookmark text-amber-400"></i> 快速跳轉至精采片段：
+          <div class="mt-4 glass-card p-4 rounded-xl border border-slate-800">
+            <div class="text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-bookmark text-amber-400"></i> 快速點擊跳轉至精采實錄片段：</span>
+              <span class="text-[11px] text-slate-500 font-mono">點擊即時定位</span>
             </div>
             <div class="flex flex-wrap gap-2">
-              <button onclick="seekVideo(12)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition">
-                ⏱️ 00:12 🖐️ 手掌張開蓄力進度圈
+              <button onclick="seekVideo(8)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 00:08 🖐️ 3D手勢與75%懸浮HUD
               </button>
-              <button onclick="seekVideo(40)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-emerald-900/60 text-emerald-300 border border-slate-700 text-xs font-medium transition">
-                ⏱️ 00:40 ✌️ 剪刀手強制秒殺廣告
+              <button onclick="seekVideo(25)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 00:25 👉 食指平滑蓄力快轉 (14%~100%)
               </button>
-              <button onclick="seekVideo(56)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition">
-                ⏱️ 00:56 🖐️ 手掌暫停 / 播放控制
+              <button onclick="seekVideo(46)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-900/60 text-emerald-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 00:46 🛡️ 81組樣板 4.5s 廣告獵犬秒殺
               </button>
-              <button onclick="seekVideo(74)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-emerald-900/60 text-emerald-300 border border-slate-700 text-xs font-medium transition">
-                ⏱️ 01:14 ✌️ 再次精準略過廣告
+              <button onclick="seekVideo(65)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-purple-900/60 text-purple-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 01:05 🎙️ 語音開YT與任意秒數快轉
+              </button>
+              <button onclick="seekVideo(88)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-amber-900/60 text-amber-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 01:28 🎵 語音點歌換歌 (自動關舊分頁)
+              </button>
+              <button onclick="seekVideo(112)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-rose-300 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                ⏱️ 01:52 🛑 語音關閉分頁與程式安全退出
               </button>
             </div>
           </div>
         </div>
 
         <!-- 右側：實況亮點解析與截圖 (佔 5 格) -->
-        <div class="lg:col-span-5 space-y-4">
-          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition">
-            <div class="flex items-center gap-3 mb-2.5">
-              <img src="airtouch_gesture_peace.jpg" alt="剪刀手略過廣告" class="w-24 h-18 object-cover rounded-lg border border-emerald-500/30 shrink-0">
+        <div class="lg:col-span-5 space-y-3.5">
+          <div class="glass-card p-3.5 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition">
+            <div class="flex items-center gap-3">
+              <img src="airtouch_gesture_peace.jpg" alt="剪刀手略過廣告" class="w-20 h-16 object-cover rounded-lg border border-emerald-500/30 shrink-0">
               <div>
-                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-xs">核心亮點</span>
-                <h4 class="text-sm font-bold text-white mt-1">✌️ 剪刀手：瞬間穿透 YouTube 略過廣告</h4>
-                <p class="text-xs text-slate-400 mt-1">比出剪刀手時，畫面亮起綠色橫幅，調用 Windows 底層 API 強制喚醒 YouTube 並單擊略過按鈕。</p>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-xs">實戰突破 1</span>
+                <h4 class="text-sm font-bold text-white mt-0.5">🛡️ 81組多尺度樣板 + 4.5s 廣告獵犬</h4>
+                <p class="text-xs text-slate-400 mt-0.5">解決廣告倒數前不可按、亮暗主題差異痛點。連續追蹤秒殺跳過，0.02 秒還原滑鼠！</p>
               </div>
             </div>
           </div>
 
-          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition">
-            <div class="flex items-center gap-3 mb-2.5">
-              <img src="airtouch_gesture_index.jpg" alt="食指操作" class="w-24 h-18 object-cover rounded-lg border border-cyan-500/30 shrink-0">
+          <div class="glass-card p-3.5 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition">
+            <div class="flex items-center gap-3">
+              <img src="airtouch_gesture_index.jpg" alt="食指操作" class="w-20 h-16 object-cover rounded-lg border border-cyan-500/30 shrink-0">
               <div>
-                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold text-xs">精準指向</span>
-                <h4 class="text-sm font-bold text-white mt-1">👉 食指就緒：快轉 10 秒與音量調整</h4>
-                <p class="text-xs text-slate-400 mt-1">黃色同心圓準星鎖定食指尖，上方即時繪製黃色蓄力力道條，向右揮動觸發 Right 鍵快轉。</p>
+                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold text-xs">實戰突破 2</span>
+                <h4 class="text-sm font-bold text-white mt-0.5">👉 食指 7 幀平滑蓄力快倒轉 (14%~100%)</h4>
+                <p class="text-xs text-slate-400 mt-0.5">徹底修復蓄力卡在 0% 瑕疵！連續偵測 7 幀達成 100% 精準送出 'l' / 'j'，流暢無誤觸。</p>
               </div>
             </div>
           </div>
 
-          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition">
-            <div class="flex items-center gap-3 mb-2.5">
-              <img src="airtouch_gesture_palm.jpg" alt="手掌暫停" class="w-24 h-18 object-cover rounded-lg border border-amber-500/30 shrink-0">
+          <div class="glass-card p-3.5 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition">
+            <div class="flex items-center gap-3">
+              <img src="airtouch_gesture_palm.jpg" alt="手掌暫停" class="w-20 h-16 object-cover rounded-lg border border-amber-500/30 shrink-0">
               <div>
-                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold text-xs">自然直覺</span>
-                <h4 class="text-sm font-bold text-white mt-1">🖐️ 手掌張開：影片播放 / 暫停</h4>
-                <p class="text-xs text-slate-400 mt-1">五指自然張開持續 0.4 秒蓄力，發送 Space 空白鍵暫停或播放，避免一般手部晃動造成的誤觸。</p>
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold text-xs">實戰突破 3</span>
+                <h4 class="text-sm font-bold text-white mt-0.5">🖐️ 單鍵 'k' 播停與 Windows 系統音量</h4>
+                <p class="text-xs text-slate-400 mt-0.5">手掌懸停 0.4s 單發 'k' 鍵，避開 Space 捲動陷阱；音量改由 Win32 系統調控，絕不碰 YT 音量滑桿防啞音！</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-3.5 rounded-2xl border border-slate-800 hover:border-purple-500/40 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-20 h-16 rounded-lg bg-gradient-to-br from-purple-900/60 to-indigo-950/80 border border-purple-500/30 flex flex-col items-center justify-center text-purple-300 shrink-0">
+                <i class="fa-solid fa-microphone text-xl mb-0.5"></i>
+                <span class="text-[10px] font-bold">AI VOICE</span>
+              </div>
+              <div>
+                <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-bold text-xs">實戰突破 4</span>
+                <h4 class="text-sm font-bold text-white mt-0.5">🎙️ 語音點歌換歌 + 自動關閉舊分頁</h4>
+                <p class="text-xs text-slate-400 mt-0.5">支援任意秒數快轉、開啟YT網站、「換聽告五人」自動送 Ctrl+W 關閉舊分頁開新歌，防音訊打架！</p>
               </div>
             </div>
           </div>
@@ -486,6 +509,164 @@
 
     <!-- 區塊 2：研發過程與避坑全實錄 (The 5 Engineering Milestones) -->
     <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- 區塊：師生工程對話 9 大痛點實戰修復與技術細節全錄 (Breakthroughs) -->
+    <!-- ============================================================== -->
+    <section id="dialogue-breakthroughs" class="scroll-mt-24">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-bug-slash"></i> Engineering Dialogue Masterclass
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-2.5">
+          <span>師生對話 9 大功能細節與關鍵痛點突破全錄</span>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">對話歷程轉化教材</span>
+        </h2>
+        <p class="text-sm sm:text-base text-slate-300 mt-1">
+          本專題並非憑空產生，而是由真實對話中遇到的 <strong>9 個具體工程問題、死鎖與使用者體驗缺陷</strong> 一步步反覆排查、提煉並攻克。以下完整公開各階段的核心除錯原因、底層 API 解法與重要提示語：
+        </p>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- 痛點 1 -->
+        <div class="glass-card p-5 sm:p-6 rounded-2xl border border-teal-500/30">
+          <div class="flex items-start justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center font-bold text-sm">#1</span>
+              <h3 class="text-base font-bold text-white">播放/暫停有時無法再播放，且不要關閉 YouTube 內部音量控制</h3>
+            </div>
+            <span class="text-xs text-amber-400 bg-amber-950/50 border border-amber-800/40 px-2 py-0.5 rounded">防啞音與失焦解鎖</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm text-slate-300">
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-rose-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> 遭遇痛點與底層原因：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. 傳統使用空白鍵（Space）或多媒體 Play/Pause 鍵，若瀏覽器焦點移到留言區或進度條，空白鍵會變成「頁面往下捲動」，造成播放器失焦且無法再播放。<br>
+                2. 若使用滑鼠拖曳或誤觸 YouTube 播放器內部的音量滑桿，一旦滑到 0 或被判定靜音，網頁會永久啞音，使用者無法由手勢恢復。
+              </p>
+            </div>
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wrench"></i> 工程解法與提示語核心：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. <strong>改發 YouTube 原生單鍵快捷鍵 <code>'k'</code></strong>，配合 1.2 秒冷卻鎖（Cooldown Lock），無論游標點在哪，'k' 鍵皆能精準且無副作用地切換播放與暫停。<br>
+                2. <strong>音量控制全面改由 Windows 系統級 API <code>keybd_event(VK_VOLUME_UP / DOWN)</code> 驅動</strong>，讓 YouTube 內建音量永遠維持 100%，徹底根除啞音。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 痛點 2 & 3 -->
+        <div class="glass-card p-5 sm:p-6 rounded-2xl border border-cyan-500/30">
+          <div class="flex items-start justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold text-sm">#2 & #3</span>
+              <h3 class="text-base font-bold text-white">往前 10 秒 / 後退 10 秒無功能，且快轉蓄力始終顯示 0%</h3>
+            </div>
+            <span class="text-xs text-cyan-400 bg-cyan-950/50 border border-cyan-800/40 px-2 py-0.5 rounded">狀態機平滑濾波修復</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm text-slate-300">
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-rose-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> 遭遇痛點與底層原因：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. 缺少 YouTube 原生 10 秒快倒轉按鍵對應，方向鍵 (Left/Right) 每次僅跳 5 秒且常觸發網頁焦點橫向滑動。<br>
+                2. 原程式的蓄力計數器遞減衰減邏輯放置在 <code>if-else</code> 判斷樹的最外層全域，只要某一幀手部微晃未達閾值，蓄力值立刻在進入下一幀前被強行歸零，導致 HUD 上的蓄力百分比永遠卡在 0%！
+              </p>
+            </div>
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wrench"></i> 工程解法與提示語核心：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. <strong>發送原生快捷鍵 <code>'l'</code> (快轉 10s) 與 <code>'j'</code> (倒退 10s)</strong>，速度極快且完全不干擾網頁。<br>
+                2. <strong>7 幀連續平滑蓄力狀態機</strong>：將歸零邏輯移入多指判斷分支內，食指維持指向時每幀累加，呈現 <code>14% ➔ 28% ➔ 42% ➔ 57% ➔ 71% ➔ 85% ➔ 100%</code> 動態光圈，蓄滿 100% 觸發動作並重設！
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 痛點 4 & 5 -->
+        <div class="glass-card p-5 sm:p-6 rounded-2xl border border-purple-500/30">
+          <div class="flex items-start justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-sm">#4 & #5</span>
+              <h3 class="text-base font-bold text-white">語音控制全面加進去：播放暫停、系統音量與「任意秒數」快轉倒退</h3>
+            </div>
+            <span class="text-xs text-purple-400 bg-purple-950/50 border border-purple-800/40 px-2 py-0.5 rounded">自然數字解析引擎</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm text-slate-300">
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-rose-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> 遭遇痛點與底層原因：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. 純手勢遙控在雙手拿食物、手油或離開鏡頭視角時無法操作。<br>
+                2. 一般語音控制只能固定跳 10 秒，若想跳過 20 秒片頭或倒退 45 秒重點，使用者必須連續喊多次，非常疲勞且不自然。
+              </p>
+            </div>
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wrench"></i> 工程解法與提示語核心：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. <strong>整合 SpeechRecognition 雙模語音線程</strong>：口說「播放/暫停/繼續」送出 'k'；「大聲一點/小聲一點」發送系統音量訊號。<br>
+                2. <strong>任意秒數解析演算法 <code>extract_seek_seconds</code></strong>：支援中英文數字混用（「快轉20秒」、「20秒」、「倒退45秒」），自動換算步進按鍵次數精準發送，實現任意區間跳轉！
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 痛點 6 & 7 -->
+        <div class="glass-card p-5 sm:p-6 rounded-2xl border border-amber-500/30">
+          <div class="flex items-start justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-sm">#6 & #7</span>
+              <h3 class="text-base font-bold text-white">語音搜尋點歌播放，以及「換聽另一首時自動關閉舊分頁」（防多音打架）</h3>
+            </div>
+            <span class="text-xs text-amber-400 bg-amber-950/50 border border-amber-800/40 px-2 py-0.5 rounded">0.5s 爬蟲與分頁管理</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm text-slate-300">
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-rose-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> 遭遇痛點與底層原因：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. 傳統需手動輸入關鍵字或花費數秒調用龐大 API，無法在客廳或廚房即時隨點隨播。<br>
+                2. <strong>最嚴重的致命傷</strong>：連續點歌「換聽告五人」時，瀏覽器會直接開啟新分頁，導致上一首音樂與新歌曲同時在背景播放，多音混雜打架！
+              </p>
+            </div>
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wrench"></i> 工程解法與提示語核心：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. <strong>免 API Key 0.5 秒輕量爬蟲</strong>：發送 HTTP 請求自 YouTube 搜尋頁提取首筆 <code>/watch?v=...</code> 影片代碼即刻開播。<br>
+                2. <strong>換歌自動關閉舊分頁（防衝突機制）</strong>：說「關閉這首影音」或「換聽...」時，先將焦點切換至 YouTube 視窗並發送 <code>Ctrl + W</code> 關閉舊歌曲分頁，延遲 200ms 後開啟新曲，音質純淨無干擾！
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 痛點 8 & 9 -->
+        <div class="glass-card p-5 sm:p-6 rounded-2xl border border-rose-500/30">
+          <div class="flex items-start justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center font-bold text-sm">#8 & #9</span>
+              <h3 class="text-base font-bold text-white">語音「開啟YT網站」，以及「自動略過廣告有時沒辦法關閉」徹底升級</h3>
+            </div>
+            <span class="text-xs text-rose-400 bg-rose-950/50 border border-rose-800/40 px-2 py-0.5 rounded">81組樣板池與4.5s獵犬迴圈</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs sm:text-sm text-slate-300">
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-rose-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation"></i> 遭遇痛點與底層原因：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. 在開機或桌面環境下，若使用者未先手動打開 YouTube 網頁，整個手勢遙控器便無對象可控。<br>
+                2. 略過廣告有時無法關閉：因為 YouTube 廣告在前 5 秒為「灰底不可點擊按鈕」，且因深色模式/淺色模式、解析度縮放與「略過/略過廣告/Skip」多種字樣，單一模板與單次比對極易失敗。
+              </p>
+            </div>
+            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80">
+              <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5"><i class="fa-solid fa-wrench"></i> 工程解法與提示語核心：</div>
+              <p class="leading-relaxed text-slate-400">
+                1. <strong>語音指令「開啟YT網站」</strong>：自動調用預設瀏覽器開啟 YouTube 首頁，實現免碰滑鼠全流程自動化。<br>
+                2. <strong>81 組多尺度樣板 + 4.5 秒主動獵犬迴圈（Hunter Loop）</strong>：以 0.72 為自適應閾值，於廣告可能出現時每 250ms 連續追蹤偵測，倒數結束按鈕由灰轉白可按瞬間即刻秒殺，並於 0.02 秒將滑鼠還原！
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <section id="engineering-process" class="scroll-mt-24">
       <div class="mb-8">
         <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
