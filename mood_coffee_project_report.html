@@ -13,7 +13,25 @@
   <!-- KaTeX for formulas -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script>
+    function renderFormulas() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          throwOnError: false
+        });
+      }
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(renderFormulas, 100);
+      setTimeout(renderFormulas, 600);
+    });
+  </script>
 
   <style>
     :root {
@@ -331,10 +349,10 @@
         <div>
           <h3 class="text-lg font-bold text-slate-900 mb-2"><i class="fa-solid fa-flask text-amber-600 mr-2"></i>1. 遠端光體積變化描記法（rPPG）之光學機制</h3>
           <p>
-            根據 Verkruysse 等人（2008）的研究，環境光穿透人體皮膚淺層時，皮下微血管床在心臟收縮期注入富氧血紅素，對可見光中 <strong>530nm ~ 545nm（綠光波段）</strong> 的吸收係數顯著高於紅光與藍光。微血管隨心跳律動使綠光反射率產生週期性微幅震盪（振幅約 0.5%~1%）。透過 RGB 鏡頭綠色色版提取時序平均值 \( G(t) \)，並通過 4 階 Butterworth 帶通濾波（0.75Hz ~ 2.5Hz）與快速傅立葉轉換（FFT），即可準確擷取出主頻率 \( f_{max} \)，推算出精確心率：
+            根據 Verkruysse 等人（2008）的研究，環境光穿透人體皮膚淺層時，皮下微血管床在心臟收縮期注入富氧血紅素，對可見光中 <strong>530nm ~ 545nm（綠光波段）</strong> 的吸收係數顯著高於紅光與藍光。微血管隨心跳律動使綠光反射率產生週期性微幅震盪（振幅約 0.5%~1%）。透過 RGB 鏡頭綠色色版提取時序平均值 $G(t)$，並通過 4 階 Butterworth 帶通濾波（0.75Hz ~ 2.5Hz）與快速傅立葉轉換（FFT），即可準確擷取出主頻率 $f_{\max}$，推算出精確心率：
           </p>
-          <div class="my-3 p-4 bg-slate-100 rounded-lg text-center font-mono text-base font-bold text-slate-800">
-            $$	ext{HR (BPM)} = f_{max} 	imes 60 \quad (f \in [0.75	ext{Hz}, 2.5	ext{Hz}])$$
+          <div class="my-3 p-4 bg-slate-100 rounded-xl text-center font-mono text-base font-bold text-slate-800 border border-slate-200">
+            $$ \text{HR (BPM)} = f_{\max} \times 60 \quad (f \in [0.75\text{Hz}, 2.5\text{Hz}]) $$
           </div>
         </div>
 
@@ -348,7 +366,7 @@
         <div>
           <h3 class="text-lg font-bold text-slate-900 mb-2"><i class="fa-solid fa-mug-hot text-amber-600 mr-2"></i>3. 咖啡因之神經藥理學：腺苷受體（Adenosine Receptor）拮抗</h3>
           <p>
-            Fredholm 等人（1999）指出，清醒時間越長，大腦星形膠質細胞分泌之「腺苷」累積越厚重，腺苷與 \( A_1 / A_{2A} \) 受體結合後會發出強烈睏意訊號。咖啡因在化學結構上與腺苷高度同構，能穿透血腦屏障競爭性佔據受體，阻斷睡眠傳導路徑。因此在「嗜睡斷電」時，最需要的是<strong>高萃取濃度、無糖、低乳脂</strong>的純黑咖啡（如 7-11 濃萃美式），以最快速度完成受體佔位。
+            Fredholm 等人（1999）指出，清醒時間越長，大腦星形膠質細胞分泌之「腺苷」累積越厚重，腺苷與 $A_1 / A_{2A}$ 受體結合後會發出強烈睏意訊號。咖啡因在化學結構上與腺苷高度同構，能穿透血腦屏障競爭性佔據受體，阻斷睡眠傳導路徑。因此在「嗜睡斷電」時，最需要的是<strong>高萃取濃度、無糖、低乳脂</strong>的純黑咖啡（如 7-11 濃萃美式），以最快速度完成受體佔位。
           </p>
         </div>
 
@@ -357,16 +375,29 @@
           <p>
             透過 MediaPipe Face Mesh 定位眼周與唇周網格關鍵點，計算幾何長寬比以量化疲憊：
           </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-3">
-            <div class="p-3 bg-slate-100 rounded-lg text-center">
-              <div class="text-xs font-bold text-slate-600 mb-1">眼瞼長寬比 (EAR)</div>
-              $$	ext{EAR} = rac{\|p_2 - p_6\| + \|p_3 - p_5\|}{2 \|p_1 - p_4\|}$$
-              <span class="text-xs text-slate-500">閾值：\(	ext{EAR} < 0.20\) 持續 1.5s 判定閉眼</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+            <div class="p-4 bg-slate-100/90 rounded-xl text-center border border-slate-200 shadow-sm">
+              <div class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">
+                <i class="fa-solid fa-eye text-indigo-500 mr-1.5"></i>眼瞼長寬比 (Eye Aspect Ratio, EAR)
+              </div>
+              <div class="text-base sm:text-lg py-2 font-mono text-slate-900">
+                $$ \text{EAR} = \frac{|p_2 - p_6| + |p_3 - p_5|}{2 |p_1 - p_4|} $$
+              </div>
+              <div class="text-xs text-slate-600 mt-2 bg-white/90 py-1.5 px-3 rounded-lg inline-block border border-slate-200">
+                判定閾值：<span class="font-bold text-amber-700 font-mono">$\text{EAR} < 0.20$</span>（持續 1.5 秒判定為微睡眠）
+              </div>
             </div>
-            <div class="p-3 bg-slate-100 rounded-lg text-center">
-              <div class="text-xs font-bold text-slate-600 mb-1">嘴巴張開長寬比 (MAR)</div>
-              $$	ext{MAR} = rac{\|p_{top} - p_{bottom}\|}{\|p_{left} - p_{right}\|}$$
-              <span class="text-xs text-slate-500">閾值：\(	ext{MAR} > 0.65\) 持續 2.0s 判定打哈欠</span>
+
+            <div class="p-4 bg-slate-100/90 rounded-xl text-center border border-slate-200 shadow-sm">
+              <div class="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">
+                <i class="fa-solid fa-face-tired text-amber-500 mr-1.5"></i>嘴巴張開度 (Mouth Aspect Ratio, MAR)
+              </div>
+              <div class="text-base sm:text-lg py-2 font-mono text-slate-900">
+                $$ \text{MAR} = \frac{|p_{\text{top}} - p_{\text{bottom}}|}{|p_{\text{left}} - p_{\text{right}}|} $$
+              </div>
+              <div class="text-xs text-slate-600 mt-2 bg-white/90 py-1.5 px-3 rounded-lg inline-block border border-slate-200">
+                判定閾值：<span class="font-bold text-amber-700 font-mono">$\text{MAR} > 0.65$</span>（持續 2.0 秒判定為打哈欠）
+              </div>
             </div>
           </div>
         </div>
