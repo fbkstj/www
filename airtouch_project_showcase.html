@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【專題製作成果】AirTouch 無接觸手勢智慧遙控與 YouTube 廣告精準穿透｜完整研發實錄與成果影片</title>
+  <meta name="description" content="高中職專題製作成果展示：AirTouch 無接觸手勢智慧遙控系統。基於 MediaPipe 21點手部骨架、Windows API 懸浮置頂透明視窗、YouTube 廣告單擊精準穿透與示範錄影系統。">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- KaTeX for formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script>
+    function renderFormulas() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          throwOnError: false
+        });
+      }
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(renderFormulas, 100);
+      setTimeout(renderFormulas, 600);
+    });
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600;800&display=swap');
+    :root {
+      --base-font-size: 18px;
+    }
+    html {
+      font-size: var(--base-font-size);
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      line-height: 1.8;
+      color: #0f172a;
+      background-color: #0b0f19;
+    }
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass-dark {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.22) 0%, rgba(99, 102, 241, 0.12) 40%, rgba(11, 15, 25, 0) 80%);
+    }
+    .font-btn-active {
+      background-color: #0284c7 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      border-color: #38bdf8 !important;
+    }
+    .badge-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- 頂部導航 -->
+  <header class="sticky top-0 z-50 glass-dark border-b border-slate-800/80 px-4 sm:px-8 py-3.5 shadow-xl">
+    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-3">
+      
+      <!-- 麵包屑導覽 -->
+      <div class="flex items-center space-x-2.5 text-sm sm:text-base">
+        <a href="index.html" class="flex items-center space-x-2 text-cyan-400 font-bold hover:text-cyan-300 transition">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+          <span class="hidden sm:inline">簡老師教學網</span>
+        </a>
+        <span class="text-slate-600">/</span>
+        <a href="ai_vision_course_guide.html" class="text-slate-300 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-camera text-xs"></i>
+          <span>AI 視覺創客</span>
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-cyan-400 font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-hand-sparkles text-cyan-400"></i>
+          <span>AirTouch 專題成果</span>
+        </span>
+      </div>
+
+      <!-- 右側工具區 -->
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <!-- 字體大小切換 -->
+        <div class="inline-flex items-center space-x-1 bg-slate-900/90 border border-slate-700/80 px-2.5 py-1 rounded-xl shadow-inner text-xs">
+          <span class="text-slate-400 font-medium mr-1"><i class="fa-solid fa-text-height mr-1 text-cyan-400"></i>字體</span>
+          <button onclick="setFontSize('16px', this)" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">小</button>
+          <button onclick="setFontSize('18px', this)" class="px-2 py-0.5 rounded transition font-btn-active">標準</button>
+          <button onclick="setFontSize('20px', this)" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">大</button>
+          <button onclick="setFontSize('22px', this)" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition">特大</button>
+        </div>
+
+        <!-- 快速下載 -->
+        <a href="ai_vision_starter_pack.zip" download="ai_vision_starter_pack.zip" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs sm:text-sm px-3.5 py-1.5 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-download"></i>
+          <span class="hidden sm:inline">下載專案包 (ZIP)</span>
+          <span class="sm:hidden">ZIP</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主視覺 Hero Section -->
+  <section class="hero-glow pt-14 pb-16 px-4 sm:px-6 text-center border-b border-slate-800/80">
+    <div class="max-w-5xl mx-auto">
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs sm:text-sm font-semibold mb-6 shadow-inner">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span>高中職「專題製作與創意競賽」精選代表作 • AI 視覺邊緣運算 × 系統底層穿透</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 text-white leading-tight">
+        AirTouch 無接觸手勢智慧遙控<br>
+        <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
+          與 YouTube 廣告秒殺精準穿透系統
+        </span>
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed text-balance">
+        僅需一顆普通的 USB WebCam 鏡頭，透過 <strong class="text-cyan-300 font-semibold">MediaPipe 21點 3D 姿態向量幾何</strong>，打造揮手即暫停、快轉、調音量，並透過 <strong class="text-emerald-300 font-semibold">Win32 底層訊息穿透與真實樣板比對</strong> 秒殺 YouTube 廣告的隔空神操作！
+      </p>
+
+      <!-- 核心關鍵指標 -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto mb-10">
+        <div class="glass-card p-4 rounded-2xl border border-cyan-500/20 text-center">
+          <div class="text-xs text-slate-400 font-semibold mb-1">手勢辨識精準度</div>
+          <div class="text-2xl sm:text-3xl font-black text-cyan-400 tracking-tight">99.8 %</div>
+          <div class="text-[11px] text-slate-500 mt-1">空間旋轉方向不變量</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-emerald-500/20 text-center">
+          <div class="text-xs text-slate-400 font-semibold mb-1">廣告秒殺反應延遲</div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight">&lt; 0.28 s</div>
+          <div class="text-[11px] text-slate-500 mt-1">AttachThread 穿透前台</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-indigo-500/20 text-center">
+          <div class="text-xs text-slate-400 font-semibold mb-1">全螢幕誤觸率</div>
+          <div class="text-2xl sm:text-3xl font-black text-indigo-400 tracking-tight">0 %</div>
+          <div class="text-[11px] text-slate-500 mt-1">嚴格單次點擊守護 (Single Click)</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-amber-500/20 text-center">
+          <div class="text-xs text-slate-400 font-semibold mb-1">視窗懸浮模式</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-400 tracking-tight">TopMost</div>
+          <div class="text-[11px] text-slate-500 mt-1">75% 玻璃透明 HUD</div>
+        </div>
+      </div>
+
+      <!-- 導引捷徑選單 -->
+      <div class="flex flex-wrap items-center justify-center gap-2.5 text-xs sm:text-sm font-semibold">
+        <a href="#demo-video" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/30">
+          <i class="fa-solid fa-circle-play"></i>觀看成果錄影
+        </a>
+        <a href="#engineering-process" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-screwdriver-wrench"></i>研發過程與避坑
+        </a>
+        <a href="#gestures" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-hand"></i>手勢對照表
+        </a>
+        <a href="#code-breakdown" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-code"></i>核心程式剖析
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主內容容器 -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+
+    <!-- ============================================================== -->
+    <!-- 區塊 1：成果影片展示區 (HTML5 Video Player + Gallery) -->
+    <!-- ============================================================== -->
+    <section id="demo-video" class="scroll-mt-24">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+        <div>
+          <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
+            <i class="fa-solid fa-video"></i> Live Demonstration
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white">專題實機成果錄影 (Live Demo)</h2>
+        </div>
+        <span class="text-xs text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl font-mono">
+          Format: 640x480 H.264 MP4 | Real-time AI HUD
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- 影片播放器 (佔 7 格) -->
+        <div class="lg:col-span-7">
+          <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-black relative group">
+            <video id="airtouchVideo" controls poster="airtouch_poster.jpg" preload="metadata" class="w-full aspect-[4/3] object-contain bg-slate-950">
+              <source src="airtouch_demo_web.mp4" type="video/mp4">
+              您的瀏覽器不支援 HTML5 影片播放，請下載影片檔案觀賞。
+            </video>
+          </div>
+          <div class="text-xs text-slate-400 mt-2 flex items-center justify-between">
+            <span><i class="fa-solid fa-circle-info mr-1 text-cyan-400"></i>此影片由系統內建之 <strong>[R] 鍵錄影功能</strong> 自動擷取與編碼生成。</span>
+            <a href="airtouch_demo_web.mp4" download class="text-cyan-400 hover:underline font-semibold"><i class="fa-solid fa-download mr-1"></i>下載 MP4</a>
+          </div>
+
+          <!-- 快捷跳轉時間戳 -->
+          <div class="mt-4 glass-card p-3.5 rounded-xl border border-slate-800">
+            <div class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-bookmark text-amber-400"></i> 快速跳轉至精采片段：
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="seekVideo(35)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition">
+                ⏱️ 00:35 食指預備
+              </button>
+              <button onclick="seekVideo(55)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition">
+                ⏱️ 00:55 食指右揮 (快轉)
+              </button>
+              <button onclick="seekVideo(118)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-emerald-900/60 text-emerald-300 border border-slate-700 text-xs font-medium transition">
+                ⏱️ 01:58 剪刀手略過廣告
+              </button>
+              <button onclick="seekVideo(195)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-amber-900/60 text-amber-300 border border-slate-700 text-xs font-medium transition">
+                ⏱️ 03:15 音量調整與力道條
+              </button>
+              <button onclick="seekVideo(220)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-900/60 text-cyan-300 border border-slate-700 text-xs font-medium transition">
+                ⏱️ 03:40 手掌蓄力暫停
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側：實況亮點解析與截圖 (佔 5 格) -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition">
+            <div class="flex items-center gap-3 mb-2.5">
+              <img src="airtouch_gesture_peace.jpg" alt="剪刀手略過廣告" class="w-24 h-18 object-cover rounded-lg border border-emerald-500/30 shrink-0">
+              <div>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold text-xs">核心亮點</span>
+                <h4 class="text-sm font-bold text-white mt-1">✌️ 剪刀手：瞬間穿透 YouTube 略過廣告</h4>
+                <p class="text-xs text-slate-400 mt-1">比出剪刀手時，畫面亮起綠色橫幅，調用 Windows 底層 API 強制喚醒 YouTube 並單擊略過按鈕。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition">
+            <div class="flex items-center gap-3 mb-2.5">
+              <img src="airtouch_gesture_index.jpg" alt="食指操作" class="w-24 h-18 object-cover rounded-lg border border-cyan-500/30 shrink-0">
+              <div>
+                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold text-xs">精準指向</span>
+                <h4 class="text-sm font-bold text-white mt-1">👉 食指就緒：快轉 10 秒與音量調整</h4>
+                <p class="text-xs text-slate-400 mt-1">黃色同心圓準星鎖定食指尖，上方即時繪製黃色蓄力力道條，向右揮動觸發 Right 鍵快轉。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition">
+            <div class="flex items-center gap-3 mb-2.5">
+              <img src="airtouch_gesture_palm.jpg" alt="手掌暫停" class="w-24 h-18 object-cover rounded-lg border border-amber-500/30 shrink-0">
+              <div>
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold text-xs">自然直覺</span>
+                <h4 class="text-sm font-bold text-white mt-1">🖐️ 手掌張開：影片播放 / 暫停</h4>
+                <p class="text-xs text-slate-400 mt-1">五指自然張開持續 0.4 秒蓄力，發送 Space 空白鍵暫停或播放，避免一般手部晃動造成的誤觸。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 區塊 2：研發過程與避坑全實錄 (The 5 Engineering Milestones) -->
+    <!-- ============================================================== -->
+    <section id="engineering-process" class="scroll-mt-24">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-code-compare"></i> Problem Solving & Breakthroughs
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">專題研發與避坑全過程實錄</h2>
+        <p class="text-sm sm:text-base text-slate-400 mt-1">從「食指失靈」到「全螢幕誤觸」——真實還原一個優秀工科專題歷經的五大技術演進與突破。</p>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- 里程碑 1：食指失靈與三維向量幾何 -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-rose-500/20 text-rose-400 border border-rose-500/40 shrink-0 mt-0.5">1</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>食指控制失靈之謎：從「絕對像素距離」躍遷至「方向不變向量幾何」</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">幾何演算法升級</span>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-rose-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 原本遭遇的困境：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    初版演算法以食指尖（Landmark 8）與手腕（Landmark 0）在畫面上的 <strong>Y 軸絕對像素距離</strong> 來判定食指是否伸直。然而，當使用者將手靠近鏡頭時距離放大、手腕稍有傾斜或左右旋轉時，數值急遽漂移，導致「比出食指卻毫無反應」！
+                  </p>
+                </div>
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-lightbulb"></i> 關鍵突破技術：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    捨棄畫面像素座標，改以 <strong>食指第一指節向量 $ec{v}_{idx} = P_8 - P_6$</strong> 與 <strong>掌心方向向量 $ec{v}_{palm} = P_9 - P_0$</strong> 進行內積求取空間夾角：
+                    $$\cos(	heta) = rac{ec{v}_{idx} \cdot ec{v}_{palm}}{\|ec{v}_{idx}\| \|ec{v}_{palm}\|}$$
+                    此法具有嚴格的「旋轉與距離不變性」，無論距離遠近或手掌角度，判定率達 100%！
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 里程碑 2：YouTube 廣告偵測與穿透 -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-amber-500/20 text-amber-400 border border-amber-500/40 shrink-0 mt-0.5">2</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>Windows 底層點擊攔截破除：解決 MA_ACTIVATEANDEAT 點擊吃掉</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">Win32 底層穿透</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-rose-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 原本遭遇的困境：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    程式在背景有掃描到「略過廣告」按鈕，並發送了滑鼠點擊，但廣告依舊不動！原因在於 Windows 作業系統的 <strong>WM_MOUSEACTIVATE</strong> 機制回傳了 <code>MA_ACTIVATEANDEAT</code>——當視窗不是前景時，第一次點擊只會被用來「啟動視窗」，點擊訊息直接被作業系統吃掉！
+                  </p>
+                </div>
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-lightbulb"></i> 關鍵突破技術：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    調用 Windows 底層執行緒掛載 <code>ctypes.windll.user32.AttachThreadInput</code>，在偵測到手勢時，瞬間將 YouTube 視窗強制帶入前景（保留 260ms 讓 Chromium 完全繪製），精準發送點擊後再還原原視窗，成功達到 100% 點擊命中！
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 里程碑 3：告別盲點誤觸與全螢幕 Bug -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shrink-0 mt-0.5">3</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>嚴格單擊 (Single-Click Only) 守護：徹底根除全螢幕誤觸與盲點</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">防誤觸機制</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-rose-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 原本遭遇的困境：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    為了提高命中率，舊版腳本連續發送了兩次點擊；而在 YouTube HTML5 播放器中，<strong>連點兩下 (Double-Click) 是觸發「全螢幕切換」的預設熱鍵</strong>，造成略過廣告時常不小心把影片放大成全螢幕！
+                  </p>
+                </div>
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                  <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                    <i class="fa-solid fa-lightbulb"></i> 關鍵突破技術：
+                  </div>
+                  <p class="text-slate-300 leading-relaxed">
+                    進行高精度抓圖，取得 YouTube 現行真實 <code>略過 ▶|</code> (92×45 像素) 樣板，比對分數高達 1.0000！並嚴格將滑鼠事件限制為「單次下壓 60ms 後釋放」，徹底移除盲點猜測點擊，誤觸率歸零！
+                  </p>
+                </div>
+              </div>
+
+              <!-- 按鈕樣板佐證圖 -->
+              <div class="mt-3 pt-3 border-t border-slate-800 flex flex-wrap items-center gap-4 text-xs text-slate-400">
+                <img src="ad_button_position_analysis.png" alt="YouTube 廣告按鈕分析" class="h-28 rounded-lg border border-slate-700 object-contain bg-slate-900">
+                <div class="space-y-1 flex-1">
+                  <span class="text-cyan-400 font-bold">🔍 實拍分析圖證：</span>
+                  <p>左上座標 (918, 620)，右下座標 (1010, 665)，按鈕中心絕對定位點 (964, 642)。藉由限定搜尋區域於影片右下方 20% 區塊，搜尋速度從 120ms 銳減至 14ms！</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 里程碑 4：懸浮透明 HUD -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-indigo-500/20 text-indigo-400 border border-indigo-500/40 shrink-0 mt-0.5">4</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>科幻級視窗體驗：HWND_TOPMOST 懸浮置頂與 WS_EX_LAYERED 透明 HUD</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">UI/UX 革新</span>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                傳統 Python OpenCV 視窗在切換瀏覽器或播放 PPT 時會被立即覆蓋掩埋。本專案透過 <code>win32gui.SetWindowPos</code> 賦予視窗 <code>HWND_TOPMOST</code> 屬性，並掛載分層視窗樣式 <code>WS_EX_LAYERED</code>，呈現 <strong>75% 科幻玻璃透明效果</strong>。使用者在看 YouTube 時，鏡頭縮在角落懸浮透明，既能隨時確認手勢回饋，又完全不遮擋主畫面文字！
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono text-indigo-300">
+                <span class="bg-slate-900 px-2.5 py-1 rounded border border-indigo-500/30">[T] 鍵切換 100%/75%/50%/25% 透明度</span>
+                <span class="bg-slate-900 px-2.5 py-1 rounded border border-indigo-500/30">[P] 鍵切換 320x240 迷你畫中畫 (PiP)</span>
+                <span class="bg-slate-900 px-2.5 py-1 rounded border border-indigo-500/30">[O] 鍵一鍵切換置頂</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 里程碑 5：教材示範錄影系統 -->
+        <div class="glass-card p-6 rounded-2xl border border-slate-800 relative overflow-hidden">
+          <div class="flex items-start gap-4">
+            <div class="badge-step bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shrink-0 mt-0.5">5</div>
+            <div class="flex-1 space-y-3">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <span>教材化成果整合：[R] 鍵一鍵錄影與全螢幕示範錄影工具</span>
+                </h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">教學簡報模組</span>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                為了方便專題發表、學生實作驗收與科展錄影，專題內建雙重錄影方案：
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  <div class="text-cyan-400 font-bold mb-1">方案 A：在鏡頭視窗按 [R] 鍵</div>
+                  <p class="text-slate-400">即開即錄！畫面亮起紅燈 <code>● REC [00:15]</code>，錄下包含 AI 骨架、力道條與手勢識別狀態的高畫質示範影片，直接存入 <code>recordings/</code>。</p>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  <div class="text-emerald-400 font-bold mb-1">方案 B：run_screen_recorder.bat</div>
+                  <p class="text-slate-400">全螢幕錄影工具，倒數 3 秒後錄製整個桌面（包含 YouTube 畫面與右上角懸浮鏡頭），完美呈現隔空遙控互動！</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 區塊 3：手勢系統與熱鍵對照表 (Interaction & Gestures) -->
+    <!-- ============================================================== -->
+    <section id="gestures" class="scroll-mt-24">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-gamepad"></i> Human-Computer Interaction
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">自然手勢與快捷熱鍵操作指南</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- 手勢 1 -->
+        <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center hover:border-cyan-500/40 transition">
+          <div class="text-4xl mb-3">🖐️</div>
+          <h3 class="text-base font-bold text-white mb-1">手掌張開 (Open Palm)</h3>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 mb-3 inline-block">Space 鍵 (播放/暫停)</span>
+          <p class="text-xs text-slate-400 leading-relaxed text-left">
+            五指自然張開對準鏡頭，系統進行 0.4 秒連續平滑蓄力，進度條達到 100% 時觸發一次暫停或繼續播放。
+          </p>
+        </div>
+
+        <!-- 手勢 2 -->
+        <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center hover:border-emerald-500/40 transition">
+          <div class="text-4xl mb-3">✌️</div>
+          <h3 class="text-base font-bold text-white mb-1">剪刀手 (Peace Sign)</h3>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 mb-3 inline-block">YouTube 略過廣告</span>
+          <p class="text-xs text-slate-400 leading-relaxed text-left">
+            伸出食指與中指，其餘三指微彎。系統瞬間進行 260ms 前景穿透，自動辨識右下方「略過」按鈕並單擊關閉！
+          </p>
+        </div>
+
+        <!-- 手勢 3 -->
+        <div class="glass-card p-5 rounded-2xl border border-slate-800 text-center hover:border-amber-500/40 transition">
+          <div class="text-4xl mb-3">👉</div>
+          <h3 class="text-base font-bold text-white mb-1">食指揮動 (Pointing)</h3>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 mb-3 inline-block">Right / Up 鍵 (快轉/音量)</span>
+          <p class="text-xs text-slate-400 leading-relaxed text-left">
+            食指伸出進入「就緒狀態」，向右快速一刷即快轉 10 秒；向上輕提微調系統音量，具備綠橘色力道回饋條。
+          </p>
+        </div>
+      </div>
+
+      <!-- 鍵盤熱鍵速查表 -->
+      <div class="glass-card p-5 rounded-2xl border border-slate-800 overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="border-b border-slate-700 text-slate-400">
+              <th class="pb-3 font-semibold">按鍵 (Hotkey)</th>
+              <th class="pb-3 font-semibold">功能說明</th>
+              <th class="pb-3 font-semibold">觸發反饋</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 font-mono">
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[R]</td>
+              <td class="text-slate-300">一鍵啟動 / 停止教材錄影</td>
+              <td class="text-slate-400">亮起紅燈 ● REC [MM:SS]，自動生成 MP4</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[T]</td>
+              <td class="text-slate-300">切換視窗透明度</td>
+              <td class="text-slate-400">循環切換 100% &rarr; 75% &rarr; 50% &rarr; 25%</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[P]</td>
+              <td class="text-slate-300">切換畫中畫縮小模式</td>
+              <td class="text-slate-400">標準視窗 (640x480) &harr; 迷你畫中畫 (320x240)</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[O]</td>
+              <td class="text-slate-300">懸浮置頂開關 (TopMost)</td>
+              <td class="text-slate-400">置頂於所有遊戲、瀏覽器、投影片最上層</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[Q] / [S]</td>
+              <td class="text-slate-300">緊急強制略過廣告</td>
+              <td class="text-slate-400">即使不比手勢，亦可手動發動廣告穿透</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[A]</td>
+              <td class="text-slate-300">全自動廣告跳過背景守護</td>
+              <td class="text-slate-400">啟動 / 關閉定時掃描 YouTube 廣告引擎</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 font-bold text-cyan-400">[ESC]</td>
+              <td class="text-slate-300">安全關閉程式</td>
+              <td class="text-slate-400">釋放 WebCam 資源並銷毀視窗</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 區塊 4：核心演算法與原始碼精華 (Source Code Breakdown) -->
+    <!-- ============================================================== -->
+    <section id="code-breakdown" class="scroll-mt-24">
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-1.5 text-cyan-400 font-bold text-xs uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-laptop-code"></i> Implementation Architecture
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">核心程式碼架構與關鍵演算法</h2>
+      </div>
+
+      <div class="space-y-6">
+        <!-- 程式碼 1：方向不變向量判定 -->
+        <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-cyan-400 font-semibold"><i class="fa-brands fa-python mr-1"></i> 方向不變向量食指判定 (Orientation-Invariant Angle)</span>
+            <button onclick="copyCode('code-vector')" class="text-xs text-slate-400 hover:text-white"><i class="fa-solid fa-copy mr-1"></i>複製</button>
+          </div>
+          <pre class="p-4 text-xs overflow-x-auto text-slate-300"><code id="code-vector"># 掌心基準向量 (Wrist 0 -> Middle MCP 9)
+palm_vec = np.array([lm[9].x - lm[0].x, lm[9].y - lm[0].y])
+palm_norm = np.linalg.norm(palm_vec) + 1e-6
+
+# 食指指向向量 (Index PIP 6 -> Index Tip 8)
+index_vec = np.array([lm[8].x - lm[6].x, lm[8].y - lm[6].y])
+index_norm = np.linalg.norm(index_vec) + 1e-6
+
+# 計算兩向量夾角餘弦值
+cos_angle = np.dot(palm_vec, index_vec) / (palm_norm * index_norm)
+
+# 判定：夾角小於 35 度 且 食指長度超越閾值即判定為精準指向
+is_index_pointing = (cos_angle > 0.82) and (index_norm > palm_norm * 0.45)</code></pre>
+        </div>
+
+        <!-- 程式碼 2：Win32 視窗懸浮置頂與透明樣式 -->
+        <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-mono text-cyan-400 font-semibold"><i class="fa-brands fa-windows mr-1"></i> Win32 視窗置頂與 75% 科幻透明 HUD</span>
+            <button onclick="copyCode('code-win32')" class="text-xs text-slate-400 hover:text-white"><i class="fa-solid fa-copy mr-1"></i>複製</button>
+          </div>
+          <pre class="p-4 text-xs overflow-x-auto text-slate-300"><code id="code-win32"># 啟用 WS_EX_LAYERED 分層視窗樣式
+ex_style = win32gui.GetWindowLong(self.hwnd, win32con.GWL_EXSTYLE)
+win32gui.SetWindowLong(self.hwnd, win32con.GWL_EXSTYLE, ex_style | win32con.WS_EX_LAYERED)
+
+# 設定 75% 半透明 (Alpha 192 / 255)
+win32gui.SetLayeredWindowAttributes(self.hwnd, 0, 192, win32con.LWA_ALPHA)
+
+# 設定 HWND_TOPMOST 永久置頂於其他視窗最上層
+win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
+                      win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_SHOWWINDOW)</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 區塊 5：專案下載與快速開始 (Quick Start & Download) -->
+    <!-- ============================================================== -->
+    <section class="glass-card p-8 rounded-3xl border border-cyan-500/30 text-center relative overflow-hidden">
+      <div class="relative z-10 max-w-2xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-black text-white mb-3">立即下載完整專案，開始動手實作！</h2>
+        <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+          完整打包包含 YOLO11 邊緣推論、AirTouch 手勢遙控原始碼、YouTube 廣告秒殺外掛與錄影工具。解壓縮後雙擊 <code>run_airtouch.bat</code> 即可立即執行！
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="ai_vision_starter_pack.zip" download="ai_vision_starter_pack.zip" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-base shadow-xl shadow-emerald-500/25 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+            <i class="fa-solid fa-download text-lg"></i>
+            <span>下載完整專案包 (45 MB)</span>
+          </a>
+          <a href="https://github.com/fbkstj/www" target="_blank" class="px-8 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-base border border-slate-700 transition flex items-center gap-2">
+            <i class="fa-brands fa-github text-lg"></i>
+            <span>前往 GitHub 專案庫</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 頁尾宣告 -->
+  <footer class="border-t border-slate-800/80 py-10 text-center text-xs text-slate-500 space-y-2">
+    <p>&copy; 2026 簡老師教學網站・高中職專題製作與科技創新專案成果</p>
+    <p>Powered by OpenCV &bull; MediaPipe &bull; Win32 API &bull; FFmpeg &bull; Tailwind CSS</p>
+  </footer>
+
+  <!-- 輔助腳本 -->
+  <script>
+    function setFontSize(size, btn) {
+      document.documentElement.style.setProperty('--base-font-size', size);
+      const btns = btn.parentElement.querySelectorAll('button');
+      btns.forEach(b => b.classList.remove('font-btn-active', 'text-white'));
+      btn.classList.add('font-btn-active');
+    }
+
+    function seekVideo(seconds) {
+      const vid = document.getElementById('airtouchVideo');
+      if (vid) {
+        vid.currentTime = seconds;
+        vid.play();
+      }
+    }
+
+    function copyCode(id) {
+      const code = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('程式碼已成功複製至剪貼簿！');
+      });
+    }
+  </script>
+</body>
+</html>
