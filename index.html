@@ -1,840 +1,1460 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
-    html {
-      font-size: 18px; /* 預設基準字體放大 12.5% */
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Noto Sans TC', sans-serif;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      letter-spacing: 0.015em;
-    }
-    code, pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
-      line-height: 1.65;
-    }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .hero-gradient {
-      background: radial-gradient(circle at top center, rgba(59, 130, 246, 0.25) 0%, rgba(15, 23, 42, 1) 75%);
-    }
-    /* 字體切換按鈕高亮 */
-    .font-btn-active {
-      background-color: #2563eb !important;
-      color: #ffffff !important;
-      font-weight: 700 !important;
-      border-color: #3b82f6 !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡老師的個人網站</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #0284c7;
+            --primary-glow: rgba(2, 132, 199, 0.1);
+            --accent-purple: #9333ea;
+            --accent-teal: #0d9488;
+            --accent-gold: #d97706;
+            --font-display: "Outfit", "Noto Sans TC", sans-serif;
+            --sidebar-w: 300px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-display);
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Layout shell ---------- */
+        .layout {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: visible;
+        }
+
+        /* ---------- Top Navbar Header ---------- */
+        .sidebar {
+            width: 100%;
+            height: 52px;
+            position: sticky;
+            top: 0;
+            z-index: 10000;
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            color: #ffffff;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            overflow: visible;
+        }
+
+        .sidebar-header {
+            margin: 0 2rem 0 0;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header .banner-glow {
+            display: none;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: none;
+            -webkit-text-fill-color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .sidebar-header p {
+            display: none;
+        }
+
+        .side-nav {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3rem;
+            flex: 1;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            height: 100%;
+        }
+
+        .nav-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .nav-group::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: transparent;
+        }
+
+        .nav-item {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: #ffffff;
+            padding: 0 1rem;
+            height: 38px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .nav-item .nav-item-text {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-item .chevron {
+            font-size: 0.7rem;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .nav-item:hover, .nav-group:hover .nav-item {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .nav-item .nav-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .nav-item .nav-desc {
+            display: none;
+        }
+
+        /* Floating Level 2 Dropdown Submenu */
+        .nav-sub {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 99999;
+            background: #ffffff;
+            min-width: 260px;
+            max-height: 80vh;
+            overflow: visible;
+            border-radius: 10px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 0;
+            display: none;
+            margin-top: 2px;
+        }
+
+        .nav-sub::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: transparent;
+        }
+
+        .nav-group:hover .nav-sub, .nav-sub:hover, .nav-sub.open {
+            display: block;
+            animation: fadeInDown 0.15s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 第 1 層選項相鄰 & 第 2 層選單右側獨立浮層 (Flyout Floating Submenu) */
+        .nav-sub-group {
+            position: relative;
+            margin-bottom: 2px;
+        }
+
+        /* 擴大滑鼠移動連線感應區域，防止斜移時丟失 hover */
+        .nav-sub-group::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            z-index: 999998;
+        }
+
+        .nav-sub-child-list {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            z-index: 999999;
+            min-width: 330px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.28);
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem;
+            display: none !important;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            margin-left: 6px;
+        }
+
+        .nav-sub-group:hover .nav-sub-child-list {
+            display: flex !important;
+            opacity: 1;
+            transform: translateX(0);
+            animation: flyoutRight 0.15s ease forwards;
+        }
+
+        @keyframes flyoutRight {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .nav-sub-header-btn {
+            width: 100%;
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 0.9rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-sub-group:hover .nav-sub-header-btn {
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+        }
+        .nav-sub-group:hover .sub-chevron {
+            color: #ffffff !important;
+            transform: rotate(90deg);
+        }
+
+        .nav-sub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 0.3rem 0.4rem;
+            margin: 0;
+            border-left: none;
+        }
+
+        .nav-sub-item {
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            text-align: left;
+            padding: 0.7rem 1.2rem;
+            font-size: 0.92rem;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        /* 超強動態 Hover 滑動反差 (與頂部導覽列漸層完全一致：linear-gradient(90deg, #0d9488 0%, #0284c7 100%)) */
+        .nav-sub-item:hover {
+            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            color: #ffffff !important;
+            font-weight: 800;
+            padding-left: 1.5rem;
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+        }
+
+        .nav-sub-item.active {
+            font-weight: 600;
+            color: #0284c7;
+        }
+
+        .sidebar-footer {
+            display: none;
+        }
+        /* ---------- Main content ---------- */
+        .content {
+            flex: 1;
+            min-width: 0;
+            height: calc(100vh - 52px);
+            overflow-y: auto;
+            padding: 2.5rem 2.5rem 4rem;
+            box-sizing: border-box;
+        }
+
+        .content.is-framed {
+            padding: 0;
+            overflow: hidden;
+            height: calc(100vh - 52px);
+        }
+
+        .frame-wrap {
+            display: none;
+            width: 100%;
+            height: calc(100vh - 52px);
+        }
+
+        .frame-wrap.show {
+            display: block;
+        }
+
+        .frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Grid Cards Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid.hide {
+            display: none;
+        }
+
+        @media (max-width: 1300px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+        }
+
+        /* SVG Icons colors */
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card.award .card-icon { color: var(--accent-gold); }
+        .card.feature .card-icon { color: var(--accent-teal); }
+        .card.map .card-icon { color: var(--primary); }
+        .badge-year {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+            background-color: rgba(15, 23, 42, 0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+
+        .card.award .badge-year {
+            background-color: rgba(217, 119, 6, 0.1);
+            color: var(--accent-gold);
+            border-color: rgba(217, 119, 6, 0.15);
+        }
+
+        .card.feature .badge-year {
+            background-color: rgba(13, 148, 136, 0.1);
+            color: var(--accent-teal);
+            border-color: rgba(13, 148, 136, 0.15);
+        }
+
+        .card-body h3 {
+            font-size: 1.28rem;
+            font-weight: 700;
+            line-height: 1.45;
+            margin-bottom: 0.65rem;
+            transition: color 0.25s ease;
+        }
+
+        .card:hover h3 {
+            color: var(--primary);
+        }
+
+        .card-body p {
+            color: var(--text-muted);
+            font-size: 1.02rem;
+            line-height: 1.65;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-align: justify;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(15, 23, 42, 0.06);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .card-footer .category-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .go-link {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: transform 0.2s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .card:hover .go-link {
+            transform: translateX(3px);
+        }
+
+        /* Footer Section */
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.4s ease forwards;
+        }
+        /* ---------- Responsive: collapse sidebar to a top bar ---------- */
+        @media (max-width: 900px) {
+            .layout {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .side-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 0.5rem 0.8rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .side-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content {
+                height: auto;
+                min-height: 60vh;
+                padding: 1rem 0.8rem 2.5rem;
+            }
+
+            .content.is-framed {
+                height: calc(100vh - 110px);
+                min-height: 80vh;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
+<body>
 
-  <!-- 頂部導航 -->
-  <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-6 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
-      <div class="flex items-center space-x-3">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
-          <i class="fa-solid fa-camera-retro text-white text-xl"></i>
-        </div>
-        <div>
-          <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-teal-300 bg-clip-text text-transparent">
-            【專題製作】AI 視覺創客小學堂
-          </span>
-          <span class="text-xs text-slate-400 ml-2 border border-slate-700 px-2.5 py-0.5 rounded-full font-medium">高中職專題實作入門</span>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <!-- 🔠 字體大小快速切換控制鈕 -->
-        <div class="inline-flex items-center space-x-1.5 bg-slate-900/90 border border-slate-700/80 px-3 py-1.5 rounded-xl shadow-inner">
-          <span class="text-xs text-slate-300 font-semibold mr-1 flex items-center">
-            <i class="fa-solid fa-text-height mr-1.5 text-blue-400"></i>字體
-          </span>
-          <button onclick="setFontScale('normal')" id="btn-font-normal" class="px-2.5 py-0.5 rounded-lg text-xs transition font-btn-active" title="標準字體 (18px)">標準</button>
-          <button onclick="setFontScale('large')" id="btn-font-large" class="px-2.5 py-0.5 rounded-lg text-xs text-slate-300 hover:text-white hover:bg-slate-800 transition" title="大字體 (20px)">大</button>
-          <button onclick="setFontScale('xlarge')" id="btn-font-xlarge" class="px-2.5 py-0.5 rounded-lg text-xs text-slate-300 hover:text-white hover:bg-slate-800 transition" title="特大字體 (22px，適合投影)">特大</button>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-header" style="cursor: pointer;" onclick="navigateToSrc(null, true)" title="回到首頁總覽">
+            <div class="banner-glow"></div>
+            <h1>簡老師的個人網站</h1>
+            <p>教學資源與工具</p>
         </div>
 
-        <nav class="hidden md:flex space-x-6 text-base font-semibold text-slate-300">
-          <a href="#prompts" class="hover:text-blue-400 transition">5步闖關提示語</a>
-          <a href="#download" class="hover:text-emerald-400 transition font-bold text-emerald-400 flex items-center">
-            <i class="fa-solid fa-download mr-1.5"></i>知識包下載
-          </a>
-          <a href="#memory" class="hover:text-blue-400 transition">跨對話記憶法</a>
-          <a href="#obstacles" class="hover:text-blue-400 transition">四大避坑實錄</a>
-          <a href="#stages" class="hover:text-blue-400 transition">課堂四部曲</a>
-          <a href="#projects" class="hover:text-blue-400 transition">生活與工安實戰專題庫</a>
-        </nav>
-      </div>
-    </div>
-  </header>
+        <!-- 左側選單：第1層分類 + 第2層子項目 -->
+        <nav class="side-nav" id="sideNav">
+            <div class="nav-group">
+                <button class="nav-item" data-cat="award">
+                    <span class="nav-item-text">
+                        <span class="nav-title">術科檢定</span>
+                        <span class="nav-desc">數位電子乙級與 App 檢定</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="award">
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：數位電子乙級 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>🛠️ 數位電子乙級</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
+                                <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
+                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
+                                <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
+                                <button class="nav-sub-item" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
+                            </div>
+                        </div>
 
-  <!-- 主視覺 Hero Section -->
-  <section class="hero-gradient pt-16 pb-20 px-6 text-center border-b border-slate-800">
-    <div class="max-w-4xl mx-auto">
-      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold mb-6">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>技術型高中「專題製作」實戰引導 • 100% 避開閃退與環境地雷</span>
-      </div>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 text-white leading-tight">
-        用一顆普通的 USB 鏡頭<br>
-        <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-          打造你的生活智慧眼
-        </span>
-      </h1>
-      <p class="text-slate-300 text-xl md:text-2xl max-w-3xl mx-auto font-normal leading-relaxed mb-8">
-        從底層硬體檢測、四大死鎖避坑實錄，到「步驟一至步驟五」防呆複製提示詞與開箱即用知識包，讓學生零挫折體驗邊緣 AI 科技！
-      </p>
-
-      <!-- 快速下載按鈕與環境標籤 -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-        <a href="ai_vision_starter_pack.zip" download="ai_vision_starter_pack.zip" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black text-lg shadow-lg shadow-emerald-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center">
-          <i class="fa-solid fa-file-zipper mr-2.5 text-xl"></i>
-          一鍵下載完整學習知識包 (ZIP)
-        </a>
-        <a href="#prompts" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold text-lg border border-slate-700 transition flex items-center justify-center">
-          <i class="fa-solid fa-terminal mr-2.5 text-blue-400"></i>
-          查看 5 步闖關提示語
-        </a>
-      </div>
-
-      <div class="flex flex-wrap justify-center gap-4 text-sm font-medium text-slate-300">
-        <span class="px-3.5 py-2 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center">
-          <i class="fa-solid fa-microchip text-blue-400 mr-2.5"></i>CPU 邊緣運算最佳化
-        </span>
-        <span class="px-3.5 py-2 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center">
-          <i class="fa-solid fa-bolt text-amber-400 mr-2.5"></i>YOLO11 Nano (5.4MB)
-        </span>
-        <span class="px-3.5 py-2 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center">
-          <i class="fa-solid fa-shield-halved text-emerald-400 mr-2.5"></i>雙擊即開 100% 不閃退
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 主內容容器 -->
-  <main class="max-w-6xl mx-auto px-6 py-16 space-y-24">
-
-    <!-- 區塊：知識包下載卡片 -->
-    <section id="download" class="scroll-mt-24">
-      <div class="glass-card rounded-3xl p-8 md:p-10 border-2 border-emerald-500/30 bg-gradient-to-b from-emerald-950/20 to-slate-900/60 shadow-2xl relative overflow-hidden">
-        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div class="space-y-3">
-            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-sm font-bold">
-              <i class="fa-solid fa-gift"></i>
-              <span>無痛學習資源庫 • 開箱即用</span>
+                        <!-- 第 1 層第 2 個選項：App Inventor 檢定 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📱 App Inventor 檢定</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="app_inventor_practice.html">App Inventor 練習題庫全集</button>
+                                <button class="nav-sub-item" data-src="app_inventor.html">App Inventor 上機測驗</button>
+                                <button class="nav-sub-item" data-src="app_inventor_answers.html">App Inventor 完整解答</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white">學生入門 AI 視覺學習知識包</h2>
-            <p class="text-slate-300 text-base md:text-lg max-w-2xl leading-relaxed">
-              內含本專案所有實測成功的核心程式碼、防閃退批次檔、完整教學講義、提示語手冊與說明書，解壓縮後雙擊即可直接運行！
-            </p>
-            <div class="pt-2 flex flex-wrap gap-2.5 text-sm text-slate-200 font-mono">
-              <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">📄 webcam_ai_detect.py</span>
-              <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">⚡ run_ai.bat</span>
-              <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">🖥️ app_yolo11_edge.py</span>
-              <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">📚 完整 Markdown 教材</span>
+            <div class="nav-group">
+                <button class="nav-item" data-cat="feature">
+                    <span class="nav-item-text">
+                        <span class="nav-title">模擬與實作</span>
+                        <span class="nav-desc">互動式邏輯電路與程式平台</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="feature">
+                    <div>
+                        <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="arduino.html">Arduino 模擬教學平台</button>
+                                                        <button class="nav-sub-item" data-src="id_circuit.html">學號顯示電路設計模擬器</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="shrink-0 w-full md:w-auto text-center">
-            <a href="ai_vision_starter_pack.zip" download="ai_vision_starter_pack.zip" class="w-full px-9 py-4.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-lg transition flex items-center justify-center shadow-lg shadow-emerald-500/30">
-              <i class="fa-solid fa-download mr-2 text-xl"></i>
-              下載知識包 (ZIP)
-            </a>
-            <div class="text-center text-xs md:text-sm text-slate-400 mt-2.5">檔案大小約 23 KB • 完整代碼與教材包</div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- 區塊一：學生 5 步「順序闖關提示語」 -->
-    <section id="prompts" class="scroll-mt-24">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold flex items-center text-white">
-            <span class="w-9 h-9 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center mr-3 text-base font-black">01</span>
-            步驟一至步驟五：初學闖關式保證成功提示語
-          </h2>
-          <p class="text-slate-300 text-base md:text-lg mt-2">針對初學者設計之依序操作步驟，附帶【任務目標】與【過關成功的樣子】。</p>
-        </div>
-      </div>
+            <div class="nav-group">
+                <button class="nav-item" data-cat="map">
+                    <span class="nav-item-text">
+                        <span class="nav-title">課程規劃與行政</span>
+                        <span class="nav-desc">科別課程地圖與排班工具</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="map">
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：實習處行政管理 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📋 實習處行政管理</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="roster.html">輪值表產生器</button>
+                            </div>
+                        </div>
 
-      <div class="space-y-8">
-        <!-- 步驟一 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-blue-500 relative">
-          <div class="flex items-center justify-between mb-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-blue-500/20 text-blue-300 font-black text-sm">【步驟一】相機硬體與環境體檢</span>
-            <button onclick="copyPrompt('p1', this)" class="text-sm bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white px-4 py-2 rounded-lg border border-slate-700 transition flex items-center font-bold">
-              <i class="fa-regular fa-copy mr-2"></i><span>複製提示語</span>
+                        <!-- 第 1 層第 2 個選項：各學年課程地圖 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>🗺️ 各學年課程地圖</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="coursemap112.html">課程地圖 112學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium112.html">課程地圖 112學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap113.html">課程地圖 113學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium113.html">課程地圖 113學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap114.html">課程地圖 114學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium114.html">課程地圖 114學年・互動版</button>
+                                <button class="nav-sub-item" data-src="coursemap115.html">課程地圖 115學年・列印版</button>
+                                <button class="nav-sub-item" data-src="coursemap_premium115.html">課程地圖 115學年・互動版</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-item" data-cat="video">
+                    <span class="nav-item-text">
+                        <span class="nav-title">教學影片</span>
+                        <span class="nav-desc">數乙第一題 KiCad 與 CPLD 教學</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="video">
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：數乙第一題 KiCad -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📐 數乙第一題 KiCad</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">第 1 集：原理圖繪製與 ERC 檢查 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">第 2 集：電路圖繪製 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">第 3 集：PCB 佈局 上 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">第 4 集：PCB 佈局 下與電氣檢查 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">第 5 集：PCB 布線與列印輸出 ↗️</button>
+                            </div>
+                        </div>
+
+                        <!-- 第 1 層第 2 個選項：Quartus MegaWizard -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>⚡ Quartus MegaWizard</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片 ↗️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-item" data-cat="project">
+                    <span class="nav-item-text">
+                        <span class="nav-title">專題製作</span>
+                        <span class="nav-desc">ESP32實驗板、影像辨識與專題實作</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="project">
+                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
+                        <!-- 第 1 層第 1 個選項：ESP32實驗板 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📟 ESP32實驗板</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/CClkQXBeFHQ">第 01 節課 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/ym8Q1tWAMOY">第 02 節課 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/WcxOut--eSw">第 03 節課 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/I7qP3E4xUaQ">第 04 節課 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/ozs4BxqBcg8">第 05 節課 ↗️</button>
+                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/g7RtFXK3C4c">第 06 節課 ↗️</button>
+                            </div>
+                        </div>
+
+                        <!-- 第 1 層第 2 個選項：影像辨識 -->
+                        <div class="nav-sub-group">
+                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
+                                <span>📷 影像辨識</span>
+                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
+                            </div>
+                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
+                            <div class="nav-sub-child-list">
+                                <button class="nav-sub-item" data-src="ai_vision_course_guide.html">🤖 【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</button>
+                                <button class="nav-sub-item" data-src="mood_coffee_project_report.html">☕ 【金牌範本】智慧心情咖啡機（非接觸生理感測 × 7-11實例）</button>
+                                <button class="nav-sub-item" data-src="airtouch_project_showcase.html">🖐️ 【成果展示】AirTouch 無接觸手勢智慧遙控（YouTube 略過廣告 × 懸浮視窗 × 教材錄影）</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 常用技能 分類 -->
+            <div class="nav-group">
+                <button class="nav-item" data-cat="common-skill">
+                    <span class="nav-item-text">
+                        <span class="nav-title">常用技能</span>
+                        <span class="nav-desc">AI 自動化與影片編輯技能實務</span>
+                    </span>
+                    <span class="chevron">&#9656;</span>
+                </button>
+                <div class="nav-sub" data-group="common-skill">
+                    <div>
+                        <div class="nav-sub-list">
+                            <button class="nav-sub-item" data-src="eset_deployment_sop_guide.html">🛡️ ESET 啟動與診斷 SOP</button>
+                            <button class="nav-sub-item" data-src="mcp_course_automation_guide.html">⚡ MCP 雙模式實戰</button>
+                            <button class="nav-sub-item" data-src="teaching_video_pipeline_guide.html">🎬 影片編輯</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto;">
+                <span>🕒 網頁更新：</span><span class="updateTimeTop">2026-09-11 20:56</span>
+            </div>
+
+            <button class="nav-item" id="shareBtn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.85rem;" title="複製目前頁面的獨立分享網址">
+                🔗 複製本頁獨立網址
             </button>
-          </div>
-          <p class="text-base text-slate-300 mb-3"><strong>任務目標：</strong>確認 USB 鏡頭有插好，檢查電腦是否已具備基礎 Python 環境。</p>
-          <pre id="p1" class="bg-slate-900/90 text-blue-100 text-base p-5 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">【步驟一】請幫我檢查目前 Windows 系統上是否有連接 USB 網路攝影機（如 Logitech C270），並列出攝影機的名稱與運作狀態，以及檢查 Python 環境中是否已安裝 opencv-python 與 ultralytics。請一律使用繁體中文回覆。</pre>
-          <div class="mt-3.5 p-3.5 rounded-lg bg-blue-950/30 border border-blue-900/40 text-base text-blue-200 flex items-center font-medium">
-            <i class="fa-solid fa-circle-check text-blue-400 mr-2.5 text-lg shrink-0"></i>
-            <span><strong>過關成功的樣子：</strong>AI 回報「有偵測到攝影機，狀態 OK，OpenCV 已就緒」，即可進行步驟二。</span>
-          </div>
+</nav>
+
+        <div class="sidebar-footer">
+            &copy; 2026 簡老師的個人網站
         </div>
+    </aside>
 
-        <!-- 步驟二 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-indigo-500 relative">
-          <div class="flex items-center justify-between mb-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-indigo-500/20 text-indigo-300 font-black text-sm">【步驟二】下載輕量化 AI 模型核心</span>
-            <button onclick="copyPrompt('p2', this)" class="text-sm bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white px-4 py-2 rounded-lg border border-slate-700 transition flex items-center font-bold">
-              <i class="fa-regular fa-copy mr-2"></i><span>複製提示語</span>
-            </button>
-          </div>
-          <p class="text-base text-slate-300 mb-3"><strong>任務目標：</strong>下載 5.4MB 的超輕量 AI 模型，確保一般文書筆電的 CPU 也能跑出 30 FPS。</p>
-          <pre id="p2" class="bg-slate-900/90 text-indigo-100 text-base p-5 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">【步驟二】請幫我安裝 ultralytics 庫，並在專案目錄下載最新輕量化的 YOLO11 Nano 模型（yolo11n.pt、yolo11n-pose.pt、yolo11n-seg.pt），完成後測試模型能否在 CPU 上正常進行推論。</pre>
-          <div class="mt-3.5 p-3.5 rounded-lg bg-indigo-950/30 border border-indigo-900/40 text-base text-indigo-200 flex items-center font-medium">
-            <i class="fa-solid fa-circle-check text-indigo-400 mr-2.5 text-lg shrink-0"></i>
-            <span><strong>過關成功的樣子：</strong>AI 回報「模型下載完成，CPU 測試推論通過！」，即可進行步驟三。</span>
-          </div>
-        </div>
-
-        <!-- 步驟三 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-teal-500 relative">
-          <div class="flex items-center justify-between mb-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-teal-500/20 text-teal-300 font-black text-sm">【步驟三】建立高穩定實時辨識程式</span>
-            <button onclick="copyPrompt('p3', this)" class="text-sm bg-slate-800 hover:bg-teal-600 text-slate-200 hover:text-white px-4 py-2 rounded-lg border border-slate-700 transition flex items-center font-bold">
-              <i class="fa-regular fa-copy mr-2"></i><span>複製提示語</span>
-            </button>
-          </div>
-          <p class="text-base text-slate-300 mb-3"><strong>任務目標：</strong>生成相容性最好、不卡頓的 OpenCV 視窗程式，支援「物件、骨架、去背」熱鍵切換。</p>
-          <pre id="p3" class="bg-slate-900/90 text-teal-100 text-base p-5 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">【步驟三】請在專案目錄中建立一個名為 webcam_ai_detect.py 的 Python 程式，規格如下：
-1. 使用 OpenCV 開啟預設攝影機（設定解析度為 1280x720，FOURCC 設為 MJPG）。
-2. 使用 YOLO11 Nano 模型進行實時推論，並在畫面上方顯示即時 FPS。
-3. 支援鍵盤熱鍵即時切換：
-   - 按 '1'：切換為通用物件偵測 (yolo11n.pt)
-   - 按 '2'：切換為人體姿態骨架 (yolo11n-pose.pt)
-   - 按 '3'：切換為實例影像分割去背 (yolo11n-seg.pt)
-   - 按 'q' 或 ESC：安全關閉離開
-4. 標籤名稱請對照 COCO 80 種常見類別顯示標準繁體中文。</pre>
-          <div class="mt-3.5 p-3.5 rounded-lg bg-teal-950/30 border border-teal-900/40 text-base text-teal-200 flex items-center font-medium">
-            <i class="fa-solid fa-circle-check text-teal-400 mr-2.5 text-lg shrink-0"></i>
-            <span><strong>過關成功的樣子：</strong>AI 回報已建立 <code>webcam_ai_detect.py</code> 且語法編譯通過，即可進行步驟四。</span>
-          </div>
-        </div>
-
-        <!-- 步驟四 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-amber-500 relative">
-          <div class="flex items-center justify-between mb-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 font-black text-sm">【步驟四】建立防閃退一鍵啟動腳本</span>
-            <button onclick="copyPrompt('p4', this)" class="text-sm bg-slate-800 hover:bg-amber-600 text-slate-200 hover:text-white px-4 py-2 rounded-lg border border-slate-700 transition flex items-center font-bold">
-              <i class="fa-regular fa-copy mr-2"></i><span>複製提示語</span>
-            </button>
-          </div>
-          <p class="text-base text-slate-300 mb-3"><strong>任務目標：</strong>建立一個在任何 Windows 電腦（包含 Google 雲端虛擬硬碟）雙擊都不會閃退的啟動檔。</p>
-          <pre id="p4" class="bg-slate-900/90 text-amber-100 text-base p-5 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">【步驟四】請在專案目錄建立一個 Windows 一鍵啟動批次檔 run_ai.bat：
-1. 必須使用 pushd "%~dp0" 處理路徑，確保支援 Google 雲端硬碟等虛擬目錄。
-2. 批次檔內容必須使用 100% 純 ASCII 英文（不得包含中文字元，避免 Windows Big5 編碼衝突導致閃退）。
-3. 執行 python webcam_ai_detect.py，並在結尾加上 pause，確保出錯時視窗不會瞬間關閉。</pre>
-          <div class="mt-3.5 p-3.5 rounded-lg bg-amber-950/30 border border-amber-900/40 text-base text-amber-200 flex items-center font-medium">
-            <i class="fa-solid fa-circle-check text-amber-400 mr-2.5 text-lg shrink-0"></i>
-            <span><strong>過關成功的樣子：</strong>AI 回報已成功建立 <code>run_ai.bat</code>，即可進行最後一步。</span>
-          </div>
-        </div>
-
-        <!-- 步驟五 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-emerald-500 relative">
-          <div class="flex items-center justify-between mb-3">
-            <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-black text-sm">【步驟五】啟動視窗與即時功能體驗</span>
-            <button onclick="copyPrompt('p5', this)" class="text-sm bg-slate-800 hover:bg-emerald-600 text-slate-200 hover:text-white px-4 py-2 rounded-lg border border-slate-700 transition flex items-center font-bold">
-              <i class="fa-regular fa-copy mr-2"></i><span>複製提示語</span>
-            </button>
-          </div>
-          <p class="text-base text-slate-300 mb-3"><strong>任務目標：</strong>在電腦實體螢幕上看見即時動態畫面，體驗熱鍵與物品辨識。</p>
-          <pre id="p5" class="bg-slate-900/90 text-emerald-100 text-base p-5 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800">【步驟五】請告訴我如何正確在螢幕上看到即時攝影機視窗？請提供滑鼠雙擊啟動與終端機啟動這兩種方法，並說明啟動後如何用手勢與日常物品進行功能測試。</pre>
-          <div class="mt-3.5 p-3.5 rounded-lg bg-emerald-950/30 border border-emerald-900/40 text-base text-emerald-200 flex items-center font-medium">
-            <i class="fa-solid fa-circle-check text-emerald-400 mr-2.5 text-lg shrink-0"></i>
-            <span><strong>過關成功的樣子：</strong>學生直接雙擊 <code>run_ai.bat</code>，螢幕立刻彈出彩色畫面，拿起手機會被框出，按鍵盤 <code>2</code> 身上連起彩色人體骨架！🎉</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 區塊：跨對話記憶法與 AI 合作原則 -->
-    <section id="memory" class="scroll-mt-24">
-      <div class="mb-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold flex items-center text-white">
-          <span class="w-9 h-9 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center mr-3 text-base font-black">02</span>
-          高手必學：跨對話記憶法與先測試後回報原則
-        </h2>
-        <p class="text-slate-300 text-base md:text-lg mt-2">每次開啟新對話 AI 總是失憶？教學生學會軟體工程中的狀態管理（PROJECT_STATUS.md）。</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- 記憶收尾提示語 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-purple-500">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-white text-lg">🔹 下課前收尾提示語（自動存檔）</h3>
-            <button onclick="copyPrompt('pm1', this)" class="text-sm bg-slate-800 hover:bg-purple-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg transition font-bold">複製</button>
-          </div>
-          <p class="text-sm md:text-base text-slate-300 mb-2.5">每次練習結束準備關閉對話時輸入：</p>
-          <pre id="pm1" class="bg-slate-900/90 text-purple-100 text-base p-4 rounded-xl whitespace-pre-wrap border border-slate-800 leading-relaxed">請幫我將今天對話中「完成的進度」、「修改或新增的程式檔案」、「遇到的問題與解決方法」，以及「下次預計進行的下一步任務」，自動整理並更新到專案目錄下的 PROJECT_STATUS.md 檔案中，以繁體中文儲存，方便我下次繼續。</pre>
-        </div>
-
-        <!-- 記憶接關提示語 -->
-        <div class="glass-card rounded-2xl p-7 border-l-4 border-l-sky-500">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-bold text-white text-lg">🔹 下次開新對話接關提示語（3秒找回記憶）</h3>
-            <button onclick="copyPrompt('pm2', this)" class="text-sm bg-slate-800 hover:bg-sky-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg transition font-bold">複製</button>
-          </div>
-          <p class="text-sm md:text-base text-slate-300 mb-2.5">隔天開啟新對話時，第一句直接貼上：</p>
-          <pre id="pm2" class="bg-slate-900/90 text-sky-100 text-base p-4 rounded-xl whitespace-pre-wrap border border-slate-800 leading-relaxed">請先讀取專案目錄下的 PROJECT_STATUS.md 檔案，快速掌握目前專案的進度、現有檔案與上次留下的下一步任務。讀取完後，請用繁體中文簡短向我回報目前進度，並詢問我今天想從哪一個任務繼續開始。</pre>
-        </div>
-      </div>
-
-      <!-- 先測試後回報原則 -->
-      <div class="mt-8 glass-card rounded-2xl p-7 border border-slate-800 bg-slate-900/50">
-        <h4 class="font-bold text-white text-lg md:text-xl mb-3 flex items-center">
-          <i class="fa-solid fa-check-double text-emerald-400 mr-2.5 text-xl"></i>
-          AI 協同開發最高準則：先自動測試、確認通過後才回報展示
-        </h4>
-        <p class="text-slate-300 text-base md:text-lg leading-relaxed">
-          優質的 AI 助手不應只寫好程式碼就丟給學生碰運氣。AI 應在背後自動進行語法檢查與冒煙測試 (Smoke Test)，確認無報錯、無缺套件、相機可正常釋放後，才向使用者回報實測數據（如延遲 ms 與 FPS）並展示功能！
-        </p>
-      </div>
-    </section>
-
-    <!-- 區塊二：入門四大避坑實錄 -->
-    <section id="obstacles" class="scroll-mt-24">
-      <div class="mb-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold flex items-center text-white">
-          <span class="w-9 h-9 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center mr-3 text-base font-black">03</span>
-          工程除錯實錄：初學者四大入門障礙與底層解方
-        </h2>
-        <p class="text-slate-300 text-base md:text-lg mt-2">寫程式不難，難在跨越作業系統的坑。這些真實發生的阻礙是絕佳的軟體工程素養教材。</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- 坑點 1 -->
-        <div class="glass-card rounded-2xl p-7 border-t-2 border-rose-500">
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-9 h-9 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-ghost"></i>
-            </div>
-            <h3 class="font-bold text-xl text-white">障礙一：Windows Session 0 隔離</h3>
-          </div>
-          <p class="text-base text-rose-300 font-bold mb-2">現象：AI 在後台啟動成功，但桌面完全看不到視窗！</p>
-          <p class="text-slate-300 text-base leading-relaxed mb-4">
-            AI 運行的終端屬於「背景服務程序 (Daemon)」，Windows 基於資安防護，嚴禁任何背景服務將視窗投射到使用者的實體螢幕 (Session 1)。
-          </p>
-          <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-base text-emerald-300 font-medium">
-            <strong>✅ 核心解法：</strong>GUI 視窗必須由使用者在前景實體終端輸入指令，或由桌面 Shell 雙擊啟動。
-          </div>
-        </div>
-
-        <!-- 坑點 2 -->
-        <div class="glass-card rounded-2xl p-7 border-t-2 border-amber-500">
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-cloud"></i>
-            </div>
-            <h3 class="font-bold text-xl text-white">障礙二：雲端硬碟 UNC 虛擬路徑</h3>
-          </div>
-          <p class="text-base text-amber-300 font-bold mb-2">現象：雙擊批次檔，命令視窗閃退並提示不支援 UNC 路徑</p>
-          <p class="text-slate-300 text-base leading-relaxed mb-4">
-            專案位於 Google 雲端硬碟等虛擬掛載磁區，傳統 CMD 的 <code>cd /d</code> 會因為無法識別虛擬 UNC 路徑而直接中斷。
-          </p>
-          <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-base text-emerald-300 font-medium">
-            <strong>✅ 核心解法：</strong>改用 <code>pushd "%~dp0"</code>，Windows 會自動指派暫時虛擬代號平穩切入目錄。
-          </div>
-        </div>
-
-        <!-- 坑點 3 -->
-        <div class="glass-card rounded-2xl p-7 border-t-2 border-orange-500">
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-9 h-9 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-font"></i>
-            </div>
-            <h3 class="font-bold text-xl text-white">障礙三：Big5 與 UTF-8 編碼衝突</h3>
-          </div>
-          <p class="text-base text-orange-300 font-bold mb-2">現象：批次檔閃退，出現「'ho.' 不是內部或外部命令」</p>
-          <p class="text-slate-300 text-base leading-relaxed mb-4">
-            繁中 Windows 的 CMD 預設使用 Big5 (代碼頁 950)，以 Big5 解譯 UTF-8 的中文字元會拆解出怪異指令符號，引發語法崩潰。
-          </p>
-          <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-base text-emerald-300 font-medium">
-            <strong>✅ 核心解法：</strong>啟動用 <code>.bat</code> 腳本一律保持 <strong>100% 純 ASCII 英文</strong>，不得夾雜任何中文。
-          </div>
-        </div>
-
-        <!-- 坑點 4 -->
-        <div class="glass-card rounded-2xl p-7 border-t-2 border-indigo-500">
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-arrows-spin"></i>
-            </div>
-            <h3 class="font-bold text-xl text-white">障礙四：GUI 初次渲染尺寸死鎖</h3>
-          </div>
-          <p class="text-base text-indigo-300 font-bold mb-2">現象：視窗順利彈出，但畫面全黑，停留在啟動中</p>
-          <p class="text-slate-300 text-base leading-relaxed mb-4">
-            程式判定 <code>if lbl_w > 100:</code> 才畫圖，但 Tkinter 標籤初次寬度為 1，因此永遠不塞圖，標籤也永遠長不大，形成競態死鎖。
-          </p>
-          <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 text-base text-emerald-300 font-medium">
-            <strong>✅ 核心解法：</strong>加入容錯保底機制，未量測出尺寸時預設給予 720x405 畫布直接渲染第一幀。
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 區塊三：課堂四部曲教學推演流程 -->
-    <section id="stages" class="scroll-mt-24">
-      <div class="mb-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold flex items-center text-white">
-          <span class="w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center mr-3 text-base font-black">04</span>
-          課堂四部曲教學推演（50~90 分鐘課堂節奏）
-        </h2>
-        <p class="text-slate-300 text-base md:text-lg mt-2">從建立好奇心、拆解黑盒子，到親手改寫生活防摸魚外掛的成就感循環。</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-        <div class="glass-card rounded-xl p-6 border-t-4 border-blue-500">
-          <div class="text-blue-400 font-extrabold text-base mb-1.5">第 1 幕 (10 min)</div>
-          <h3 class="font-bold text-lg text-white mb-2">破冰震撼體驗</h3>
-          <p class="text-slate-300 text-base leading-relaxed">
-            雙擊啟動，鏡頭一開自動框出臉孔。按「2」切換骨架，全場學生看著身上 17 處彩色關節連線驚呼。
-          </p>
-        </div>
-        <div class="glass-card rounded-xl p-6 border-t-4 border-indigo-500">
-          <div class="text-indigo-400 font-extrabold text-base mb-1.5">第 2 幕 (15 min)</div>
-          <h3 class="font-bold text-lg text-white mb-2">拆解 AI 認知</h3>
-          <p class="text-slate-300 text-base leading-relaxed">
-            打破黑盒子！解構 AI 其實只回傳 3 個數字：類別 (Class)、信心度 (Conf) 與邊界框座標 (BBox)。
-          </p>
-        </div>
-        <div class="glass-card rounded-xl p-6 border-t-4 border-teal-500">
-          <div class="text-teal-400 font-extrabold text-base mb-1.5">第 3 幕 (20 min)</div>
-          <h3 class="font-bold text-lg text-white mb-2">動手改 3 行程式</h3>
-          <p class="text-slate-300 text-base leading-relaxed">
-            只要加入 <code>if class == "cell phone":</code>，拿出手機瞬間跳出大紅字警報！自製防摸魚外掛。
-          </p>
-        </div>
-        <div class="glass-card rounded-xl p-6 border-t-4 border-emerald-500">
-          <div class="text-emerald-400 font-extrabold text-base mb-1.5">第 4 幕 (15 min)</div>
-          <h3 class="font-bold text-lg text-white mb-2">創意發想與展示</h3>
-          <p class="text-slate-300 text-base leading-relaxed">
-            分組挑戰：做抓貓咪神器、出門三寶防漏檢測、或是舉手拍照功能，回家炫耀給家長看！
-          </p>
-        </div>
-      </div>
-    </section>
-
-        <!-- 區塊四：精選 10 大實戰專題庫 -->
-        <!-- 區塊四：精選 18 大生活與工安實戰專題庫 -->
-        <!-- 區塊四：精選全方位生活、工安與跨領域實戰專題庫 -->
-    <section id="projects" class="scroll-mt-24">
-      <div class="mb-10">
-        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-teal-500/20 text-teal-300 text-sm font-bold mb-3">
-          <i class="fa-solid fa-lightbulb"></i>
-          <span>跨領域創客實戰 • 涵蓋交通、無障礙、創客安全、智慧零售與食衣住行</span>
-        </div>
-        <h2 class="text-3xl md:text-4xl font-extrabold flex items-center text-white">
-          <span class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center mr-3.5 text-lg font-black">05</span>
-          【專題製作】跨領域實戰專題發想庫
-        </h2>
-        <p class="text-slate-300 text-base md:text-lg mt-2 leading-relaxed">
-          跳脫千篇一律的課本玩具！用一顆平價 USB WebCam 切入交通、工安、弱勢輔具、智慧商業與日常生活的真實痛點，做出評審驚嘆、得獎率極高的專題作品！
-        </p>
-      </div>
-
-      <!-- 領域一：工場自動化與 ESG 環安衛 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-amber-500/30">
-          <span class="text-2xl">🏭</span>
-          <h3 class="text-xl font-bold text-amber-400">領域一：工場自動化與 ESG 環安衛</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-amber-500 bg-gradient-to-br from-amber-950/25 to-slate-900/70">
-            <span class="text-sm font-bold text-amber-400 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 01・工場自動化・ESG 環安衛</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">實習工場「個人防護裝備 (PPE)」配戴稽核門禁</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              解決車銑床、鉗工、焊接實習工場學生貪圖方便不戴透明護目鏡或安全帽，釀成鐵屑噴眼與撞傷職業災害的剛需。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥽 實時偵測頭部【工業安全帽】與臉部【透明護目鏡】</div>
-              <div>✅ 雙重合格語音播報「配戴完整請進」並驅動電磁門鎖</div>
-              <div>⚠️ 未配戴者紅框大字警告，並可聯鎖切斷危險機台電源</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 領域二：智慧交通與微型移動領域 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-sky-500/30">
-          <span class="text-2xl">🚦</span>
-          <h3 class="text-xl font-bold text-sky-400">領域二：智慧交通與微型移動（電子科 ＋ 物聯網經典）</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 停車場空位導引 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-sky-500">
-            <span class="text-sm font-bold text-sky-400 px-2.5 py-1 rounded bg-sky-500/10">專題 02・智慧交通・露天車位導引</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">校園與露天停車場「零地磁・純視覺車位空位導引」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              傳統地磁感應器一顆數千元，還要挖馬路埋線換電池。一顆鏡頭低成本搞定整個停車區！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>📹 一顆 WebCam 從 2 樓俯拍 8~12 個停車格</div>
-              <div>🚗 YOLO 辨識 car 與車位矩形交集，空位畫綠框、滿位畫紅框</div>
-              <div>🔢 入口 7 段顯示器顯示「剩餘車位：3」，並同步雲端網頁儀表板</div>
-            </div>
-          </div>
-
-          <!-- 自行車超車雷達 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-blue-500">
-            <span class="text-sm font-bold text-blue-400 px-2.5 py-1 rounded bg-blue-500/10">專題 03・微型移動・騎士安全</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">自行車／微型電動二輪車「後方盲區超車預警雷達」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              騎單車在路邊常被身後大卡車或高速機車擦撞，視線死角多且極其危險。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🚴 座墊下方安裝 WebCam 朝後拍，偵測車輛逼近速度與體積膨脹率</div>
-              <div>🚨 後方有大車高速逼近時，手把兩側震動或蜂鳴器急促警告靠邊</div>
-              <div>✨ 媲美 Garmin 萬元智慧雷達尾燈的百元開源實作版</div>
-            </div>
-          </div>
-
-          <!-- 幼童寵物車內遺留防熱死 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-red-500">
-            <span class="text-sm font-bold text-red-400 px-2.5 py-1 rounded bg-red-500/10">專題 04・車輛安全・挽救生命</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">汽車防悲劇「後座幼童與毛孩遺留防熱死」救命警報器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              夏天烈日下車內 15 分鐘飆到 50℃，粗心父母將熟睡嬰兒或毛孩忘在後座釀成熱死慘劇。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👶 偵測「熄火且駕駛開門離車」後，鏡頭自動持續掃描後座</div>
-              <div>⏱️ 60 秒後座仍有微小人體或寵物動態，車輛立即鳴笛、警示燈閃爍</div>
-              <div>🪟 連動 ESP32 自動降窗通風，並發送緊急簡訊與電話通報</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 領域三：無障礙輔具與弱勢關懷領域 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-indigo-500/30">
-          <span class="text-2xl">♿</span>
-          <h3 class="text-xl font-bold text-indigo-400">領域三：無障礙輔具與弱勢關懷（公益暖心・得獎率極高）</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 漸凍人臉部眼動滑鼠 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-indigo-500">
-            <span class="text-sm font-bold text-indigo-400 px-2.5 py-1 rounded bg-indigo-500/10">專題 05・無障礙科技・重度肢障輔具</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">漸凍人與重度肢障「臉部姿態／眼動虛擬滑鼠與注音板」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              商用眼動儀動輒 10~20 萬元，弱勢家庭根本無力負擔。用平價 WebCam 讓病友重獲發聲權！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👃 鏡頭追蹤鼻尖座標作為滑鼠游標平滑移動</div>
-              <div>😉 「刻意眨左眼 0.5 秒」= 滑鼠左鍵點擊，「張嘴」= 確認選字</div>
-              <div>🗣️ 讓無法動手的病友自主在螢幕上注音打字並語音發聲</div>
-            </div>
-          </div>
-
-          <!-- 視障紙鈔硬幣快報 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-purple-500">
-            <span class="text-sm font-bold text-purple-400 px-2.5 py-1 rounded bg-purple-500/10">專題 06・視障友善・防詐防找錯錢</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">視障者「紙鈔面額與日常硬幣語音快報助手」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              視障朋友在菜市場或搭計程車時摸不出千元、五百與百元鈔差異，常被誤給或找錯錢。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>💵 鈔票在胸前鏡頭前晃一下，輕量 YOLO 0.1 秒精準辨識面額</div>
-              <div>🎧 耳機即時朗讀語音：「新台幣壹仟圓整」，安心結帳防掉包</div>
-              <div>🪙 同時支援 50 元、10 元、5 元、1 元硬幣尺寸快篩辨別</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 領域四：創客自造與實習實驗室安全 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-rose-500/30">
-          <span class="text-2xl">🔬</span>
-          <h3 class="text-xl font-bold text-rose-400">領域四：創客自造與實習實驗室安全（Maker 工場守護）</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 3D列印炒米粉急停 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-rose-500">
-            <span class="text-sm font-bold text-rose-400 px-2.5 py-1 rounded bg-rose-500/10">專題 07・創客自造・防止耗材損毀</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">3D 列印機「列印失敗炒米粉 (Spaghetti Detection) 自動急停」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              3D 列印半夜脫膠或噴頭位移，列印機繼續印吐出一整坨「雜亂米粉」，噴頭堵死甚至有失火危險。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>📹 鏡頭側拍熱床，偵測混亂無序的擠出線條（特徵缺陷辨識）</div>
-              <div>🛑 偵測到失敗米粉瞬間發出警報，並透過智慧插座斷電急停</div>
-              <div>💰 拯救數千元昂貴噴頭與整捲耗材，實現安心離線無人列印</div>
-            </div>
-          </div>
-
-          <!-- 電烙鐵忘拔插頭失火警報 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-orange-500">
-            <span class="text-sm font-bold text-orange-400 px-2.5 py-1 rounded bg-orange-500/10">專題 08・電子實習・防失火安全</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">電子實習「電烙鐵忘記拔插頭・無人看管失火警報」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              放學焊完電路，學生常忘記關閉電烙鐵，烙鐵架達 350℃ 長時間烘烤桌面引發火災危險。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🔌 鏡頭偵測烙鐵置於架上，且「座位無人看管超過 15 分鐘」</div>
-              <div>📢 電腦大喇叭廣播：「警告：第 5 號桌電烙鐵尚未關閉！」</div>
-              <div>⚡ 結合繼電器自動切斷實驗桌分路電源，工場消防防護滿分</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 領域五：智慧零售與無人結帳領域 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-emerald-500/30">
-          <span class="text-2xl">🏪</span>
-          <h3 class="text-xl font-bold text-emerald-400">領域五：智慧零售與商業自動化（無人商店體驗）</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 麵包盤秒速結帳 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-emerald-500">
-            <span class="text-sm font-bold text-emerald-400 px-2.5 py-1 rounded bg-emerald-500/10">專題 09・商業自動化・秒級結帳</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">烘焙麵包店「無包裝麵包盤視覺秒速結帳機」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              現烤麵包沒有條碼，店員必須苦背幾十種麵包品項，尖峰時段大排長龍容易算錯錢。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥐 托盤放至鏡頭下，0.2 秒一次辨識盤上所有麵包品項與數量</div>
-              <div>🧾 自動列出清單：可頌x2、菠蘿x1、法棍x1，總額 $185</div>
-              <div>💳 串接電子票證或模擬悠遊卡嗶卡扣款，結帳效率暴增 5 倍</div>
-            </div>
-          </div>
-
-          <!-- 手搖飲封口吸管檢驗 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-teal-500">
-            <span class="text-sm font-bold text-teal-400 px-2.5 py-1 rounded bg-teal-500/10">專題 10・連鎖餐飲・品質防呆</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">無人自助手搖飲／咖啡「杯蓋封口與吸管自動視覺檢驗」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              自動販賣機封口膜壓偏或漏封，顧客一拿整杯灑出；或是忘記附吸管引發客訴。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥤 封口完成後鏡頭檢驗：封口膜是否緊密、有無歪斜或杯緣液體滲漏</div>
-              <div>🥢 辨識出杯架上是否已正確附上對應粗細的吸管</div>
-              <div>✅ 雙重檢查無誤才亮綠燈開啟取餐口閘門，品質 100% 確保</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 領域六：創新互動與科幻智慧家居 -->
-      <div class="mb-12">
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-violet-500/30">
-          <span class="text-2xl">🪄</span>
-          <h3 class="text-xl font-bold text-violet-400">領域六：創新互動與科幻智慧家居（賈維斯科幻感・評審最愛）</h3>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 賈維斯指尖空氣調光 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-violet-500 bg-gradient-to-br from-violet-950/25 to-slate-900/70">
-            <span class="text-sm font-bold text-violet-400 px-2.5 py-1 rounded bg-violet-500/15 border border-violet-500/30">專題 11・酷炫互動・電影級操作</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">賈維斯「指尖空氣調光器」(Air Dimmer)：隔空捏合與旋轉調光</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              躺在床上快睡著了，懶得下床按開關，手邊又找不到智慧燈泡遙控器。隔空捏合旋轉，科技感十足！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👌 對著房間燈泡空中做出「捏合手勢 (Pinch)」= 開啟 / 關閉燈光</div>
-              <div>🔄 食指在空中「順時針轉圈」= 燈光漸亮；「逆時針轉圈」= 漸暗</div>
-              <div>💡 透過 ESP32 PWM 驅動可調光 LED，評審試玩驚呼連連</div>
-            </div>
-          </div>
-
-          <!-- AirTouch 手勢遙控 (旗艦展示卡片) -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-teal-500 bg-gradient-to-br from-teal-950/30 to-slate-900/80 shadow-2xl relative overflow-hidden">
-            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
-              <span class="text-sm font-bold text-teal-400 px-3 py-1 rounded-full bg-teal-500/15 border border-teal-500/30 flex items-center gap-1.5">
-                <i class="fa-solid fa-trophy text-amber-400"></i> 專題 12・旗艦實作成果・現場實錄
-              </span>
-              <span class="text-xs text-cyan-300 font-semibold bg-cyan-950/60 border border-cyan-800/50 px-2.5 py-1 rounded-lg">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-300 mr-1"></i>附 6 階段完整 AI 提示語
-              </span>
-            </div>
-            
-            <h4 class="font-black text-2xl md:text-3xl text-white mt-1 mb-2 flex items-center gap-2">
-              <span>AirTouch 無接觸手勢 + AI 語音雙模智慧遙控</span>
-            </h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              結合 MediaPipe 21點手勢追蹤、81組 YouTube 廣告秒殺獵犬、1080P 影音雙軌示範錄影，以及全自然語言語音「點歌開播 / 換歌關舊 / 任意秒數快倒轉」之完整 AI 互動旗艦專題！
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-200 mb-5 font-medium">
-              <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
-                <span class="text-teal-400 font-bold">🖐️ 姿態遙控：</span>手掌懸停播停、食指蓄力快倒轉、拇指主音量
-              </div>
-              <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
-                <span class="text-amber-400 font-bold">🛡️ 廣告獵犬：</span>81組多尺度樣板 + 4.5秒連續追蹤秒按略過
-              </div>
-              <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
-                <span class="text-purple-400 font-bold">🎙️ 語音點歌：</span>「我想聽稻香 / 換聽告五人」自動關舊開新
-              </div>
-              <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
-                <span class="text-rose-400 font-bold">🎥 示範錄影：</span>[F9]/[R] 鍵 1080P 桌面+麥克風雙軌封裝 MP4
-              </div>
+    <main class="content" id="mainContent">
+        <div class="grid" id="cardGrid">
+            <!-- 輪值表產生器 -->
+            <div class="card map" data-cat="map">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <span class="badge-year">行政管理</span>
+                </div>
+                <div class="card-body">
+                    <h3>楊梅高中實習處 輪值表產生器</h3>
+                    <p>線上動態留守人員輪值表排程與統計系統。支援週一浮動輪替與週二至五固定排班規則，自動檢測排值衝突，支援匯出 A4 尺寸輪值表圖片。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">行政工具</span>
+                    <button class="go-link" data-src="roster.html">進入產生器 &rarr;</button>
+                </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-800">
-              <a href="airtouch_project_showcase.html" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-400 hover:to-cyan-500 text-slate-950 font-black text-sm shadow-lg shadow-teal-500/25 transition transform hover:-translate-y-0.5 flex items-center gap-2">
-                <i class="fa-solid fa-circle-play text-base"></i>
-                <span>觀看成果錄影與 AI 提示語 1..6 錦囊</span>
-                <i class="fa-solid fa-arrow-right text-xs"></i>
-              </a>
-              <a href="ai_vision_starter_pack.zip" download="ai_vision_starter_pack.zip" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-sm font-bold transition flex items-center gap-1.5">
-                <i class="fa-solid fa-box-archive text-emerald-400"></i>
-                <span>下載完整專案一鍵包 (.zip)</span>
-              </a>
+            <!-- 工業電子量測互動教學系統 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <span class="badge-year">互動模擬</span>
+                </div>
+                <div class="card-body">
+                    <h3>工業電子量測互動教學系統</h3>
+                    <p>數位電子乙級必備！提供 12 大題組的直流負載 (DC) 與交流分壓 (AC) 電路分析。支援開路/短路動態模擬與公式高亮對照。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">量測模擬</span>
+                    <button class="go-link" data-src="industrial_electronics_app.html">進入系統 &rarr;</button>
+                </div>
             </div>
-          </div>
+
+            <!-- 課程地圖 -->
+            <div class="card map" data-cat="map">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 4L9 7"/></svg>
+                    </div>
+                    <span class="badge-year">專業指引</span>
+                </div>
+                <div class="card-body">
+                    <h3>資訊科・電子科 課程地圖</h3>
+                    <p>楊梅高中資訊科與電子科課程地圖指引。完整呈現部定必修、校訂必修與選修專業實習課程規劃，輔以產業需求及科專業核心能力對接指南。</p>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">112學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap112.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium112.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">113學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap113.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium113.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">114學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap114.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium114.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">115學年度入學：</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button class="go-link" style="color: var(--text-muted); font-size: 0.85rem;" data-src="coursemap115.html">列印版 &rarr;</button>
+                                <button class="go-link" style="font-size: 0.85rem;" data-src="coursemap_premium115.html">互動版 &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin-top: 1.2rem;">
+                    <span class="category-tag">課程規劃</span>
+                </div>
+            </div>
+            <!-- CPLD 綜合導覽系統 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <span class="badge-year">綜合導覽</span>
+                </div>
+                <div class="card-body">
+                    <h3>數位乙級學習導覽</h3>
+                    <p>包含「腳位邏輯模擬」、「硬體布局指引」與「評審表設定」三合一系統。支援試題一、二全題組 CPLD 3064 物理偏移腳位對照、電阻裝配順序、Quartus 邏輯圖、AHDL 原始碼與精確 PCB 實體格數定位走線手冊。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">模擬與布局</span>
+                    <button class="go-link" data-src="cpld_simulator.html">進入系統 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Quartus MegaWizard 教學 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <span class="badge-year">影片教學</span>
+                </div>
+                <div class="card-body">
+                    <h3>Quartus MegaWizard 精靈教學</h3>
+                    <p>含第一題（B組）與第二題（E組）完整示範影片、CPLD 電路方塊圖、腳位對照，以及 Altera MegaWizard AHDL 講義下載。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">實作教學</span>
+                    <button class="go-link" data-src="CPLD/index.html">進入教學 &rarr;</button>
+                </div>
+            </div>
+            <!-- Arduino 模擬教學平台 -->
+            <div class="card feature" data-cat="feature">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </div>
+                    <span class="badge-year">課程實作</span>
+                </div>
+                <div class="card-body">
+                    <h3>楊梅高中 Arduino 模擬教學平台</h3>
+                    <p>線上 Arduino 程式開發與硬體即時模擬。支援 15 顆 LED 流水燈、雙按鈕與蜂鳴器音效控制。內含課程講義與 10 大主題 AI 提示語範例。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">模擬平台</span>
+                    <button class="go-link" data-src="arduino.html">進入平台 &rarr;</button>
+                </div>
+            </div>
+
+
+
+            <!-- PCB 元件佈局指引 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                    </div>
+                    <span class="badge-year">佈局指引</span>
+                </div>
+                <div class="card-body">
+                    <h3>數位乙級PCB佈局指引</h3>
+                    <p>專業 PCB 元件裝配定位指引。包含核心定位基準、限流電阻安裝順序、組裝作業程序、網格間距要求以及品質控管重點提示手冊。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">佈局手冊</span>
+                    <button class="go-link" data-src="pcb_layout.html">進入手冊 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- FPGA 矩陣鍵盤與七段顯示器模擬 -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" ry="2"/><path d="M7 2v20M12 2v20M17 2v20M2 7h20M2 12h20M2 17h20"/></svg>
+                    </div>
+                    <span class="badge-year">數位電子</span>
+                </div>
+                <div class="card-body">
+                    <h3>FPGA 矩陣鍵盤與七段顯示器模擬</h3>
+                    <p>硬體掃描邏輯即時展示。模擬 4x3 矩陣鍵盤按鍵觸發 OR Gate 的訊號流向、鎖存器 (Latch) 數值保存行為與七段顯示器對應段碼變更。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">硬體模擬</span>
+                    <button class="go-link" data-src="fpga_keypad.html">進入模擬 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 練習題全集 (含模擬器) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span class="badge-year">練習題庫</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 練習題庫全集</h3>
+                    <p>MIT AI2 行動應用開發專屬練習題庫全集（含 3D 拼圖積木）。包含自訂程序、畢氏定理、公因數、累加防呆、文字金字塔、水果複選、階層累乘與智慧居家 MQTT 控制，含對照與模擬器。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">題庫練習</span>
+                    <button class="go-link" data-src="app_inventor_practice.html">進入題庫 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 上機測驗 (學生版) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    </div>
+                    <span class="badge-year">課程測驗</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 上機測驗系統</h3>
+                    <p>線上行動 App 邏輯開發與即時手機畫面模擬。提供溫度警報、三角形面積、因數分析、偶數累加、金字塔、點餐計費等 7 大上機考試題組與防呆練習。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">測驗系統</span>
+                    <button class="go-link" data-src="app_inventor.html">進入測驗 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- MIT App Inventor 上機測驗 (完整解答版) -->
+            <div class="card award" data-cat="award">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M9 11l3 3L22 4"/></svg>
+                    </div>
+                    <span class="badge-year">教師專區</span>
+                </div>
+                <div class="card-body">
+                    <h3>MIT App Inventor 上機測驗 (完整解答)</h3>
+                    <p>上機考題拼圖積木 (Blocks) 完整配置答案。包含邏輯判斷、雙層迴圈 (Nested Loop) 金字塔、因數分析以及 CheckBox 計算的官方解答拼圖對照。</p>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">解答查詢</span>
+                    <button class="go-link" data-src="app_inventor_answers.html">查看解答 &rarr;</button>
+                </div>
+            </div>
+            <!-- KiCad 電路板設計教學影片全集 -->
+            <div class="card video" data-cat="video">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <span class="badge-year">數乙第一題</span>
+                </div>
+                <div class="card-body">
+                    <h3>【數位電子乙級 第一題】KiCad 電路板設計教學全集 (第1~5集)</h3>
+                    <p>由簡樹桐老師親自錄製！針對數位電子乙級術科「第一題 KiCad 電路板設計」製作之完整教學。包含第1集原理圖繪製與 ERC 檢查、第2集電路圖繪製、第3/4集 PCB 佈局與電氣檢查，以及第5集 PCB 布線與列印輸出完整示範。</p>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">【數乙第一題】第 1 集：原理圖繪製與 ERC 電氣檢查</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">【數乙第一題】第 2 集：電路圖繪製</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">【數乙第一題】第 3 集：PCB 佈局 (上)</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/J_SE8ae60kg">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">【數乙第一題】第 4 集：PCB 佈局 (下) 與電氣檢查</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">【數乙第一題】第 5 集：PCB 布線與列印輸出</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">觀看影片 &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin-top: 1.2rem;">
+                    <span class="category-tag">數乙第一題 KiCad</span>
+                </div>
+            </div>
+            <!-- 專題製作：代理AI 課程全集 -->
+            <div class="card project" data-cat="project">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <span class="badge-year">專題製作</span>
+                </div>
+                <div class="card-body">
+                    <h3>【專題製作】ESP32實驗板 課程全集 (第一課～第六課)</h3>
+                    <p>由簡樹桐老師親自錄製與規劃！包含第 01 節課至第 06 節課 ESP32 專題製作完整影音教學示範。</p>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 01 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/CClkQXBeFHQ">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 02 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/ym8Q1tWAMOY">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 03 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/WcxOut--eSw">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 04 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/I7qP3E4xUaQ">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 05 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/ozs4BxqBcg8">觀看影片 &rarr;</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">第 06 節課</span>
+                            <button class="go-link" style="font-size: 0.85rem;" data-src="https://www.youtube.com/embed/g7RtFXK3C4c">觀看影片 &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" style="margin-top: 1.2rem;">
+                    <span class="category-tag">ESP32實驗板 專題</span>
+                </div>
+            </div>
+
+            <!-- 【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼 -->
+            <div class="card project" data-cat="project">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3);">【專題製作】AI 視覺</span>
+                </div>
+                <div class="card-body">
+                    <h3>【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</h3>
+                    <p>專為技術型高中「專題製作」與初學入門設計！從 Logi C270 底層檢測、四大地雷死鎖避坑指南、步驟一至步驟五防呆提詞，到 18 款生活與工安實戰專題發想庫與開箱即用知識包。</p>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">👁️ YOLO11 Nano (CPU順跑)</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">💬 5步闖關提示語</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🛠️ 避坑防呆批次檔</span>
+                        <span style="font-size: 0.75rem; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 4px; font-weight: bold;">📦 知識包下載 (ZIP)</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">WebCam × YOLO11</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #059669, #0d9488);" data-src="ai_vision_course_guide.html">進入課程網頁 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- 【專題競賽金牌範本】AuraBrew：基於非接觸生理感知之智慧心情咖啡機 -->
+            <div class="card project" data-cat="project">
+                <div class="card-top">
+                    <div class="card-icon" style="color: #d97706;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    </div>
+                    <span class="badge-year" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3);">【專題競賽金牌範本】</span>
+                </div>
+                <div class="card-body">
+                    <h3>AuraBrew：基於非接觸生理感知之智慧心情咖啡機</h3>
+                    <p>學生專題競賽金牌規格示範報告！免穿戴裝置，利用 WebCam 綠光微血管 rPPG 技術、臉部疲勞 EAR/MAR 與毫米波雷達，結合自律神經與咖啡因藥理學，精準推薦台灣 7-11（CITY CAFE / PRIMA）咖啡並由 ESP32 自動出杯。</p>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold;">💓 rPPG 遠端光電容積脈搏波</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🥱 疲勞 EAR / MAR 幾何</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🏪 7-11 CITY CAFE 決策矩陣</span>
+                        <span style="font-size: 0.75rem; background: #ede9fe; color: #6d28d9; padding: 2px 8px; border-radius: 4px;">⚙️ ESP32 邊緣出杯閉環</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag" style="background: rgba(217, 119, 6, 0.1); color: #b45309;">金牌示範報告</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #d97706, #b45309);" data-src="mood_coffee_project_report.html">閱讀完整報告 &rarr;</button>
+                </div>
+            </div>
+
+            <!-- 【專題製作成果】AirTouch：無接觸手勢與 AI 語音智慧遙控 -->
+            <div class="card project" data-cat="project">
+                <div class="card-top">
+                    <div class="card-icon" style="color: #0d9488;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+                    </div>
+                    <span class="badge-year" style="background: rgba(13, 148, 136, 0.15); color: #0d9488; border: 1px solid rgba(13, 148, 136, 0.3);">【專題實作成果】</span>
+                </div>
+                <div class="card-body">
+                    <h3>AirTouch：無接觸手勢與 AI 語音智慧遙控器</h3>
+                    <p>吃東西手油油、手髒不想碰鍵盤！結合 MediaPipe 3D 手勢追蹤、81組 YouTube 廣告秒殺獵犬、1080P 影音雙軌示範錄影，以及自然語言語音「點歌開播 / 換歌關舊 / 任意秒數快倒轉」之完整 AI 互動專題。</p>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #ccfbf1; color: #0f766e; padding: 2px 8px; border-radius: 4px; font-weight: bold;">🖐️ 3D 手勢 + 75% 懸浮 HUD</span>
+                        <span style="font-size: 0.75rem; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px;">🛡️ 81組廣告獵犬 4.5s 秒殺</span>
+                        <span style="font-size: 0.75rem; background: #ede9fe; color: #6d28d9; padding: 2px 8px; border-radius: 4px;">🎙️ AI 語音點歌換歌防重疊</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🎥 [F9] 雙軌 1080P 錄影</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag" style="background: rgba(13, 148, 136, 0.1); color: #0f766e;">成果專頁 & 提示語</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0d9488, #0284c7);" data-src="airtouch_project_showcase.html">進入專題成果展 &rarr;</button>
+                </div>
+            </div>
+
+
+            <!-- ESET 端點防毒與中控代理 (啟用與診斷 SOP) -->
+            <div class="card feature" data-cat="common-skill">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <span class="badge-year" style="background: rgba(14, 165, 233, 0.15); color: #0284c7; border: 1px solid rgba(14, 165, 233, 0.3);">ESET 防毒SOP</span>
+                </div>
+                <div class="card-body">
+                    <h3>ESET 端點防毒與中控代理 (啟用與診斷 SOP)</h3>
+                    <p>包含 ESET Management Agent 與 Endpoint Antivirus 的最佳安裝順序、VPN 0 秒即時觸發授權機制、一鍵重啟同步批次檔與四大階段健康診斷腳本。</p>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🛡️ ESET Agent (EraAgentSvc)</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">⚡ VPN 0秒觸發</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🩺 四大階段診斷</span>
+                        <span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: bold;">📦 SKILL 包下載</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">防毒與維護</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0284c7, #0d9488);" data-src="eset_deployment_sop_guide.html">進入 ESET 啟動 SOP &rarr;</button>
+                </div>
+            </div>
+
+            <!-- AI 數位研習雙模式自動化系統 -->
+            <div class="card award" data-cat="common-skill">
+                <div class="card-top">
+                    <div class="card-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    </div>
+                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">MCP 特權模式</span>
+                </div>
+                <div class="card-body">
+                    <h3>AI 數位研習自動化 (MCP 雙模式系統)</h3>
+                    <p>涵蓋「即時達標通關型」與「掛機在線累積型」雙模式！落實人機接力分工，由 AI 全自動接管 1.0x 原速連播、0 秒秒解阻礙彈窗、自動防閒置維持、課後 Storyline 題庫 100 分通關與官方二進制 PDF 證書下載。</p>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🏛️ 臺北e大</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">⛑️ 職安署 iSafeel</span>
+                        <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🎓 教育部磨課師+</span>
+                        <span style="font-size: 0.75rem; background: #ecfdf5; color: #059669; padding: 2px 8px; border-radius: 4px; font-weight: bold;">⚡ MCP 原生特權操控</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="category-tag">研習自動化</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0d9488, #0284c7);" data-src="mcp_course_automation_guide.html">進入 MCP 雙模式實戰 &rarr;</button>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <!-- 領域七：趣味自律、健康與生活防呆 -->
-      <div>
-        <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-pink-500/30">
-          <span class="text-2xl">💡</span>
-          <h3 class="text-xl font-bold text-pink-400">領域七：趣味自律、健康守護與生活防呆</h3>
+        <div class="frame-wrap" id="frameWrap">
+            <div id="frameBar" style="display: none; background: #0f172a; color: #ffffff; padding: 10px 16px; font-size: 0.92rem; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                <span id="frameTitle">🎬 簡樹桐老師 影片教學</span>
+                <a id="ytDirectLink" href="#" target="_blank" rel="noopener noreferrer" style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px;">
+                    ↗️ 直接在 YouTube 獨立開啓觀看
+                </a>
+            </div>
+            <iframe id="mainFrame" title="內容框架" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 視覺番茄鐘 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-blue-500">
-            <span class="text-sm font-bold text-blue-400 px-2.5 py-1 rounded bg-blue-500/10">專題 13・自律專注・防摸魚</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">「放下手機才計時」視覺番茄鐘 (Focus Lock)</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              桌面出現書本且無手機才開始倒數 25 分鐘；手一拿手機立刻暫停並大聲廣播：又在摸魚！
-            </p>
-          </div>
 
-          <!-- 防摸臉揉眼 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-emerald-500">
-            <span class="text-sm font-bold text-emerald-400 px-2.5 py-1 rounded bg-emerald-500/10">專題 14・公衛防疫・健康守護</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">防流感與病毒：「別摸臉！別揉眼！」無意識動作警報器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              YOLO-Pose 追蹤手腕，靠近眼鼻 T 字區小於 5cm 立即「嗶！別摸臉！」，強制打斷壞習慣。
-            </p>
-          </div>
+        <footer id="pageFooter">
+            &copy; 2026 簡老師的個人網站 &middot; 版權所有
+        </footer>
+    </main>
+</div>
 
-          <!-- 水杯防打翻 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-orange-500">
-            <span class="text-sm font-bold text-orange-400 px-2.5 py-1 rounded bg-orange-500/10">專題 15・生活防損・硬體救星</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">桌面飲料水杯「打翻前兆」預警縮手器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              追蹤水杯與手腕速度向量，在即將盲撞前 0.2 秒發出急促蜂鳴聲，靠反射神經及時縮手。
-            </p>
-          </div>
+<script>
+    const grid = document.getElementById('cardGrid');
+    const frameWrap = document.getElementById('frameWrap');
+    const mainFrame = document.getElementById('mainFrame');
+    const mainContent = document.getElementById('mainContent');
+    const pageFooter = document.getElementById('pageFooter');
+    const navItems = document.querySelectorAll('.nav-item');
+    const navSubItems = document.querySelectorAll('.nav-sub-item');
+    const goLinkBtns = document.querySelectorAll('.go-link[data-src]');
 
-          <!-- 實習課舉手排隊 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-purple-500">
-            <span class="text-sm font-bold text-purple-400 px-2.5 py-1 rounded bg-purple-500/10">專題 16・實習神器・教學秩序必備</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">實習課「舉手發問／求救自動排隊叫號系統」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              俯拍全班舉手動作，大螢幕叫號：第 3 排張同學(排第1) ➔ 第 5 排李同學(排第2)，課堂井然有序。
-            </p>
-          </div>
-
-          <!-- 長輩吃藥打卡 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-pink-500">
-            <span class="text-sm font-bold text-pink-400 px-2.5 py-1 rounded bg-pink-500/10">專題 17・溫馨長照・吃藥防呆</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">失智與高齡長輩「吃藥防重複／防漏吃」視覺打卡機</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              餐桌鏡頭辨識服藥動作，螢幕跳出大綠勾「今日早藥已服用 08:30」並即時發送 LINE 通報子女。
-            </p>
-          </div>
-
-          <!-- 廚房防乾燒 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-red-500">
-            <span class="text-sm font-bold text-red-400 px-2.5 py-1 rounded bg-red-500/10">專題 18・居家安全・防乾燒</span>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">廚房煮水乾燒與熄火防呆警報系統</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              偵測大量水蒸氣白煙或離開廚房超時，電腦喇叭自動高分貝語音催促速回廚房關火。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- 頁尾 -->
-  <footer class="border-t border-slate-800 py-10 text-center text-sm md:text-base text-slate-400">
-    <p>【專題製作】AI 視覺創客小學堂 • 專為高中職專題實作與競賽打造之邊緣電腦視覺指南</p>
-    <p class="mt-1.5 font-mono text-slate-500">Workspace: 115-09-12-webcam | YOLO11 Nano & OpenCV</p>
-  </footer>
-
-  <!-- 互動腳本 -->
-  <script>
-    function copyPrompt(id, btn) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-2"></i><span class="text-emerald-400 font-bold">已複製！</span>';
-        btn.classList.add('bg-emerald-500/20', 'border-emerald-500/50');
-        setTimeout(() => {
-          btn.innerHTML = originalHtml;
-          btn.classList.remove('bg-emerald-500/20', 'border-emerald-500/50');
-        }, 2000);
-      });
+    function toggleSubGroup(btn) {
+        const childList = btn.nextElementSibling;
+        const chevron = btn.querySelector('.sub-chevron');
+        if (childList) {
+            const isHidden = childList.style.display === 'none';
+            childList.style.display = isHidden ? 'flex' : 'none';
+            if (chevron) chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
     }
 
-    // 動態字體縮放切換器
-    function setFontScale(scale) {
-      const htmlEl = document.documentElement;
-      const btnNormal = document.getElementById('btn-font-normal');
-      const btnLarge = document.getElementById('btn-font-large');
-      const btnXLarge = document.getElementById('btn-font-xlarge');
-      
-      const allBtns = [btnNormal, btnLarge, btnXLarge];
-      allBtns.forEach(b => {
-        if (b) {
-          b.classList.remove('font-btn-active');
-          b.classList.add('text-slate-300');
-        }
-      });
-      
-      if (scale === 'large') {
-        htmlEl.style.fontSize = '20px';
-        if (btnLarge) {
-          btnLarge.classList.add('font-btn-active');
-          btnLarge.classList.remove('text-slate-300');
-        }
-      } else if (scale === 'xlarge') {
-        htmlEl.style.fontSize = '22px';
-        if (btnXLarge) {
-          btnXLarge.classList.add('font-btn-active');
-          btnXLarge.classList.remove('text-slate-300');
-        }
-      } else {
-        htmlEl.style.fontSize = '18px';
-        if (btnNormal) {
-          btnNormal.classList.add('font-btn-active');
-          btnNormal.classList.remove('text-slate-300');
-        }
-      }
-      try {
-        localStorage.setItem('course_font_scale', scale);
-      } catch(e) {}
+    function showGrid() {
+        grid.classList.remove('hide');
+        frameWrap.classList.remove('show');
+        mainContent.classList.remove('is-framed');
+        pageFooter.style.display = '';
     }
 
-    // 頁面載入時讀取偏好設定
-    try {
-      const savedScale = localStorage.getItem('course_font_scale');
-      if (savedScale) setFontScale(savedScale);
-    } catch(e) {}
-  </script>
+    function showFrame(src) {
+        const frameBar = document.getElementById('frameBar');
+        const ytDirectLink = document.getElementById('ytDirectLink');
+
+        let targetSrc = src;
+        if (src.includes('youtube.com') || src.includes('youtu.be')) {
+            let videoId = '';
+            if (src.includes('/embed/')) {
+                videoId = src.split('/embed/')[1].split('?')[0];
+            } else if (src.includes('v=')) {
+                videoId = src.split('v=')[1].split('&')[0];
+            } else if (src.includes('youtu.be/')) {
+                videoId = src.split('youtu.be/')[1].split('?')[0];
+            }
+
+            if (videoId) {
+                targetSrc = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+                if (ytDirectLink) ytDirectLink.href = `https://youtu.be/${videoId}`;
+                if (frameBar) frameBar.style.display = 'flex';
+            }
+        } else {
+            if (frameBar) frameBar.style.display = 'none';
+            targetSrc = src.startsWith('http') ? src : (src.includes('?') ? src + '&t=' + Date.now() : src + '?t=' + Date.now());
+        }
+
+        if (mainFrame.src !== targetSrc) {
+            mainFrame.src = targetSrc;
+        }
+        grid.classList.add('hide');
+        frameWrap.classList.add('show');
+        mainContent.classList.add('is-framed');
+        pageFooter.style.display = 'none';
+    }
+
+    function closeAllSubmenus(exceptCat) {
+        document.querySelectorAll('.nav-sub').forEach(sub => {
+            if (sub.getAttribute('data-group') !== exceptCat) sub.classList.remove('open');
+        });
+        navItems.forEach(el => {
+            if (el.getAttribute('data-cat') !== exceptCat) el.classList.remove('active');
+        });
+    }
+
+    function setActiveSubItem(src) {
+        navSubItems.forEach(el => el.classList.toggle('active', el.getAttribute('data-src') === src));
+    }
+
+    // Router Implementation with Hash (#page/name)
+    function navigateToSrc(src, updateHash = true) {
+        if (!src) {
+            showGrid();
+            if (updateHash) history.pushState(null, '', location.pathname + location.search);
+            return;
+        }
+
+        if (src.includes('youtube.com') || src.includes('youtu.be')) {
+            let videoId = '';
+            if (src.includes('/embed/')) {
+                videoId = src.split('/embed/')[1].split('?')[0];
+            } else if (src.includes('v=')) {
+                videoId = src.split('v=')[1].split('&')[0];
+            } else if (src.includes('youtu.be/')) {
+                videoId = src.split('youtu.be/')[1].split('?')[0];
+            }
+            if (videoId) {
+                window.open(`https://youtu.be/${videoId}`, '_blank');
+            }
+        }
+
+        showFrame(src);
+        setActiveSubItem(src);
+
+        if (updateHash) {
+            const pageKey = src.replace('.html', '');
+            location.hash = 'page/' + pageKey;
+        }
+    }
+
+    function checkHashRoute() {
+        const hash = location.hash;
+        if (hash && hash.startsWith('#page/')) {
+            const pageKey = hash.replace('#page/', '');
+            const targetSrc = pageKey.endsWith('.html') ? pageKey : pageKey + '.html';
+            showFrame(targetSrc);
+            setActiveSubItem(targetSrc);
+        } else {
+            showGrid();
+        }
+    }
+
+    window.addEventListener('hashchange', checkHashRoute);
+    checkHashRoute();
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const cat = item.getAttribute('data-cat');
+            if (cat === 'all') {
+                closeAllSubmenus(null);
+                setActiveSubItem(null);
+                navigateToSrc(null, true);
+            }
+        });
+    });
+
+    navSubItems.forEach(subItem => {
+        subItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const src = subItem.getAttribute('data-src');
+            navigateToSrc(src, true);
+        });
+    });
+
+    goLinkBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const src = btn.getAttribute('data-src');
+            navigateToSrc(src, true);
+        });
+    });
+
+    // Share Button Implementation
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const currentUrl = location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentUrl).then(() => {
+                    const origText = shareBtn.innerText;
+                    shareBtn.innerText = '✅ 已複製獨立網址！';
+                    setTimeout(() => shareBtn.innerText = origText, 2000);
+                }).catch(() => {
+                    alert('您的獨立網址為：\n' + currentUrl);
+                });
+            } else {
+                alert('您的獨立網址為：\n' + currentUrl);
+            }
+        });
+    }
+
+    // Dynamic Last Modified Time Formatter
+    const updateTimeStrEl = document.getElementById('updateTimeStr');
+    const updateTimeTopEls = document.querySelectorAll('.updateTimeTop');
+    if (document.lastModified) {
+        const modDate = new Date(document.lastModified);
+        if (!isNaN(modDate.getTime())) {
+            const yyyy = modDate.getFullYear();
+            const mm = String(modDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(modDate.getDate()).padStart(2, '0');
+            const hh = String(modDate.getHours()).padStart(2, '0');
+            const min = String(modDate.getMinutes()).padStart(2, '0');
+            const formattedStr = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+            if (updateTimeStrEl) updateTimeStrEl.innerText = formattedStr;
+            updateTimeTopEls.forEach(el => el.innerText = formattedStr);
+        }
+    }
+
+    // Check route on initial load
+    checkHashRoute();
+</script>
 </body>
 </html>
