@@ -5,6 +5,7 @@
 完整教學（流程、硬體、驗證、評分）：https://fbkstj.github.io/www/#page/tactile_paving_project_guide
 
 ## 一、安裝
+0. AI 助手（擇一）：Google Antigravity（免費，https://antigravity.google/download ），或 Claude Code（需 Claude 付費方案；Claude 桌面版的「Code」分頁，或 PowerShell 執行 `irm https://claude.ai/install.ps1 | iex`）。手冊裡的提示語兩者都能直接使用。
 1. 安裝 Python 3.10 以上版本（安裝時勾選 **Add Python to PATH**）。
 2. 在這個資料夾開啟命令提示字元，執行：
    ```

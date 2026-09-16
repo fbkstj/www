@@ -170,7 +170,7 @@
       <li><a href="#flow">12 週製作流程</a></li>
       <li><a href="#algorithm">核心判斷方法</a></li>
       <li><a href="#code">程式包使用說明</a></li>
-      <li><a href="#prompts">Antigravity 提示語</a></li>
+      <li><a href="#prompts">AI 助手提示語</a></li>
       <li><a href="#verify">測試與驗證</a></li>
       <li><a href="#ethics">隱私、安全與倫理</a></li>
       <li><a href="#trouble">常見問題</a></li>
@@ -267,6 +267,7 @@
           <tbody>
             <tr><th scope="row">Python 3.10 以上</th><td>執行程式</td><td>python.org，安裝時勾選 <code>Add Python to PATH</code></td></tr>
             <tr><th scope="row">Google Antigravity</th><td>免費 AI 程式助手，協助修改與除錯</td><td><a href="https://antigravity.google/download" target="_blank" rel="noopener">antigravity.google</a>（免費方案每週有使用額度）</td></tr>
+            <tr><th scope="row">Claude Code（替代方案）</th><td>Anthropic 的 AI 程式助手，本頁提示語可直接使用</td><td>Claude 桌面版的「Code」分頁，或 PowerShell 執行 <code>irm https://claude.ai/install.ps1 | iex</code>；需 Claude 付費方案或 Anthropic Console 帳號</td></tr>
             <tr><th scope="row">ultralytics</th><td>YOLO11 物件偵測</td><td><code>pip install -r requirements.txt</code></td></tr>
             <tr><th scope="row">opencv-python、numpy</th><td>讀取畫面、顏色判斷、繪圖</td><td>同上</td></tr>
             <tr><th scope="row">pyttsx3</th><td>電腦語音提醒（離線）</td><td>同上</td></tr>
@@ -401,8 +402,9 @@
     </section>
 
     <section id="prompts">
-      <h2><span class="num">9</span>Antigravity 提示語</h2>
+      <h2><span class="num">9</span>AI 助手提示語（Antigravity／Claude Code）</h2>
       <p>在 Antigravity 用「開啟資料夾」打開程式包資料夾，把下面的提示語貼到 AI 對話面板。每次改完都要請 AI 先測試，再自己用練習影片確認。</p>
+      <p>改用 <strong>Claude Code</strong> 時，提示語不用修改：在 Claude 桌面版的「Code」分頁選擇程式包資料夾（或在資料夾執行 <code>claude</code>）後貼上即可。不要用 claude.ai 一般聊天或網頁版 Claude Code，它們碰不到你電腦上的檔案與攝影機。</p>
 
       <div class="prompt">
         <div class="prompt-head"><span>① 讀懂程式</span><button type="button" class="copy" data-target="p1">複製</button></div>
@@ -442,7 +444,7 @@ python paving_monitor.py --config demo_config.json --no-window 與 evaluate.py�
 
       <div class="note warn">
         <strong>使用 AI 助手要注意</strong>
-        AI 在背景開啟的視窗不會出現在螢幕上，要看即時畫面請自己雙擊 bat 檔；AI 要執行指令或安裝套件時，先看懂再同意；LINE 權杖只能放在環境變數，不要貼進對話或程式。
+        AI 在背景開啟的視窗不會出現在螢幕上，要看即時畫面請自己雙擊 bat 檔；AI 要執行指令或安裝套件時，先看懂再同意；LINE 權杖只能放在環境變數，不要貼進對話或程式。使用 Claude Code 的組別，可以把專題規則與進度寫在資料夾的 <code>CLAUDE.md</code>，它每次開啟都會自動讀取。
       </div>
     </section>
 
