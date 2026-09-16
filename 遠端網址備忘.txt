@@ -12,6 +12,9 @@ https://fbkstj.github.io/www/mcp_course_automation_guide.html
 【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 https://fbkstj.github.io/www/ai_vision_course_guide.html
 
+【專題實作】導盲磚占用偵測（學生實作手冊）：
+https://fbkstj.github.io/www/tactile_paving_project_guide.html
+
 數位電子乙級評審表設定：
 https://fbkstj.github.io/www/digi_el.html
 
@@ -33,6 +36,9 @@ https://stjwww.netlify.app/
 【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 https://stjwww.netlify.app/ai_vision_course_guide.html
 
+【專題實作】導盲磚占用偵測（學生實作手冊）：
+https://stjwww.netlify.app/tactile_paving_project_guide.html
+
 數位電子乙級評審表設定：
 https://stjwww.netlify.app/digi_el.html
 
@@ -53,6 +59,9 @@ http://127.0.0.1:18456/
 
 【專題製作】AI 視覺創客小學堂（WebCam × YOLO11 邊緣電腦視覺）：
 http://127.0.0.1:18456/ai_vision_course_guide.html
+
+【專題實作】導盲磚占用偵測（學生實作手冊）：
+http://127.0.0.1:18456/tactile_paving_project_guide.html
 
 數位電子乙級評審表設定：
 http://127.0.0.1:18456/digi_el.html

@@ -22,3 +22,10 @@ yt_token.json
 
 # Claude Code 個人設定
 .claude/settings.local.json
+
+# 導盲磚專題：執行時產生的檔案
+tactile_paving_starter/output*/
+tactile_paving_starter/demo.mp4
+tactile_paving_starter/demo_config.json
+tactile_paving_starter/demo_ground_truth.csv
+tactile_paving_starter/yolo11n.pt
