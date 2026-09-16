@@ -16,11 +16,9 @@ __pycache__/
 .vscode/
 .idea/
 
+# YouTube API 憑證（也不可放進任何 zip 打包檔）
 client_secrets.json
 yt_token.json
 
 # Claude Code 個人設定
 .claude/settings.local.json
-
-# 內含 YouTube 憑證的打包檔，不可上傳
-AI課程影片全自動剪輯發布技能包_完整一鍵包.zip
