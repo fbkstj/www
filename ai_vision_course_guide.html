@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</title>
-  <meta name="description" content="高中職專題製作入門：用一顆 USB 網路攝影機與 YOLO11 Nano 做即時物件偵測、人體骨架與影像分割，附 5 步提示語、下載包與 18 個專題發想。">
+  <meta name="description" content="高中職專題製作入門：用一顆 USB 網路攝影機與 YOLO11 Nano 做即時物件偵測、人體骨架與影像分割，附 5 步提示語、下載包與 23 個專題發想。">
   <!-- Tailwind CSS v3.4.17 預先產生（取代開發用 CDN）。新增或修改 class 後要重新產生：
        npx tailwindcss@3.4.17 -i in.css -o out.css --minify（content 指向本檔） -->
-  <style id="tailwind-build">*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.-bottom-12{bottom:-3rem}.-bottom-8{bottom:-2rem}.-right-12{right:-3rem}.-right-8{right:-2rem}.top-0{top:0}.z-10{z-index:10}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1\.5{margin-bottom:.375rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}.mb-14{margin-bottom:3.5rem}.mb-2{margin-bottom:.5rem}.mb-2\.5{margin-bottom:.625rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-2{margin-left:.5rem}.mr-1{margin-right:.25rem}.mr-1\.5{margin-right:.375rem}.mr-2{margin-right:.5rem}.mr-2\.5{margin-right:.625rem}.mr-3{margin-right:.75rem}.mr-3\.5{margin-right:.875rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-2\.5{margin-top:.625rem}.mt-3{margin-top:.75rem}.mt-3\.5{margin-top:.875rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-2\.5{height:.625rem}.h-48{height:12rem}.h-64{height:16rem}.h-9{height:2.25rem}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-11{width:2.75rem}.w-2\.5{width:.625rem}.w-48{width:12rem}.w-64{width:16rem}.w-9{width:2.25rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}.scroll-mt-40{scroll-margin-top:10rem}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-x-4{-moz-column-gap:1rem;column-gap:1rem}.gap-x-5{-moz-column-gap:1.25rem;column-gap:1.25rem}.gap-y-2{row-gap:.5rem}.space-x-1\.5>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.375rem*var(--tw-space-x-reverse));margin-left:calc(.375rem*(1 - var(--tw-space-x-reverse)))}.space-x-2>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.5rem*var(--tw-space-x-reverse));margin-left:calc(.5rem*(1 - var(--tw-space-x-reverse)))}.space-x-3>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.75rem*var(--tw-space-x-reverse));margin-left:calc(.75rem*(1 - var(--tw-space-x-reverse)))}.space-y-1\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-24>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(6rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(6rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-8>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.whitespace-nowrap{white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-t{border-top-width:1px}.border-t-2{border-top-width:2px}.border-t-4{border-top-width:4px}.border-amber-400\/40{border-color:rgba(251,191,36,.4)}.border-amber-500{--tw-border-opacity:1;border-color:rgb(245 158 11/var(--tw-border-opacity,1))}.border-amber-500\/30{border-color:rgba(245,158,11,.3)}.border-amber-500\/40{border-color:rgba(245,158,11,.4)}.border-amber-500\/50{border-color:rgba(245,158,11,.5)}.border-amber-600\/60{border-color:rgba(217,119,6,.6)}.border-amber-900\/40{border-color:rgba(120,53,15,.4)}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-blue-500\/30{border-color:rgba(59,130,246,.3)}.border-blue-900\/40{border-color:rgba(30,58,138,.4)}.border-emerald-500{--tw-border-opacity:1;border-color:rgb(16 185 129/var(--tw-border-opacity,1))}.border-emerald-500\/30{border-color:rgba(16,185,129,.3)}.border-emerald-500\/50{border-color:rgba(16,185,129,.5)}.border-emerald-600\/60{border-color:rgba(5,150,105,.6)}.border-emerald-900\/40{border-color:rgba(6,78,59,.4)}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity,1))}.border-indigo-500\/30{border-color:rgba(99,102,241,.3)}.border-indigo-900\/40{border-color:rgba(49,46,129,.4)}.border-orange-500{--tw-border-opacity:1;border-color:rgb(249 115 22/var(--tw-border-opacity,1))}.border-pink-500{--tw-border-opacity:1;border-color:rgb(236 72 153/var(--tw-border-opacity,1))}.border-pink-500\/30{border-color:rgba(236,72,153,.3)}.border-purple-500{--tw-border-opacity:1;border-color:rgb(168 85 247/var(--tw-border-opacity,1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68/var(--tw-border-opacity,1))}.border-rose-500{--tw-border-opacity:1;border-color:rgb(244 63 94/var(--tw-border-opacity,1))}.border-rose-500\/30{border-color:rgba(244,63,94,.3)}.border-rose-700\/70{border-color:rgba(190,18,60,.7)}.border-sky-500{--tw-border-opacity:1;border-color:rgb(14 165 233/var(--tw-border-opacity,1))}.border-sky-500\/30{border-color:rgba(14,165,233,.3)}.border-sky-500\/40{border-color:rgba(14,165,233,.4)}.border-slate-600{--tw-border-opacity:1;border-color:rgb(71 85 105/var(--tw-border-opacity,1))}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85/var(--tw-border-opacity,1))}.border-slate-700\/80{border-color:rgba(51,65,85,.8)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59/var(--tw-border-opacity,1))}.border-slate-800\/80{border-color:rgba(30,41,59,.8)}.border-teal-500{--tw-border-opacity:1;border-color:rgb(20 184 166/var(--tw-border-opacity,1))}.border-teal-900\/40{border-color:rgba(19,78,74,.4)}.border-violet-500{--tw-border-opacity:1;border-color:rgb(139 92 246/var(--tw-border-opacity,1))}.border-violet-500\/30{border-color:rgba(139,92,246,.3)}.border-l-amber-500{--tw-border-opacity:1;border-left-color:rgb(245 158 11/var(--tw-border-opacity,1))}.border-l-blue-500{--tw-border-opacity:1;border-left-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-l-emerald-500{--tw-border-opacity:1;border-left-color:rgb(16 185 129/var(--tw-border-opacity,1))}.border-l-indigo-500{--tw-border-opacity:1;border-left-color:rgb(99 102 241/var(--tw-border-opacity,1))}.border-l-purple-500{--tw-border-opacity:1;border-left-color:rgb(168 85 247/var(--tw-border-opacity,1))}.border-l-sky-500{--tw-border-opacity:1;border-left-color:rgb(14 165 233/var(--tw-border-opacity,1))}.border-l-teal-500{--tw-border-opacity:1;border-left-color:rgb(20 184 166/var(--tw-border-opacity,1))}.border-l-violet-500{--tw-border-opacity:1;border-left-color:rgb(139 92 246/var(--tw-border-opacity,1))}.bg-amber-500\/10{background-color:rgba(245,158,11,.1)}.bg-amber-500\/15{background-color:rgba(245,158,11,.15)}.bg-amber-500\/20{background-color:rgba(245,158,11,.2)}.bg-amber-950\/30{background-color:rgba(69,26,3,.3)}.bg-amber-950\/70{background-color:rgba(69,26,3,.7)}.bg-blue-500\/10{background-color:rgba(59,130,246,.1)}.bg-blue-500\/20{background-color:rgba(59,130,246,.2)}.bg-blue-950\/30{background-color:rgba(23,37,84,.3)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153/var(--tw-bg-opacity,1))}.bg-emerald-500{--tw-bg-opacity:1;background-color:rgb(16 185 129/var(--tw-bg-opacity,1))}.bg-emerald-500\/10{background-color:rgba(16,185,129,.1)}.bg-emerald-500\/20{background-color:rgba(16,185,129,.2)}.bg-emerald-950\/30{background-color:rgba(2,44,34,.3)}.bg-emerald-950\/70{background-color:rgba(2,44,34,.7)}.bg-indigo-500\/10{background-color:rgba(99,102,241,.1)}.bg-indigo-500\/20{background-color:rgba(99,102,241,.2)}.bg-indigo-950\/30{background-color:rgba(30,27,75,.3)}.bg-orange-500\/10{background-color:rgba(249,115,22,.1)}.bg-orange-500\/20{background-color:rgba(249,115,22,.2)}.bg-pink-500\/10{background-color:rgba(236,72,153,.1)}.bg-purple-500\/10{background-color:rgba(168,85,247,.1)}.bg-purple-500\/20{background-color:rgba(168,85,247,.2)}.bg-red-500\/10{background-color:rgba(239,68,68,.1)}.bg-rose-500\/10{background-color:rgba(244,63,94,.1)}.bg-rose-500\/20{background-color:rgba(244,63,94,.2)}.bg-rose-950\/60{background-color:rgba(76,5,25,.6)}.bg-sky-500\/10{background-color:rgba(14,165,233,.1)}.bg-sky-500\/20{background-color:rgba(14,165,233,.2)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.bg-slate-800\/90{background-color:rgba(30,41,59,.9)}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity,1))}.bg-slate-900\/50{background-color:rgba(15,23,42,.5)}.bg-slate-900\/70{background-color:rgba(15,23,42,.7)}.bg-slate-900\/90{background-color:rgba(15,23,42,.9)}.bg-slate-950{--tw-bg-opacity:1;background-color:rgb(2 6 23/var(--tw-bg-opacity,1))}.bg-teal-500\/10{background-color:rgba(20,184,166,.1)}.bg-teal-500\/20{background-color:rgba(20,184,166,.2)}.bg-teal-950\/30{background-color:rgba(4,47,46,.3)}.bg-violet-500\/15{background-color:rgba(139,92,246,.15)}.bg-violet-500\/20{background-color:rgba(139,92,246,.2)}.bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.bg-gradient-to-tr{background-image:linear-gradient(to top right,var(--tw-gradient-stops))}.from-amber-500{--tw-gradient-from:#f59e0b var(--tw-gradient-from-position);--tw-gradient-to:rgba(245,158,11,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-950\/25{--tw-gradient-from:rgba(69,26,3,.25) var(--tw-gradient-from-position);--tw-gradient-to:rgba(69,26,3,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-950\/70{--tw-gradient-from:rgba(69,26,3,.7) var(--tw-gradient-from-position);--tw-gradient-to:rgba(69,26,3,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-blue-400{--tw-gradient-from:#60a5fa var(--tw-gradient-from-position);--tw-gradient-to:rgba(96,165,250,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-blue-600{--tw-gradient-from:#2563eb var(--tw-gradient-from-position);--tw-gradient-to:rgba(37,99,235,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-700{--tw-gradient-from:#047857 var(--tw-gradient-from-position);--tw-gradient-to:rgba(4,120,87,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-950\/20{--tw-gradient-from:rgba(2,44,34,.2) var(--tw-gradient-from-position);--tw-gradient-to:rgba(2,44,34,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-violet-950\/25{--tw-gradient-from:rgba(46,16,101,.25) var(--tw-gradient-from-position);--tw-gradient-to:rgba(46,16,101,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-indigo-300{--tw-gradient-to:rgba(165,180,252,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#a5b4fc var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-slate-900{--tw-gradient-to:rgba(15,23,42,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#0f172a var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-teal-300{--tw-gradient-to:rgba(94,234,212,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#5eead4 var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-amber-600{--tw-gradient-to:#d97706 var(--tw-gradient-to-position)}.to-emerald-400{--tw-gradient-to:#34d399 var(--tw-gradient-to-position)}.to-indigo-500{--tw-gradient-to:#6366f1 var(--tw-gradient-to-position)}.to-indigo-950\/70{--tw-gradient-to:rgba(30,27,75,.7) var(--tw-gradient-to-position)}.to-slate-900\/60{--tw-gradient-to:rgba(15,23,42,.6) var(--tw-gradient-to-position)}.to-slate-900\/70{--tw-gradient-to:rgba(15,23,42,.7) var(--tw-gradient-to-position)}.to-teal-300{--tw-gradient-to:#5eead4 var(--tw-gradient-to-position)}.to-teal-700{--tw-gradient-to:#0f766e var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-3\.5{padding:.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-7{padding:1.75rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.px-8{padding-left:2rem;padding-right:2rem}.px-9{padding-left:2.25rem;padding-right:2.25rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-1{padding-bottom:.25rem}.pb-2{padding-bottom:.5rem}.pb-20{padding-bottom:5rem}.pl-5{padding-left:1.25rem}.pt-1{padding-top:.25rem}.pt-16{padding-top:4rem}.pt-2{padding-top:.5rem}.pt-3{padding-top:.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.025em}.tracking-wide{letter-spacing:.025em}.text-amber-100{--tw-text-opacity:1;color:rgb(254 243 199/var(--tw-text-opacity,1))}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138/var(--tw-text-opacity,1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36/var(--tw-text-opacity,1))}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254/var(--tw-text-opacity,1))}.text-blue-200{--tw-text-opacity:1;color:rgb(191 219 254/var(--tw-text-opacity,1))}.text-blue-300{--tw-text-opacity:1;color:rgb(147 197 253/var(--tw-text-opacity,1))}.text-blue-400{--tw-text-opacity:1;color:rgb(96 165 250/var(--tw-text-opacity,1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238/var(--tw-text-opacity,1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229/var(--tw-text-opacity,1))}.text-emerald-200{--tw-text-opacity:1;color:rgb(167 243 208/var(--tw-text-opacity,1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183/var(--tw-text-opacity,1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.text-indigo-100{--tw-text-opacity:1;color:rgb(224 231 255/var(--tw-text-opacity,1))}.text-indigo-200{--tw-text-opacity:1;color:rgb(199 210 254/var(--tw-text-opacity,1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252/var(--tw-text-opacity,1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248/var(--tw-text-opacity,1))}.text-orange-300{--tw-text-opacity:1;color:rgb(253 186 116/var(--tw-text-opacity,1))}.text-orange-400{--tw-text-opacity:1;color:rgb(251 146 60/var(--tw-text-opacity,1))}.text-pink-400{--tw-text-opacity:1;color:rgb(244 114 182/var(--tw-text-opacity,1))}.text-purple-100{--tw-text-opacity:1;color:rgb(243 232 255/var(--tw-text-opacity,1))}.text-purple-400{--tw-text-opacity:1;color:rgb(192 132 252/var(--tw-text-opacity,1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113/var(--tw-text-opacity,1))}.text-rose-100{--tw-text-opacity:1;color:rgb(255 228 230/var(--tw-text-opacity,1))}.text-rose-200{--tw-text-opacity:1;color:rgb(254 205 211/var(--tw-text-opacity,1))}.text-rose-300{--tw-text-opacity:1;color:rgb(253 164 175/var(--tw-text-opacity,1))}.text-rose-400{--tw-text-opacity:1;color:rgb(251 113 133/var(--tw-text-opacity,1))}.text-sky-100{--tw-text-opacity:1;color:rgb(224 242 254/var(--tw-text-opacity,1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252/var(--tw-text-opacity,1))}.text-sky-400{--tw-text-opacity:1;color:rgb(56 189 248/var(--tw-text-opacity,1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249/var(--tw-text-opacity,1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240/var(--tw-text-opacity,1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity,1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity,1))}.text-slate-950{--tw-text-opacity:1;color:rgb(2 6 23/var(--tw-text-opacity,1))}.text-teal-100{--tw-text-opacity:1;color:rgb(204 251 241/var(--tw-text-opacity,1))}.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228/var(--tw-text-opacity,1))}.text-teal-300{--tw-text-opacity:1;color:rgb(94 234 212/var(--tw-text-opacity,1))}.text-teal-400{--tw-text-opacity:1;color:rgb(45 212 191/var(--tw-text-opacity,1))}.text-transparent{color:transparent}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253/var(--tw-text-opacity,1))}.text-violet-400{--tw-text-opacity:1;color:rgb(167 139 250/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.underline{text-decoration-line:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-2xl,.shadow-inner{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgba(0,0,0,.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-amber-500\/25{--tw-shadow-color:rgba(245,158,11,.25);--tw-shadow:var(--tw-shadow-colored)}.shadow-blue-500\/20{--tw-shadow-color:rgba(59,130,246,.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-emerald-500\/25{--tw-shadow-color:rgba(16,185,129,.25);--tw-shadow:var(--tw-shadow-colored)}.shadow-emerald-500\/30{--tw-shadow-color:rgba(16,185,129,.3);--tw-shadow:var(--tw-shadow-colored)}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.blur-3xl{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.blur-3xl{--tw-blur:blur(64px)}.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.selection\:bg-blue-500 ::-moz-selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:bg-blue-500 ::selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:text-white ::-moz-selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:text-white ::selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:bg-blue-500::-moz-selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:bg-blue-500::selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:text-white::-moz-selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:text-white::selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.hover\:-translate-y-0\.5:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-amber-600:hover{--tw-bg-opacity:1;background-color:rgb(217 119 6/var(--tw-bg-opacity,1))}.hover\:bg-blue-600:hover{--tw-bg-opacity:1;background-color:rgb(37 99 235/var(--tw-bg-opacity,1))}.hover\:bg-emerald-400:hover{--tw-bg-opacity:1;background-color:rgb(52 211 153/var(--tw-bg-opacity,1))}.hover\:bg-emerald-600:hover{--tw-bg-opacity:1;background-color:rgb(5 150 105/var(--tw-bg-opacity,1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.hover\:bg-purple-600:hover{--tw-bg-opacity:1;background-color:rgb(147 51 234/var(--tw-bg-opacity,1))}.hover\:bg-sky-500\/30:hover{background-color:rgba(14,165,233,.3)}.hover\:bg-sky-600:hover{--tw-bg-opacity:1;background-color:rgb(2 132 199/var(--tw-bg-opacity,1))}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85/var(--tw-bg-opacity,1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.hover\:bg-teal-600:hover{--tw-bg-opacity:1;background-color:rgb(13 148 136/var(--tw-bg-opacity,1))}.hover\:from-amber-400:hover{--tw-gradient-from:#fbbf24 var(--tw-gradient-from-position);--tw-gradient-to:rgba(251,191,36,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:from-emerald-600:hover{--tw-gradient-from:#059669 var(--tw-gradient-from-position);--tw-gradient-to:rgba(5,150,105,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:to-amber-500:hover{--tw-gradient-to:#f59e0b var(--tw-gradient-to-position)}.hover\:to-teal-600:hover{--tw-gradient-to:#0d9488 var(--tw-gradient-to-position)}.hover\:text-amber-300:hover{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.hover\:text-blue-400:hover{--tw-text-opacity:1;color:rgb(96 165 250/var(--tw-text-opacity,1))}.hover\:text-cyan-300:hover{--tw-text-opacity:1;color:rgb(103 232 249/var(--tw-text-opacity,1))}.hover\:text-emerald-400:hover{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.hover\:text-violet-200:hover{--tw-text-opacity:1;color:rgb(221 214 254/var(--tw-text-opacity,1))}.hover\:text-violet-300:hover{--tw-text-opacity:1;color:rgb(196 181 253/var(--tw-text-opacity,1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:inline{display:inline}.sm\:w-auto{width:auto}.sm\:flex-row{flex-direction:row}}@media (min-width:768px){.md\:w-auto{width:auto}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:flex-wrap{flex-wrap:wrap}.md\:items-center{align-items:center}.md\:whitespace-normal{white-space:normal}.md\:p-10{padding:2.5rem}.md\:p-8{padding:2rem}.md\:px-6{padding-left:1.5rem;padding-right:1.5rem}.md\:text-2xl{font-size:1.5rem;line-height:2rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}.md\:text-sm{font-size:.875rem;line-height:1.25rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:flex-row{flex-direction:row}.lg\:items-center{align-items:center}.lg\:text-6xl{font-size:3.75rem;line-height:1}}</style>
+  <style id="tailwind-build">*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.-bottom-12{bottom:-3rem}.-bottom-8{bottom:-2rem}.-right-12{right:-3rem}.-right-8{right:-2rem}.top-0{top:0}.z-10{z-index:10}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}.mb-14{margin-bottom:3.5rem}.mb-2{margin-bottom:.5rem}.mb-2\.5{margin-bottom:.625rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-2{margin-left:.5rem}.mr-1{margin-right:.25rem}.mr-1\.5{margin-right:.375rem}.mr-2{margin-right:.5rem}.mr-2\.5{margin-right:.625rem}.mr-3{margin-right:.75rem}.mr-3\.5{margin-right:.875rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-2\.5{margin-top:.625rem}.mt-3{margin-top:.75rem}.mt-3\.5{margin-top:.875rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-2\.5{height:.625rem}.h-48{height:12rem}.h-64{height:16rem}.h-9{height:2.25rem}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-11{width:2.75rem}.w-2\.5{width:.625rem}.w-48{width:12rem}.w-64{width:16rem}.w-9{width:2.25rem}.w-full{width:100%}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}.scroll-mt-40{scroll-margin-top:10rem}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-x-4{-moz-column-gap:1rem;column-gap:1rem}.gap-x-5{-moz-column-gap:1.25rem;column-gap:1.25rem}.gap-y-2{row-gap:.5rem}.space-x-1\.5>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.375rem*var(--tw-space-x-reverse));margin-left:calc(.375rem*(1 - var(--tw-space-x-reverse)))}.space-x-2>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.5rem*var(--tw-space-x-reverse));margin-left:calc(.5rem*(1 - var(--tw-space-x-reverse)))}.space-x-3>:not([hidden])~:not([hidden]){--tw-space-x-reverse:0;margin-right:calc(.75rem*var(--tw-space-x-reverse));margin-left:calc(.75rem*(1 - var(--tw-space-x-reverse)))}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-24>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(6rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(6rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-8>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem*var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.whitespace-nowrap{white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-t{border-top-width:1px}.border-t-2{border-top-width:2px}.border-t-4{border-top-width:4px}.border-amber-400\/40{border-color:rgba(251,191,36,.4)}.border-amber-500{--tw-border-opacity:1;border-color:rgb(245 158 11/var(--tw-border-opacity,1))}.border-amber-500\/30{border-color:rgba(245,158,11,.3)}.border-amber-500\/40{border-color:rgba(245,158,11,.4)}.border-amber-500\/50{border-color:rgba(245,158,11,.5)}.border-amber-600\/60{border-color:rgba(217,119,6,.6)}.border-amber-900\/40{border-color:rgba(120,53,15,.4)}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-blue-500\/30{border-color:rgba(59,130,246,.3)}.border-blue-900\/40{border-color:rgba(30,58,138,.4)}.border-cyan-500\/40{border-color:rgba(6,182,212,.4)}.border-emerald-500{--tw-border-opacity:1;border-color:rgb(16 185 129/var(--tw-border-opacity,1))}.border-emerald-500\/30{border-color:rgba(16,185,129,.3)}.border-emerald-500\/50{border-color:rgba(16,185,129,.5)}.border-emerald-600\/60{border-color:rgba(5,150,105,.6)}.border-emerald-900\/40{border-color:rgba(6,78,59,.4)}.border-fuchsia-500\/60{border-color:rgba(217,70,239,.6)}.border-indigo-500{--tw-border-opacity:1;border-color:rgb(99 102 241/var(--tw-border-opacity,1))}.border-indigo-500\/30{border-color:rgba(99,102,241,.3)}.border-indigo-900\/40{border-color:rgba(49,46,129,.4)}.border-orange-500{--tw-border-opacity:1;border-color:rgb(249 115 22/var(--tw-border-opacity,1))}.border-pink-500{--tw-border-opacity:1;border-color:rgb(236 72 153/var(--tw-border-opacity,1))}.border-pink-500\/30{border-color:rgba(236,72,153,.3)}.border-rose-500{--tw-border-opacity:1;border-color:rgb(244 63 94/var(--tw-border-opacity,1))}.border-rose-500\/30{border-color:rgba(244,63,94,.3)}.border-rose-700\/70{border-color:rgba(190,18,60,.7)}.border-sky-500{--tw-border-opacity:1;border-color:rgb(14 165 233/var(--tw-border-opacity,1))}.border-sky-500\/30{border-color:rgba(14,165,233,.3)}.border-sky-600\/60{border-color:rgba(2,132,199,.6)}.border-slate-600{--tw-border-opacity:1;border-color:rgb(71 85 105/var(--tw-border-opacity,1))}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85/var(--tw-border-opacity,1))}.border-slate-700\/80{border-color:rgba(51,65,85,.8)}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59/var(--tw-border-opacity,1))}.border-slate-800\/80{border-color:rgba(30,41,59,.8)}.border-teal-500{--tw-border-opacity:1;border-color:rgb(20 184 166/var(--tw-border-opacity,1))}.border-teal-500\/40{border-color:rgba(20,184,166,.4)}.border-teal-500\/60{border-color:rgba(20,184,166,.6)}.border-teal-900\/40{border-color:rgba(19,78,74,.4)}.border-violet-500{--tw-border-opacity:1;border-color:rgb(139 92 246/var(--tw-border-opacity,1))}.border-violet-500\/30{border-color:rgba(139,92,246,.3)}.border-l-amber-500{--tw-border-opacity:1;border-left-color:rgb(245 158 11/var(--tw-border-opacity,1))}.border-l-blue-500{--tw-border-opacity:1;border-left-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-l-emerald-500{--tw-border-opacity:1;border-left-color:rgb(16 185 129/var(--tw-border-opacity,1))}.border-l-indigo-500{--tw-border-opacity:1;border-left-color:rgb(99 102 241/var(--tw-border-opacity,1))}.border-l-purple-500{--tw-border-opacity:1;border-left-color:rgb(168 85 247/var(--tw-border-opacity,1))}.border-l-sky-500{--tw-border-opacity:1;border-left-color:rgb(14 165 233/var(--tw-border-opacity,1))}.border-l-teal-500{--tw-border-opacity:1;border-left-color:rgb(20 184 166/var(--tw-border-opacity,1))}.border-l-violet-500{--tw-border-opacity:1;border-left-color:rgb(139 92 246/var(--tw-border-opacity,1))}.bg-amber-500\/10{background-color:rgba(245,158,11,.1)}.bg-amber-500\/15{background-color:rgba(245,158,11,.15)}.bg-amber-500\/20{background-color:rgba(245,158,11,.2)}.bg-amber-950\/30{background-color:rgba(69,26,3,.3)}.bg-amber-950\/70{background-color:rgba(69,26,3,.7)}.bg-blue-500\/10{background-color:rgba(59,130,246,.1)}.bg-blue-500\/20{background-color:rgba(59,130,246,.2)}.bg-blue-950\/30{background-color:rgba(23,37,84,.3)}.bg-cyan-500\/20{background-color:rgba(6,182,212,.2)}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153/var(--tw-bg-opacity,1))}.bg-emerald-500{--tw-bg-opacity:1;background-color:rgb(16 185 129/var(--tw-bg-opacity,1))}.bg-emerald-500\/10{background-color:rgba(16,185,129,.1)}.bg-emerald-500\/15{background-color:rgba(16,185,129,.15)}.bg-emerald-500\/20{background-color:rgba(16,185,129,.2)}.bg-emerald-950\/30{background-color:rgba(2,44,34,.3)}.bg-emerald-950\/70{background-color:rgba(2,44,34,.7)}.bg-fuchsia-950\/70{background-color:rgba(74,4,78,.7)}.bg-indigo-500\/15{background-color:rgba(99,102,241,.15)}.bg-indigo-500\/20{background-color:rgba(99,102,241,.2)}.bg-indigo-950\/30{background-color:rgba(30,27,75,.3)}.bg-orange-500\/20{background-color:rgba(249,115,22,.2)}.bg-pink-500\/15{background-color:rgba(236,72,153,.15)}.bg-purple-500\/20{background-color:rgba(168,85,247,.2)}.bg-rose-500\/15{background-color:rgba(244,63,94,.15)}.bg-rose-500\/20{background-color:rgba(244,63,94,.2)}.bg-rose-950\/60{background-color:rgba(76,5,25,.6)}.bg-sky-500\/15{background-color:rgba(14,165,233,.15)}.bg-sky-950\/70{background-color:rgba(8,47,73,.7)}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.bg-slate-800\/90{background-color:rgba(30,41,59,.9)}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42/var(--tw-bg-opacity,1))}.bg-slate-900\/50{background-color:rgba(15,23,42,.5)}.bg-slate-900\/70{background-color:rgba(15,23,42,.7)}.bg-slate-900\/90{background-color:rgba(15,23,42,.9)}.bg-slate-950{--tw-bg-opacity:1;background-color:rgb(2 6 23/var(--tw-bg-opacity,1))}.bg-teal-500\/20{background-color:rgba(20,184,166,.2)}.bg-teal-900\/70{background-color:rgba(19,78,74,.7)}.bg-teal-950\/30{background-color:rgba(4,47,46,.3)}.bg-violet-500\/15{background-color:rgba(139,92,246,.15)}.bg-violet-500\/20{background-color:rgba(139,92,246,.2)}.bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.bg-gradient-to-tr{background-image:linear-gradient(to top right,var(--tw-gradient-stops))}.from-amber-500{--tw-gradient-from:#f59e0b var(--tw-gradient-from-position);--tw-gradient-to:rgba(245,158,11,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-amber-950\/70{--tw-gradient-from:rgba(69,26,3,.7) var(--tw-gradient-from-position);--tw-gradient-to:rgba(69,26,3,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-blue-400{--tw-gradient-from:#60a5fa var(--tw-gradient-from-position);--tw-gradient-to:rgba(96,165,250,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-blue-600{--tw-gradient-from:#2563eb var(--tw-gradient-from-position);--tw-gradient-to:rgba(37,99,235,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-700{--tw-gradient-from:#047857 var(--tw-gradient-from-position);--tw-gradient-to:rgba(4,120,87,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-emerald-950\/20{--tw-gradient-from:rgba(2,44,34,.2) var(--tw-gradient-from-position);--tw-gradient-to:rgba(2,44,34,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.via-indigo-300{--tw-gradient-to:rgba(165,180,252,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#a5b4fc var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-slate-900{--tw-gradient-to:rgba(15,23,42,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#0f172a var(--tw-gradient-via-position),var(--tw-gradient-to)}.via-teal-300{--tw-gradient-to:rgba(94,234,212,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),#5eead4 var(--tw-gradient-via-position),var(--tw-gradient-to)}.to-amber-600{--tw-gradient-to:#d97706 var(--tw-gradient-to-position)}.to-emerald-400{--tw-gradient-to:#34d399 var(--tw-gradient-to-position)}.to-indigo-500{--tw-gradient-to:#6366f1 var(--tw-gradient-to-position)}.to-indigo-950\/70{--tw-gradient-to:rgba(30,27,75,.7) var(--tw-gradient-to-position)}.to-slate-900\/60{--tw-gradient-to:rgba(15,23,42,.6) var(--tw-gradient-to-position)}.to-teal-300{--tw-gradient-to:#5eead4 var(--tw-gradient-to-position)}.to-teal-700{--tw-gradient-to:#0f766e var(--tw-gradient-to-position)}.bg-clip-text{-webkit-background-clip:text;background-clip:text}.p-3\.5{padding:.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-7{padding:1.75rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-7{padding-left:1.75rem;padding-right:1.75rem}.px-8{padding-left:2rem;padding-right:2rem}.px-9{padding-left:2.25rem;padding-right:2.25rem}.py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-1{padding-bottom:.25rem}.pb-2{padding-bottom:.5rem}.pb-20{padding-bottom:5rem}.pl-5{padding-left:1.25rem}.pt-1{padding-top:.25rem}.pt-16{padding-top:4rem}.pt-2{padding-top:.5rem}.pt-3{padding-top:.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-.025em}.tracking-wide{letter-spacing:.025em}.text-amber-100{--tw-text-opacity:1;color:rgb(254 243 199/var(--tw-text-opacity,1))}.text-amber-200{--tw-text-opacity:1;color:rgb(253 230 138/var(--tw-text-opacity,1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36/var(--tw-text-opacity,1))}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254/var(--tw-text-opacity,1))}.text-blue-200{--tw-text-opacity:1;color:rgb(191 219 254/var(--tw-text-opacity,1))}.text-blue-300{--tw-text-opacity:1;color:rgb(147 197 253/var(--tw-text-opacity,1))}.text-blue-400{--tw-text-opacity:1;color:rgb(96 165 250/var(--tw-text-opacity,1))}.text-cyan-200{--tw-text-opacity:1;color:rgb(165 243 252/var(--tw-text-opacity,1))}.text-cyan-400{--tw-text-opacity:1;color:rgb(34 211 238/var(--tw-text-opacity,1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229/var(--tw-text-opacity,1))}.text-emerald-200{--tw-text-opacity:1;color:rgb(167 243 208/var(--tw-text-opacity,1))}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183/var(--tw-text-opacity,1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.text-fuchsia-100{--tw-text-opacity:1;color:rgb(250 232 255/var(--tw-text-opacity,1))}.text-indigo-100{--tw-text-opacity:1;color:rgb(224 231 255/var(--tw-text-opacity,1))}.text-indigo-200{--tw-text-opacity:1;color:rgb(199 210 254/var(--tw-text-opacity,1))}.text-indigo-300{--tw-text-opacity:1;color:rgb(165 180 252/var(--tw-text-opacity,1))}.text-indigo-400{--tw-text-opacity:1;color:rgb(129 140 248/var(--tw-text-opacity,1))}.text-orange-300{--tw-text-opacity:1;color:rgb(253 186 116/var(--tw-text-opacity,1))}.text-orange-400{--tw-text-opacity:1;color:rgb(251 146 60/var(--tw-text-opacity,1))}.text-pink-300{--tw-text-opacity:1;color:rgb(249 168 212/var(--tw-text-opacity,1))}.text-purple-100{--tw-text-opacity:1;color:rgb(243 232 255/var(--tw-text-opacity,1))}.text-purple-400{--tw-text-opacity:1;color:rgb(192 132 252/var(--tw-text-opacity,1))}.text-rose-100{--tw-text-opacity:1;color:rgb(255 228 230/var(--tw-text-opacity,1))}.text-rose-200{--tw-text-opacity:1;color:rgb(254 205 211/var(--tw-text-opacity,1))}.text-rose-300{--tw-text-opacity:1;color:rgb(253 164 175/var(--tw-text-opacity,1))}.text-rose-400{--tw-text-opacity:1;color:rgb(251 113 133/var(--tw-text-opacity,1))}.text-sky-100{--tw-text-opacity:1;color:rgb(224 242 254/var(--tw-text-opacity,1))}.text-sky-200{--tw-text-opacity:1;color:rgb(186 230 253/var(--tw-text-opacity,1))}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252/var(--tw-text-opacity,1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249/var(--tw-text-opacity,1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240/var(--tw-text-opacity,1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225/var(--tw-text-opacity,1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184/var(--tw-text-opacity,1))}.text-slate-950{--tw-text-opacity:1;color:rgb(2 6 23/var(--tw-text-opacity,1))}.text-teal-100{--tw-text-opacity:1;color:rgb(204 251 241/var(--tw-text-opacity,1))}.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228/var(--tw-text-opacity,1))}.text-teal-300{--tw-text-opacity:1;color:rgb(94 234 212/var(--tw-text-opacity,1))}.text-teal-400{--tw-text-opacity:1;color:rgb(45 212 191/var(--tw-text-opacity,1))}.text-transparent{color:transparent}.text-violet-300{--tw-text-opacity:1;color:rgb(196 181 253/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.underline{text-decoration-line:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-2xl,.shadow-inner{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgba(0,0,0,.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-amber-500\/25{--tw-shadow-color:rgba(245,158,11,.25);--tw-shadow:var(--tw-shadow-colored)}.shadow-blue-500\/20{--tw-shadow-color:rgba(59,130,246,.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-emerald-500\/25{--tw-shadow-color:rgba(16,185,129,.25);--tw-shadow:var(--tw-shadow-colored)}.shadow-emerald-500\/30{--tw-shadow-color:rgba(16,185,129,.3);--tw-shadow:var(--tw-shadow-colored)}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.blur-3xl{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.blur-3xl{--tw-blur:blur(64px)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-filter{-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.selection\:bg-blue-500 ::-moz-selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:bg-blue-500 ::selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:text-white ::-moz-selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:text-white ::selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:bg-blue-500::-moz-selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:bg-blue-500::selection{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.selection\:text-white::-moz-selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.selection\:text-white::selection{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.hover\:-translate-y-0\.5:hover{--tw-translate-y:-0.125rem;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-amber-600:hover{--tw-bg-opacity:1;background-color:rgb(217 119 6/var(--tw-bg-opacity,1))}.hover\:bg-blue-600:hover{--tw-bg-opacity:1;background-color:rgb(37 99 235/var(--tw-bg-opacity,1))}.hover\:bg-cyan-500\/30:hover{background-color:rgba(6,182,212,.3)}.hover\:bg-emerald-400:hover{--tw-bg-opacity:1;background-color:rgb(52 211 153/var(--tw-bg-opacity,1))}.hover\:bg-emerald-600:hover{--tw-bg-opacity:1;background-color:rgb(5 150 105/var(--tw-bg-opacity,1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229/var(--tw-bg-opacity,1))}.hover\:bg-purple-600:hover{--tw-bg-opacity:1;background-color:rgb(147 51 234/var(--tw-bg-opacity,1))}.hover\:bg-sky-600:hover{--tw-bg-opacity:1;background-color:rgb(2 132 199/var(--tw-bg-opacity,1))}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85/var(--tw-bg-opacity,1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59/var(--tw-bg-opacity,1))}.hover\:bg-teal-600:hover{--tw-bg-opacity:1;background-color:rgb(13 148 136/var(--tw-bg-opacity,1))}.hover\:from-amber-400:hover{--tw-gradient-from:#fbbf24 var(--tw-gradient-from-position);--tw-gradient-to:rgba(251,191,36,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:from-emerald-600:hover{--tw-gradient-from:#059669 var(--tw-gradient-from-position);--tw-gradient-to:rgba(5,150,105,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.hover\:to-amber-500:hover{--tw-gradient-to:#f59e0b var(--tw-gradient-to-position)}.hover\:to-teal-600:hover{--tw-gradient-to:#0d9488 var(--tw-gradient-to-position)}.hover\:text-amber-300:hover{--tw-text-opacity:1;color:rgb(252 211 77/var(--tw-text-opacity,1))}.hover\:text-blue-400:hover{--tw-text-opacity:1;color:rgb(96 165 250/var(--tw-text-opacity,1))}.hover\:text-cyan-300:hover{--tw-text-opacity:1;color:rgb(103 232 249/var(--tw-text-opacity,1))}.hover\:text-emerald-400:hover{--tw-text-opacity:1;color:rgb(52 211 153/var(--tw-text-opacity,1))}.hover\:text-violet-200:hover{--tw-text-opacity:1;color:rgb(221 214 254/var(--tw-text-opacity,1))}.hover\:text-violet-300:hover{--tw-text-opacity:1;color:rgb(196 181 253/var(--tw-text-opacity,1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}@media (min-width:640px){.sm\:inline{display:inline}.sm\:w-auto{width:auto}.sm\:flex-row{flex-direction:row}}@media (min-width:768px){.md\:w-auto{width:auto}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.md\:flex-row{flex-direction:row}.md\:flex-wrap{flex-wrap:wrap}.md\:items-center{align-items:center}.md\:whitespace-normal{white-space:normal}.md\:p-10{padding:2.5rem}.md\:p-8{padding:2rem}.md\:px-6{padding-left:1.5rem;padding-right:1.5rem}.md\:text-2xl{font-size:1.5rem;line-height:2rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}.md\:text-sm{font-size:.875rem;line-height:1.25rem}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width:1024px){.lg\:flex-row{flex-direction:row}.lg\:items-center{align-items:center}.lg\:text-6xl{font-size:3.75rem;line-height:1}}</style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -38,6 +38,11 @@
     .section-nav { scrollbar-width: thin; scrollbar-color: #475569 transparent; }
     .section-nav a { padding: 0.25rem 0; }
     a:focus-visible, button:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; border-radius: 6px; }
+    /* 專題篩選按鈕 */
+    .project-filter { padding: 0.3rem 0.8rem; border-radius: 9999px; border: 1px solid #475569; background: #1e293b; color: #e2e8f0; font-size: 0.9rem; font-weight: 600; }
+    .project-filter:hover { background: #334155; }
+    .project-card[hidden], .project-domain[hidden] { display: none !important; }
+    .project-filter[aria-pressed="true"] { background: #0f766e; border-color: #2dd4bf; color: #ffffff; }
     /* 字體切換按鈕高亮 */
     .font-btn-active {
       background-color: #2563eb !important;
@@ -483,7 +488,7 @@
       <div class="mb-10">
         <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-teal-500/20 text-teal-300 text-sm font-bold mb-3">
           <i class="fa-solid fa-lightbulb"></i>
-          <span>跨領域創客實戰 • 涵蓋交通、無障礙、創客安全、智慧零售與食衣住行</span>
+          <span>跨領域創客實戰 • 23 個題目，含難度、做法與驗證方式</span>
         </div>
         <h2 class="text-3xl md:text-4xl font-extrabold flex items-center text-white">
           <span class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center mr-3.5 text-lg font-black">05</span>
@@ -494,15 +499,27 @@
         </p>
       </div>
 
-      <!-- 專題難度與模型說明 -->
-      <div class="glass-card rounded-2xl p-6 mb-10 border border-slate-700 text-slate-200 space-y-3">
-        <h3 class="font-bold text-lg text-white">怎麼看專題卡片上的標籤？</h3>
-        <ul class="list-disc pl-5 space-y-1.5">
-          <li><strong class="text-white">難度：</strong>入門 ★ 改幾行範例程式就能做；進階 ★★ 要自己寫判斷邏輯或接硬體；挑戰 ★★★ 需要較多時間測試與調整。</li>
-          <li><strong class="text-emerald-200">預訓練模型可用：</strong>YOLO 已認得的 80 種物品（人、車、手機、杯子、書…）或 MediaPipe 手部／臉部模型，下載就能用。</li>
-          <li><strong class="text-amber-200">需自行收集照片訓練模型：</strong>安全帽、紙鈔、麵包、烙鐵這類東西預設模型不認得，要自己拍照標註、訓練新模型，請預留時間。</li>
-          <li><strong class="text-rose-200">紅色提醒：</strong>牽涉用電、車輛、火源或健康的專題只能做成原型展示，不能取代合格的安全設備；接電源或改裝請在老師指導下進行。</li>
-        </ul>
+      <!-- 選題與進度建議 -->
+      <div class="grid md:grid-cols-2 gap-6 mb-10">
+        <div class="glass-card rounded-2xl p-6 border border-teal-500/40 text-slate-200">
+          <h3 class="font-bold text-lg text-teal-300 mb-3"><i class="fa-solid fa-compass mr-2" aria-hidden="true"></i>選題四個原則</h3>
+          <ol class="list-decimal pl-5 space-y-2">
+            <li><strong class="text-white">從身邊的問題出發：</strong>先寫下「誰、在哪裡、遇到什麼麻煩」，再想 AI 能幫什麼。</li>
+            <li><strong class="text-white">先用現成模型試做：</strong>第一週就用預訓練模型做出能動的雛形，確認鏡頭看得到、辨識得出來。</li>
+            <li><strong class="text-white">先想好怎麼驗證：</strong>測幾次、算什麼（正確率、誤報、反應時間），這是書面報告的評分重點。</li>
+            <li><strong class="text-white">說清楚和現有產品的差別：</strong>上網查有沒有類似作品，找出更便宜、更在地或更好用的地方。</li>
+          </ol>
+        </div>
+        <div class="glass-card rounded-2xl p-6 border border-teal-500/40 text-slate-200">
+          <h3 class="font-bold text-lg text-teal-300 mb-3"><i class="fa-solid fa-calendar-days mr-2" aria-hidden="true"></i>一學期進度建議</h3>
+          <ul class="space-y-2">
+            <li><strong class="text-white">第 1～2 週｜</strong>選題、查資料，用現成模型做可行性測試</li>
+            <li><strong class="text-white">第 3～6 週｜</strong>收集資料（需要時訓練模型），完成第一版原型</li>
+            <li><strong class="text-white">第 7～10 週｜</strong>接上燈號、語音或 ESP32，依驗證方式反覆測試並記錄數據</li>
+            <li><strong class="text-white">第 11～12 週｜</strong>整理數據、拍攝展示影片</li>
+            <li><strong class="text-white">第 13 週以後｜</strong>撰寫書面報告、練習上台展示</li>
+          </ul>
+        </div>
       </div>
 
       <!-- 專題競賽書面報告寫作範本（非得獎作品） -->
@@ -537,320 +554,527 @@
         </div>
       </div>
 
-      <!-- 領域一：工場自動化與 ESG 環安衛 -->
-      <div class="mb-12">
+      <!-- 標籤說明與篩選 -->
+      <div class="glass-card rounded-2xl p-6 mb-8 border border-slate-700 text-slate-200 space-y-3">
+        <h3 class="font-bold text-lg text-white">怎麼看專題卡片？</h3>
+        <ul class="list-disc pl-5 space-y-1.5">
+          <li><strong class="text-white">難度：</strong>入門 ★ 改幾行範例程式就能做；進階 ★★ 要自己寫判斷邏輯或接硬體；挑戰 ★★★ 需要訓練模型或較多測試。</li>
+          <li><strong class="text-emerald-200">綠色標籤：</strong>現成模型（YOLO 認得的 80 種物品、姿態模型、MediaPipe 手部／臉部）或 OpenCV 影像處理就能做。</li>
+          <li><strong class="text-amber-200">黃色標籤：</strong>預設模型不認得，要自己拍照標註、訓練新模型，請預留時間。</li>
+          <li><strong class="text-white">展示方式：</strong>「模型」表示只適合在桌上模型或錄影中示範，不要在真實環境測試。</li>
+          <li><strong class="text-rose-200">紅色提醒：</strong>牽涉用電、車輛、火源或健康，只能做成原型展示，不能取代合格的安全設備。</li>
+        </ul>
+        <div class="pt-3 border-t border-slate-700">
+          <div class="flex flex-wrap items-center gap-2" role="group" aria-label="篩選專題">
+            <span class="font-semibold text-slate-300 mr-1">篩選：</span>
+            <button type="button" class="project-filter" data-filter="all" aria-pressed="true">全部</button>
+            <button type="button" class="project-filter" data-filter="rec" aria-pressed="false">⭐ 推薦起手</button>
+            <button type="button" class="project-filter" data-filter="level1" aria-pressed="false">入門 ★</button>
+            <button type="button" class="project-filter" data-filter="pre" aria-pressed="false">現成模型可做</button>
+            <button type="button" class="project-filter" data-filter="train" aria-pressed="false">需自行訓練</button>
+            <button type="button" class="project-filter" data-filter="new" aria-pressed="false">🆕 新增題目</button>
+          </div>
+          <p class="text-sm text-slate-400 mt-2" id="projectCount" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-amber-500/30">
-          <span class="text-2xl">🏭</span>
-          <h3 class="text-xl font-bold text-amber-400">領域一：工場自動化與 ESG 環安衛</h3>
+          <span class="text-2xl" aria-hidden="true">🏭</span>
+          <h3 class="text-xl font-bold text-amber-300">領域一：實習工場與電子實習</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-amber-500 bg-gradient-to-br from-amber-950/25 to-slate-900/70">
-            <span class="text-sm font-bold text-amber-400 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 01・工場自動化・ESG 環安衛</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">實習工場「個人防護裝備 (PPE)」配戴稽核門禁</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              解決車銑床、鉗工、焊接實習工場學生貪圖方便不戴透明護目鏡或安全帽，釀成鐵屑噴眼與撞傷職業災害的剛需。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>僅為原型展示，不能取代工場安全規範與老師督導；聯鎖機台電源必須由合格人員施工。</p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥽 實時偵測頭部【工業安全帽】與臉部【透明護目鏡】</div>
-              <div>✅ 雙重合格語音播報「配戴完整請進」並驅動電磁門鎖</div>
-              <div>⚠️ 未配戴者紅框大字警告，並可聯鎖切斷危險機台電源</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-amber-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-amber-300 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 01・工場安全</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">實習工場「安全帽／護目鏡」配戴提醒站</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">實習工場學生常因貪快沒戴護目鏡或安全帽，鐵屑噴眼、撞傷的風險高。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>只做提醒，不接機台電源；不能取代工場安全規範與老師督導。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>收集同學戴／沒戴安全帽與護目鏡的照片（每類 200 張以上），訓練 YOLO 自訂模型</li>
+                <li>進門時偵測配戴狀態：合格亮綠燈並語音說「請進」，不合格亮紅燈提醒</li>
+                <li>統計每天未配戴的次數，做成老師看的簡單報表</li>
+              </ol>
             </div>
-          </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">找 10 位同學，在不同角度與光線下「戴／不戴」各測 20 次，計算正確率與誤報率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">透明護目鏡很難辨識，可比較「深色鏡框」或「在護目鏡貼色點」對準確率的影響。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-amber-500 flex flex-col" data-level="3" data-model="train" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-amber-300 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 02・用電安全</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">電子實習「電烙鐵無人看管」提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">下課忘了關電烙鐵，烙鐵架長時間高溫，有起火的風險。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>自動斷電線路須在老師指導下施工；不能取代正式的用電與消防安全措施。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>自訂模型辨識「烙鐵在架上」，再用 YOLO 預設模型偵測座位上有沒有人</li>
+                <li>座位無人超過設定時間（例如 10 分鐘）就亮燈，並語音廣播桌號</li>
+                <li>加一顆電流感測器確認烙鐵真的有通電，減少誤報</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">模擬「人離開／回來／烙鐵沒插電」等情境各 20 次，統計漏報與誤報。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">比較「只用計時器」「只用電流感測」「鏡頭＋感測」三種做法，回答評審「為什麼要用鏡頭」。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-amber-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="1">
+            <span class="self-start text-sm font-bold text-amber-300 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 03・實習管理</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">OpenCV 影像處理即可</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-fuchsia-950/70 border border-fuchsia-500/60 text-fuchsia-100">🆕 新增</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">工具歸位「影子板」自動點檢</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">實習課結束常少了一把工具，一格一格清點很花時間。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>鏡頭固定拍攝工具掛板，先拍一張「工具全部到齊」的基準照</li>
+                <li>用 OpenCV 比對每個工具位置的畫面差異，找出空位並標上紅框</li>
+                <li>下課按一下點檢鈕，螢幕列出缺少的工具名稱</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">隨機拿走 0～3 把工具共測 30 次，計算缺件判斷正確率，並比較不同光線的結果。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">進階可訓練 YOLO 辨識工具種類，判斷「放錯位置」而不只是「不見了」。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-amber-500 flex flex-col" data-level="3" data-model="pre" data-rec="0" data-new="1">
+            <span class="self-start text-sm font-bold text-amber-300 px-2.5 py-1 rounded bg-amber-500/15 border border-amber-500/30">專題 04・電子實習</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">OpenCV 影像處理即可</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-fuchsia-950/70 border border-fuchsia-500/60 text-fuchsia-100">🆕 新增</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">電阻色碼「拍一下就知道阻值」</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">初學者常看錯或記不住色碼，插錯電阻導致電路不正常。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>在固定白色底板與燈光下拍攝電阻，先用 OpenCV 找出電阻本體</li>
+                <li>取出每一道色環的顏色，對照色碼表算出阻值與誤差</li>
+                <li>畫面顯示阻值，並用語音念出</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">準備 30 種不同阻值的電阻，每種測 3 次記錄正確率，並比較不同光源的結果。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">棕、紅、橙這類相近顏色最容易判錯，可嘗試加入色彩校正卡，或改用自訂分類模型。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
 
-      <!-- 領域二：智慧交通與微型移動領域 -->
-      <div class="mb-12">
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-sky-500/30">
-          <span class="text-2xl">🚦</span>
-          <h3 class="text-xl font-bold text-sky-400">領域二：智慧交通與微型移動（電子科 ＋ 物聯網經典）</h3>
+          <span class="text-2xl" aria-hidden="true">🚦</span>
+          <h3 class="text-xl font-bold text-sky-300">領域二：智慧交通與校園移動</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 停車場空位導引 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-sky-500">
-            <span class="text-sm font-bold text-sky-400 px-2.5 py-1 rounded bg-sky-500/10">專題 02・智慧交通・露天車位導引</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">校園與露天停車場「零地磁・純視覺車位空位導引」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              傳統地磁感應器一顆數千元，還要挖馬路埋線換電池。一顆鏡頭低成本搞定整個停車區！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>📹 一顆 WebCam 從 2 樓俯拍 8~12 個停車格</div>
-              <div>🚗 YOLO 辨識 car 與車位矩形交集，空位畫綠框、滿位畫紅框</div>
-              <div>🔢 入口 7 段顯示器顯示「剩餘車位：3」，並同步雲端網頁儀表板</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-sky-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-sky-300 px-2.5 py-1 rounded bg-sky-500/15 border border-sky-500/30">專題 05・智慧交通</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機或錄影</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">校園停車場「剩餘車位」看板</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">上下學尖峰時段，家長與教職員常繞圈找車位；地磁感測器則每一格都要施工。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>從高處固定拍攝 8～12 格車位，手動框出每一格的位置</li>
+                <li>YOLO 偵測 car／motorcycle，和車格重疊就判定為有車</li>
+                <li>用網頁或 7 段顯示器顯示剩餘車位</li>
+              </ol>
             </div>
-          </div>
-
-          <!-- 自行車超車雷達 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-blue-500">
-            <span class="text-sm font-bold text-blue-400 px-2.5 py-1 rounded bg-blue-500/10">專題 03・微型移動・騎士安全</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">自行車／微型電動二輪車「後方盲區超車預警雷達」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              騎單車在路邊常被身後大卡車或高速機車擦撞，視線死角多且極其危險。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>僅為輔助警示原型，騎車時仍要自己注意後方來車，不能取代正規安全裝備。</p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🚴 座墊下方安裝 WebCam 朝後拍，偵測車輛逼近速度與體積膨脹率</div>
-              <div>🚨 後方有大車高速逼近時，手把兩側震動或蜂鳴器急促警告靠邊</div>
-              <div>✨ 媲美 Garmin 萬元智慧雷達尾燈的百元開源實作版</div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">錄下不同時段（含陰天、傍晚）的影片，和人工數出的車位數比對，計算準確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">加入「機車格」或「身障車位被占用提醒」，做出和一般停車系統不同的校園特色。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">只判斷有沒有車，不辨識、不儲存車牌。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-sky-500 flex flex-col" data-level="3" data-model="pre" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-sky-300 px-2.5 py-1 rounded bg-sky-500/15 border border-sky-500/30">專題 06・騎士安全</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：錄影＋桌上模型</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">自行車「後方來車」警示</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">騎單車時看不到後方大車逼近，容易被擦撞。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>請用錄好的影片或模型測試，不要邊騎邊測；成品不能取代正規安全裝備。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>先用行車紀錄器或手機錄下騎車時的後方影片，在電腦上做辨識</li>
+                <li>偵測 car／truck／motorcycle，用框的面積變大速度估計逼近程度</li>
+                <li>用影片或模型展示：車輛逼近時亮燈或蜂鳴</li>
+              </ol>
             </div>
-          </div>
-
-          <!-- 幼童寵物車內遺留防熱死 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-red-500">
-            <span class="text-sm font-bold text-red-400 px-2.5 py-1 rounded bg-red-500/10">專題 04・車輛安全・挽救生命</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">汽車防悲劇「後座幼童與毛孩遺留防熱死」救命警報器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              夏天烈日下車內 15 分鐘飆到 50℃，粗心父母將熟睡嬰兒或毛孩忘在後座釀成熱死慘劇。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>僅為原型展示，不能取代家長照看與車輛安全系統；降車窗、自動撥號只在模型上示範，不要改裝真車。</p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👶 偵測「熄火且駕駛開門離車」後，鏡頭自動持續掃描後座</div>
-              <div>⏱️ 60 秒後座仍有微小人體或寵物動態，車輛立即鳴笛、警示燈閃爍</div>
-              <div>🪟 連動 ESP32 自動降窗通風，並發送緊急簡訊與電話通報</div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">在影片中標記「真的有車逼近」的片段，計算平均提早幾秒警示與誤報次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">進階可移植到手機或樹莓派，比較耗電量與反應時間。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-sky-500 flex flex-col" data-level="3" data-model="pre" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-sky-300 px-2.5 py-1 rounded bg-sky-500/15 border border-sky-500/30">專題 07・車輛安全</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：模型</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">模型車「後座遺留」提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">夏天車內溫度升高很快，幼童或寵物被留在車內非常危險。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>只在模型上示範，不要改裝真車；不能取代家長照看與車輛安全系統。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用紙箱或模型車搭出後座場景，鏡頭拍攝座位</li>
+                <li>用按鈕模擬「熄火、駕駛開門離車」</li>
+                <li>離車後仍偵測到 person／dog／cat，就亮燈、鳴響並傳訊息到手機</li>
+              </ol>
             </div>
-          </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">用玩偶與同學在不同姿勢、光線下測試偵測率，並測「座位上只有背包」的誤報。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">車內晚上很暗，可比較一般鏡頭與紅外線鏡頭的效果。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
 
-      <!-- 領域三：無障礙輔具與弱勢關懷領域 -->
-      <div class="mb-12">
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-indigo-500/30">
-          <span class="text-2xl">♿</span>
-          <h3 class="text-xl font-bold text-indigo-400">領域三：無障礙輔具與弱勢關懷（公益暖心）</h3>
+          <span class="text-2xl" aria-hidden="true">♿</span>
+          <h3 class="text-xl font-bold text-indigo-300">領域三：無障礙與長照關懷</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 漸凍人臉部眼動滑鼠 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-indigo-500">
-            <span class="text-sm font-bold text-indigo-400 px-2.5 py-1 rounded bg-indigo-500/10">專題 05・無障礙科技・重度肢障輔具</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 手部／臉部模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">漸凍人與重度肢障「臉部姿態／眼動虛擬滑鼠與注音板」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              商用眼動儀動輒 10~20 萬元，弱勢家庭根本無力負擔。用平價 WebCam 讓病友重獲發聲權！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👃 鏡頭追蹤鼻尖座標作為滑鼠游標平滑移動</div>
-              <div>😉 「刻意眨左眼 0.5 秒」= 滑鼠左鍵點擊，「張嘴」= 確認選字</div>
-              <div>🗣️ 讓無法動手的病友自主在螢幕上注音打字並語音發聲</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-indigo-500 flex flex-col" data-level="3" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-indigo-300 px-2.5 py-1 rounded bg-indigo-500/15 border border-indigo-500/30">專題 08・輔具科技</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">重度肢障「臉部滑鼠＋注音板」</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">商用眼動儀價格很高，無法用手操作電腦的人很難打字溝通。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 MediaPipe 臉部模型追蹤鼻尖，控制滑鼠游標</li>
+                <li>刻意眨眼或張嘴當作點擊，並設計停留時間避免誤觸</li>
+                <li>做一個大按鈕的注音輸入板，選好字後用語音念出</li>
+              </ol>
             </div>
-          </div>
-
-          <!-- 視障紙鈔硬幣快報 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-purple-500">
-            <span class="text-sm font-bold text-purple-400 px-2.5 py-1 rounded bg-purple-500/10">專題 06・視障友善・防詐防找錯錢</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">視障者「紙鈔面額與日常硬幣語音快報助手」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              視障朋友在菜市場或搭計程車時摸不出千元、五百與百元鈔差異，常被誤給或找錯錢。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>💵 鈔票在胸前鏡頭前晃一下，輕量 YOLO 0.1 秒精準辨識面額</div>
-              <div>🎧 耳機即時朗讀語音：「新台幣壹仟圓整」，安心結帳防掉包</div>
-              <div>🪙 同時支援 50 元、10 元、5 元、1 元硬幣尺寸快篩辨別</div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">請 5 位同學只用臉操作，記錄輸入一句話的時間與錯誤次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">有機會請治療師或實際使用者試用，依回饋調整靈敏度與按鈕大小，會是很大的加分。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">找實際使用者試用前，要先說明並取得同意。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-indigo-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="1">
+            <span class="self-start text-sm font-bold text-indigo-300 px-2.5 py-1 rounded bg-indigo-500/15 border border-indigo-500/30">專題 09・溝通輔助</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">MediaPipe 關節點＋自訓分類器</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-fuchsia-950/70 border border-fuchsia-500/60 text-fuchsia-100">🆕 新增</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">台灣手語「數字與常用詞」辨識</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">聽障者和不會手語的人溝通時，常需要紙筆或手機打字。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 MediaPipe 手部模型取得 21 個手部關節點座標</li>
+                <li>自己錄製台灣手語數字 0～9 與 5 個常用詞，訓練簡單的分類器</li>
+                <li>辨識結果即時顯示文字，並用語音念出</li>
+              </ol>
             </div>
-          </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">請沒有參與錄製的同學每個手勢各比 10 次，計算正確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">請教特教老師或聽障團體，確認手勢是否正確、哪些詞最實用。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-indigo-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-indigo-300 px-2.5 py-1 rounded bg-indigo-500/15 border border-indigo-500/30">專題 10・視障友善</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">視障者「紙鈔面額」語音辨識</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">視障朋友不容易分辨不同面額的紙鈔。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>自己拍攝 100、200、500、1000、2000 元紙鈔的正反面、不同角度與摺疊照片</li>
+                <li>訓練 YOLO 自訂模型，辨識後用語音念出面額</li>
+                <li>設計「按一下就辨識」的簡單操作方式</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">每種面額測 30 次（含摺疊、只露半張、逆光），計算正確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">已有 App 能辨識鈔票，報告要說明差異（例如離線可用、操作更簡單）；硬幣可設計固定高度的托盤再挑戰。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-indigo-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-indigo-300 px-2.5 py-1 rounded bg-indigo-500/15 border border-indigo-500/30">專題 11・長照關懷</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">OpenCV 影像處理即可</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">長輩「藥盒打開了沒」提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">長輩常忘記吃藥，或忘了自己已經吃過。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>只作為提醒工具，不能取代醫療照護與家人確認；用藥請依醫師指示。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>使用分格藥盒並在每格貼上顏色標籤，鏡頭從上方拍藥盒</li>
+                <li>用 OpenCV 判斷該時段的格子有沒有被打開過</li>
+                <li>時間到還沒打開就語音提醒，並用 LINE Messaging API 通知家人（LINE Notify 已停止服務）</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">模擬一週共 21 個用藥時段，記錄正確提醒與漏報次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">加入「同一格重複打開」提醒，避免重複吃藥。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">鏡頭只拍藥盒，不拍人。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
 
-      <!-- 領域四：創客自造與實習實驗室安全 -->
-      <div class="mb-12">
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-rose-500/30">
-          <span class="text-2xl">🔬</span>
-          <h3 class="text-xl font-bold text-rose-400">領域四：創客自造與實習實驗室安全（Maker 工場守護）</h3>
+          <span class="text-2xl" aria-hidden="true">🔬</span>
+          <h3 class="text-xl font-bold text-rose-300">領域四：創客自造與智慧製造</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 3D列印炒米粉急停 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-rose-500">
-            <span class="text-sm font-bold text-rose-400 px-2.5 py-1 rounded bg-rose-500/10">專題 07・創客自造・防止耗材損毀</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">3D 列印機「列印失敗炒米粉 (Spaghetti Detection) 自動急停」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              3D 列印半夜脫膠或噴頭位移，列印機繼續印吐出一整坨「雜亂米粉」，噴頭堵死甚至有失火危險。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>斷電急停只是額外保護，列印時仍應有人留意；改接電源請在老師指導下進行。</p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>📹 鏡頭側拍熱床，偵測混亂無序的擠出線條（特徵缺陷辨識）</div>
-              <div>🛑 偵測到失敗米粉瞬間發出警報，並透過智慧插座斷電急停</div>
-              <div>💰 拯救數千元昂貴噴頭與整捲耗材，實現安心離線無人列印</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-rose-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-rose-300 px-2.5 py-1 rounded bg-rose-500/15 border border-rose-500/30">專題 12・創客自造</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">3D 列印「失敗炒米粉」偵測</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">列印中途脫膠或位移，機器會繼續吐出一團亂線，浪費耗材，也可能損壞噴頭。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>列印時仍應有人留意；改接電源請在老師指導下進行。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>收集列印正常與失敗的照片（可以故意製造失敗）</li>
+                <li>訓練 YOLO 自訂模型，偵測到失敗就暫停列印並通知</li>
+                <li>暫停優先用列印軟體的指令（例如 OctoPrint），不要直接斷電</li>
+              </ol>
             </div>
-          </div>
-
-          <!-- 電烙鐵忘拔插頭失火警報 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-orange-500">
-            <span class="text-sm font-bold text-orange-400 px-2.5 py-1 rounded bg-orange-500/10">專題 08・電子實習・防失火安全</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">電子實習「電烙鐵忘記拔插頭・無人看管失火警報」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              放學焊完電路，學生常忘記關閉電烙鐵，烙鐵架達 350℃ 長時間烘烤桌面引發火災危險。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>不能取代正式的消防與用電安全措施；自動斷電線路須在老師指導下施工。</p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🔌 鏡頭偵測烙鐵置於架上，且「座位無人看管超過 15 分鐘」</div>
-              <div>📢 電腦大喇叭廣播：「警告：第 5 號桌電烙鐵尚未關閉！」</div>
-              <div>⚡ 結合繼電器自動切斷實驗桌分路電源，工場消防防護滿分</div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">刻意製造 10 次失敗、20 次正常列印，記錄多久偵測到與誤報次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">已有開源方案（Obico），可比較自己的模型在學校機型或不同顏色線材上的表現。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-rose-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-rose-300 px-2.5 py-1 rounded bg-rose-500/15 border border-rose-500/30">專題 13・品質檢驗</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：模型</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">飲料杯「封膜與吸管」檢查台</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">飲料封膜沒封好或忘了附吸管，容易造成客訴。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>搭一個固定燈光與鏡頭位置的小檢查台</li>
+                <li>收集「封好／沒封／封歪」與「有無吸管」的照片，訓練自訂模型</li>
+                <li>合格亮綠燈，不合格亮紅燈並顯示原因</li>
+              </ol>
             </div>
-          </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">每種狀態各準備 30 杯測試，計算正確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">「漏液」這類瑕疵樣本很難取得，先做好「有無封膜、有無吸管」再挑戰。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
 
-      <!-- 領域五：智慧零售與無人結帳領域 -->
-      <div class="mb-12">
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-emerald-500/30">
-          <span class="text-2xl">🏪</span>
-          <h3 class="text-xl font-bold text-emerald-400">領域五：智慧零售與商業自動化（無人商店體驗）</h3>
+          <span class="text-2xl" aria-hidden="true">🏫</span>
+          <h3 class="text-xl font-bold text-emerald-300">領域五：校園生活與環保節能</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 麵包盤秒速結帳 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-emerald-500">
-            <span class="text-sm font-bold text-emerald-400 px-2.5 py-1 rounded bg-emerald-500/10">專題 09・商業自動化・秒級結帳</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">烘焙麵包店「無包裝麵包盤視覺秒速結帳機」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              現烤麵包沒有條碼，店員必須苦背幾十種麵包品項，尖峰時段大排長龍容易算錯錢。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥐 托盤放至鏡頭下，0.2 秒一次辨識盤上所有麵包品項與數量</div>
-              <div>🧾 自動列出清單：可頌x2、菠蘿x1、法棍x1，總額 $185</div>
-              <div>💳 串接電子票證或模擬悠遊卡嗶卡扣款，結帳效率暴增 5 倍</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-emerald-500 flex flex-col" data-level="2" data-model="mix" data-rec="1" data-new="1">
+            <span class="self-start text-sm font-bold text-emerald-300 px-2.5 py-1 rounded bg-emerald-500/15 border border-emerald-500/30">專題 14・環保教育</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-sky-950/70 border border-sky-600/60 text-sky-200">預訓練起步＋自行擴充類別</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-fuchsia-950/70 border border-fuchsia-500/60 text-fuchsia-100">🆕 新增</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">資源回收「丟哪一桶」引導</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">同學常搞不清楚寶特瓶、鋁罐、紙容器、一般垃圾要丟哪裡，回收站很難整理。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>先用 YOLO 預設的 bottle、cup 類別試做，再自己拍照加入鋁罐、紙餐盒、鋁箔包等類別</li>
+                <li>在回收站前拿起物品，螢幕與語音告訴你要丟哪一桶</li>
+                <li>統計各類回收數量，做成環保股長看的週報</li>
+              </ol>
             </div>
-          </div>
-
-          <!-- 手搖飲封口吸管檢驗 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-teal-500">
-            <span class="text-sm font-bold text-teal-400 px-2.5 py-1 rounded bg-teal-500/10">專題 10・連鎖餐飲・品質防呆</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">無人自助手搖飲／咖啡「杯蓋封口與吸管自動視覺檢驗」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              自動販賣機封口膜壓偏或漏封，顧客一拿整杯灑出；或是忘記附吸管引發客訴。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>🥤 封口完成後鏡頭檢驗：封口膜是否緊密、有無歪斜或杯緣液體滲漏</div>
-              <div>🥢 辨識出杯架上是否已正確附上對應粗細的吸管</div>
-              <div>✅ 雙重檢查無誤才亮綠燈開啟取餐口閘門，品質 100% 確保</div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">準備 50 件常見垃圾測試，計算分類正確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">加入「容器沒洗乾淨」提醒，或配合學校的環保教育宣導。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-emerald-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="1">
+            <span class="self-start text-sm font-bold text-emerald-300 px-2.5 py-1 rounded bg-emerald-500/15 border border-emerald-500/30">專題 15・ESG 節能</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機＋低壓燈條</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-fuchsia-950/70 border border-fuchsia-500/60 text-fuchsia-100">🆕 新增</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">教室「人走了燈還亮」節能提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">下課或放學後教室沒人，燈和冷氣常忘了關。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>示範只用低壓燈具；控制教室實際電源須由學校與合格人員處理。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 YOLO 計算畫面中的人數</li>
+                <li>連續 10 分鐘沒人、且畫面亮度判斷燈還開著，就通知值日生</li>
+                <li>用 ESP32 控制低壓 LED 燈條，示範自動關燈</li>
+              </ol>
             </div>
-          </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">錄下一整天的教室影片，和人工紀錄比對誤判次數，並估算可省下的用電時數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">搭配學校電費資料，做出節能成效報告。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">只計算人數，不儲存影像。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-emerald-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-emerald-300 px-2.5 py-1 rounded bg-emerald-500/15 border border-emerald-500/30">專題 16・智慧零售</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">麵包店「無條碼」視覺結帳</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">現烤麵包沒有條碼，店員要記住幾十種品項，尖峰時段容易算錯。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>限定 5～8 種外觀明顯不同的麵包，拍照訓練 YOLO 自訂模型</li>
+                <li>托盤放到鏡頭下，一次辨識所有麵包與數量</li>
+                <li>列出明細與總金額，模擬付款流程</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">隨機擺放 1～5 個麵包共測 50 盤，計算「整盤全對」的比例。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">日本已有類似的商用系統，可聚焦台灣麵包（菠蘿、蔥麵包），或加入「外觀相似時請店員確認」。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
 
-      <!-- 領域六：創新互動與科幻智慧家居 -->
-      <div class="mb-12">
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-violet-500/30">
-          <span class="text-2xl">🪄</span>
-          <h3 class="text-xl font-bold text-violet-400">領域六：創新互動與科幻智慧家居（科幻互動）</h3>
+          <span class="text-2xl" aria-hidden="true">🪄</span>
+          <h3 class="text-xl font-bold text-violet-300">領域六：手勢互動與智慧家居</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 賈維斯指尖空氣調光 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-violet-500 bg-gradient-to-br from-violet-950/25 to-slate-900/70">
-            <span class="text-sm font-bold text-violet-400 px-2.5 py-1 rounded bg-violet-500/15 border border-violet-500/30">專題 11・酷炫互動・電影級操作</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 手部／臉部模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">賈維斯「指尖空氣調光器」(Air Dimmer)：隔空捏合與旋轉調光</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              躺在床上快睡著了，懶得下床按開關，手邊又找不到智慧燈泡遙控器。隔空捏合旋轉，科技感十足！
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>👌 對著房間燈泡空中做出「捏合手勢 (Pinch)」= 開啟 / 關閉燈光</div>
-              <div>🔄 食指在空中「順時針轉圈」= 燈光漸亮；「逆時針轉圈」= 漸暗</div>
-              <div>💡 透過 ESP32 PWM 驅動可調光 LED，評審試玩驚呼連連</div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-violet-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-violet-300 px-2.5 py-1 rounded bg-violet-500/15 border border-violet-500/30">專題 17・手勢互動</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">「指尖空氣調光器」隔空調燈</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">躺在床上不想起來關燈，遙控器又找不到。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>只使用低壓 LED，不要接市電燈具。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 MediaPipe 手部模型偵測「捏合」手勢，切換開關</li>
+                <li>手指在空中畫圈調整亮度（要自己寫軌跡判斷）</li>
+                <li>用 ESP32 PWM 控制低壓 LED 的亮度</li>
+              </ol>
             </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">5 位同學各操作 20 次，記錄成功率與誤觸次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">加入「手勢解鎖」，避免路過時不小心觸發。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-violet-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-violet-300 px-2.5 py-1 rounded bg-violet-500/15 border border-violet-500/30">專題 18・已完成範例</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">AirTouch 手勢＋語音影音遙控</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">吃東西手油油、實習課手髒，或在手術室、食品工廠這類不方便碰觸螢幕的場合。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 MediaPipe 手部模型辨識手掌、食指揮動、比讚等手勢</li>
+                <li>對應播放／暫停、快轉、音量調整與簡報翻頁</li>
+                <li>加入語音指令，當作手勢的備援</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">在 0.5～2 公尺與不同光線下，每個手勢測 50 次，記錄成功率與反應時間。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">從「不方便碰觸」的真實情境出發設計新手勢，例如料理教學影片的翻頁。</dd></div>
+              <div><dt class="inline font-bold text-amber-300">注意：</dt><dd class="inline">自動略過廣告的功能可能違反 YouTube 使用條款，參賽時建議不要當作主要賣點。</dd></div>
+            </dl>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a href="airtouch_project_showcase.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-200 hover:bg-cyan-500/30 text-sm font-bold border border-cyan-500/40 transition">
+              <i class="fa-solid fa-hand-sparkles" aria-hidden="true"></i>AirTouch 成果展示
+            </a>
+            <a href="airtouch_project_pack.zip" download="airtouch_project_pack.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-100 hover:bg-slate-700 text-sm font-bold border border-slate-600 transition">
+              <i class="fa-solid fa-download" aria-hidden="true"></i>下載程式包（約 6 MB）
+            </a>
           </div>
-
-          <!-- AirTouch 手勢遙控 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-teal-500">
-            <span class="text-sm font-bold text-teal-400 px-2.5 py-1 rounded bg-teal-500/10">專題 12・競賽首選・現場 Demo 震撼</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 手部／臉部模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">AirTouch 無接觸手勢智慧遙控</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              吃東西手油油、手髒不想碰鍵盤，以及醫療手術室、食品工廠嚴防觸控螢幕交叉感染。
-            </p>
-            <div class="text-base text-slate-200 space-y-1.5 bg-slate-900/70 p-4 rounded-xl border border-slate-800 font-medium">
-              <div>✋ <b>手掌懸停</b> = 暫停 / 播放（YouTube / 全域多媒體）</div>
-              <div>👉 <b>食指左右揮</b> = YouTube 快轉 / 倒退 10 秒、簡報翻頁</div>
-              <div>✌️ <b>剪刀手</b> = 隔空強制略過 YouTube 廣告</div>
-              <div>🛡️ <b>全自動廣告守護神</b> = 0 秒秒按略過廣告，滑鼠無感復原！</div>
-              <div>👍/👎 <b>大拇指上下</b> = 電腦系統音量微調；👌 <b>捏合</b> = 靜音</div>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <a href="youtube_auto_skip_bookmarklet.html" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 text-sm font-semibold border border-sky-500/40 transition-colors">
-                <span>⚡ YouTube 0秒跳廣告（一鍵書籤 / 外掛安裝）</span>
-                <span>↗</span>
-              </a>
-            </div>
-          </div>
+          </article>
         </div>
       </div>
 
-      <!-- 領域七：趣味自律、健康與生活防呆 -->
-      <div>
+      <div class="project-domain mb-12">
         <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-pink-500/30">
-          <span class="text-2xl">💡</span>
-          <h3 class="text-xl font-bold text-pink-400">領域七：趣味自律、健康守護與生活防呆</h3>
+          <span class="text-2xl" aria-hidden="true">💡</span>
+          <h3 class="text-xl font-bold text-pink-300">領域七：健康、自律與居家安全</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- 視覺番茄鐘 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-blue-500">
-            <span class="text-sm font-bold text-blue-400 px-2.5 py-1 rounded bg-blue-500/10">專題 13・自律專注・防摸魚</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：入門 <span aria-hidden="true" class="text-amber-300">★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">「放下手機才計時」視覺番茄鐘 (Focus Lock)</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              桌面出現書本且無手機才開始倒數 25 分鐘；手一拿手機立刻暫停並大聲廣播：又在摸魚！
-            </p>
-          </div>
-
-          <!-- 防摸臉揉眼 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-emerald-500">
-            <span class="text-sm font-bold text-emerald-400 px-2.5 py-1 rounded bg-emerald-500/10">專題 14・公衛防疫・健康守護</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 姿態模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">防流感與病毒：「別摸臉！別揉眼！」無意識動作警報器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              YOLO-Pose 追蹤手腕，靠近眼鼻 T 字區（以畫面上的距離判斷）立即「嗶！別摸臉！」，強制打斷壞習慣。
-            </p>
-          </div>
-
-          <!-- 水杯防打翻 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-orange-500">
-            <span class="text-sm font-bold text-orange-400 px-2.5 py-1 rounded bg-orange-500/10">專題 15・生活防損・硬體救星</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">桌面飲料水杯「打翻前兆」預警縮手器</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              追蹤水杯與手腕速度向量，在即將盲撞前 0.2 秒發出急促蜂鳴聲，靠反射神經及時縮手。
-            </p>
-          </div>
-
-          <!-- 實習課舉手排隊 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-purple-500">
-            <span class="text-sm font-bold text-purple-400 px-2.5 py-1 rounded bg-purple-500/10">專題 16・實習神器・教學秩序必備</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 姿態模型可用</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">實習課「舉手發問／求救自動排隊叫號系統」</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              俯拍全班舉手動作，大螢幕叫號：第 3 排張同學(排第1) ➔ 第 5 排李同學(排第2)，課堂井然有序。
-            </p>
-          </div>
-
-          <!-- 長輩吃藥打卡 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-pink-500">
-            <span class="text-sm font-bold text-pink-400 px-2.5 py-1 rounded bg-pink-500/10">專題 17・溫馨長照・吃藥防呆</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">失智與高齡長輩「吃藥防重複／防漏吃」視覺打卡機</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              餐桌鏡頭辨識服藥動作，螢幕跳出大綠勾「今日早藥已服用 08:30」並即時發送 LINE 通報子女。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>只作為提醒工具，不能取代醫療照護與家人確認，用藥請依醫師指示。</p>
-          </div>
-
-          <!-- 廚房防乾燒 -->
-          <div class="glass-card rounded-2xl p-7 border-l-4 border-red-500">
-            <span class="text-sm font-bold text-red-400 px-2.5 py-1 rounded bg-red-500/10">專題 18・居家安全・防乾燒</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span></div>
-            <h4 class="font-bold text-2xl text-white mt-2 mb-2">廚房煮水乾燒與熄火防呆警報系統</h4>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">
-              偵測大量水蒸氣白煙或離開廚房超時，電腦喇叭自動高分貝語音催促速回廚房關火。
-            </p>
-            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>不能取代合格的瓦斯偵測器與爐具熄火保護裝置。</p>
-          </div>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-pink-500 flex flex-col" data-level="1" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-pink-300 px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30">專題 19・入門首選</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：入門 <span aria-hidden="true" class="text-amber-300">★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">「放下手機才計時」番茄鐘</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">讀書時手機一直拿起來看，專注時間被切得很零碎。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 YOLO 偵測 book 與 cell phone</li>
+                <li>桌上有書、沒有手機時才開始倒數 25 分鐘</li>
+                <li>拿起手機就暫停倒數，並提醒回到書本</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">記錄 10 次讀書時段，比對實際拿手機的次數與系統偵測到的次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">手機藏在桌下會偵測不到，可調整鏡頭角度，並在報告中說明這個限制。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-pink-500 flex flex-col" data-level="1" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-pink-300 px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30">專題 20・生活防呆</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：入門 <span aria-hidden="true" class="text-amber-300">★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">桌面「杯子放錯位置」提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">水杯放在鍵盤、筆電或桌緣旁，手一揮就打翻。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 YOLO 偵測 cup、bottle、keyboard、laptop</li>
+                <li>杯子離鍵盤、筆電太近，或太靠近桌緣時亮燈提醒</li>
+                <li>杯子移到安全區後才停止提醒</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">把杯子擺在 30 個不同位置，和人工判斷的「危險／安全」比對正確率。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">「打翻前 0.2 秒警告」受限於鏡頭與人的反應時間做不到，所以改成事前預防；可延伸到實驗室的化學藥品瓶。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-pink-500 flex flex-col" data-level="2" data-model="pre" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-pink-300 px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30">專題 21・健康習慣</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">MediaPipe 模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">「別摸臉、別揉眼」提醒器</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">手常不自覺摸臉、揉眼睛，容易把細菌帶到眼鼻。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>用 MediaPipe 手部＋臉部模型取得指尖與眼睛、鼻子的位置</li>
+                <li>指尖進入臉部區域超過 0.5 秒就提醒</li>
+                <li>統計每小時摸臉的次數</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">請同學刻意摸臉，以及做「托腮、推眼鏡」等相似動作各 20 次，比較漏報與誤報。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">已有類似的網站，可延伸成「考試焦慮小動作」的自我觀察工具。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-pink-500 flex flex-col" data-level="2" data-model="pre" data-rec="1" data-new="0">
+            <span class="self-start text-sm font-bold text-pink-300 px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30">專題 22・課堂秩序</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：進階 <span aria-hidden="true" class="text-amber-300">★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 姿態模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：實機</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-teal-900/70 border border-teal-500/60 text-teal-100">⭐ 推薦起手</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">實習課「舉手排隊」叫號</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">實習課同時很多人舉手，老師很難記得誰先舉手。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>鏡頭從教室前方拍攝全班</li>
+                <li>用 YOLO 姿態模型判斷手腕高於肩膀超過 1 秒＝舉手</li>
+                <li>依座位區域排出順序，大螢幕顯示「下一位：第 3 排」</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">請 6～10 位同學隨機舉手測 30 輪，記錄順序正確率與漏判次數。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">加入「老師已處理」按鈕，統計平均等待時間。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">拍攝前先告知全班並取得同意；只顯示座位，不儲存影像。</dd></div>
+            </dl>
+          </article>
+          <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-pink-500 flex flex-col" data-level="3" data-model="train" data-rec="0" data-new="0">
+            <span class="self-start text-sm font-bold text-pink-300 px-2.5 py-1 rounded bg-pink-500/15 border border-pink-500/30">專題 23・居家安全</span>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-amber-950/70 border border-amber-600/60 text-amber-200">需自行收集照片訓練模型</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：模型</span></div>
+            <h4 class="font-bold text-2xl text-white mt-3 mb-2">廚房「爐火開著人卻離開」提醒</h4>
+            <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">煮東西時離開廚房太久，容易乾燒甚至起火。</p>
+            <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>測試用的小火源須在老師陪同下進行；不能取代合格的瓦斯偵測器與爐具熄火保護裝置。</p>
+            <div class="text-base text-slate-200 bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="font-bold text-white mb-1">做法</div>
+              <ol class="list-decimal pl-5 space-y-1">
+                <li>自行拍照訓練辨識爐火（可用模型火焰或蠟燭安全地測試）</li>
+                <li>同時用 YOLO 偵測廚房有沒有人</li>
+                <li>爐火開著且沒人超過設定時間，就語音提醒並傳訊息</li>
+              </ol>
+            </div>
+            <dl class="mt-4 space-y-2 text-base text-slate-200">
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">模擬「有人／沒人／已關火」三種情境各 20 次，記錄提醒是否正確。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">搭配溫度或瓦斯感測器，比較哪一種訊號最可靠。</dd></div>
+            </dl>
+          </article>
         </div>
       </div>
     </section>
@@ -922,6 +1146,37 @@
       const savedScale = localStorage.getItem('course_font_scale');
       if (savedScale) setFontScale(savedScale);
     } catch(e) {}
+
+    // 專題篩選
+    (function () {
+      const buttons = document.querySelectorAll('.project-filter');
+      const cards = document.querySelectorAll('.project-card');
+      const count = document.getElementById('projectCount');
+      function match(card, f) {
+        const d = card.dataset;
+        if (f === 'rec') return d.rec === '1';
+        if (f === 'level1') return d.level === '1';
+        if (f === 'pre') return d.model === 'pre';
+        if (f === 'train') return d.model === 'train' || d.model === 'mix';
+        if (f === 'new') return d.new === '1';
+        return true;
+      }
+      function apply(f) {
+        let shown = 0;
+        cards.forEach(c => {
+          const ok = match(c, f);
+          c.hidden = !ok;
+          if (ok) shown++;
+        });
+        document.querySelectorAll('.project-domain').forEach(g => {
+          g.hidden = !g.querySelector('.project-card:not([hidden])');
+        });
+        buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.filter === f)));
+        if (count) count.textContent = `顯示 ${shown} / ${cards.length} 個專題`;
+      }
+      buttons.forEach(b => b.addEventListener('click', () => apply(b.dataset.filter)));
+      apply('all');
+    })();
   </script>
 </body>
 </html>
