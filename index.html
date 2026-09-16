@@ -16,11 +16,11 @@
             --border: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #475569;
-            --primary: #0284c7;
-            --primary-glow: rgba(2, 132, 199, 0.1);
+            --primary: #0369a1;
+            --primary-glow: rgba(3, 105, 161, 0.1);
             --accent-purple: #9333ea;
-            --accent-teal: #0d9488;
-            --accent-gold: #d97706;
+            --accent-teal: #0f766e;
+            --accent-gold: #b45309;
             --font-display: "Outfit", "Noto Sans TC", sans-serif;
             --sidebar-w: 300px;
         }
@@ -55,7 +55,7 @@
             position: sticky;
             top: 0;
             z-index: 10000;
-            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%);
             color: #ffffff;
             padding: 0 1.5rem;
             display: flex;
@@ -203,9 +203,16 @@
             background: transparent;
         }
 
-        .nav-group:hover .nav-sub, .nav-sub:hover, .nav-sub.open {
+        .nav-sub.open {
             display: block;
             animation: fadeInDown 0.15s ease;
+        }
+
+        @media (hover: hover) and (min-width: 1081px) {
+            .nav-group:hover .nav-sub, .nav-sub:hover {
+                display: block;
+                animation: fadeInDown 0.15s ease;
+            }
         }
 
         @keyframes fadeInDown {
@@ -250,7 +257,8 @@
             margin-left: 6px;
         }
 
-        .nav-sub-group:hover .nav-sub-child-list {
+        .nav-sub-group:hover .nav-sub-child-list,
+        .nav-sub-group.kb-open .nav-sub-child-list {
             display: flex !important;
             opacity: 1;
             transform: translateX(0);
@@ -280,7 +288,7 @@
         }
 
         .nav-sub-group:hover .nav-sub-header-btn {
-            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%) !important;
+            background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%) !important;
             color: #ffffff !important;
             border-color: transparent !important;
         }
@@ -317,18 +325,18 @@
             border-radius: 6px;
         }
 
-        /* 超強動態 Hover 滑動反差 (與頂部導覽列漸層完全一致：linear-gradient(90deg, #0d9488 0%, #0284c7 100%)) */
+        /* 超強動態 Hover 滑動反差 (與頂部導覽列漸層完全一致：linear-gradient(90deg, #0f766e 0%, #0369a1 100%)) */
         .nav-sub-item:hover {
-            background: linear-gradient(90deg, #0d9488 0%, #0284c7 100%);
+            background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%);
             color: #ffffff !important;
             font-weight: 800;
             padding-left: 1.5rem;
-            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.35);
         }
 
         .nav-sub-item.active {
             font-weight: 600;
-            color: #0284c7;
+            color: #0369a1;
         }
 
         .sidebar-footer {
@@ -357,12 +365,14 @@
         }
 
         .frame-wrap.show {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         .frame-wrap iframe {
             width: 100%;
-            height: 100%;
+            flex: 1;
+            min-height: 0;
             border: none;
             display: block;
         }
@@ -449,15 +459,15 @@
         }
 
         .card.award .badge-year {
-            background-color: rgba(217, 119, 6, 0.1);
+            background-color: rgba(180, 83, 9, 0.1);
             color: var(--accent-gold);
-            border-color: rgba(217, 119, 6, 0.15);
+            border-color: rgba(180, 83, 9, 0.15);
         }
 
         .card.feature .badge-year {
-            background-color: rgba(13, 148, 136, 0.1);
+            background-color: rgba(15, 118, 110, 0.1);
             color: var(--accent-teal);
-            border-color: rgba(13, 148, 136, 0.15);
+            border-color: rgba(15, 118, 110, 0.15);
         }
 
         .card-body h3 {
@@ -515,6 +525,13 @@
             font-family: inherit;
         }
 
+        /* 有漸層底色的按鈕改用白字 */
+        .go-link[style*="gradient"] {
+            color: #ffffff;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+        }
+
         .card:hover .go-link {
             transform: translateX(3px);
         }
@@ -539,31 +556,168 @@
         .card {
             animation: fadeIn 0.4s ease forwards;
         }
-        /* ---------- Responsive: collapse sidebar to a top bar ---------- */
-        @media (max-width: 900px) {
+        /* ---------- 無障礙：鍵盤操作 ---------- */
+        :focus-visible {
+            outline: 3px solid #f59e0b;
+            outline-offset: 2px;
+        }
+        .nav-sub-item:focus-visible,
+        .nav-sub-header-btn:focus-visible,
+        .go-link:focus-visible {
+            outline-color: #0369a1;
+        }
+        .nav-sub-item:focus-visible {
+            background: #e0f2fe;
+            color: #0c4a6e;
+        }
+        .nav-sub.kb-open {
+            display: block;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        /* ---------- 中等寬度：精簡頂端列 ---------- */
+        @media (max-width: 1400px) {
+            .sidebar-header { margin-right: 1rem; }
+            .nav-item { padding: 0 0.7rem; }
+            .update-chip { display: none !important; }
+            #shareBtn .share-label { display: none; }
+        }
+
+        /* ---------- 手機與平板：漢堡選單 ---------- */
+        @media (max-width: 1080px) {
             .layout {
-                flex-direction: column;
                 height: auto;
             }
 
             .sidebar {
-                width: 100%;
                 height: auto;
-                max-height: none;
-                border-right: none;
+                min-height: 52px;
+                padding: 0 1rem;
+                flex-wrap: wrap;
                 border-bottom: 1px solid var(--border);
             }
 
-            .side-nav {
-                overflow-x: auto;
-                white-space: nowrap;
-                padding: 0.5rem 0.8rem;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+            .sidebar-header {
+                height: 52px;
+                display: flex;
+                align-items: center;
             }
 
-            .side-nav::-webkit-scrollbar {
+            .menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                margin-left: auto;
+                height: 40px;
+                padding: 0 0.9rem;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.45);
+                border-radius: 8px;
+                color: #ffffff;
+                font: inherit;
+                font-size: 0.95rem;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            .side-nav {
                 display: none;
+                width: 100%;
+                height: auto;
+                flex: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.25rem;
+                padding: 0.25rem 0 1rem;
+                max-height: calc(100vh - 52px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .sidebar.menu-open .side-nav {
+                display: flex;
+            }
+
+            .nav-group {
+                flex-direction: column;
+                align-items: stretch;
+                height: auto;
+            }
+
+            .nav-group::after,
+            .nav-sub::before,
+            .nav-sub-group::after {
+                display: none;
+            }
+
+            .nav-item {
+                width: 100%;
+                height: 46px;
+                font-size: 1rem;
+            }
+
+            .nav-item[aria-expanded="true"] {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .nav-item[aria-expanded="true"] .chevron {
+                transform: rotate(90deg);
+            }
+
+            .nav-sub {
+                position: static;
+                min-width: 0;
+                max-height: none;
+                margin: 0.25rem 0 0.5rem;
+                box-shadow: none;
+                animation: none;
+            }
+
+            .nav-sub-header-btn {
+                cursor: default !important;
+            }
+
+            .nav-sub-header-btn .sub-chevron {
+                display: none;
+            }
+
+            .nav-sub-child-list {
+                position: static;
+                display: flex !important;
+                min-width: 0;
+                margin: 2px 0 6px;
+                padding: 0 0 0 0.5rem;
+                border: none;
+                box-shadow: none;
+                opacity: 1;
+                transform: none;
+                animation: none !important;
+            }
+
+            .nav-sub-item {
+                white-space: normal;
+                min-height: 44px;
+            }
+
+            .nav-sub-item:hover {
+                padding-left: 1.2rem;
+            }
+
+            #shareBtn {
+                justify-content: center;
+            }
+
+            #shareBtn .share-label {
+                display: inline;
             }
 
             .content {
@@ -572,9 +726,9 @@
                 padding: 1rem 0.8rem 2.5rem;
             }
 
-            .content.is-framed {
-                height: calc(100vh - 110px);
-                min-height: 80vh;
+            .content.is-framed,
+            .frame-wrap {
+                height: calc(100vh - 52px);
             }
 
             .sidebar-footer {
@@ -593,14 +747,18 @@
 
 <div class="layout">
     <aside class="sidebar">
-        <div class="sidebar-header" style="cursor: pointer;" onclick="navigateToSrc(null, true)" title="回到首頁總覽">
+        <div class="sidebar-header" id="homeLink" role="link" tabindex="0" style="cursor: pointer;" title="回到首頁總覽">
             <div class="banner-glow"></div>
             <h1>簡老師的個人網站</h1>
             <p>教學資源與工具</p>
         </div>
 
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="sideNav">
+            <span aria-hidden="true">&#9776;</span> 選單
+        </button>
+
         <!-- 左側選單：第1層分類 + 第2層子項目 -->
-        <nav class="side-nav" id="sideNav">
+        <nav class="side-nav" id="sideNav" aria-label="主選單">
             <div class="nav-group">
                 <button class="nav-item" data-cat="award">
                     <span class="nav-item-text">
@@ -827,12 +985,12 @@
                 </div>
             </div>
 
-            <div style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto;">
+            <div class="update-chip" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto;">
                 <span>🕒 網頁更新：</span><span class="updateTimeTop">2026-09-11 20:56</span>
             </div>
 
-            <button class="nav-item" id="shareBtn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.85rem;" title="複製目前頁面的獨立分享網址">
-                🔗 複製本頁獨立網址
+            <button class="nav-item" id="shareBtn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); font-size: 0.85rem;" title="複製目前頁面的獨立分享網址" aria-label="複製本頁獨立網址">
+                <span aria-hidden="true">🔗</span> <span class="share-label">複製本頁獨立網址</span>
             </button>
 </nav>
 
@@ -849,7 +1007,7 @@
                     <div class="card-icon" style="font-size: 1.8rem;">
                         📟
                     </div>
-                    <span class="badge-year" style="background: #0284c7; color: #fff;">115-09-14 課程</span>
+                    <span class="badge-year" style="background: #0369a1; color: #fff;">115-09-14 課程</span>
                 </div>
                 <div class="card-body">
                     <h3>【115-09-14 AI課程】ESP32 與 MQTT 智慧控制實作</h3>
@@ -1174,7 +1332,7 @@
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
-                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3);">【專題製作】AI 視覺</span>
+                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);">【專題製作】AI 視覺</span>
                 </div>
                 <div class="card-body">
                     <h3>【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</h3>
@@ -1188,17 +1346,17 @@
                 </div>
                 <div class="card-footer">
                     <span class="category-tag">WebCam × YOLO11</span>
-                    <button class="go-link" style="background: linear-gradient(135deg, #059669, #0d9488);" data-src="ai_vision_course_guide.html">進入課程網頁 &rarr;</button>
+                    <button class="go-link" style="background: linear-gradient(135deg, #047857, #0f766e);" data-src="ai_vision_course_guide.html">進入課程網頁 &rarr;</button>
                 </div>
             </div>
 
             <!-- 【專題競賽金牌範本】AuraBrew：基於非接觸生理感知之智慧心情咖啡機 -->
             <div class="card project" data-cat="project">
                 <div class="card-top">
-                    <div class="card-icon" style="color: #d97706;">
+                    <div class="card-icon" style="color: #b45309;">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
                     </div>
-                    <span class="badge-year" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3);">【專題競賽金牌範本】</span>
+                    <span class="badge-year" style="background: rgba(245, 158, 11, 0.15); color: #b45309; border: 1px solid rgba(245, 158, 11, 0.3);">【專題競賽金牌範本】</span>
                 </div>
                 <div class="card-body">
                     <h3>AuraBrew：基於非接觸生理感知之智慧心情咖啡機</h3>
@@ -1211,18 +1369,18 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <span class="category-tag" style="background: rgba(217, 119, 6, 0.1); color: #b45309;">金牌示範報告</span>
-                    <button class="go-link" style="background: linear-gradient(135deg, #d97706, #b45309);" data-src="mood_coffee_project_report.html">閱讀完整報告 &rarr;</button>
+                    <span class="category-tag" style="background: rgba(180, 83, 9, 0.1); color: #b45309;">金牌示範報告</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #b45309, #b45309);" data-src="mood_coffee_project_report.html">閱讀完整報告 &rarr;</button>
                 </div>
             </div>
 
             <!-- 【專題製作成果】AirTouch：無接觸手勢與 AI 語音智慧遙控 -->
             <div class="card project" data-cat="project">
                 <div class="card-top">
-                    <div class="card-icon" style="color: #0d9488;">
+                    <div class="card-icon" style="color: #0f766e;">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
                     </div>
-                    <span class="badge-year" style="background: rgba(13, 148, 136, 0.15); color: #0d9488; border: 1px solid rgba(13, 148, 136, 0.3);">【專題實作成果】</span>
+                    <span class="badge-year" style="background: rgba(15, 118, 110, 0.15); color: #0f766e; border: 1px solid rgba(15, 118, 110, 0.3);">【專題實作成果】</span>
                 </div>
                 <div class="card-body">
                     <h3>AirTouch：無接觸手勢與 AI 語音智慧遙控器</h3>
@@ -1235,9 +1393,9 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <span class="category-tag" style="background: rgba(13, 148, 136, 0.1); color: #0f766e;">成果專頁 & 提示語</span>
-                    <button class="go-link" style="background: linear-gradient(135deg, #0284c7, #2563eb); margin-right: 8px;" data-src="airtouch_competition_report.html">閱讀書面報告 &rarr;</button>
-                    <button class="go-link" style="background: linear-gradient(135deg, #0d9488, #0284c7);" data-src="airtouch_project_showcase.html">進入專題成果展 &rarr;</button>
+                    <span class="category-tag" style="background: rgba(15, 118, 110, 0.1); color: #0f766e;">成果專頁 & 提示語</span>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0369a1, #2563eb); margin-right: 8px;" data-src="airtouch_competition_report.html">閱讀書面報告 &rarr;</button>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0f766e, #0369a1);" data-src="airtouch_project_showcase.html">進入專題成果展 &rarr;</button>
                 </div>
             </div>
 
@@ -1248,7 +1406,7 @@
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     </div>
-                    <span class="badge-year" style="background: rgba(14, 165, 233, 0.15); color: #0284c7; border: 1px solid rgba(14, 165, 233, 0.3);">ESET 防毒SOP</span>
+                    <span class="badge-year" style="background: rgba(14, 165, 233, 0.15); color: #0369a1; border: 1px solid rgba(14, 165, 233, 0.3);">ESET 防毒SOP</span>
                 </div>
                 <div class="card-body">
                     <h3>ESET 端點防毒與中控代理 (啟用與診斷 SOP)</h3>
@@ -1262,7 +1420,7 @@
                 </div>
                 <div class="card-footer">
                     <span class="category-tag">防毒與維護</span>
-                    <button class="go-link" style="background: linear-gradient(135deg, #0284c7, #0d9488);" data-src="eset_deployment_sop_guide.html">進入 ESET 啟動 SOP &rarr;</button>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0369a1, #0f766e);" data-src="eset_deployment_sop_guide.html">進入 ESET 啟動 SOP &rarr;</button>
                 </div>
             </div>
 
@@ -1272,7 +1430,7 @@
                     <div class="card-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
                     </div>
-                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">MCP 特權模式</span>
+                    <span class="badge-year" style="background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3);">MCP 特權模式</span>
                 </div>
                 <div class="card-body">
                     <h3>AI 數位研習自動化 (MCP 雙模式系統)</h3>
@@ -1281,12 +1439,12 @@
                         <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🏛️ 臺北e大</span>
                         <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">⛑️ 職安署 iSafeel</span>
                         <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px;">🎓 教育部磨課師+</span>
-                        <span style="font-size: 0.75rem; background: #ecfdf5; color: #059669; padding: 2px 8px; border-radius: 4px; font-weight: bold;">⚡ MCP 原生特權操控</span>
+                        <span style="font-size: 0.75rem; background: #ecfdf5; color: #047857; padding: 2px 8px; border-radius: 4px; font-weight: bold;">⚡ MCP 原生特權操控</span>
                     </div>
                 </div>
                 <div class="card-footer">
                     <span class="category-tag">研習自動化</span>
-                    <button class="go-link" style="background: linear-gradient(135deg, #0d9488, #0284c7);" data-src="mcp_course_automation_guide.html">進入 MCP 雙模式實戰 &rarr;</button>
+                    <button class="go-link" style="background: linear-gradient(135deg, #0f766e, #0369a1);" data-src="mcp_course_automation_guide.html">進入 MCP 雙模式實戰 &rarr;</button>
                 </div>
             </div>
         </div>
@@ -1294,7 +1452,7 @@
         <div class="frame-wrap" id="frameWrap">
             <div id="frameBar" style="display: none; background: #0f172a; color: #ffffff; padding: 10px 16px; font-size: 0.92rem; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                 <span id="frameTitle">🎬 簡樹桐老師 影片教學</span>
-                <a id="ytDirectLink" href="#" target="_blank" rel="noopener noreferrer" style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px;">
+                <a id="ytDirectLink" href="#" target="_blank" rel="noopener noreferrer" style="background: #b91c1c; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 4px;">
                     ↗️ 直接在 YouTube 獨立開啓觀看
                 </a>
             </div>
@@ -1302,7 +1460,7 @@
         </div>
 
         <footer id="pageFooter">
-            &copy; 2026 簡老師的個人網站 &middot; 版權所有
+            &copy; 2026 簡老師的個人網站 &middot; 版權所有 &middot; 網頁更新：<span id="updateTimeStr"></span>
         </footer>
     </main>
 </div>
@@ -1316,6 +1474,9 @@
     const navItems = document.querySelectorAll('.nav-item');
     const navSubItems = document.querySelectorAll('.nav-sub-item');
     const goLinkBtns = document.querySelectorAll('.go-link[data-src]');
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMQ = window.matchMedia('(max-width: 1080px)');
 
     function toggleSubGroup(btn) {
         const childList = btn.nextElementSibling;
@@ -1334,6 +1495,11 @@
         pageFooter.style.display = '';
     }
 
+    function getPlaylistId(src) {
+        const m = src.match(/[?&]list=([\w-]+)/);
+        return m ? m[1] : '';
+    }
+
     function showFrame(src) {
         const frameBar = document.getElementById('frameBar');
         const ytDirectLink = document.getElementById('ytDirectLink');
@@ -1349,9 +1515,15 @@
                 videoId = src.split('youtu.be/')[1].split('?')[0];
             }
 
+            const listId = getPlaylistId(src);
             if (videoId) {
                 targetSrc = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
                 if (ytDirectLink) ytDirectLink.href = `https://youtu.be/${videoId}`;
+                if (frameBar) frameBar.style.display = 'flex';
+            } else if (listId) {
+                // YouTube 播放清單頁不能放進 iframe，改用 videoseries 內嵌
+                targetSrc = `https://www.youtube-nocookie.com/embed/videoseries?list=${listId}&rel=0`;
+                if (ytDirectLink) ytDirectLink.href = `https://www.youtube.com/playlist?list=${listId}`;
                 if (frameBar) frameBar.style.display = 'flex';
             }
         } else {
@@ -1384,6 +1556,7 @@
     // Router Implementation with Hash (#page/name)
     function navigateToSrc(src, updateHash = true) {
         if (!src) {
+            closeMobileMenu();
             showGrid();
             if (updateHash) history.pushState(null, '', location.pathname + location.search);
             return;
@@ -1398,11 +1571,15 @@
             } else if (src.includes('youtu.be/')) {
                 videoId = src.split('youtu.be/')[1].split('?')[0];
             }
+            const listId = getPlaylistId(src);
             if (videoId) {
-                window.open(`https://youtu.be/${videoId}`, '_blank');
+                window.open(`https://youtu.be/${videoId}`, '_blank', 'noopener');
+            } else if (listId) {
+                window.open(`https://www.youtube.com/playlist?list=${listId}`, '_blank', 'noopener');
             }
         }
 
+        closeMobileMenu();
         showFrame(src);
         setActiveSubItem(src);
 
@@ -1416,7 +1593,7 @@
         const hash = location.hash;
         if (hash && hash.startsWith('#page/')) {
             const pageKey = hash.replace('#page/', '');
-            const targetSrc = pageKey.endsWith('.html') ? pageKey : pageKey + '.html';
+            const targetSrc = (pageKey.endsWith('.html') || pageKey.startsWith('http')) ? pageKey : pageKey + '.html';
             showFrame(targetSrc);
             setActiveSubItem(targetSrc);
         } else {
@@ -1427,15 +1604,83 @@
     window.addEventListener('hashchange', checkHashRoute);
     checkHashRoute();
 
+    function closeMobileMenu() {
+        if (!sidebar.classList.contains('menu-open')) return;
+        sidebar.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', () => {
+        const open = sidebar.classList.toggle('menu-open');
+        menuToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        if (sidebar.classList.contains('menu-open')) {
+            closeMobileMenu();
+            menuToggle.focus();
+        } else if (document.activeElement && sidebar.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    const homeLink = document.getElementById('homeLink');
+    homeLink.addEventListener('click', () => navigateToSrc(null, true));
+    homeLink.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') navigateToSrc(null, true);
+    });
+
+    // 第二層標題可用 Tab 進入，讓鍵盤使用者也能展開飛出選單
+    document.querySelectorAll('.nav-sub-header-btn').forEach(h => h.setAttribute('tabindex', '0'));
+
+    // 鍵盤焦點停在選單內時保持展開，離開後收起
+    function keepOpenWhileFocused(container, target) {
+        container.addEventListener('focusin', (e) => {
+            if (e.target.matches(':focus-visible')) target.classList.add('kb-open');
+        });
+        container.addEventListener('focusout', (e) => {
+            if (!container.contains(e.relatedTarget)) target.classList.remove('kb-open');
+        });
+    }
+    document.querySelectorAll('.nav-group').forEach(g => {
+        const sub = g.querySelector('.nav-sub');
+        if (sub) keepOpenWhileFocused(g, sub);
+    });
+    document.querySelectorAll('.nav-sub-group').forEach(g => keepOpenWhileFocused(g, g));
+
+    function resetSubmenus() {
+        document.querySelectorAll('.nav-sub.open').forEach(o => o.classList.remove('open'));
+        navItems.forEach(n => n.hasAttribute('aria-expanded') && n.setAttribute('aria-expanded', 'false'));
+    }
+
     navItems.forEach(item => {
+        const sub = item.parentElement.querySelector('.nav-sub');
+        if (sub) {
+            item.setAttribute('aria-expanded', 'false');
+            item.setAttribute('aria-haspopup', 'true');
+        }
         item.addEventListener('click', () => {
             const cat = item.getAttribute('data-cat');
             if (cat === 'all') {
                 closeAllSubmenus(null);
                 setActiveSubItem(null);
                 navigateToSrc(null, true);
+                return;
+            }
+            // 手機版：點分類展開／收合（桌面版維持滑鼠移入展開）
+            if (sub && mobileMQ.matches) {
+                const willOpen = !sub.classList.contains('open');
+                resetSubmenus();
+                sub.classList.toggle('open', willOpen);
+                item.setAttribute('aria-expanded', String(willOpen));
             }
         });
+    });
+
+    mobileMQ.addEventListener('change', () => {
+        closeMobileMenu();
+        resetSubmenus();
     });
 
     navSubItems.forEach(subItem => {
@@ -1443,6 +1688,7 @@
             e.stopPropagation();
             const src = subItem.getAttribute('data-src');
             navigateToSrc(src, true);
+            if (e.detail) subItem.blur();
         });
     });
 
@@ -1460,9 +1706,9 @@
             const currentUrl = location.href;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(currentUrl).then(() => {
-                    const origText = shareBtn.innerText;
-                    shareBtn.innerText = '✅ 已複製獨立網址！';
-                    setTimeout(() => shareBtn.innerText = origText, 2000);
+                    const origHTML = shareBtn.innerHTML;
+                    shareBtn.innerHTML = '<span aria-hidden="true">✅</span> <span class="share-label">已複製獨立網址！</span>';
+                    setTimeout(() => shareBtn.innerHTML = origHTML, 2000);
                 }).catch(() => {
                     alert('您的獨立網址為：\n' + currentUrl);
                 });
