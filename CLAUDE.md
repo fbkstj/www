@@ -38,5 +38,7 @@
 - **公開網站**：所有內容都會公開，不要放學生個資（像是身分證、電話、完整座號對照）。
 - `.git` 已經約 1.3 GB，追蹤的檔案裡有 zip、mp4、7z。新的大型檔案（影片、壓縮包）盡量放 YouTube 或雲端硬碟，網頁只放連結。
 - 頁面語言是 `zh-Hant-TW`，字型用 Google Fonts（Noto Sans TC / Outfit）。新頁面要比照既有頁面的風格、響應式版面，並符合無障礙 WCAG AA（對比度、alt 文字、語意標籤）。
+- `ai_vision_course_guide.html` 的 Tailwind 已預先產生並內嵌在 `<style id="tailwind-build">`（不再用 cdn.tailwindcss.com），新增或修改 class 後要用 `npx tailwindcss@3.4.17` 重新產生。其他頁面仍用 CDN。
+- 下載包：`ai_vision_starter_pack.zip`（AI 視覺入門，不附模型）、`airtouch_project_pack.zip`（AirTouch 展示頁用）。打包時不要放測試照片、錄音、開發紀錄或重複檔案。
 - 新增頁面時，要一起更新 `index.html` 的導覽連結和 `遠端網址備忘.txt`。
 - 專案之前放在 `antigravity\stjweb`，舊文件裡如果還看到這個路徑，現在的位置是 `J:\我的雲端硬碟\claude\stjweb`。
