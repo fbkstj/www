@@ -29,7 +29,7 @@
 
 ## 推送（重要）
 
-- 從 Claude 這邊做 `git push` 可能卡住：Git Credential Manager 的登入視窗在背景跳不出來（詳見 `GIT_PUSH_NOTES.md`）。**Claude 只做到 commit**，推送請使用者自己雙擊 `一鍵推送到GitHub.bat` 或 `deploy.bat`。
+- 直接執行 `git push` 可能卡住：Git Credential Manager 的登入視窗在背景跳不出來（詳見 `GIT_PUSH_NOTES.md`）。使用者要求推送時，改用 `GCM_INTERACTIVE=never GIT_TERMINAL_PROMPT=0 timeout 90 git push origin main`，已存好的憑證可以直接用（2026-09-16 驗證成功），失敗也不會卡住。失敗時再請使用者雙擊 `一鍵推送到GitHub.bat` 或 `deploy.bat`。不要用 `--force`。
 - 這兩個 bat 都會 `git add .` 並 `git push --force`。commit 之前先看 `git status`，確認沒有夾帶機密或不該上傳的檔案。
 
 ## 注意事項
