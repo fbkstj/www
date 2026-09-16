@@ -41,6 +41,7 @@
 - `ai_vision_course_guide.html` 的 Tailwind 已預先產生並內嵌在 `<style id="tailwind-build">`（不再用 cdn.tailwindcss.com），新增或修改 class 後要用 `npx tailwindcss@3.4.17` 重新產生。其他頁面仍用 CDN。
 - 下載包：`ai_vision_starter_pack.zip`（AI 視覺入門，不附模型）、`airtouch_project_pack.zip`（AirTouch 展示頁用）。打包時不要放測試照片、錄音、開發紀錄或重複檔案。這兩包裡的講義 md 沒有獨立原始檔，要改得先從 zip 取出。
 - 導盲磚專題：手冊 `tactile_paving_project_guide.html`，程式原始碼在 `tactile_paving_starter/`（改完要重新打包成 `tactile_paving_starter_pack.zip`，zip 內保留 `tactile_paving_starter/` 資料夾層）。測試方式：`make_demo_video.py` → `paving_monitor.py --config demo_config.json --no-window` → `evaluate.py`，執行產物已列在 `.gitignore`。
-- `ai_vision_course_guide.html` 的專題庫（9 題）與下載包講義單元六內容要一致。
+- 警示帽專題：手冊 `headgear_assist_project_guide.html`，原始碼在 `headgear_assist_starter/`（打包成 `headgear_assist_starter_pack.zip`）。ESP32 韌體可用 Arduino IDE 內附的 arduino-cli 編譯（fqbn `esp32:esp32:esp32`，需 Pololu VL53L1X 程式庫）；筆電端測試：`make_demo_video.py` → `headgear_assist.py --video demo.mp4 --fake-sensor demo_sensor.csv --no-voice`。
+- `ai_vision_course_guide.html` 的專題庫（10 題）與下載包講義單元六內容要一致。
 - 新增頁面時，要一起更新 `index.html` 的導覽連結和 `遠端網址備忘.txt`。
 - 專案之前放在 `antigravity\stjweb`，舊文件裡如果還看到這個路徑，現在的位置是 `J:\我的雲端硬碟\claude\stjweb`。

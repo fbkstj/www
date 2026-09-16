@@ -29,3 +29,9 @@ tactile_paving_starter/demo.mp4
 tactile_paving_starter/demo_config.json
 tactile_paving_starter/demo_ground_truth.csv
 tactile_paving_starter/yolo11n.pt
+
+# 警示帽專題：執行時產生的檔案
+headgear_assist_starter/logs/
+headgear_assist_starter/demo.mp4
+headgear_assist_starter/demo_sensor.csv
+headgear_assist_starter/yolo11n.pt
