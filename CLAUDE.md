@@ -34,7 +34,7 @@
 
 ## 注意事項
 
-- **機密檔**：`client_secrets.json`、`yt_token.json` 是 YouTube API 憑證，已列在 `.gitignore`，不可 commit，也不可寫進網頁。
+- **機密檔**：`client_secrets.json`、`yt_token.json` 是 YouTube API 憑證，已列在 `.gitignore`，不可 commit，也不可寫進網頁。**打包 zip 時也要排除**：`.gitignore` 管不到 zip 裡面的檔案，2026-09 曾有兩個影片技能包夾帶這兩個檔案被公開，之後已重新打包並改附 `README_憑證請自行建立.txt`。
 - **公開網站**：所有內容都會公開，不要放學生個資（像是身分證、電話、完整座號對照）。
 - `.git` 已經約 1.3 GB，追蹤的檔案裡有 zip、mp4、7z。新的大型檔案（影片、壓縮包）盡量放 YouTube 或雲端硬碟，網頁只放連結。
 - 頁面語言是 `zh-Hant-TW`，字型用 Google Fonts（Noto Sans TC / Outfit）。新頁面要比照既有頁面的風格、響應式版面，並符合無障礙 WCAG AA（對比度、alt 文字、語意標籤）。
