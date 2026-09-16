@@ -142,12 +142,6 @@
             font-weight: 600;
         }
 
-        .nav-item .nav-item-text {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
         .nav-item .chevron {
             font-size: 0.7rem;
             transition: transform 0.2s ease;
@@ -171,24 +165,21 @@
             display: inline-block;
         }
 
-        .nav-item .nav-desc {
-            display: none;
-        }
-
-        /* Floating Level 2 Dropdown Submenu */
+        /* 大型下拉面板：各欄同時攤開 */
         .nav-sub {
             position: absolute;
             top: 100%;
             left: 0;
             z-index: 99999;
             background: #ffffff;
-            min-width: 260px;
-            max-height: 80vh;
-            overflow: visible;
-            border-radius: 10px;
+            width: max-content;
+            max-width: calc(100vw - 2rem);
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+            border-radius: 12px;
             box-shadow: 0 14px 40px rgba(0,0,0,0.25);
             border: 1px solid #cbd5e1;
-            padding: 0.5rem 0;
+            padding: 0.9rem;
             display: none;
             margin-top: 2px;
         }
@@ -204,13 +195,13 @@
         }
 
         .nav-sub.open {
-            display: block;
+            display: grid;
             animation: fadeInDown 0.15s ease;
         }
 
         @media (hover: hover) and (min-width: 1081px) {
             .nav-group:hover .nav-sub, .nav-sub:hover {
-                display: block;
+                display: grid;
                 animation: fadeInDown 0.15s ease;
             }
         }
@@ -220,90 +211,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 第 1 層選項相鄰 & 第 2 層選單右側獨立浮層 (Flyout Floating Submenu) */
-        .nav-sub-group {
-            position: relative;
-            margin-bottom: 2px;
+        .nav-sub {
+            grid-template-columns: repeat(var(--cols, 1), minmax(210px, auto));
+            gap: 0.25rem 1.25rem;
         }
 
-        /* 擴大滑鼠移動連線感應區域，防止斜移時丟失 hover */
-        .nav-sub-group::after {
-            content: '';
-            position: absolute;
-            right: -14px;
-            top: 0;
-            width: 20px;
-            height: 100%;
-            z-index: 999998;
-        }
-
-        .nav-sub-child-list {
-            position: absolute;
-            left: 100%;
-            top: 0;
-            z-index: 999999;
-            min-width: 330px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.28);
-            border: 1px solid #cbd5e1;
-            padding: 0.6rem;
-            display: none !important;
-            flex-direction: column;
-            gap: 4px;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: opacity 0.15s ease, transform 0.15s ease;
-            margin-left: 6px;
-        }
-
-        .nav-sub-group:hover .nav-sub-child-list,
-        .nav-sub-group.kb-open .nav-sub-child-list {
-            display: flex !important;
-            opacity: 1;
-            transform: translateX(0);
-            animation: flyoutRight 0.15s ease forwards;
-        }
-
-        @keyframes flyoutRight {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .nav-sub-header-btn {
-            width: 100%;
-            text-align: left;
-            padding: 10px 14px;
-            font-weight: 800;
-            color: #0f172a;
-            font-size: 0.9rem;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .nav-sub-group:hover .nav-sub-header-btn {
-            background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%) !important;
-            color: #ffffff !important;
-            border-color: transparent !important;
-        }
-        .nav-sub-group:hover .sub-chevron {
-            color: #ffffff !important;
-            transform: rotate(90deg);
-        }
-
-        .nav-sub-list {
+        .mega-col {
             display: flex;
             flex-direction: column;
             gap: 2px;
-            padding: 0.3rem 0.4rem;
-            margin: 0;
-            border-left: none;
+            min-width: 0;
+        }
+
+        .mega-heading {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #334155;
+            letter-spacing: 0.04em;
+            padding: 0.2rem 0.75rem 0.45rem;
+            margin-bottom: 0.2rem;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .map-row {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.1rem 0 0.1rem 0.75rem;
+        }
+
+        .map-row .map-year {
+            flex: 1;
+            font-size: 0.92rem;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        .map-row .nav-sub-item {
+            width: auto;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.85rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        .ext {
+            margin-left: 0.5rem;
+            font-size: 0.8em;
+            color: #475569;
         }
 
         .nav-sub-item {
@@ -311,9 +266,10 @@
             border: none;
             font-family: inherit;
             text-align: left;
-            padding: 0.7rem 1.2rem;
+            padding: 0.5rem 0.75rem;
             font-size: 0.92rem;
-            color: #334155;
+            color: #1e293b;
+            white-space: nowrap;
             cursor: pointer;
             transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -325,18 +281,15 @@
             border-radius: 6px;
         }
 
-        /* 超強動態 Hover 滑動反差 (與頂部導覽列漸層完全一致：linear-gradient(90deg, #0f766e 0%, #0369a1 100%)) */
         .nav-sub-item:hover {
-            background: linear-gradient(90deg, #0f766e 0%, #0369a1 100%);
-            color: #ffffff !important;
-            font-weight: 800;
-            padding-left: 1.5rem;
-            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.35);
+            background: #e0f2fe;
+            color: #0c4a6e;
         }
 
         .nav-sub-item.active {
-            font-weight: 600;
+            font-weight: 700;
             color: #0369a1;
+            background: #f0f9ff;
         }
 
         .sidebar-footer {
@@ -562,7 +515,6 @@
             outline-offset: 2px;
         }
         .nav-sub-item:focus-visible,
-        .nav-sub-header-btn:focus-visible,
         .go-link:focus-visible {
             outline-color: #0369a1;
         }
@@ -571,7 +523,7 @@
             color: #0c4a6e;
         }
         .nav-sub.kb-open {
-            display: block;
+            display: grid;
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -654,8 +606,7 @@
             }
 
             .nav-group::after,
-            .nav-sub::before,
-            .nav-sub-group::after {
+            .nav-sub::before {
                 display: none;
             }
 
@@ -670,37 +621,24 @@
             }
 
             .nav-item[aria-expanded="true"] .chevron {
-                transform: rotate(90deg);
+                transform: rotate(180deg);
             }
 
             .nav-sub {
                 position: static;
-                min-width: 0;
+                width: auto;
+                max-width: none;
                 max-height: none;
+                overflow: visible;
                 margin: 0.25rem 0 0.5rem;
+                padding: 0.6rem;
                 box-shadow: none;
                 animation: none;
             }
 
-            .nav-sub-header-btn {
-                cursor: default !important;
-            }
-
-            .nav-sub-header-btn .sub-chevron {
-                display: none;
-            }
-
-            .nav-sub-child-list {
-                position: static;
-                display: flex !important;
-                min-width: 0;
-                margin: 2px 0 6px;
-                padding: 0 0 0 0.5rem;
-                border: none;
-                box-shadow: none;
-                opacity: 1;
-                transform: none;
-                animation: none !important;
+            .nav-sub {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
             }
 
             .nav-sub-item {
@@ -708,8 +646,8 @@
                 min-height: 44px;
             }
 
-            .nav-sub-item:hover {
-                padding-left: 1.2rem;
+            .map-row .nav-sub-item {
+                min-height: 40px;
             }
 
             #shareBtn {
@@ -757,230 +695,122 @@
             <span aria-hidden="true">&#9776;</span> 選單
         </button>
 
-        <!-- 左側選單：第1層分類 + 第2層子項目 -->
+        <!-- 主選單：第 1 層分類 + 大型下拉面板 -->
         <nav class="side-nav" id="sideNav" aria-label="主選單">
             <div class="nav-group">
-                <button class="nav-item" data-cat="award">
-                    <span class="nav-item-text">
-                        <span class="nav-title">術科檢定</span>
-                        <span class="nav-desc">數位電子乙級與 App 檢定</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
+                <button class="nav-item" type="button" data-cat="award">
+                    <span class="nav-title">術科檢定</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
                 </button>
-                <div class="nav-sub" data-group="award">
-                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
-                        <!-- 第 1 層第 1 個選項：數位電子乙級 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>🛠️ 數位電子乙級</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
-                                <button class="nav-sub-item" data-src="cpld_simulator.html">數位乙級學習導覽</button>
-                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
-                                <button class="nav-sub-item" data-src="pcb_layout.html">數位乙級PCB佈局指引</button>
-                                <button class="nav-sub-item" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
-                            </div>
-                        </div>
-
-                        <!-- 第 1 層第 2 個選項：App Inventor 檢定 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📱 App Inventor 檢定</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="app_inventor_practice.html">App Inventor 練習題庫全集</button>
-                                <button class="nav-sub-item" data-src="app_inventor.html">App Inventor 上機測驗</button>
-                                <button class="nav-sub-item" data-src="app_inventor_answers.html">App Inventor 完整解答</button>
-                            </div>
-                        </div>
+                <div class="nav-sub" data-group="award" style="--cols: 2;">
+                    <div class="mega-col">
+                        <div class="mega-heading">🛠️ 數位電子乙級</div>
+                        <button class="nav-sub-item" type="button" data-src="cpld_simulator.html">數位乙級學習導覽</button>
+                        <button class="nav-sub-item" type="button" data-src="pcb_layout.html">PCB 佈局指引</button>
+                        <button class="nav-sub-item" type="button" data-src="CPLD/index.html">Quartus MegaWizard 教學</button>
+                        <button class="nav-sub-item" type="button" data-src="fpga_keypad.html">FPGA 矩陣鍵盤模擬</button>
                     </div>
-                </div>
-            </div>
-            <div class="nav-group">
-                <button class="nav-item" data-cat="feature">
-                    <span class="nav-item-text">
-                        <span class="nav-title">模擬與實作</span>
-                        <span class="nav-desc">互動式邏輯電路與程式平台</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
-                </button>
-                <div class="nav-sub" data-group="feature">
-                    <div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="arduino.html">Arduino 模擬教學平台</button>
-                                                        <button class="nav-sub-item" data-src="id_circuit.html">學號顯示電路設計模擬器</button>
-                        </div>
+                    <div class="mega-col">
+                        <div class="mega-heading">📱 App Inventor</div>
+                        <button class="nav-sub-item" type="button" data-src="app_inventor_practice.html">練習題庫全集</button>
+                        <button class="nav-sub-item" type="button" data-src="app_inventor.html">上機測驗</button>
+                        <button class="nav-sub-item" type="button" data-src="app_inventor_answers.html">完整解答</button>
                     </div>
                 </div>
             </div>
 
             <div class="nav-group">
-                <button class="nav-item" data-cat="map">
-                    <span class="nav-item-text">
-                        <span class="nav-title">課程規劃與行政</span>
-                        <span class="nav-desc">科別課程地圖與排班工具</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
+                <button class="nav-item" type="button" data-cat="video">
+                    <span class="nav-title">教學影片</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
                 </button>
-                <div class="nav-sub" data-group="map">
-                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
-                        <!-- 第 1 層第 1 個選項：實習處行政管理 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📋 實習處行政管理</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="roster.html">輪值表產生器</button>
-                            </div>
-                        </div>
-
-                        <!-- 第 1 層第 2 個選項：各學年課程地圖 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>🗺️ 各學年課程地圖</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="coursemap112.html">課程地圖 112學年・列印版</button>
-                                <button class="nav-sub-item" data-src="coursemap_premium112.html">課程地圖 112學年・互動版</button>
-                                <button class="nav-sub-item" data-src="coursemap113.html">課程地圖 113學年・列印版</button>
-                                <button class="nav-sub-item" data-src="coursemap_premium113.html">課程地圖 113學年・互動版</button>
-                                <button class="nav-sub-item" data-src="coursemap114.html">課程地圖 114學年・列印版</button>
-                                <button class="nav-sub-item" data-src="coursemap_premium114.html">課程地圖 114學年・互動版</button>
-                                <button class="nav-sub-item" data-src="coursemap115.html">課程地圖 115學年・列印版</button>
-                                <button class="nav-sub-item" data-src="coursemap_premium115.html">課程地圖 115學年・互動版</button>
-                            </div>
-                        </div>
+                <div class="nav-sub" data-group="video" style="--cols: 3;">
+                    <div class="mega-col">
+                        <div class="mega-heading">📐 數乙第一題 KiCad</div>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">第 1 集：原理圖與 ERC 檢查<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">第 2 集：電路圖繪製<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/J_SE8ae60kg">第 3 集：PCB 佈局（上）<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">第 4 集：PCB 佈局（下）與電氣檢查<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">第 5 集：PCB 布線與列印輸出<span class="ext" aria-hidden="true">↗</span></button>
+                    </div>
+                    <div class="mega-col">
+                        <div class="mega-heading">📟 115-09-07 ESP32 實驗板</div>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/CClkQXBeFHQ">第 1 節<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/ym8Q1tWAMOY">第 2 節<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/WcxOut--eSw">第 3 節<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/I7qP3E4xUaQ">第 4 節<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/ozs4BxqBcg8">第 5 節<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/g7RtFXK3C4c">第 6 節<span class="ext" aria-hidden="true">↗</span></button>
+                    </div>
+                    <div class="mega-col">
+                        <div class="mega-heading">📡 115-09-14 ESP32 與 MQTT</div>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/O-02lo-SjQk">第 1 節：ESP32 碼表／計時器<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/Zk-3QItzzyY">第 2 節：MQTT 基礎與智慧控制<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/embed/MsvUlWtHYXM">第 3 節：MQTT 繼電器與家電控制<span class="ext" aria-hidden="true">↗</span></button>
+                        <button class="nav-sub-item" type="button" data-src="https://www.youtube.com/playlist?list=PLaJdK3ncriqA">整門課播放清單<span class="ext" aria-hidden="true">↗</span></button>
                     </div>
                 </div>
             </div>
 
             <div class="nav-group">
-                <button class="nav-item" data-cat="video">
-                    <span class="nav-item-text">
-                        <span class="nav-title">教學影片</span>
-                        <span class="nav-desc">數乙第一題 KiCad 與 CPLD 教學</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
+                <button class="nav-item" type="button" data-cat="feature">
+                    <span class="nav-title">模擬與實作</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
                 </button>
-                <div class="nav-sub" data-group="video">
-                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
-                        <!-- 第 1 層第 1 個選項：數乙第一題 KiCad -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📐 數乙第一題 KiCad</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/0CTFzI3CVOg">第 1 集：原理圖繪製與 ERC 檢查 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Bzip9mwdnWc">第 2 集：電路圖繪製 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/J_SE8ae60kg">第 3 集：PCB 佈局 上 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/5vKtx-EXmaQ">第 4 集：PCB 佈局 下與電氣檢查 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Z3yOpmwTumg">第 5 集：PCB 布線與列印輸出 ↗️</button>
-                            </div>
-                        </div>
-
-                        <!-- 第 1 層第 2 個選項：Quartus MegaWizard -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>⚡ Quartus MegaWizard</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="CPLD/index.html">Quartus MegaWizard 精靈教學影片 ↗️</button>
-                            </div>
-                        </div>
+                <div class="nav-sub" data-group="feature" style="--cols: 1;">
+                    <div class="mega-col">
+                        <button class="nav-sub-item" type="button" data-src="arduino.html">Arduino 模擬教學平台</button>
+                        <button class="nav-sub-item" type="button" data-src="id_circuit.html">學號顯示電路設計模擬器</button>
+                        <button class="nav-sub-item" type="button" data-src="industrial_electronics_app.html">工業電子量測互動系統</button>
                     </div>
                 </div>
             </div>
 
             <div class="nav-group">
-                <button class="nav-item" data-cat="project">
-                    <span class="nav-item-text">
-                        <span class="nav-title">專題製作</span>
-                        <span class="nav-desc">ESP32實驗板、影像辨識與專題實作</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
+                <button class="nav-item" type="button" data-cat="project">
+                    <span class="nav-title">專題製作</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
                 </button>
-                <div class="nav-sub" data-group="project">
-                    <div style="display: flex; flex-direction: column; gap: 4px; padding: 0.2rem;">
-                        <!-- 第 1 層第 1 個選項：ESP32實驗板 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📟 ESP32實驗板</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/CClkQXBeFHQ">第 01 節課 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/ym8Q1tWAMOY">第 02 節課 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/WcxOut--eSw">第 03 節課 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/I7qP3E4xUaQ">第 04 節課 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/ozs4BxqBcg8">第 05 節課 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/g7RtFXK3C4c">第 06 節課 ↗️</button>
-                            </div>
-                        </div>
-
-                        <!-- 第 1 層第 2 個選項：影像辨識 -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📷 影像辨識</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="ai_vision_course_guide.html">🤖 【專題製作】AI 視覺創客小學堂：用一顆 WebCam 打造生活智慧眼</button>
-                                <button class="nav-sub-item" data-src="mood_coffee_project_report.html">☕ 【金牌範本】智慧心情咖啡機（非接觸生理感測 × 7-11實例）</button>
-                                <button class="nav-sub-item" data-src="airtouch_competition_report.html">📄 【書面報告】AirTouch 專題製作競賽報告（依教育部規範）</button>
-                                <button class="nav-sub-item" data-src="airtouch_project_showcase.html">🖐️ 【成果展示】AirTouch 無接觸手勢智慧遙控（YouTube 略過廣告 × 懸浮視窗 × 教材錄影）</button>
-                            </div>
-                        </div>
-
-                        <!-- 第 1 層第 3 個選項：115-09-14 ESP32與MQTT -->
-                        <div class="nav-sub-group">
-                            <div class="nav-sub-header-btn" style="width: 100%; text-align: left; padding: 10px 14px; font-weight: 800; color: #0f172a; font-size: 0.9rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;">
-                                <span>📟 115-09-14 ESP32與MQTT</span>
-                                <span class="sub-chevron" style="font-size: 0.85rem; color: #64748b;">&#9656;</span>
-                            </div>
-                            <!-- 第 2 層選單：滑鼠移至上方時 往右側飛出顯示 -->
-                            <div class="nav-sub-child-list">
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/O-02lo-SjQk">第 01 節課：ESP32 與秒錶碼表/計時器實作 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/Zk-3QItzzyY">第 02 節課：MQTT 通訊協定基礎與智慧控制 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/embed/MsvUlWtHYXM">第 03 節課：MQTT 繼電器整合與家電控制 ↗️</button>
-                                <button class="nav-sub-item" data-src="https://www.youtube.com/playlist?list=PLaJdK3ncriqA">🍿 開啟專屬播放清單 ↗️</button>
-                            </div>
-                        </div>
+                <div class="nav-sub" data-group="project" style="--cols: 1;">
+                    <div class="mega-col">
+                        <button class="nav-sub-item" type="button" data-src="ai_vision_course_guide.html">AI 視覺創客小學堂</button>
+                        <button class="nav-sub-item" type="button" data-src="mood_coffee_project_report.html">智慧心情咖啡機（金牌範本）</button>
+                        <button class="nav-sub-item" type="button" data-src="airtouch_competition_report.html">AirTouch 競賽書面報告</button>
+                        <button class="nav-sub-item" type="button" data-src="airtouch_project_showcase.html">AirTouch 成果展示</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 常用技能 分類 -->
             <div class="nav-group">
-                <button class="nav-item" data-cat="common-skill">
-                    <span class="nav-item-text">
-                        <span class="nav-title">常用技能</span>
-                        <span class="nav-desc">AI 自動化與影片編輯技能實務</span>
-                    </span>
-                    <span class="chevron">&#9656;</span>
+                <button class="nav-item" type="button" data-cat="map">
+                    <span class="nav-title">行政與課程</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
                 </button>
-                <div class="nav-sub" data-group="common-skill">
-                    <div>
-                        <div class="nav-sub-list">
-                            <button class="nav-sub-item" data-src="eset_deployment_sop_guide.html">🛡️ ESET 啟動與診斷 SOP</button>
-                            <button class="nav-sub-item" data-src="mcp_course_automation_guide.html">⚡ MCP 雙模式實戰</button>
-                            <button class="nav-sub-item" data-src="teaching_video_pipeline_guide.html">🎬 影片編輯</button>
-                            <button class="nav-sub-item" data-src="https://www.youtube.com/playlist?list=PLaJdK3ncriqA">📟 115-09-14 ESP32與MQTT課程 ↗️</button>
-                        </div>
+                <div class="nav-sub" data-group="map" style="--cols: 2;">
+                    <div class="mega-col">
+                        <div class="mega-heading">📋 實習處行政</div>
+                        <button class="nav-sub-item" type="button" data-src="roster.html">輪值表產生器</button>
+                    </div>
+                    <div class="mega-col">
+                        <div class="mega-heading">🗺️ 課程地圖</div>
+                        <div class="map-row"><span class="map-year">115 學年</span><button class="nav-sub-item" type="button" data-src="coursemap115.html" aria-label="115 學年課程地圖列印版">列印版</button><button class="nav-sub-item" type="button" data-src="coursemap_premium115.html" aria-label="115 學年課程地圖互動版">互動版</button></div>
+                        <div class="map-row"><span class="map-year">114 學年</span><button class="nav-sub-item" type="button" data-src="coursemap114.html" aria-label="114 學年課程地圖列印版">列印版</button><button class="nav-sub-item" type="button" data-src="coursemap_premium114.html" aria-label="114 學年課程地圖互動版">互動版</button></div>
+                        <div class="map-row"><span class="map-year">113 學年</span><button class="nav-sub-item" type="button" data-src="coursemap113.html" aria-label="113 學年課程地圖列印版">列印版</button><button class="nav-sub-item" type="button" data-src="coursemap_premium113.html" aria-label="113 學年課程地圖互動版">互動版</button></div>
+                        <div class="map-row"><span class="map-year">112 學年</span><button class="nav-sub-item" type="button" data-src="coursemap112.html" aria-label="112 學年課程地圖列印版">列印版</button><button class="nav-sub-item" type="button" data-src="coursemap_premium112.html" aria-label="112 學年課程地圖互動版">互動版</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-item" type="button" data-cat="skill">
+                    <span class="nav-title">研習資源</span>
+                    <span class="chevron" aria-hidden="true">&#9662;</span>
+                </button>
+                <div class="nav-sub" data-group="skill" style="--cols: 1;">
+                    <div class="mega-col">
+                        <button class="nav-sub-item" type="button" data-src="eset_deployment_sop_guide.html">ESET 啟動與診斷 SOP</button>
+                        <button class="nav-sub-item" type="button" data-src="mcp_course_automation_guide.html">MCP 雙模式實戰</button>
+                        <button class="nav-sub-item" type="button" data-src="teaching_video_pipeline_guide.html">教學影片後製與發布</button>
                     </div>
                 </div>
             </div>
@@ -1478,16 +1308,6 @@
     const menuToggle = document.getElementById('menuToggle');
     const mobileMQ = window.matchMedia('(max-width: 1080px)');
 
-    function toggleSubGroup(btn) {
-        const childList = btn.nextElementSibling;
-        const chevron = btn.querySelector('.sub-chevron');
-        if (childList) {
-            const isHidden = childList.style.display === 'none';
-            childList.style.display = isHidden ? 'flex' : 'none';
-            if (chevron) chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
-        }
-    }
-
     function showGrid() {
         grid.classList.remove('hide');
         frameWrap.classList.remove('show');
@@ -1631,9 +1451,6 @@
         if (e.key === 'Enter') navigateToSrc(null, true);
     });
 
-    // 第二層標題可用 Tab 進入，讓鍵盤使用者也能展開飛出選單
-    document.querySelectorAll('.nav-sub-header-btn').forEach(h => h.setAttribute('tabindex', '0'));
-
     // 鍵盤焦點停在選單內時保持展開，離開後收起
     function keepOpenWhileFocused(container, target) {
         container.addEventListener('focusin', (e) => {
@@ -1643,11 +1460,22 @@
             if (!container.contains(e.relatedTarget)) target.classList.remove('kb-open');
         });
     }
+    // 面板超出視窗右緣時往左移
+    function fitPanel(sub) {
+        sub.style.left = '';
+        if (mobileMQ.matches) return;
+        const r = sub.getBoundingClientRect();
+        const overflow = r.right - (window.innerWidth - 16);
+        if (overflow > 0) sub.style.left = `${-Math.min(overflow, r.left - 16)}px`;
+    }
+
     document.querySelectorAll('.nav-group').forEach(g => {
         const sub = g.querySelector('.nav-sub');
-        if (sub) keepOpenWhileFocused(g, sub);
+        if (!sub) return;
+        keepOpenWhileFocused(g, sub);
+        g.addEventListener('mouseenter', () => requestAnimationFrame(() => fitPanel(sub)));
+        g.addEventListener('focusin', () => requestAnimationFrame(() => fitPanel(sub)));
     });
-    document.querySelectorAll('.nav-sub-group').forEach(g => keepOpenWhileFocused(g, g));
 
     function resetSubmenus() {
         document.querySelectorAll('.nav-sub.open').forEach(o => o.classList.remove('open'));
