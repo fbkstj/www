@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【專題實作】AirTouch 無接觸手勢＋語音遙控｜學生實作手冊</title>
+<meta name="description" content="高中職專題實作手冊：用 USB 鏡頭與 MediaPipe 手部關節點辨識手勢，加上中文語音指令，不碰鍵盤滑鼠控制 YouTube、PowerPoint 簡報、PDF 與視訊會議。含功能設計、手勢與語音原理、程式包、樣本收集與評估工具、測試方法與評分表。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #cbd5e1;
+    --text: #0f172a;
+    --muted: #475569;
+    --primary: #0369a1;
+    --primary-soft: #e0f2fe;
+    --accent: #a16207;
+    --accent-soft: #fef9c3;
+    --danger: #b91c1c;
+    --danger-soft: #fef2f2;
+    --ok: #047857;
+    --ok-soft: #ecfdf5;
+    --code-bg: #0f172a;
+    --code-text: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+  }
+  a { color: var(--primary); }
+  :focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; border-radius: 4px; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 8px; background: #fff; padding: 6px 12px; z-index: 10; }
+
+  header.hero {
+    background: linear-gradient(135deg, #312e81 0%, #0e7490 100%);
+    color: #fff;
+    padding: 48px 20px 40px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  .hero .wrap { padding: 0; }
+  .hero .eyebrow {
+    display: inline-block; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.35);
+    padding: 2px 12px; border-radius: 999px; font-size: 0.9rem; font-weight: 700;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.3; margin: 14px 0 10px; font-weight: 900; }
+  .hero p { font-size: 1.1rem; max-width: 760px; margin: 0 0 20px; color: #f0f9ff; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px;
+    font-weight: 700; text-decoration: none; border: 2px solid transparent; font-size: 1rem; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary { background: #fde047; color: #0f172a; }
+  .btn-primary:hover { background: #facc15; }
+  .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.7); background: transparent; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+  .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; padding: 0; list-style: none; }
+  .facts li { background: rgba(15,23,42,0.35); border-radius: 8px; padding: 4px 12px; font-size: 0.95rem; }
+
+  .layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; padding-top: 28px; padding-bottom: 60px; }
+  nav.toc { position: sticky; top: 16px; align-self: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  nav.toc h2 { font-size: 1rem; margin: 0 0 6px; }
+  nav.toc ol { margin: 0; padding-left: 1.3em; font-size: 0.95rem; line-height: 1.9; }
+  nav.toc a { text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  main { min-width: 0; }
+
+  section { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-bottom: 24px; scroll-margin-top: 16px; }
+  section > h2 { font-size: 1.5rem; margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+  .num { display: inline-flex; width: 36px; height: 36px; border-radius: 9px; background: var(--primary-soft); color: var(--primary); align-items: center; justify-content: center; font-size: 1rem; font-weight: 900; flex-shrink: 0; }
+  h3 { font-size: 1.15rem; margin: 20px 0 6px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-left: 1.4em; margin: 8px 0; }
+  li { margin: 3px 0; }
+  .muted { color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.97rem; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  thead th { background: #e2e8f0; }
+  tbody th { background: #f1f5f9; font-weight: 700; }
+
+  .note { border-radius: 10px; padding: 12px 16px; margin: 12px 0; border: 1px solid; }
+  .note > strong:first-child { display: block; }
+  .note.warn { background: var(--danger-soft); border-color: #fca5a5; color: #7f1d1d; }
+  .note.tip { background: var(--ok-soft); border-color: #6ee7b7; color: #064e3b; }
+  .note.info { background: var(--accent-soft); border-color: #fde047; color: #713f12; }
+
+  .flow { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; counter-reset: flow; }
+  .flow li { counter-increment: flow; background: var(--primary-soft); border: 1px solid #7dd3fc; border-radius: 10px; padding: 8px 12px; flex: 1 1 150px; font-size: 0.95rem; position: relative; margin: 0; }
+  .flow li::before { content: counter(flow); display: inline-block; background: var(--primary); color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 0.8rem; font-weight: 700; margin-right: 6px; }
+  .flow li b { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .box { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; background: #f8fafc; }
+  .box h3 { margin-top: 0; }
+
+  pre, code { font-family: "JetBrains Mono", Consolas, monospace; }
+  code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+  pre { background: var(--code-bg); color: var(--code-text); padding: 14px 16px; border-radius: 10px; overflow-x: auto; font-size: 0.9rem; line-height: 1.6; margin: 8px 0; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .prompt { border: 1px solid var(--border); border-radius: 10px; margin: 12px 0; overflow: hidden; }
+  .prompt-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #f1f5f9; padding: 8px 12px; font-weight: 700; flex-wrap: wrap; }
+  .prompt pre { margin: 0; border-radius: 0; white-space: pre-wrap; }
+  .copy { background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 4px 12px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+  .copy:hover { background: #075985; }
+
+  .check { list-style: none; padding-left: 0; }
+  .check li::before { content: "☐ "; font-weight: 700; color: var(--primary); }
+
+  footer { text-align: center; color: var(--muted); padding: 24px 16px 40px; font-size: 0.95rem; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; }
+    .grid2 { grid-template-columns: 1fr; }
+    section { padding: 20px 16px; }
+    body { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media print {
+    nav.toc, .hero .actions, .copy, .calc { display: none; }
+    .layout { display: block; }
+    section { break-inside: avoid; }
+  }
+</style>
+<style>
+  .figure { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 12px 0; }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 720px; margin: 0 auto; }
+  .figure figcaption { text-align: center; color: var(--muted); font-size: 0.95rem; margin-top: 6px; }
+  .svg-label { font: 500 14px "Noto Sans TC", sans-serif; fill: #0f172a; }
+  .svg-sub { font: 400 12px "Noto Sans TC", sans-serif; fill: #475569; }
+  .formula { font-family: "JetBrains Mono", Consolas, monospace; background: var(--primary-soft); border: 1px solid #7dd3fc; border-radius: 10px; padding: 10px 14px; margin: 10px 0; font-size: 1.05rem; overflow-x: auto; }
+  .calc { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 14px 0; background: #f8fafc; }
+  .calc h3 { margin-top: 0; }
+  .calc-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .calc label { display: flex; flex-direction: column; font-weight: 700; font-size: 0.95rem; }
+  .calc input { font: inherit; width: 130px; padding: 6px 8px; border: 1px solid #94a3b8; border-radius: 8px; background: #fff; color: var(--text); }
+  .calc-out { margin-top: 10px; padding: 8px 12px; border-radius: 8px; font-weight: 700; border: 1px solid var(--border); background: #fff; }
+  .calc-out.lv0 { border-color: #6ee7b7; background: var(--ok-soft); color: #064e3b; }
+  .calc-out.lv1 { border-color: #fde047; background: var(--accent-soft); color: #713f12; }
+  .calc-out.lv2 { border-color: #fca5a5; background: var(--danger-soft); color: #7f1d1d; }
+  kbd { font-family: "JetBrains Mono", Consolas, monospace; font-size: 0.88em; background: #fff; border: 1px solid #94a3b8; border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; }
+  table.nw1 tbody th, table.nw1 thead th:first-child, table.nw3 td:nth-child(3), table.nw3 th:nth-child(3), table.nw3 td:nth-child(4),
+  table.nw12 th:first-child, table.nw12 td:nth-child(2), table.nw12 thead th:nth-child(2) { white-space: nowrap; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; margin-right: 4px; border: 1px solid #334155; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">專題製作・學生實作手冊</span>
+    <h1>AirTouch 無接觸手勢＋語音遙控：<br>不碰鍵盤滑鼠，控制影片、簡報與會議</h1>
+    <p>手油油、手濕，或手部行動不方便時，拿滑鼠、碰鍵盤都不方便。這個專題用一顆 USB 鏡頭辨識 21 個手部關節點，判斷手勢；再加上中文語音指令，控制 YouTube、PowerPoint 簡報、PDF 文件與 Teams／Zoom／Meet 視訊會議；程式會看目前使用的程式，自動切換手勢的意思。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="airtouch_starter_pack.zip" download="airtouch_starter_pack.zip">⬇ 下載程式包（ZIP）</a>
+      <a class="btn btn-ghost" href="#design">看功能設計</a>
+      <a class="btn btn-ghost" href="#profiles">看應用程式模式</a>
+    </div>
+    <ul class="facts">
+      <li>難度：進階 ★★</li>
+      <li>建議人數：2～4 人</li>
+      <li>時程：約 12～16 週</li>
+      <li>核心技術：MediaPipe 手部關節點 ＋ 規則判斷 ＋ 語音辨識</li>
+      <li>預算：約 0～1,500 元（用筆電內建鏡頭與麥克風可免費）</li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="本頁目錄">
+    <h2>目錄</h2>
+    <ol>
+      <li><a href="#overview">專題概要</a></li>
+      <li><a href="#layout">系統架構</a></li>
+      <li><a href="#design">功能設計</a></li>
+      <li><a href="#hardware">硬體與軟體</a></li>
+      <li><a href="#gesture">手勢辨識原理</a></li>
+      <li><a href="#voice">語音指令原理</a></li>
+      <li><a href="#action">操作 YouTube 的方法</a></li>
+      <li><a href="#profiles">應用程式模式</a></li>
+      <li><a href="#flow">12 週製作流程</a></li>
+      <li><a href="#code">程式包使用說明</a></li>
+      <li><a href="#prompts">AI 助手提示語</a></li>
+      <li><a href="#verify">測試與驗證</a></li>
+      <li><a href="#ethics">安全、隱私與規範</a></li>
+      <li><a href="#trouble">常見問題</a></li>
+      <li><a href="#v2">延伸挑戰</a></li>
+      <li><a href="#report">書面報告與評分</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+
+    <section id="overview">
+      <h2><span class="num">1</span>專題概要</h2>
+      <h3>要解決的問題</h3>
+      <ul>
+        <li>吃東西時手油油，或在廚房照著食譜影片做菜時手濕，不想碰鍵盤、觸控板。</li>
+        <li>手部行動不方便的人，操作滑鼠的小按鈕很吃力。</li>
+        <li>實習工場、實驗室戴著手套，或需要保持清潔時，不方便觸碰設備。</li>
+        <li>老師上課走到教室中間時，想換投影片卻沒有簡報筆；視訊會議中想快速開關麥克風。</li>
+      </ul>
+      <h3>專題目標</h3>
+      <ol>
+        <li>辨識 7 種手勢：手掌張開、食指向右、食指向左、大拇指朝上、大拇指朝下、剪刀手、握拳。</li>
+        <li>手勢要「維持一下」才觸發，並有手勢鎖、太遠不理會等設計，<strong>降低誤觸</strong>。</li>
+        <li>聽懂自然的中文語音指令，例如「往前快轉一分半」「關閉這首換播稻香」。</li>
+        <li>控制 YouTube 的播放、快轉、音量、全螢幕、字幕、速度、下一部、點歌、關閉分頁。</li>
+        <li>依目前使用的程式自動切換模式：簡報換頁與雷射筆、PDF 翻頁縮放、視訊會議開關麥克風與舉手。</li>
+        <li>用自己收集的樣本與測試句，量出<strong>辨識率、誤觸率、反應時間</strong>，並和滑鼠操作比較。</li>
+      </ol>
+      <div class="note warn">
+        <strong>關於廣告的規範</strong>
+        本專題的「略過」功能，只在 YouTube 已經顯示「略過」按鈕時，代替使用者按下去。<strong>不要</strong>加入封鎖廣告、把廣告快轉到結尾、自動靜音跳過等功能：這類做法違反 YouTube 服務條款，也不適合作為公開發表的專題成果。
+      </div>
+      <p class="muted">展示頁：<a href="airtouch_project_showcase.html">AirTouch 成果展示</a>、<a href="airtouch_competition_report.html">競賽書面報告</a>。報告裡的數字要用自己測到的結果，不要照抄。</p>
+    </section>
+
+    <section id="layout">
+      <h2><span class="num">2</span>系統架構</h2>
+      <figure class="figure">
+        <svg viewBox="0 0 680 330" role="img" aria-labelledby="archTitle archDesc">
+          <title id="archTitle">AirTouch 系統架構圖</title>
+          <desc id="archDesc">上排是手勢流程：USB 鏡頭、MediaPipe 手部關節點、手勢判斷、觸發邏輯。下排是語音流程：麥克風、判斷說話起訖、Google 語音辨識、指令解析。兩條流程匯入動作執行，再分別控制 YouTube 視窗、系統音量與瀏覽器；同時更新畫面提示並寫入紀錄。</desc>
+          <defs><marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <text class="svg-sub" x="20" y="22">手勢（每秒約 30 張畫面）</text>
+          <g fill="#e0e7ff" stroke="#4338ca">
+            <rect x="20" y="30" width="104" height="54" rx="8"/><rect x="140" y="30" width="104" height="54" rx="8"/>
+            <rect x="260" y="30" width="104" height="54" rx="8"/><rect x="380" y="30" width="104" height="54" rx="8"/>
+          </g>
+          <text class="svg-label" x="72" y="53" text-anchor="middle">USB 鏡頭</text><text class="svg-sub" x="72" y="71" text-anchor="middle">左右翻轉畫面</text>
+          <text class="svg-label" x="192" y="53" text-anchor="middle">MediaPipe</text><text class="svg-sub" x="192" y="71" text-anchor="middle">21 個關節點</text>
+          <text class="svg-label" x="312" y="53" text-anchor="middle">手勢判斷</text><text class="svg-sub" x="312" y="71" text-anchor="middle">角度＋長度比例</text>
+          <text class="svg-label" x="432" y="53" text-anchor="middle">觸發邏輯</text><text class="svg-sub" x="432" y="71" text-anchor="middle">蓄力／冷卻／鎖</text>
+
+          <text class="svg-sub" x="20" y="126">語音（說完一句才辨識）</text>
+          <g fill="#cffafe" stroke="#0e7490">
+            <rect x="20" y="134" width="104" height="54" rx="8"/><rect x="140" y="134" width="104" height="54" rx="8"/>
+            <rect x="260" y="134" width="104" height="54" rx="8"/><rect x="380" y="134" width="104" height="54" rx="8"/>
+          </g>
+          <text class="svg-label" x="72" y="157" text-anchor="middle">麥克風</text><text class="svg-sub" x="72" y="175" text-anchor="middle">16 kHz 錄音</text>
+          <text class="svg-label" x="192" y="157" text-anchor="middle">說話偵測</text><text class="svg-sub" x="192" y="175" text-anchor="middle">音量門檻</text>
+          <text class="svg-label" x="312" y="157" text-anchor="middle">語音辨識</text><text class="svg-sub" x="312" y="175" text-anchor="middle">Google 線上</text>
+          <text class="svg-label" x="432" y="157" text-anchor="middle">指令解析</text><text class="svg-sub" x="432" y="175" text-anchor="middle">關鍵詞＋數字</text>
+
+          <g stroke="#475569" stroke-width="1.5" fill="none">
+            <line x1="124" y1="57" x2="138" y2="57" marker-end="url(#arrA)"/><line x1="244" y1="57" x2="258" y2="57" marker-end="url(#arrA)"/>
+            <line x1="364" y1="57" x2="378" y2="57" marker-end="url(#arrA)"/>
+            <line x1="124" y1="161" x2="138" y2="161" marker-end="url(#arrA)"/><line x1="244" y1="161" x2="258" y2="161" marker-end="url(#arrA)"/>
+            <line x1="364" y1="161" x2="378" y2="161" marker-end="url(#arrA)"/>
+            <path d="M484 57 H516 V100 H530" marker-end="url(#arrA)"/>
+            <path d="M484 161 H516 V118 H530" marker-end="url(#arrA)"/>
+          </g>
+          <rect x="532" y="82" width="128" height="54" rx="8" fill="#fef9c3" stroke="#a16207"/>
+          <text class="svg-label" x="596" y="105" text-anchor="middle">動作執行</text><text class="svg-sub" x="596" y="123" text-anchor="middle">依目前模式決定</text>
+
+          <g stroke="#475569" stroke-width="1.5" fill="none">
+            <path d="M596 136 V230" />
+            <line x1="100" y1="230" x2="596" y2="230"/>
+            <line x1="100" y1="230" x2="100" y2="252" marker-end="url(#arrA)"/>
+            <line x1="250" y1="230" x2="250" y2="252" marker-end="url(#arrA)"/>
+            <line x1="400" y1="230" x2="400" y2="252" marker-end="url(#arrA)"/>
+            <line x1="570" y1="230" x2="570" y2="252" marker-end="url(#arrA)"/>
+          </g>
+          <g fill="#dcfce7" stroke="#15803d">
+            <rect x="30" y="254" width="140" height="56" rx="8"/><rect x="180" y="254" width="140" height="56" rx="8"/>
+            <rect x="330" y="254" width="140" height="56" rx="8"/><rect x="500" y="254" width="140" height="56" rx="8"/>
+          </g>
+          <text class="svg-label" x="100" y="278" text-anchor="middle">應用程式視窗</text><text class="svg-sub" x="100" y="296" text-anchor="middle">影片、簡報、PDF、會議</text>
+          <text class="svg-label" x="250" y="278" text-anchor="middle">系統音量</text><text class="svg-sub" x="250" y="296" text-anchor="middle">音量鍵、靜音鍵</text>
+          <text class="svg-label" x="400" y="278" text-anchor="middle">瀏覽器</text><text class="svg-sub" x="400" y="296" text-anchor="middle">開網站、點歌</text>
+          <text class="svg-label" x="570" y="278" text-anchor="middle">畫面與紀錄</text><text class="svg-sub" x="570" y="296" text-anchor="middle">提示、嗶聲、logs/</text>
+        </svg>
+        <figcaption>手勢和語音是兩條獨立的輸入，最後都交給「動作執行」；它依目前的應用程式模式（第 8 章），決定要按哪個快捷鍵</figcaption>
+      </figure>
+      <div class="note info">
+        <strong>為什麼用「規則」判斷手勢，而不是訓練 AI 模型？</strong>
+        MediaPipe 已經把畫面變成 21 個座標點，剩下的判斷用角度和長度比例就能做得很好，而且每一條規則都看得懂、改得動、說得出為什麼認錯。延伸挑戰可以再訓練分類模型，和規則法比較。
+      </div>
+    </section>
+
+    <section id="design">
+      <h2><span class="num">3</span>功能設計</h2>
+      <p>先把「系統要做到什麼、怎麼算做到」寫清楚。下面是程式包已經實作的設計，報告的「研究方法」可以直接引用；改良時也要回來更新。</p>
+
+      <h3>3.1 功能清單與驗收標準</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <colgroup><col><col style="width:15%"><col style="width:37%"><col style="width:22%"><col style="width:26%"></colgroup>
+          <thead><tr><th scope="col">編號</th><th scope="col">功能</th><th scope="col">說明</th><th scope="col">對應程式</th><th scope="col">驗收標準</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">F1</th><td>影像輸入</td><td>USB 鏡頭（左右翻轉成鏡像）或影片檔</td><td><code>airtouch.py</code></td><td>兩種來源都能執行</td></tr>
+            <tr><th scope="row">F2</th><td>手部關節點</td><td>MediaPipe 找出最多 2 隻手，取最大的一隻；模型自動下載</td><td><code>airtouch.py</code></td><td>第一次執行自動下載並載入</td></tr>
+            <tr><th scope="row">F3</th><td>手勢判斷</td><td>用手指彎曲角度、長度比例、方向角判斷 7 種手勢</td><td><code>gestures.analyze</code></td><td>自己的樣本整體辨識率達組內目標</td></tr>
+            <tr><th scope="row">F4</th><td>距離過濾</td><td>手太小（太遠）一律不理會</td><td><code>gestures.analyze</code></td><td>後方走過的人不會觸發</td></tr>
+            <tr><th scope="row">F5</th><td>平滑與蓄力</td><td>最近 5 格多數決；同一手勢維持設定秒數才觸發，畫面顯示進度環</td><td><code>GestureTrigger</code></td><td>一兩格認錯不會打斷；太短不觸發</td></tr>
+            <tr><th scope="row">F6</th><td>重複與冷卻</td><td>音量、快轉可持續觸發；其他手勢要換手勢才能再觸發；動作後短時間不觸發別的動作</td><td><code>GestureTrigger</code></td><td>符合 <code>test_trigger.py</code> 的 10 項測試</td></tr>
+            <tr><th scope="row">F7</th><td>手勢鎖</td><td>握拳 1.5 秒鎖定或解鎖；鎖定時只認得握拳</td><td><code>GestureTrigger</code></td><td>鎖定後比其他手勢都沒反應</td></tr>
+            <tr><th scope="row">F8</th><td>語音錄音與分段</td><td>先量背景雜音，音量超過門檻開始、安靜 0.8 秒結束</td><td><code>voice_listener.py</code></td><td>一句話只送出一次；小聲雜音不送出</td></tr>
+            <tr><th scope="row">F9</th><td>語音辨識</td><td>Google 語音辨識（繁體中文）；打字模式可替代</td><td><code>voice_listener.py</code></td><td>沒網路時顯示原因，不會當掉</td></tr>
+            <tr><th scope="row">F10</th><td>指令解析</td><td>關鍵詞、中文數字、分鐘秒數、歌名、喚醒詞</td><td><code>voice_commands.py</code></td><td><code>test_voice_commands.py</code> 全部通過</td></tr>
+            <tr><th scope="row">F11</th><td>應用程式控制</td><td>找到目前模式的視窗、切到前景、送出該模式的快捷鍵；不支援的動作不按鍵</td><td><code>actions.py</code></td><td>各模式的動作都能正確執行</td></tr>
+            <tr><th scope="row">F12</th><td>點歌與換歌</td><td>搜尋第一部影片並開啟；換歌時先關閉舊分頁</td><td><code>actions.py</code></td><td>找不到影片時改開搜尋結果頁</td></tr>
+            <tr><th scope="row">F13</th><td>按下「略過」</td><td>在 YouTube 視窗截圖，多尺度比對按鈕樣板，有看到才點，點完滑鼠移回原位</td><td><code>actions.click_skip</code></td><td>沒有按鈕時不點擊，並顯示相似度</td></tr>
+            <tr><th scope="row">F14</th><td>模擬模式</td><td>只顯示會做什麼，不按鍵、不開網頁</td><td><code>--dry-run</code></td><td>上課測試不會干擾其他視窗</td></tr>
+            <tr><th scope="row">F15</th><td>畫面與回饋</td><td>狀態列、進度環、結果提示、說明頁、除錯資訊、提示音</td><td><code>airtouch.py</code></td><td>旁人看畫面就知道目前狀態</td></tr>
+            <tr><th scope="row">F16</th><td>懸浮視窗</td><td>置頂、三段透明度、小視窗</td><td><code>FloatingWindow</code></td><td>看影片時不擋畫面也能確認手勢</td></tr>
+            <tr><th scope="row">F17</th><td>紀錄與摘要</td><td>每個動作寫入 CSV；結束時寫入摘要 JSON</td><td><code>airtouch.py</code></td><td>可以用紀錄算出誤觸次數與辨識時間</td></tr>
+            <tr><th scope="row">F19</th><td>應用程式模式</td><td>依前景視窗自動切換 YouTube、簡報、PDF、Teams、Zoom、Meet；可手動固定；切換時換手勢對應</td><td><code>ProfileManager</code>、<code>match_profile</code></td><td><code>test_profiles.py</code> 全部通過</td></tr>
+            <tr><th scope="row">F20</th><td>簡報進階功能</td><td>PowerPoint 程式介面：頁碼、備忘稿、跳到第 N 頁、依標題找投影片</td><td><code>ppt_com.py</code></td><td>沒有 PowerPoint 時自動改用按鍵</td></tr>
+            <tr><th scope="row">F21</th><td>語音意圖轉換</td><td>同一句話依模式換成不同動作，例如會議模式的「靜音」＝麥克風開關</td><td><code>voice_map</code></td><td>各模式說「靜音」的結果正確</td></tr>
+            <tr><th scope="row">F18</th><td>樣本收集與評估</td><td>收集關節點樣本；計算辨識率、精確率、混淆矩陣、誤觸率；可暫時改門檻比較</td><td><code>collect_samples.py</code>、<code>evaluate_gestures.py</code></td><td>輸出認錯樣本清單</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.2 非功能需求</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">項目</th><th scope="col">目標</th><th scope="col">怎麼量</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">流暢度</th><td>畫面每秒 15 張以上</td><td>狀態列的 FPS、摘要的平均 FPS</td></tr>
+            <tr><th scope="row">手勢反應</th><td>由組員訂目標，例如「開始比到觸發在 1 秒內」</td><td>手機慢動作錄影數影格</td></tr>
+            <tr><th scope="row">語音反應</th><td>由組員訂目標，例如「說完到動作在 2 秒內」</td><td>紀錄的辨識秒數＋錄影</td></tr>
+            <tr><th scope="row">誤觸</th><td>由組員訂目標，例如「日常動作 10 分鐘內誤觸不超過 1 次」</td><td>模擬模式下做日常動作，數紀錄</td></tr>
+            <tr><th scope="row">可調整</th><td>手勢對應、門檻、時間都在 <code>config.json</code>，不必改程式</td><td>請同學只改設定完成一項調整</td></tr>
+            <tr><th scope="row">隱私</th><td>不錄影、不存照片；語音可隨時關閉</td><td>檢查 <code>data/</code>、<code>logs/</code> 的內容</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.3 手勢觸發狀態機</h3>
+      <figure class="figure">
+        <svg viewBox="0 0 680 250" role="img" aria-labelledby="trgTitle trgDesc">
+          <title id="trgTitle">手勢觸發狀態機</title>
+          <desc id="trgDesc">等待狀態在出現指令手勢時進入蓄力，進度環逐漸填滿；維持到設定秒數就觸發並進入已觸發。已觸發狀態下，可重複的手勢每隔重複秒數再觸發一次；換手勢或放下手就回到等待。蓄力中換手勢也回到等待。任何狀態握拳 1.5 秒都會切換到鎖定，鎖定時再握拳 1.5 秒才解鎖。</desc>
+          <defs><marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <rect x="30" y="70" width="130" height="54" rx="10" fill="#e2e8f0" stroke="#64748b"/>
+          <rect x="275" y="70" width="130" height="54" rx="10" fill="#fef9c3" stroke="#a16207"/>
+          <rect x="520" y="70" width="130" height="54" rx="10" fill="#dcfce7" stroke="#15803d"/>
+          <rect x="275" y="186" width="130" height="50" rx="10" fill="#fee2e2" stroke="#b91c1c"/>
+          <text class="svg-label" x="95" y="93" text-anchor="middle">等待</text><text class="svg-sub" x="95" y="112" text-anchor="middle">沒有指令手勢</text>
+          <text class="svg-label" x="340" y="93" text-anchor="middle">蓄力中</text><text class="svg-sub" x="340" y="112" text-anchor="middle">進度環填滿中</text>
+          <text class="svg-label" x="585" y="93" text-anchor="middle">已觸發</text><text class="svg-sub" x="585" y="112" text-anchor="middle">送出動作</text>
+          <text class="svg-label" x="340" y="208" text-anchor="middle">手勢鎖定</text><text class="svg-sub" x="340" y="226" text-anchor="middle">只認得握拳</text>
+          <g stroke="#334155" stroke-width="1.5" fill="none">
+            <line x1="160" y1="88" x2="273" y2="88" marker-end="url(#arrT)"/>
+            <line x1="275" y1="106" x2="162" y2="106" marker-end="url(#arrT)"/>
+            <line x1="405" y1="97" x2="518" y2="97" marker-end="url(#arrT)"/>
+            <path d="M585 70 C 585 20, 640 20, 640 68" marker-end="url(#arrT)"/>
+            <path d="M540 70 C 470 10, 180 10, 110 68" marker-end="url(#arrT)"/>
+            <path d="M95 124 C 95 200, 200 212, 273 212" marker-end="url(#arrT)"/>
+            <path d="M405 212 C 520 212, 585 180, 585 126" marker-end="url(#arrT)" stroke-dasharray="5 4"/>
+          </g>
+          <text class="svg-sub" x="216" y="80" text-anchor="middle">比出指令手勢</text>
+          <text class="svg-sub" x="216" y="122" text-anchor="middle">換手勢／太短</text>
+          <text class="svg-sub" x="461" y="89" text-anchor="middle">維持 hold_sec</text>
+          <text class="svg-sub" x="612" y="16" text-anchor="middle">每 repeat_sec 再一次</text>
+          <text class="svg-sub" x="330" y="52" text-anchor="middle">換手勢或放下手</text>
+          <text class="svg-sub" x="160" y="238" text-anchor="middle">握拳 1.5 秒</text>
+          <text class="svg-sub" x="500" y="238" text-anchor="middle">握拳 1.5 秒（解鎖）</text>
+        </svg>
+        <figcaption>「冷卻」：任何動作之後 <code>cooldown_sec</code> 秒內，不會觸發「另一種」動作，避免手勢轉換途中誤觸</figcaption>
+      </figure>
+
+      <h3>3.4 介面規格</h3>
+      <div class="table-wrap">
+        <table>
+          <caption class="muted" style="text-align:left;padding-bottom:4px">手勢對應 <code>config.json → profiles → 模式名稱 → gestures</code></caption>
+          <thead><tr><th scope="col">欄位</th><th scope="col">意義</th><th scope="col">範例</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>要執行的動作名稱（見 3.5）</td><td><code>"seek_forward"</code></td></tr>
+            <tr><td><code>hold_sec</code></td><td>維持幾秒才觸發</td><td><code>0.35</code></td></tr>
+            <tr><td><code>repeat_sec</code></td><td>繼續比著，每隔幾秒再觸發；不寫或 0 代表不重複</td><td><code>1.0</code></td></tr>
+            <tr><td><code>arg</code></td><td>動作參數（秒數、格數）</td><td><code>10</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid2">
+        <div class="box">
+          <h3>動作紀錄 <code>logs/session_時間.csv</code></h3>
+          <div class="table-wrap">
+            <table style="min-width:0">
+              <tbody>
+                <tr><td><code>time</code></td><td>啟動後的秒數</td></tr>
+                <tr><td><code>source</code></td><td>gesture、voice 或 key</td></tr>
+                <tr><td><code>input</code></td><td>手勢名稱或聽到的句子</td></tr>
+                <tr><td><code>action</code>、<code>arg</code></td><td>動作與參數</td></tr>
+                <tr><td><code>ok</code>、<code>message</code></td><td>是否成功、顯示文字</td></tr>
+                <tr><td><code>hold_or_recog_sec</code></td><td>手勢維持秒數，或語音辨識花費秒數</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="box">
+          <h3>手勢樣本 <code>data/*.csv</code></h3>
+          <div class="table-wrap">
+            <table style="min-width:0">
+              <tbody>
+                <tr><td><code>label</code></td><td>真正的手勢（none＝非指令、too_far＝太遠）</td></tr>
+                <tr><td><code>tag</code></td><td>人、距離、光線等標籤</td></tr>
+                <tr><td><code>width</code>、<code>height</code></td><td>畫面大小</td></tr>
+                <tr><td><code>x0,y0 … x20,y20</code></td><td>21 個關節點，0～1 的比例座標</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted">語音測試句 <code>voice_test_phrases.csv</code>：<code>text</code>、<code>expected_action</code>、<code>expected_arg</code>（歌名寫成「歌名|是否換歌」）。</p>
+        </div>
+      </div>
+
+      <h3>3.5 動作一覽</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">動作名稱</th><th scope="col">效果</th><th scope="col">怎麼做到</th><th scope="col">手勢</th><th scope="col">語音例句</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>play_pause</code></th><td>播放／暫停</td><td>YouTube 按 <kbd>k</kbd></td><td>手掌張開</td><td>暫停、繼續播放</td></tr>
+            <tr><th scope="row"><code>seek_forward</code></th><td>快轉</td><td><kbd>l</kbd> 每次 10 秒、<kbd>→</kbd> 每次 5 秒</td><td>食指向右</td><td>快轉一分半</td></tr>
+            <tr><th scope="row"><code>seek_back</code></th><td>倒退</td><td><kbd>j</kbd>、<kbd>←</kbd></td><td>食指向左</td><td>倒退十五秒</td></tr>
+            <tr><th scope="row"><code>volume_up</code><br><code>volume_down</code></th><td>系統音量</td><td>鍵盤音量鍵</td><td>大拇指朝上／下</td><td>音量調大五格</td></tr>
+            <tr><th scope="row"><code>mute</code></th><td>系統靜音切換</td><td>靜音鍵</td><td>—</td><td>靜音</td></tr>
+            <tr><th scope="row"><code>video_mute</code></th><td>影片靜音切換</td><td><kbd>m</kbd></td><td>—</td><td>影片靜音</td></tr>
+            <tr><th scope="row"><code>fullscreen</code></th><td>全螢幕切換</td><td><kbd>f</kbd></td><td>—</td><td>全螢幕</td></tr>
+            <tr><th scope="row"><code>captions</code></th><td>字幕切換</td><td><kbd>c</kbd></td><td>—</td><td>開字幕</td></tr>
+            <tr><th scope="row"><code>next_video</code></th><td>下一部</td><td><kbd>Shift</kbd>＋<kbd>N</kbd></td><td>—</td><td>下一部</td></tr>
+            <tr><th scope="row"><code>speed_up</code><br><code>speed_down</code></th><td>播放速度</td><td><kbd>Shift</kbd>＋<kbd>&gt;</kbd>／<kbd>&lt;</kbd></td><td>—</td><td>播快一點</td></tr>
+            <tr><th scope="row"><code>skip_ad</code></th><td>按下「略過」</td><td>比對按鈕圖片後點擊</td><td>剪刀手</td><td>跳過廣告</td></tr>
+            <tr><th scope="row"><code>open_youtube</code></th><td>開啟 YouTube</td><td>預設瀏覽器開網址</td><td>—</td><td>打開YouTube</td></tr>
+            <tr><th scope="row"><code>play_song</code></th><td>點歌／換歌</td><td>搜尋第一部影片並開啟</td><td>—</td><td>換播五月天</td></tr>
+            <tr><th scope="row"><code>close_video</code></th><td>關閉影片分頁</td><td><kbd>Ctrl</kbd>＋<kbd>W</kbd></td><td>—</td><td>關閉這首</td></tr>
+            <tr><th scope="row"><code>lock</code><br><code>unlock</code></th><td>手勢鎖</td><td>程式內部狀態</td><td>握拳 1.5 秒</td><td>鎖定手勢、啟用手勢</td></tr>
+            <tr><th scope="row"><code>exit</code></th><td>結束程式</td><td>—</td><td>—</td><td>關閉程式</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="muted">上表是 YouTube 模式與共通動作；簡報、PDF、視訊會議模式的動作見第 8 章。</p>
+
+      <h3>3.6 畫面與回饋設計</h3>
+      <ul>
+        <li><strong>狀態列</strong>：目前模式（自動或固定）、手勢是否啟用（鎖定時整條變紅）、語音狀態、目前手勢與進度、簡報頁碼、FPS、是否模擬模式。</li>
+        <li><strong>備忘稿</strong>：簡報模式按 <kbd>n</kbd>，在畫面下方顯示這頁的備忘稿。</li>
+        <li><strong>進度環</strong>：畫在手掌中心，比對手勢時逐漸填滿，填滿即觸發；鎖定時變成紅色。</li>
+        <li><strong>結果提示</strong>：畫面下方綠色＝成功、紅色＝失敗或聽不懂，顯示 2.5 秒。</li>
+        <li><strong>提示音</strong>：成功時短嗶；鎖定低音、解鎖高音。</li>
+        <li><strong>視窗按鍵</strong>：<kbd>q</kbd> 結束、<kbd>g</kbd> 手勢鎖、<kbd>v</kbd> 語音開關、<kbd>p</kbd> 換模式、<kbd>a</kbd> 自動切換、<kbd>n</kbd> 備忘稿、<kbd>t</kbd> 置頂、<kbd>o</kbd> 透明度、<kbd>s</kbd> 小視窗、<kbd>h</kbd> 說明、<kbd>d</kbd> 除錯資訊。</li>
+      </ul>
+
+      <h3>3.7 例外處理</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">狀況</th><th scope="col">系統反應</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">鏡頭打不開</th><td>顯示「無法開啟鏡頭或影片」並結束</td></tr>
+            <tr><th scope="row">模型還沒下載</th><td>自動下載到 <code>models/</code>；資料夾路徑有中文也能載入</td></tr>
+            <tr><th scope="row">找不到目前模式的視窗</th><td>提示「找不到○○的視窗」，不送出按鍵</td></tr>
+            <tr><th scope="row">無法切換到該視窗</th><td>提示失敗，不送出按鍵，避免按到別的視窗</td></tr>
+            <tr><th scope="row">目前模式沒有這個功能</th><td>提示「○○模式沒有○○」，不送出按鍵（例如簡報模式說「快轉」）</td></tr>
+            <tr><th scope="row">沒有安裝 PowerPoint</th><td>不顯示頁碼與備忘稿；跳頁改用輸入數字＋Enter；找標題會提示無法使用</td></tr>
+            <tr><th scope="row">切換模式時正在比手勢</th><td>重新計算蓄力，不會馬上觸發新模式的動作</td></tr>
+            <tr><th scope="row">畫面上沒有「略過」按鈕</th><td>不點擊，顯示最高相似度，方便調整門檻</td></tr>
+            <tr><th scope="row">點歌搜尋失敗</th><td>改開搜尋結果頁</td></tr>
+            <tr><th scope="row">麥克風打不開或套件沒裝</th><td>狀態列顯示原因，手勢照常運作</td></tr>
+            <tr><th scope="row">語音辨識沒網路或聽不清楚</th><td>狀態列顯示原因；聽不懂的句子寫入紀錄</td></tr>
+            <tr><th scope="row">滑鼠移到螢幕角落</th><td>pyautogui 安全機制中止自動操作，顯示失敗</td></tr>
+            <tr><th scope="row">關閉視窗或按 Ctrl+C</th><td>釋放鏡頭、停止錄音、存好紀錄與摘要</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.8 功能測試對照</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">測試</th><th scope="col">對應功能</th><th scope="col">方法</th><th scope="col">通過標準</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">T1</th><td>F3、F4、F18</td><td><code>0_self_check.bat</code> 的練習樣本評估</td><td>整體 96.5%、一般樣本 100%</td></tr>
+            <tr><th scope="row">T2</th><td>F10</td><td><code>test_voice_commands.py</code></td><td>79/79 通過</td></tr>
+            <tr><th scope="row">T3</th><td>F5、F6、F7</td><td><code>test_trigger.py</code></td><td>14/14 通過</td></tr>
+            <tr><th scope="row">T4</th><td>F1、F2、F15、F16</td><td><code>1_start_dry_run.bat</code>，逐一比 7 種手勢，試各個視窗按鍵</td><td>進度環與提示都正確</td></tr>
+            <tr><th scope="row">T5</th><td>F8、F9</td><td>模擬模式下說 10 句指令，再故意製造背景聲音</td><td>每句只辨識一次；雜音不觸發</td></tr>
+            <tr><th scope="row">T6</th><td>F11、F12、F13</td><td>正式模式逐一測試 3.5 的動作</td><td>全部動作正確；沒有按鈕時不點擊</td></tr>
+            <tr><th scope="row">T7</th><td>F18</td><td>收集自己的樣本並評估</td><td>達到組內訂的辨識率與誤觸率目標</td></tr>
+            <tr><th scope="row">T8</th><td>F17</td><td>模擬模式下做 10 分鐘日常動作</td><td>用紀錄算出誤觸次數</td></tr>
+            <tr><th scope="row">T9</th><td>例外處理</td><td>拔鏡頭、關網路、關掉 YouTube、把滑鼠移到角落</td><td>都依 3.7 的方式反應，程式不當掉</td></tr>
+            <tr><th scope="row">T10</th><td>F19、F21</td><td><code>test_profiles.py</code>（視窗標題、動作支援、語音轉換、快捷鍵名稱）</td><td>77/77 通過</td></tr>
+            <tr><th scope="row">T11</th><td>F11、F19、F20</td><td>開 PowerPoint 放映與 PDF，切換視窗觀察模式；逐一測試第 8 章的動作、頁碼與備忘稿</td><td>模式切換正確，動作都有效</td></tr>
+            <tr><th scope="row">T12</th><td>F11、F21</td><td>在測試會議中用手勢與語音開關麥克風、鏡頭、舉手</td><td>三種會議軟體至少測一種，全部有效</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="hardware">
+      <h2><span class="num">4</span>硬體與軟體</h2>
+      <div class="table-wrap">
+        <table class="nw3">
+          <thead><tr><th scope="col">項目</th><th scope="col">建議規格</th><th scope="col">數量</th><th scope="col">參考價</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">筆記型電腦</th><td>Windows 10／11、Intel i5 第 8 代或同級以上、8 GB 記憶體</td><td>1</td><td>學校既有</td></tr>
+            <tr><th scope="row">USB 網路攝影機</th><td>720p、30fps 以上；筆電內建鏡頭也可以先用</td><td>1</td><td>0～1,200 元</td></tr>
+            <tr><th scope="row">麥克風</th><td>筆電內建即可；教室吵雜時用領夾或耳機麥克風</td><td>1</td><td>0～300 元</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">軟體</th><th scope="col">用途</th><th scope="col">取得方式</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Python 3.10 以上</th><td>主程式</td><td>python.org，勾選 <code>Add Python to PATH</code></td></tr>
+            <tr><th scope="row">mediapipe、opencv-python、numpy、pillow</th><td>手部關節點、影像、畫面文字</td><td rowspan="2"><code>pip install -r requirements.txt</code></td></tr>
+            <tr><th scope="row">pyautogui、pywin32、sounddevice、SpeechRecognition</th><td>按鍵與點擊、視窗控制、錄音、語音辨識</td></tr>
+            <tr><th scope="row">手部模型 <code>hand_landmarker.task</code></th><td>MediaPipe 官方模型</td><td>第一次執行自動下載</td></tr>
+            <tr><th scope="row">Google Chrome 或 Edge</th><td>播放 YouTube、閱讀 PDF、Google Meet</td><td>系統既有</td></tr>
+            <tr><th scope="row">Microsoft PowerPoint（選用）</th><td>簡報模式的頁碼、備忘稿、跳頁、找標題</td><td>學校 Office 授權</td></tr>
+            <tr><th scope="row">Teams、Zoom（選用）</th><td>視訊會議模式</td><td>學校帳號或免費版</td></tr>
+            <tr><th scope="row">OBS Studio 或 Windows 內建錄影（<kbd>Win</kbd>＋<kbd>G</kbd>）</th><td>錄製成果影片</td><td>免費</td></tr>
+            <tr><th scope="row">Google Antigravity／Claude Code</th><td>AI 程式助手（擇一）</td><td>Antigravity 免費；Claude Code 需 Claude 付費方案</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>鏡頭擺放</h3>
+      <ul>
+        <li>鏡頭放在螢幕上方，手舉在胸前、離鏡頭約 40～80 公分，手掌在畫面中至少要有手機大小。</li>
+        <li>背景單純、光線從前方來；避免背光（背後是窗戶）。</li>
+        <li>鏡頭不要對著電視或另一個螢幕，畫面裡的手也會被偵測到。</li>
+      </ul>
+    </section>
+
+    <section id="gesture">
+      <h2><span class="num">5</span>手勢辨識原理</h2>
+      <h3>步驟一：21 個關節點</h3>
+      <p>MediaPipe 在每張畫面找出手的 21 個關節點，座標是 0～1 的比例。程式先乘上畫面寬高換成像素，才不會因為畫面長寬比不同而變形。</p>
+      <figure class="figure">
+        <svg viewBox="0 0 680 360" role="img" aria-labelledby="handTitle handDesc">
+          <title id="handTitle">手部 21 個關節點與手指伸直判斷</title>
+          <desc id="handDesc">左邊是張開的手，標出 0 號手腕、1 到 4 號大拇指、5 到 8 號食指、9 到 12 號中指、13 到 16 號無名指、17 到 20 號小指，以及手腕到中指指根的手掌長度。右邊上方是伸直的手指：指根到第二關節、第二關節到指尖兩段幾乎同方向，夾角小；右邊下方是彎曲的手指：兩段夾角大，而且指尖比第二關節更靠近手腕。</desc>
+          <g stroke="#0369a1" stroke-width="3" stroke-linecap="round" fill="none">
+            <polyline points="200,340 147,302 110,272 69,239 33,211"/>
+            <polyline points="147,190 138,123 132,81 127,48"/>
+            <polyline points="185,182 185,107 185,62 185,26"/>
+            <polyline points="222,190 231,120 236,78 240,45"/>
+            <polyline points="257,205 271,151 279,119 287,90"/>
+            <polyline points="200,340 147,190 185,182 222,190 257,205 200,340"/>
+          </g>
+          <line x1="200" y1="340" x2="185" y2="182" stroke="#b45309" stroke-width="3" stroke-dasharray="6 4"/>
+          <line x1="300" y1="336" x2="330" y2="336" stroke="#b45309" stroke-width="3" stroke-dasharray="6 4"/>
+          <text class="svg-sub" x="336" y="340" style="fill:#92400e">手掌長度（0→9）</text>
+          <g fill="#fff" stroke="#0f172a" stroke-width="1">
+            <circle cx="200" cy="340" r="9"/><circle cx="147" cy="302" r="7"/><circle cx="110" cy="272" r="7"/><circle cx="69" cy="239" r="7"/><circle cx="33" cy="211" r="9"/>
+            <circle cx="147" cy="190" r="7"/><circle cx="138" cy="123" r="7"/><circle cx="132" cy="81" r="7"/><circle cx="127" cy="48" r="9"/>
+            <circle cx="185" cy="182" r="7"/><circle cx="185" cy="107" r="7"/><circle cx="185" cy="62" r="7"/><circle cx="185" cy="26" r="9"/>
+            <circle cx="222" cy="190" r="7"/><circle cx="231" cy="120" r="7"/><circle cx="236" cy="78" r="7"/><circle cx="240" cy="45" r="9"/>
+            <circle cx="257" cy="205" r="7"/><circle cx="271" cy="151" r="7"/><circle cx="279" cy="119" r="7"/><circle cx="287" cy="90" r="9"/>
+          </g>
+          <g font-size="10" font-family="JetBrains Mono, monospace" fill="#0f172a" text-anchor="middle">
+            <text x="200" y="344">0</text><text x="147" y="306">1</text><text x="110" y="276">2</text><text x="69" y="243">3</text><text x="33" y="215">4</text>
+            <text x="147" y="194">5</text><text x="138" y="127">6</text><text x="132" y="85">7</text><text x="127" y="52">8</text>
+            <text x="185" y="186">9</text><text x="185" y="111">10</text><text x="185" y="66">11</text><text x="185" y="30">12</text>
+            <text x="222" y="194">13</text><text x="231" y="124">14</text><text x="236" y="82">15</text><text x="240" y="49">16</text>
+            <text x="257" y="209">17</text><text x="271" y="155">18</text><text x="279" y="123">19</text><text x="287" y="94">20</text>
+          </g>
+          <text class="svg-label" x="400" y="40">伸直的手指</text>
+          <polyline points="420,180 420,120 420,70" stroke="#15803d" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <g fill="#fff" stroke="#15803d" stroke-width="2"><circle cx="420" cy="180" r="6"/><circle cx="420" cy="120" r="6"/><circle cx="420" cy="70" r="6"/></g>
+          <text class="svg-sub" x="436" y="184">指根</text><text class="svg-sub" x="436" y="124">第二關節</text><text class="svg-sub" x="436" y="74">指尖</text>
+          <text class="svg-sub" x="400" y="210">兩段夾角 ≈ 0°</text>
+          <text class="svg-sub" x="400" y="226">小於 40° 算伸直</text>
+
+          <text class="svg-label" x="560" y="40">彎曲的手指</text>
+          <polyline points="570,180 570,120 610,150" stroke="#b91c1c" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="#fff" stroke="#b91c1c" stroke-width="2"><circle cx="570" cy="180" r="6"/><circle cx="570" cy="120" r="6"/><circle cx="610" cy="150" r="6"/></g>
+          <path d="M570 100 A 20 20 0 0 1 588 128" fill="none" stroke="#b91c1c" stroke-width="1.5"/>
+          <text class="svg-sub" x="592" y="112">夾角大</text>
+          <text class="svg-sub" x="540" y="210">指尖比第二關節</text>
+          <text class="svg-sub" x="540" y="226">更靠近手腕</text>
+          <text class="svg-sub" x="400" y="280">只用「角度」和「長度比例」判斷，</text>
+          <text class="svg-sub" x="400" y="298">所以手轉個角度、離鏡頭遠近不同，</text>
+          <text class="svg-sub" x="400" y="316">都能得到一樣的結果。</text>
+        </svg>
+        <figcaption>0＝手腕；每根手指由指根往指尖編號；手腕到中指指根（0→9）當作「手掌長度」</figcaption>
+      </figure>
+
+      <h3>步驟二：每根手指伸直還是彎曲</h3>
+      <ul>
+        <li><strong>四指</strong>：「指根→第二關節」和「第二關節→指尖」兩段的夾角小於 <code>straight_deg</code>（40°），而且指尖到手腕的距離大於第二關節到手腕的 1.1 倍，才算伸直。</li>
+        <li><strong>大拇指</strong>：兩段夾角小於 <code>thumb_straight_deg</code>（35°），而且指尖離食指指根超過手掌長度的 <code>thumb_out_ratio</code>（0.5）倍，才算伸出。</li>
+        <li><strong>手太遠</strong>：手掌長度小於畫面高度的 <code>min_palm_ratio</code>（10%）就不判斷。</li>
+      </ul>
+
+      <h3>步驟三：組合成手勢</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">手勢</th><th scope="col">四指（食、中、無名、小）</th><th scope="col">額外條件</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">手掌張開</th><td>全部伸直</td><td>—</td></tr>
+            <tr><th scope="row">剪刀手</th><td>食指、中指伸直</td><td>兩指方向至少差 10°（分開）</td></tr>
+            <tr><th scope="row">食指向右／左</th><td>只有食指伸直</td><td>食指方向（指根→指尖）在右方或左方 ±40° 內</td></tr>
+            <tr><th scope="row">大拇指朝上／下</th><td>全部彎曲</td><td>大拇指伸出，方向在上方或下方 ±40° 內</td></tr>
+            <tr><th scope="row">握拳</th><td>全部彎曲</td><td>大拇指沒有伸出</td></tr>
+            <tr><th scope="row">沒有指令</th><td colspan="2">其他組合，例如三根手指、食指朝上、兩指併攏</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="formula">方向角 ＝ atan2(−Δy, Δx)　→　0°＝右、90°＝上、180°＝左、−90°＝下</div>
+      <p class="muted">畫面的 y 軸是往下增加，所以 Δy 要加負號，角度才和數學課的方向一致。鏡頭畫面會先左右翻轉成鏡像，「向右」就是使用者自己的右邊。</p>
+
+      <h3>步驟四：什麼時候觸發</h3>
+      <p>見 3.3 的狀態機。以練習測試為例：手掌張開從第 0.5 秒開始，多數決要約 3 格（0.07 秒）才確認換了手勢，再蓄力 0.5 秒，所以在第 1.07 秒觸發。</p>
+      <div class="note tip">
+        <strong>練習樣本的成績（<code>0_self_check.bat</code>）</strong>
+        1,350 筆合成樣本整體準確率 96.5%：一般樣本 100%，角度偏到 ±50° 的困難樣本 80%，誤觸率 2.0%。錯誤大多是「大拇指朝上／下」角度太斜被判成「沒有指令」或「握拳」。把 <code>direction_tolerance_deg</code> 暫時改成 50，整體升到 97.9%，但誤觸率變成 2.3%，這就是「放寬＝好認，但也容易誤觸」的取捨。合成手比真的手整齊，報告要用自己收集的樣本。
+      </div>
+    </section>
+
+    <section id="voice">
+      <h2><span class="num">6</span>語音指令原理</h2>
+      <h3>一句話從哪裡開始、到哪裡結束</h3>
+      <ol>
+        <li>啟動時先安靜 1 秒，量出背景雜音的音量（RMS）。</li>
+        <li>門檻＝背景音量 × <code>voice_threshold_ratio</code>（3 倍），且至少 <code>voice_min_rms</code>（300）。</li>
+        <li>每 0.05 秒檢查一次音量：超過門檻就開始錄（連同前 0.3 秒，避免第一個字被切掉）；安靜 0.8 秒就當作說完；最長 6 秒。</li>
+        <li>有聲音的部分不到 0.3 秒，多半是咳嗽或碰撞聲，直接丟掉。</li>
+        <li>把這段聲音送到 Google 語音辨識（繁體中文），得到文字。</li>
+      </ol>
+      <h3>文字變成指令</h3>
+      <p><code>voice_commands.py</code> 依照固定順序比對關鍵詞，<strong>越特別的句子越先比對</strong>：</p>
+      <ol class="flow" aria-label="語音指令比對順序">
+        <li><b>系統</b>關閉程式、手勢鎖</li>
+        <li><b>換歌</b>「換播＋歌名」</li>
+        <li><b>關閉</b>「關閉這首」</li>
+        <li><b>網站與畫面</b>開 YouTube、略過、全螢幕…</li>
+        <li><b>音量</b>大聲、小聲、靜音</li>
+        <li><b>時間</b>倒退先於快轉</li>
+        <li><b>點歌與播放</b>最後才比對</li>
+      </ol>
+      <p>例如「往後快轉 20 秒」同時有「往後」和「快轉」，因為「倒退類」先比對，所以是倒退 20 秒；「關閉這首換播稻香」先比對到「換播」，所以是換歌而不是單純關閉。</p>
+      <div class="formula">「快轉一分半」→ 1×60＋30 ＝ 90 秒　　「兩分鐘三十秒」→ 2×60＋30 ＝ 150 秒</div>
+      <p><strong>喚醒詞</strong>：在 <code>config.json</code> 設定 <code>voice_wake_word</code>（例如「小觸」）後，只有「小觸」開頭的句子才會動作，聊天時比較不會誤觸。</p>
+      <div class="note info">
+        <strong>實測參考</strong>
+        用合成語音「往前快轉三十秒」測試，辨識結果為「往前快轉30秒」，辨識花費約 0.6～0.8 秒（依網路狀況而定），解析成快轉 30 秒。
+      </div>
+    </section>
+
+    <section id="action">
+      <h2><span class="num">7</span>操作 YouTube 的方法</h2>
+      <h3>讓 YouTube 視窗在最前面</h3>
+      <p>鍵盤按鍵只會送到「前景」的視窗。程式先用視窗標題找出含有「YouTube」的瀏覽器視窗，再把它叫到最前面。Windows 為了安全，不允許背景程式隨便搶焦點，所以程式先把自己的輸入佇列接到目前的前景視窗（<code>AttachThreadInput</code>），再切換視窗；切換失敗就不送按鍵，避免按到別的程式。</p>
+      <h3>送出快捷鍵</h3>
+      <p>用 <code>pyautogui</code> 模擬按鍵，對照表見 3.5。快轉 25 秒會拆成 <kbd>l</kbd> 兩次（20 秒）加 <kbd>→</kbd> 一次（5 秒）。</p>
+      <h3>按下「略過」</h3>
+      <ol>
+        <li>只截取 YouTube 視窗的範圍。</li>
+        <li>把 <code>templates/</code> 裡的按鈕圖片，從 0.6 倍到 1.6 倍縮放 11 種大小，逐一用正規化相關係數（<code>TM_CCOEFF_NORMED</code>）比對。</li>
+        <li>最高相似度超過 <code>skip_match_threshold</code>（0.8）才點擊中心，點完把滑鼠移回原位。</li>
+        <li>YouTube 改版或語言不同時，用 <code>6_make_skip_template.bat</code> 截新的按鈕圖片。</li>
+      </ol>
+      <h3>點歌</h3>
+      <p>用歌名查詢 YouTube 搜尋結果頁，取出第一部影片的網址後開啟；查不到就開搜尋結果頁，讓使用者自己選。換歌時先對 YouTube 視窗按 <kbd>Ctrl</kbd>＋<kbd>W</kbd> 關掉舊分頁。</p>
+      <div class="note warn">
+        <strong>限制（要寫進報告）</strong>
+        <ul>
+          <li>YouTube 的搜尋框被選取時，<kbd>k</kbd>、<kbd>f</kbd> 會變成打字；先用滑鼠點一下影片畫面。</li>
+          <li>「播放」和「暫停」都是按 <kbd>k</kbd>，程式不知道影片目前是播放還是暫停。</li>
+          <li>同時開了多個 YouTube 視窗時，只會控制找到的第一個。</li>
+          <li>搜尋結果頁的格式改變時，點歌可能只會開搜尋結果頁。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="profiles">
+      <h2><span class="num">8</span>應用程式模式：簡報、PDF、視訊會議</h2>
+      <p>同一個手勢，在不同程式要做不同的事：看 YouTube 時「食指向右」是快轉，上台簡報時應該是「下一頁」。程式用「應用程式模式」解決這件事，每個模式有自己的手勢對應與快捷鍵，全部寫在 <code>config.json</code> 的 <code>profiles</code>。</p>
+
+      <h3>8.1 怎麼知道現在是哪個模式</h3>
+      <ol class="flow" aria-label="模式判斷流程">
+        <li><b>每 0.5 秒</b>讀最前面視窗的標題</li>
+        <li><b>依序比對</b>關鍵字（PowerPoint → Teams → Zoom → YouTube → Meet → PDF）</li>
+        <li><b>有變化</b>就換手勢對應，畫面顯示新模式</li>
+        <li><b>不認得</b>（例如記事本、AirTouch 自己）就維持原本模式</li>
+      </ol>
+      <ul>
+        <li><strong>比對順序很重要</strong>：「YouTube 教學簡報.pptx - PowerPoint」要算簡報；「How to use Google Meet - YouTube」要算 YouTube。<code>test_profiles.py</code> 用 14 個真實格式的標題檢查。</li>
+        <li><strong>手動固定</strong>：按 <kbd>p</kbd> 換到下一個模式、說「切換到簡報模式」，或用 <code>7_presentation_mode.bat</code> 啟動；固定後不會自動切換。按 <kbd>a</kbd> 或說「自動切換」恢復。</li>
+        <li><strong>切換瞬間不誤觸</strong>：換模式時，手上正在比的手勢要重新比，才會觸發新模式的動作。</li>
+      </ul>
+
+      <h3>8.2 各模式的手勢</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">模式</th><th scope="col">食指向右／左</th><th scope="col">手掌張開</th><th scope="col">剪刀手</th><th scope="col">大拇指朝上／下</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">YouTube</th><td>快轉／倒退 10 秒</td><td>播放／暫停</td><td>按下「略過」</td><td>音量</td></tr>
+            <tr><th scope="row">PowerPoint 簡報</th><td>下一頁／上一頁（比著不放每 1.2 秒再一次）</td><td>黑畫面切換（0.8 秒）</td><td>雷射筆（0.8 秒）</td><td>音量</td></tr>
+            <tr><th scope="row">PDF 閱讀</th><td>下一頁／上一頁</td><td>恢復頁面大小</td><td>—</td><td>放大／縮小（可連續）</td></tr>
+            <tr><th scope="row">Teams／Zoom／Meet</th><td>向右＝舉手（1.2 秒）</td><td>麥克風開關（1 秒）</td><td>鏡頭開關（1 秒）</td><td>音量</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">握拳 1.5 秒的手勢鎖在所有模式都一樣。會議模式把維持時間設得比較長，因為誤開麥克風的後果比較嚴重。</p>
+
+      <h3>8.3 PowerPoint 簡報</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">動作</th><th scope="col">快捷鍵</th><th scope="col">語音例句</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">從頭／從這頁放映</th><td><kbd>F5</kbd>／<kbd>Shift</kbd>＋<kbd>F5</kbd></td><td>開始放映、從這頁放映</td></tr>
+            <tr><th scope="row">下一頁／上一頁</th><td><kbd>→</kbd>／<kbd>←</kbd></td><td>下一頁、翻回去</td></tr>
+            <tr><th scope="row">第一頁／最後一頁</th><td><kbd>Home</kbd>／<kbd>End</kbd></td><td>最後一頁</td></tr>
+            <tr><th scope="row">跳到第 N 頁</th><td>程式介面（沒有時改成輸入數字＋<kbd>Enter</kbd>）</td><td>跳到第五頁</td></tr>
+            <tr><th scope="row">跳到指定投影片</th><td>程式介面：先找標題，再找內文</td><td>跳到結論那頁</td></tr>
+            <tr><th scope="row">黑畫面／白畫面</th><td><kbd>B</kbd>／<kbd>W</kbd></td><td>黑畫面、白屏</td></tr>
+            <tr><th scope="row">雷射筆／畫筆／一般游標</th><td><kbd>Ctrl</kbd>＋<kbd>L</kbd>／<kbd>P</kbd>／<kbd>A</kbd></td><td>雷射筆、換成畫筆、箭頭</td></tr>
+            <tr><th scope="row">清除筆跡</th><td><kbd>E</kbd></td><td>擦掉</td></tr>
+            <tr><th scope="row">結束放映</th><td><kbd>Esc</kbd></td><td>結束放映</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>PowerPoint 程式介面（COM）</h3>
+      <p>快捷鍵只能「按下一頁」，不知道現在在第幾頁。Windows 版 PowerPoint 提供程式介面，Python 用 <code>pywin32</code> 就能讀寫：</p>
+      <pre><code>app = win32com.client.GetActiveObject("PowerPoint.Application")
+win = app.SlideShowWindows(1)          # 放映中的視窗
+win.View.Slide.SlideIndex              # 現在第幾張
+win.Presentation.Slides.Count          # 總共幾張
+win.View.GotoSlide(5)                  # 跳到第 5 張</code></pre>
+      <ul>
+        <li><strong>頁碼</strong>：懸浮視窗每秒更新「第 3／12 頁」，講者不必回頭看螢幕。</li>
+        <li><strong>備忘稿</strong>：按 <kbd>n</kbd> 在懸浮視窗顯示這頁的備忘稿（講者提示），最多 3 行。</li>
+        <li><strong>依標題找頁</strong>：說「跳到實驗結果」，程式逐頁比對標題，找不到再找內文。</li>
+        <li>電腦沒有安裝 PowerPoint 時，這些功能自動停用；跳頁改用輸入數字＋<kbd>Enter</kbd>，其他快捷鍵照常可用。</li>
+      </ul>
+      <div class="note info">
+        <strong>實測</strong>
+        用程式在背景建立一份 4 頁、有備忘稿的簡報：讀出 4 個標題與備忘稿都正確；「結論」找到第 4 頁、只出現在內文的「混淆矩陣」找到第 3 頁、不存在的「預算」回傳找不到。放映中的跳頁需要全螢幕放映，請在實機測試（T11）。
+      </div>
+
+      <h3>8.4 PDF 閱讀</h3>
+      <ul>
+        <li>換頁用 <kbd>PageDown</kbd>／<kbd>PageUp</kbd>，放大縮小用 <kbd>Ctrl</kbd>＋<kbd>=</kbd>／<kbd>-</kbd>，<kbd>Ctrl</kbd>＋<kbd>0</kbd> 恢復大小（Acrobat 是「符合頁面」，Edge 是「縮放 100%」）。</li>
+        <li>Edge 要在檢視設定選「單頁」，換頁才會剛好一頁；「跳到第幾頁」在 PDF 模式不支援，會顯示提示。</li>
+      </ul>
+
+      <h3>8.5 視訊會議</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">動作</th><th scope="col">Microsoft Teams</th><th scope="col">Zoom</th><th scope="col">Google Meet</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">麥克風開關</th><td><kbd>Ctrl</kbd>＋<kbd>Shift</kbd>＋<kbd>M</kbd></td><td><kbd>Alt</kbd>＋<kbd>A</kbd></td><td><kbd>Ctrl</kbd>＋<kbd>D</kbd></td></tr>
+            <tr><th scope="row">鏡頭開關</th><td><kbd>Ctrl</kbd>＋<kbd>Shift</kbd>＋<kbd>O</kbd></td><td><kbd>Alt</kbd>＋<kbd>V</kbd></td><td><kbd>Ctrl</kbd>＋<kbd>E</kbd></td></tr>
+            <tr><th scope="row">舉手／放下</th><td><kbd>Ctrl</kbd>＋<kbd>Shift</kbd>＋<kbd>K</kbd></td><td><kbd>Alt</kbd>＋<kbd>Y</kbd></td><td><kbd>Ctrl</kbd>＋<kbd>Alt</kbd>＋<kbd>H</kbd></td></tr>
+            <tr><th scope="row">視窗標題含有</th><td>Microsoft Teams</td><td>Zoom Meeting、Zoom 會議</td><td>Meet - 、Google Meet</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li><strong>同一句話，不同意思</strong>：會議模式用 <code>voice_map</code> 把「靜音」換成「麥克風開關」；要關電腦喇叭請說「電腦靜音」。</li>
+        <li>說「會議模式」時，程式會看 Teams、Zoom、Meet 哪一個的視窗有開，就切到那一個。</li>
+        <li>快捷鍵只對「會議中的視窗」有效；會議軟體更新後快捷鍵可能改變，請以官方說明為準並修改 <code>config.json</code>。</li>
+      </ul>
+
+      <h3>8.6 自己新增一個模式</h3>
+      <p>在 <code>config.json</code> 的 <code>profiles</code> 加一段就能新增，例如 VLC 播放器：</p>
+      <pre><code>"vlc": {
+  "name": "VLC 播放器",
+  "window": ["VLC media player"],
+  "keys": {"play_pause": ["space"], "fullscreen": ["f"], "next_video": ["n"], "prev_video": ["p"]},
+  "gestures": {
+    "open_palm":  {"action": "play_pause", "hold_sec": 0.5},
+    "thumb_up":   {"action": "volume_up",  "hold_sec": 0.3, "repeat_sec": 0.25, "arg": 1},
+    "thumb_down": {"action": "volume_down", "hold_sec": 0.3, "repeat_sec": 0.25, "arg": 1}
+  }
+}</code></pre>
+      <p>新增後執行 <code>test_profiles.py</code>：它會檢查每個手勢的動作這個模式都支援、快捷鍵名稱都正確。記得把新程式的視窗標題加進測試的 <code>TITLES</code>，並確認比對順序不會搶走別的模式。</p>
+    </section>
+
+    <section id="flow">
+      <h2><span class="num">9</span>12 週製作流程</h2>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">週次</th><th scope="col">工作內容</th><th scope="col">要交出的成果</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">第 1 週</th><td>訪談或問卷：什麼情況下不方便碰鍵盤滑鼠？比較市售手勢控制產品、語音助理</td><td>需求紀錄、產品比較表</td></tr>
+            <tr><th scope="row">第 2 週</th><td>安裝環境，執行 <code>0_self_check.bat</code>；讀懂 <code>config.json</code>；分工</td><td>自我檢查截圖</td></tr>
+            <tr><th scope="row">第 3 週</th><td>模擬模式試用 7 種手勢，按 <kbd>d</kbd> 觀察每根手指的判斷</td><td>手勢試用紀錄</td></tr>
+            <tr><th scope="row">第 4 週</th><td>規劃樣本收集：幾個人、幾種距離與光線；用 <code>4_collect_samples.bat</code> 收集</td><td>樣本收集計畫、樣本檔</td></tr>
+            <tr><th scope="row">第 5 週</th><td>評估樣本，找出最容易認錯的手勢與情況</td><td>基準成績（辨識率、混淆矩陣、誤觸率）</td></tr>
+            <tr><th scope="row">第 6 週</th><td>用 <code>--set</code> 調整門檻，<strong>每次只改一項</strong>；必要時修改判斷規則</td><td>門檻比較表</td></tr>
+            <tr><th scope="row">第 7 週</th><td>語音：擴充測試句（每人 20 句自己的說法），修改解析直到全部通過</td><td>測試句與通過率</td></tr>
+            <tr><th scope="row">第 8 週</th><td>語音實測：安靜教室與吵雜環境、不同組員，各說 30 句</td><td>語音辨識成功率表</td></tr>
+            <tr><th scope="row">第 9 週</th><td>正式模式測試所有動作與應用程式模式（簡報、PDF、會議）；調整「略過」樣板</td><td>動作測試表（T6、T11、T12）</td></tr>
+            <tr><th scope="row">第 10 週</th><td>誤觸測試與反應時間測試</td><td>誤觸次數、反應時間</td></tr>
+            <tr><th scope="row">第 11 週</th><td>使用者測試：請同學手油油或戴手套完成任務，和滑鼠比較；請老師用簡報模式上一段課，和簡報筆比較</td><td>任務時間、滿意度問卷</td></tr>
+            <tr><th scope="row">第 12 週</th><td>錄製成果影片、整理數據</td><td>成果影片</td></tr>
+            <tr><th scope="row">第 13 週以後</th><td>撰寫書面報告、練習上台報告</td><td>書面報告、簡報</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="code">
+      <h2><span class="num">10</span>程式包使用說明</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">檔案</th><th scope="col">用途</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>0_self_check.bat</code></th><td>不用鏡頭的自我檢查：練習樣本評估、語音測試句、觸發邏輯、應用程式模式</td></tr>
+            <tr><th scope="row"><code>1_start_dry_run.bat</code></th><td>模擬模式：只顯示會做什麼，不按鍵</td></tr>
+            <tr><th scope="row"><code>2_start_airtouch.bat</code></th><td>正式使用（先開好 YouTube 影片）</td></tr>
+            <tr><th scope="row"><code>3_start_text_mode.bat</code></th><td>打字代替說話</td></tr>
+            <tr><th scope="row"><code>4_collect_samples.bat</code></th><td>收集手勢樣本（先輸入標籤）</td></tr>
+            <tr><th scope="row"><code>5_evaluate_gestures.bat</code></th><td>評估 <code>data/</code> 裡所有樣本</td></tr>
+            <tr><th scope="row"><code>6_make_skip_template.bat</code></th><td>製作「略過」按鈕樣板</td></tr>
+            <tr><th scope="row"><code>7_presentation_mode.bat</code></th><td>上台簡報用：固定在 PowerPoint 模式</td></tr>
+            <tr><th scope="row"><code>airtouch.py</code></th><td>主程式：鏡頭、畫面、懸浮視窗、紀錄</td></tr>
+            <tr><th scope="row"><code>gestures.py</code></th><td>手勢判斷與觸發邏輯</td></tr>
+            <tr><th scope="row"><code>voice_listener.py</code>／<code>voice_commands.py</code></th><td>錄音與辨識／文字解析</td></tr>
+            <tr><th scope="row"><code>actions.py</code></th><td>依模式決定動作、切換視窗、按鍵、開網頁、找「略過」按鈕</td></tr>
+            <tr><th scope="row"><code>ppt_com.py</code></th><td>PowerPoint 程式介面：頁碼、備忘稿、跳頁、找標題</td></tr>
+            <tr><th scope="row"><code>collect_samples.py</code>、<code>evaluate_gestures.py</code>、<code>make_demo_samples.py</code></th><td>收集、評估、產生練習樣本</td></tr>
+            <tr><th scope="row"><code>test_voice_commands.py</code>、<code>test_trigger.py</code>、<code>test_profiles.py</code></th><td>自動測試</td></tr>
+            <tr><th scope="row"><code>config.json</code></th><td>所有設定，說明見 <code>README_先看我.md</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>收集樣本的按鍵</h3>
+      <p>按 <kbd>1</kbd> 張開、<kbd>2</kbd> 食指向右、<kbd>3</kbd> 食指向左、<kbd>4</kbd> 大拇指朝上、<kbd>5</kbd> 大拇指朝下、<kbd>6</kbd> 剪刀手、<kbd>7</kbd> 握拳、<kbd>0</kbd> 沒有指令（抓頭、揮手、拿杯子）。倒數 1 秒後錄 2 秒，錄的時候可以慢慢轉動手腕、前後移動；<kbd>q</kbd> 結束。</p>
+      <h3>常用指令</h3>
+      <pre><code>python airtouch.py --dry-run --text          模擬模式＋打字指令
+python airtouch.py --no-voice                只用手勢
+python airtouch.py --profile pdf             固定在 PDF 模式
+python collect_samples.py --tag 王小明_遠_晚上
+python evaluate_gestures.py --set straight_deg=30
+python evaluate_gestures.py data/samples_王小明_遠_晚上.csv</code></pre>
+    </section>
+
+    <section id="prompts">
+      <h2><span class="num">11</span>AI 助手提示語（Antigravity／Claude Code）</h2>
+      <p>用 Antigravity 開啟程式包資料夾，或在 Claude 桌面版的「Code」分頁選擇資料夾，再貼上提示語。每次修改後都要執行 <code>0_self_check.bat</code>，確認原本的測試沒有壞掉。</p>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>① 讀懂手勢判斷</span><button type="button" class="copy" data-target="p1">複製</button></div>
+<pre id="p1">請閱讀 gestures.py，用高中生看得懂的繁體中文說明：
+1. analyze 怎麼判斷一根手指伸直？為什麼用角度和長度比例，而不是直接看座標？
+2. 7 種手勢各自的條件，畫成一張表
+3. GestureTrigger 的多數決、蓄力、重複、冷卻、手勢鎖分別解決什麼問題？
+先不要修改任何檔案。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>② 新增手勢：食指朝上＝下一部</span><button type="button" class="copy" data-target="p2">複製</button></div>
+<pre id="p2">請在 gestures.py 新增手勢 point_up：只有食指伸直，而且食指方向在上方 ±40° 內
+（目前這種情況會判成 none）。在 config.json 的 profiles 裡，youtube 模式的 gestures 加上 point_up 對應 next_video、
+powerpoint 模式對應 first_page，hold_sec 都設 0.8。
+同時更新 GESTURE_NAMES、SHORT_NAMES、evaluate_gestures.py 的 COMMANDS、collect_samples.py 的按鍵（用 8）。
+make_demo_samples.py 裡「食指朝上」目前被當成 none，請改成 point_up 標籤。
+改完執行 make_demo_samples.py、evaluate_gestures.py、test_trigger.py，回報成績變化。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>③ 新增語音說法</span><button type="button" class="copy" data-target="p3">複製</button></div>
+<pre id="p3">我們收集到同學的其他說法，請先把下面這些句子加進 voice_test_phrases.csv（我會附上預期動作），
+執行 test_voice_commands.py 看哪些失敗，再修改 voice_commands.py 讓它們通過，
+而且原本的 48 句仍然全部通過。修改時說明為什麼要放在那個比對順序。
+（在這裡貼上：句子, 預期動作, 預期參數）</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>④ 分析認錯的樣本</span><button type="button" class="copy" data-target="p4">複製</button></div>
+<pre id="p4">請執行 python evaluate_gestures.py，讀取 output 資料夾中最新的 gesture_eval CSV，
+找出最常被認錯的「真正手勢→程式判斷」組合，以及哪個標籤（人、距離、光線）最差。
+對最常見的錯誤，請載入那些樣本，列出每根手指的彎曲角度與大拇指伸出比例，
+說明是哪一條規則沒過，並建議要調整哪個門檻。先不要修改程式。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>⑤ 門檻實驗圖表</span><button type="button" class="copy" data-target="p5">複製</button></div>
+<pre id="p5">請寫 compare_thresholds.py：對 data 資料夾裡我們自己的樣本（排除 demo_samples.csv），
+把 straight_deg 從 25 到 55、每 5 度一組，呼叫 evaluate_gestures.py 的函式算出「指令手勢辨識率」與「誤觸率」，
+用 matplotlib 畫成折線圖存到 output/threshold_straight_deg.png，並用繁體中文說明建議的設定值。
+不要修改 config.json。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>⑥ 延伸：訓練分類模型和規則法比較</span><button type="button" class="copy" data-target="p6">複製</button></div>
+<pre id="p6">請寫 train_knn.py：讀取 data 資料夾裡我們自己的樣本，先把每筆 21 個點以手腕為原點、除以手掌長度做正規化，
+用 scikit-learn 的 KNeighborsClassifier，依「人」分組做交叉驗證（同一個人的樣本不能同時出現在訓練與測試），
+印出每個手勢的辨識率與誤觸率，並和 evaluate_gestures.py 的規則法放在同一張表比較。
+需要安裝的套件請先告訴我。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>⑦ 新增一個應用程式模式</span><button type="button" class="copy" data-target="p7">複製</button></div>
+<pre id="p7">請在 config.json 的 profiles 新增「VLC 播放器」模式（視窗標題含 VLC media player）：
+空白鍵播放暫停、f 全螢幕、n 下一部、p 上一部，手勢比照 YouTube 模式但沒有快轉與略過。
+請想清楚要放在比對順序的哪裡，並在 test_profiles.py 的 TITLES 加上 VLC 的視窗標題測試，
+執行 test_profiles.py 與 test_trigger.py 確認全部通過，最後更新 README 的模式表。</pre>
+      </div>
+    </section>
+
+    <section id="verify">
+      <h2><span class="num">12</span>測試與驗證</h2>
+      <h3>手勢樣本收集計畫</h3>
+      <ul>
+        <li>至少 4 位同學（手的大小、膚色不同），每人都要錄。</li>
+        <li>距離：近（約 40 公分）、遠（約 80 公分）；光線：白天、晚上開燈、背光。</li>
+        <li>每種組合每個手勢錄 3 次（每次約 2 秒、約 60 筆），並錄「沒有指令」的日常動作。</li>
+        <li>標籤寫成「人_距離_光線」，例如 <code>A_近_白天</code>，評估時會分開計算。</li>
+      </ul>
+      <h3>評估指標</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">指標</th><th scope="col">算法</th><th scope="col">意義</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">辨識率</th><td>某手勢被認對的筆數 ÷ 該手勢的筆數</td><td>比了會不會被認出來</td></tr>
+            <tr><th scope="row">精確率</th><td>判成某手勢且真的是 ÷ 判成該手勢的筆數</td><td>程式說是，可不可信</td></tr>
+            <tr><th scope="row">誤觸率</th><td>非指令樣本被判成指令 ÷ 非指令樣本數</td><td>日常動作會不會亂觸發</td></tr>
+            <tr><th scope="row">錯誤指令率</th><td>比 A 卻判成另一個指令 B ÷ 指令樣本數</td><td>最危險的錯誤</td></tr>
+            <tr><th scope="row">反應時間</th><td>慢動作錄影：開始比手勢到畫面提示的影格數</td><td>操作是否順手</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">樣本是「逐格」評估；實際使用時還有多數決與蓄力，所以真正的誤觸次數要用 T8 的 10 分鐘測試來量。</p>
+      <h3>語音測試</h3>
+      <ul>
+        <li>準備 30 句指令，每位組員在安靜與吵雜（播放音樂）環境各說一次，記錄「聽對文字」與「做對動作」兩個成功率。</li>
+        <li>把聽錯的文字加進 <code>voice_test_phrases.csv</code>，看看能不能靠解析規則補救（例如「快轉2蛋秒」這類錯字）。</li>
+        <li>比較開啟與不開啟喚醒詞時，聊天 5 分鐘的誤觸次數。</li>
+      </ul>
+      <h3>使用者測試</h3>
+      <ul>
+        <li>任務：暫停 → 快轉 30 秒 → 音量調大 → 換一首歌 → 全螢幕。</li>
+        <li>比較三種方式的完成時間：滑鼠鍵盤、手勢、語音；手上塗乳液或戴手套時再測一次。</li>
+        <li>請受測者填簡單的滿意度問卷（1～5 分）：容易學、反應快、不容易誤觸、會想使用。</li>
+      </ul>
+      <h3>簡報遙控比較</h3>
+      <ul>
+        <li>同一份 15 頁簡報，分別用鍵盤、簡報筆、手勢、語音換頁，記錄每次換頁的反應時間（慢動作錄影）。</li>
+        <li>講者邊講邊比手勢 10 分鐘（手勢鎖關閉），記錄「沒有要換頁卻換頁」的次數，再比較開啟手勢鎖時的差異。</li>
+        <li>統計「跳到第 N 頁」「跳到某個標題」的成功率。</li>
+      </ul>
+    </section>
+
+    <section id="ethics">
+      <h2><span class="num">13</span>安全、隱私與規範</h2>
+      <ul class="check">
+        <li>「略過」只在 YouTube 顯示按鈕時代替使用者點擊；不封鎖、不快轉、不跳過不能略過的廣告。</li>
+        <li>程式不錄影、不存照片；手勢樣本只存關節點座標。</li>
+        <li>語音會送到 Google 辨識，使用前告知旁人；不用時按 <kbd>v</kbd> 關閉語音。</li>
+        <li>收集樣本、錄製成果影片前，先取得受測者與入鏡者同意；報告中用代號，不寫真實姓名。</li>
+        <li>自動按鍵會操作電腦：測試時先用模擬模式；把滑鼠移到螢幕角落可緊急中止。</li>
+        <li>視訊會議中，手勢與語音會開關麥克風與鏡頭：先在測試會議練習，正式會議不用時握拳鎖定手勢。</li>
+        <li>點歌只播放公開影片，展示時注意影片內容是否適合在校園播放。</li>
+      </ul>
+    </section>
+
+    <section id="trouble">
+      <h2><span class="num">14</span>常見問題</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">狀況</th><th scope="col">可能原因</th><th scope="col">解決方式</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">一直顯示「手太遠」</th><td>手離鏡頭太遠、鏡頭解析度低</td><td>手靠近一點；或把 <code>min_palm_ratio</code> 調小</td></tr>
+            <tr><th scope="row">某個手勢一直認不出來</th><td>手指沒有完全伸直或彎曲、角度太斜</td><td>按 <kbd>d</kbd> 看每根手指的判斷；調整 <code>straight_deg</code>、<code>direction_tolerance_deg</code></td></tr>
+            <tr><th scope="row">大拇指朝上被當成握拳</th><td>大拇指沒有伸出夠遠</td><td>大拇指伸直；或把 <code>thumb_out_ratio</code> 調小</td></tr>
+            <tr><th scope="row">放下手時誤觸</th><td>蓄力時間太短</td><td>加長該手勢的 <code>hold_sec</code>；平常不用時握拳鎖定</td></tr>
+            <tr><th scope="row">按鍵沒反應或打出字母</th><td>YouTube 視窗沒在前景，或搜尋框被選取</td><td>先點一下影片畫面；看狀態列的失敗原因</td></tr>
+            <tr><th scope="row">「略過」按不到</th><td>按鈕樣式或語言不同、螢幕縮放比例不同</td><td>用 <code>6_make_skip_template.bat</code> 做新樣板；看提示的相似度，必要時調整 <code>skip_match_threshold</code></td></tr>
+            <tr><th scope="row">語音一直顯示「辨識中」或連線失敗</th><td>沒有網路、學校網路擋住</td><td>確認網路；先用打字模式</td></tr>
+            <tr><th scope="row">一直誤判成在說話</th><td>環境太吵、門檻太低</td><td>加大 <code>voice_threshold_ratio</code>；使用喚醒詞；換靠近嘴邊的麥克風</td></tr>
+            <tr><th scope="row">打開的是另一顆鏡頭</th><td>鏡頭編號不對</td><td><code>config.json</code> 的 <code>camera</code> 改成 1</td></tr>
+            <tr><th scope="row">畫面很卡</th><td>電腦較慢</td><td>關掉其他程式；鏡頭解析度維持 640×480</td></tr>
+            <tr><th scope="row">模式一直自動跳來跳去</th><td>常常切換視窗</td><td>按 <kbd>p</kbd> 或用 <code>7_presentation_mode.bat</code> 固定模式</td></tr>
+            <tr><th scope="row">簡報模式換頁沒反應</th><td>PowerPoint 在編輯畫面，不在放映中</td><td>先說「開始放映」或按 <kbd>F5</kbd>；放映視窗要在前面</td></tr>
+            <tr><th scope="row">沒有顯示頁碼、跳到標題失敗</th><td>沒有安裝 PowerPoint，或用的是 Google 簡報、WPS</td><td>這些功能需要 Microsoft PowerPoint；換頁快捷鍵仍可用（固定在簡報模式）</td></tr>
+            <tr><th scope="row">會議快捷鍵沒反應</th><td>最前面的不是會議視窗、會議軟體改了快捷鍵</td><td>確認會議視窗在前面；到會議軟體的說明查詢並修改 <code>config.json</code></td></tr>
+            <tr><th scope="row">pip 安裝 mediapipe 失敗</th><td>Python 版本太新或太舊</td><td>到 PyPI 查 mediapipe 支援的 Python 版本，改裝該版本</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="v2">
+      <h2><span class="num">15</span>延伸挑戰（選做）</h2>
+      <ul>
+        <li><strong>機器學習比較</strong>：用自己的樣本訓練 KNN 或小型神經網路，和規則法比較辨識率、誤觸率與「換一個人是否仍然準」（提示語 ⑥）。</li>
+        <li><strong>動態手勢</strong>：記錄食指指尖的移動軌跡，辨識「向右揮」「畫圓」，比較和靜態手勢的誤觸率。</li>
+        <li><strong>雙手手勢</strong>：兩手張開距離變大＝放大，用在簡報或看圖。</li>
+        <li><strong>更多模式</strong>：VLC、Spotify、小畫家、Google 簡報（提示語 ⑦），或讓簡報模式用語音念出備忘稿。</li>
+        <li><strong>離線語音</strong>：改用可離線的中文語音辨識模型，比較準確率、速度與隱私。</li>
+        <li><strong>實體回饋</strong>：接一塊 ESP32 與 LED 燈條，用燈色顯示手勢鎖與辨識狀態，看影片時不用盯著視窗。</li>
+      </ul>
+    </section>
+
+    <section id="report">
+      <h2><span class="num">16</span>書面報告與評分</h2>
+      <h3>報告架構</h3>
+      <ol>
+        <li><strong>摘要：</strong>問題、方法、主要成績（用自己測到的數字）。</li>
+        <li><strong>研究動機：</strong>訪談或問卷結果。</li>
+        <li><strong>文獻與現況：</strong>手勢控制產品、語音助理、MediaPipe，說明本作品的特色與限制。</li>
+        <li><strong>研究方法：</strong>功能清單與驗收標準、系統架構、狀態機、手勢判斷規則（附關節點圖與角度公式）、語音解析順序、應用程式模式的判斷方法。</li>
+        <li><strong>測試與結果：</strong>功能測試 T1～T12、手勢辨識率與混淆矩陣（依人、距離、光線）、門檻實驗、語音成功率、誤觸次數、反應時間、使用者測試。</li>
+        <li><strong>討論：</strong>錯誤原因、方法限制、隱私與規範。</li>
+        <li><strong>結論與未來展望：</strong>例如機器學習比較、動態手勢、控制其他軟體。</li>
+      </ol>
+      <h3>評分參考</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">項目</th><th scope="col">比重</th><th scope="col">優秀的表現</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">問題定義與現況</th><td>10%</td><td>有真實使用者的需求，清楚說明和現有產品的差別</td></tr>
+            <tr><th scope="row">功能設計與原理</th><td>20%</td><td>功能與驗收標準清楚，能用自己的話說明手勢規則、狀態機與語音解析</td></tr>
+            <tr><th scope="row">資料與測試</th><td>25%</td><td>樣本涵蓋多人、多距離、多光線；有混淆矩陣、誤觸與反應時間</td></tr>
+            <tr><th scope="row">改良過程</th><td>20%</td><td>一次改一項的門檻或規則實驗，能說明取捨</td></tr>
+            <tr><th scope="row">使用者體驗</th><td>15%</td><td>有使用者測試，回饋有反映到設計上</td></tr>
+            <tr><th scope="row">隱私、規範與展示</th><td>10%</td><td>遵守服務條款、取得同意、數據真實、展示清楚</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <strong>數據一定要是自己測的</strong>
+        練習樣本與測試句只能用來確認環境，報告中的數字都要來自自己收集的樣本、紀錄與錄影。
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  【專題實作】AirTouch 無接觸手勢＋語音遙控 ・ 相關頁面：<a href="airtouch_project_showcase.html">成果展示</a>・<a href="airtouch_competition_report.html">競賽書面報告</a>・<a href="ai_vision_course_guide.html">AI 視覺創客小學堂</a>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = document.getElementById(btn.dataset.target).innerText;
+      const done = () => {
+        const old = btn.textContent;
+        btn.textContent = '已複製';
+        setTimeout(() => { btn.textContent = old; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(() => window.prompt('請手動複製：', text));
+      } else {
+        window.prompt('請手動複製：', text);
+      }
+    });
+  });
+</script>
+</body>
+</html>

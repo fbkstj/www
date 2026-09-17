@@ -44,5 +44,11 @@ bike_rear_alert_starter/yolo11n.pt
 bike_rear_alert_starter/videos/*
 !bike_rear_alert_starter/videos/把影片放在這裡.txt
 
+# AirTouch 專題：執行時產生的檔案
+airtouch_starter/logs/
+airtouch_starter/output/
+airtouch_starter/models/
+airtouch_starter/data/
+
 # 加密網頁的未加密原始檔（只留在本機／雲端硬碟，不可上傳）
 _private/
