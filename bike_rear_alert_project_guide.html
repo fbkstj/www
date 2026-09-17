@@ -134,6 +134,8 @@
     .layout { display: block; }
     section { break-inside: avoid; }
   }
+  details { margin: 8px 0 16px; }
+  details summary { cursor: pointer; font-weight: 700; color: var(--primary); padding: 4px 0; }
 </style>
 <style>
   .figure { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 12px 0; }
@@ -274,6 +276,38 @@
         </svg>
         <figcaption>俯視示意：台灣靠右行駛，後方車輛會從騎士左側超車</figcaption>
       </figure>
+
+      <h3>動作要求示意影片（71 秒，有聲音）</h3>
+      <p>先看這支影片，了解每種情境下系統應該怎麼反應：左邊是朝後鏡頭，右上是俯視圖，右下是 ESP32 的 TFT、三色燈、蜂鳴器與語音。車輛動作是事先安排的模擬動畫，警示與語音規則和程式包完全相同。</p>
+      <figure class="figure">
+        <video controls preload="metadata" playsinline width="1280" height="720" poster="bike_rear_alert_scenario_poster.jpg" style="width:100%;height:auto;border-radius:8px;background:#0f172a;color:#f8fafc" aria-describedby="scenarioText">
+          <source src="bike_rear_alert_scenario.mp4" type="video/mp4">
+          你的瀏覽器無法播放影片，請<a href="bike_rear_alert_scenario.mp4">下載影片</a>觀看。
+        </video>
+        <figcaption>字幕已燒錄在畫面下方；影片也可以用 <code>8_make_scenario_video.bat</code> 重新產生</figcaption>
+      </figure>
+      <details id="scenarioText">
+        <summary>影片文字稿（每個時間點的畫面與聲音）</summary>
+        <div class="table-wrap">
+          <table class="nw1">
+            <thead><tr><th scope="col">時間</th><th scope="col">情境與畫面</th><th scope="col">燈號、TFT、語音</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">0:05</th><td>情境 0：系統啟動，後方沒有來車</td><td>語音「警示系統啟動」；綠燈恆亮；TFT「安全」「後方無來車」</td></tr>
+              <tr><th scope="row">0:14</th><td>情境 1：機車從後方逼近，τ 約 3 秒</td><td>黃燈閃、每秒短嗶；TFT「注意」「後方機車」；語音「後方機車」</td></tr>
+              <tr><th scope="row">0:15</th><td>機車更近，τ 小於 2 秒</td><td>紅燈快閃、連續嗶聲；TFT「危險」；語音「危險，機車」</td></tr>
+              <tr><th scope="row">0:18</th><td>機車經過後再維持 1 秒</td><td>解除，回到綠燈與「安全」</td></tr>
+              <tr><th scope="row">0:23</th><td>情境 2：汽車跟在後面、速度差不多，接著慢慢退後</td><td>車框大小幾乎不變，τ 很大，不警示</td></tr>
+              <tr><th scope="row">0:36</th><td>情境 3：大貨車快速逼近，在較遠處就被偵測到</td><td>語音「後方大型車」；黃燈；TFT「後方大型車」</td></tr>
+              <tr><th scope="row">0:37</th><td>大貨車 τ 小於 2 秒</td><td>語音「危險，大型車」；紅燈與連續嗶聲</td></tr>
+              <tr><th scope="row">0:48</th><td>情境 4：汽車和機車同時進入注意</td><td>語音「後方多台車」</td></tr>
+              <tr><th scope="row">0:50</th><td>兩台車同時進入危險</td><td>語音「危險，注意」</td></tr>
+              <tr><th scope="row">0:58</th><td>情境 5：USB 線被拔掉</td><td>1.5 秒後綠燈慢閃、TFT「未連線」「請檢查電腦連線」</td></tr>
+              <tr><th scope="row">1:02</th><td>USB 線接回</td><td>自動回到「安全」</td></tr>
+              <tr><th scope="row">1:05</th><td>重點整理</td><td>規則摘要與安全提醒</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
 
       <h3>分兩個階段做</h3>
       <div class="grid2">

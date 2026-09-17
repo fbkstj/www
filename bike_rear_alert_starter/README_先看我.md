@@ -30,6 +30,7 @@ TFT 螢幕同時顯示警示等級、車種與到達秒數。
 | `5_bench_demo.bat` | 桌上模型展示：鏡頭＋ESP32 燈號、TFT、語音（沒接 ESP32 會改用電腦播放語音與嗶聲） |
 | `6_make_voice_files.bat` | 用 Windows 中文語音重新產生 `sd_card/01/` 的語音檔 |
 | `7_test_voice_logic.bat` | 不用硬體，檢查「什麼時候說哪一段」的規則與傳給 ESP32 的格式 |
+| `8_make_scenario_video.bat` | （教師用，需要 ffmpeg）重新產生「動作要求示意影片」`output/scenario_demo.mp4` |
 
 練習影片的預期結果：兩次逼近都有警示、沒有誤報，平均提早約 1.3 秒（第一台約 2.1 秒、第二台約 0.5 秒），
 車種判斷 2/2 正確；語音依序是「後方大型車」「危險，大型車」「危險，大型車」。
@@ -107,6 +108,7 @@ python batch_run.py videos --set imgsz=960 --set confirm_count=1 --tag test3
 - `voice.py`：語音規則（什麼時候說哪一段）與傳給 ESP32 的狀態格式
 - `test_voice_logic.py`：不用硬體的語音規則測試
 - `make_voice_files.py`：產生語音檔 `sd_card/01/001～009.wav`
+- `make_scenario_video.py`：產生動作要求示意影片（情境動畫＋語音＋嗶聲，規則與程式相同）
 - `make_tft_labels.py`：把 TFT 要顯示的中文轉成點陣圖（`esp32_rear_alert/tft_labels.h`）；改了顯示文字要重新執行再上傳
 - `test_lights.py`：測試 ESP32 燈號、TFT 與語音
 - `esp32_rear_alert/`：ESP32 程式（綠燈＝安全、黃燈閃＝注意、紅燈快閃＝危險、綠燈慢閃＝沒收到電腦訊號；
