@@ -18,6 +18,9 @@ https://fbkstj.github.io/www/tactile_paving_project_guide.html
 【專題實作】頭部障礙物警示帽（學生實作手冊）：
 https://fbkstj.github.io/www/headgear_assist_project_guide.html
 
+【專題實作】自行車後方來車警示（學生實作手冊）：
+https://fbkstj.github.io/www/bike_rear_alert_project_guide.html
+
 數位電子乙級評審表設定：
 https://fbkstj.github.io/www/digi_el.html
 
@@ -45,6 +48,9 @@ https://stjwww.netlify.app/tactile_paving_project_guide.html
 【專題實作】頭部障礙物警示帽（學生實作手冊）：
 https://stjwww.netlify.app/headgear_assist_project_guide.html
 
+【專題實作】自行車後方來車警示（學生實作手冊）：
+https://stjwww.netlify.app/bike_rear_alert_project_guide.html
+
 數位電子乙級評審表設定：
 https://stjwww.netlify.app/digi_el.html
 
@@ -71,6 +77,9 @@ http://127.0.0.1:18456/tactile_paving_project_guide.html
 
 【專題實作】頭部障礙物警示帽（學生實作手冊）：
 http://127.0.0.1:18456/headgear_assist_project_guide.html
+
+【專題實作】自行車後方來車警示（學生實作手冊）：
+http://127.0.0.1:18456/bike_rear_alert_project_guide.html
 
 數位電子乙級評審表設定：
 http://127.0.0.1:18456/digi_el.html

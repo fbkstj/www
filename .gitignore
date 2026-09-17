@@ -36,5 +36,13 @@ headgear_assist_starter/demo.mp4
 headgear_assist_starter/demo_sensor.csv
 headgear_assist_starter/yolo11n.pt
 
+# 自行車後方來車專題：執行時產生的檔案
+bike_rear_alert_starter/logs/
+bike_rear_alert_starter/output/
+bike_rear_alert_starter/yolo11n.pt
+# 學生拍的影片有車牌與路人，不可上傳（只保留說明檔）
+bike_rear_alert_starter/videos/*
+!bike_rear_alert_starter/videos/把影片放在這裡.txt
+
 # 加密網頁的未加密原始檔（只留在本機／雲端硬碟，不可上傳）
 _private/

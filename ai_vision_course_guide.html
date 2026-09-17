@@ -668,7 +668,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-sky-500 flex flex-col" data-level="3" data-model="pre" data-rec="0" data-new="0">
             <span class="self-start text-sm font-bold text-sky-300 px-2.5 py-1 rounded bg-sky-500/15 border border-sky-500/30">專題 04・騎士安全</span>
-            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：錄影＋桌上模型</span></div>
+            <div class="project-tags flex flex-wrap gap-2 mt-3"><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-100">難度：挑戰 <span aria-hidden="true" class="text-amber-300">★★★</span></span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-emerald-950/70 border border-emerald-600/60 text-emerald-200">YOLO 預訓練模型可用</span><span class="text-sm font-semibold px-2 py-0.5 rounded bg-slate-800 border border-slate-600 text-slate-200">展示：錄影＋桌上模型（附練習影片）</span></div>
             <h4 class="font-bold text-2xl text-white mt-3 mb-2">自行車「後方來車」警示</h4>
             <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-4">騎單車時看不到後方大車逼近，容易被擦撞。</p>
             <p class="text-sm text-rose-100 bg-rose-950/60 border border-rose-700/70 rounded-lg px-3 py-2 mb-4"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-300" aria-hidden="true"></i>請用錄好的影片或模型測試，不要邊騎邊測；成品不能取代正規安全裝備。</p>
@@ -681,9 +681,13 @@
               </ol>
             </div>
             <dl class="mt-4 space-y-2 text-base text-slate-200">
-              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">在影片中標記「真的有車逼近」的片段，計算平均提早幾秒警示與誤報次數。</dd></div>
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">標記每台車從旁邊經過的時間，用 evaluate.py 計算平均提早幾秒警示、漏報與誤報次數。</dd></div>
               <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">進階可移植到手機或樹莓派，比較耗電量與反應時間。</dd></div>
+              <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">原始影片有車牌與路人，不上傳網路；報告與展示只用自動模糊後的標註影片。</dd></div>
             </dl>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a href="bike_rear_alert_project_guide.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 hover:bg-amber-300 text-sm font-bold transition"><i class="fa-solid fa-book-open" aria-hidden="true"></i>完整實作手冊與程式包</a>
+          </div>
           </article>
           <article class="project-card glass-card rounded-2xl p-7 border-l-4 border-sky-500 flex flex-col" data-level="3" data-model="pre" data-rec="0" data-new="0">
             <span class="self-start text-sm font-bold text-sky-300 px-2.5 py-1 rounded bg-sky-500/15 border border-sky-500/30">專題 05・視障輔具</span>
