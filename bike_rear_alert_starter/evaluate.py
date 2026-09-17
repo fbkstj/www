@@ -47,19 +47,35 @@ def load_alerts(path):
     return alerts, danger
 
 
-def match(truth, alerts, danger, max_lead=8.0, late=0.3):
-    """逐一比對每次經過，回傳每一列的結果與誤報時間。"""
+def load_alert_vehicles(path):
+    """回傳 {警示開始時間: 觸發的車種}，用來檢查語音說的車種對不對。"""
+    with open(path, encoding="utf-8-sig") as f:
+        return {float(r["time"]): r["vehicle"] for r in csv.DictReader(f) if r["event"] == "alert_on"}
+
+
+def same_group(a, b, big=("bus", "truck")):
+    """車種是否屬於同一個語音分類（公車、貨車都算大型車）。"""
+    return (a in big and b in big) or a == b
+
+
+def match(truth, alerts, danger, max_lead=8.0, late=0.3, vehicles=None):
+    """逐一比對每次經過，回傳每一列的結果與誤報時間。
+    vehicles：load_alert_vehicles 的結果，有給就會比對車種。"""
     rows, used = [], set()
     for p, vehicle in truth:
         cands = [a for a in alerts if p - max_lead <= a <= p + late]
         dcands = [a for a in danger if p - max_lead <= a <= p + late]
         used.update(cands)
+        first = min(cands) if cands else None
+        said = (vehicles or {}).get(first) if first is not None else None
         rows.append({
             "pass_time": p,
             "vehicle": vehicle,
-            "alert_time": min(cands) if cands else None,
-            "lead": p - min(cands) if cands else None,
+            "alert_time": first,
+            "lead": p - first if cands else None,
             "danger_lead": p - min(dcands) if dcands else None,
+            "alert_vehicle": said,
+            "type_ok": (same_group(said, vehicle) if said and vehicle != "未分類" else None),
         })
     false_alarms = [a for a in alerts if a not in used]
     return rows, false_alarms
@@ -70,7 +86,10 @@ def score(rows):
     leads = [r["lead"] for r in rows if r["lead"] is not None]
     dleads = [r["danger_lead"] for r in rows if r["danger_lead"] is not None]
     n = len(rows)
+    typed = [r["type_ok"] for r in rows if r.get("type_ok") is not None]
     return {
+        "type_checked": len(typed),
+        "type_correct": sum(typed),
         "passes": n,
         "hits": len(leads),
         "missed": n - len(leads),
@@ -112,14 +131,17 @@ def main():
     if not truth:
         raise SystemExit("正確答案檔沒有資料，請先用 label_events.py 標記")
     alerts, danger = load_alerts(log_path)
-    rows, false_alarms = match(truth, alerts, danger, args.max_lead, args.late)
+    rows, false_alarms = match(truth, alerts, danger, args.max_lead, args.late, load_alert_vehicles(log_path))
     s = score(rows)
 
     print("警示紀錄：", os.path.relpath(log_path, HERE))
-    print(f"{'經過時間':>8}  {'車種':<10}{'警示開始':>8}  {'提早秒數':>8}  {'紅燈提早':>8}")
+    print(f"{'經過時間':>8}  {'車種':<10}{'警示開始':>8}  {'提早秒數':>8}  {'紅燈提早':>8}  {'程式判斷車種'}")
     for r in rows:
         alert = fmt(r["alert_time"]) if r["alert_time"] is not None else "漏報"
-        print(f"{r['pass_time']:>8.2f}  {r['vehicle']:<10}{alert:>8}  {fmt(r['lead']):>8}  {fmt(r['danger_lead']):>8}")
+        said = r["alert_vehicle"] or ""
+        mark = "" if r["type_ok"] is None else ("（對）" if r["type_ok"] else "（錯）")
+        print(f"{r['pass_time']:>8.2f}  {r['vehicle']:<10}{alert:>8}  {fmt(r['lead']):>8}  {fmt(r['danger_lead']):>8}"
+              f"  {said}{mark}")
 
     print("\n=== 結果 ===")
     print(f"真的逼近：{s['passes']} 次，成功警示 {s['hits']} 次（{s['recall']:.0%}），漏報 {s['missed']} 次")
@@ -127,6 +149,9 @@ def main():
         print(f"平均提早 {s['avg_lead']:.2f} 秒（最短 {s['min_lead']:.2f} 秒）")
     if s["avg_danger_lead"] is not None:
         print(f"紅燈平均提早 {s['avg_danger_lead']:.2f} 秒")
+    if s["type_checked"]:
+        print(f"車種判斷（語音說的車種，公車與貨車都算大型車）：{s['type_correct']}/{s['type_checked']} 正確"
+              f"（{s['type_correct'] / s['type_checked']:.0%}）")
     minutes = None
     summary_path = os.path.splitext(log_path)[0] + ".json"
     if os.path.exists(summary_path):

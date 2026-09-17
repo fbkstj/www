@@ -20,6 +20,10 @@
   "serial_port": "auto",
   "baud": 115200,
   "pc_beep": true,
+  "voice": true,
+  "voice_volume": 22,
+  "voice_cooldown_sec": 1.5,
+  "big_vehicle_classes": ["bus", "truck"],
   "privacy_blur": true,
   "snapshot_on_alert": true,
   "log_dir": "logs"

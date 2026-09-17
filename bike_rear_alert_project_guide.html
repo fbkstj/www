@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>【專題實作】自行車後方來車警示｜學生實作手冊</title>
-<meta name="description" content="高中職專題實作手冊：用朝後拍攝的影片與 YOLO11 辨識後方車輛，從車框變大的速度估計到達時間，提早亮燈或嗶聲警示。含拍攝方法、原理、程式包、ESP32 桌上模型、驗證方法與評分表。">
+<meta name="description" content="高中職專題實作手冊：用朝後拍攝的影片與 YOLO11 辨識後方車輛，從車框變大的速度估計到達時間，提早亮燈、嗶聲並用語音說出車種，TFT 顯示等級與到達秒數。含拍攝方法、原理、程式包、ESP32 桌上模型、驗證方法與評分表。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -164,7 +164,7 @@
   <div class="wrap">
     <span class="eyebrow">專題製作・學生實作手冊</span>
     <h1>自行車「後方來車」警示：<br>從車框變大的速度，算出還有幾秒</h1>
-    <p>騎單車時看不到後方逼近的大車。這個專題用朝後拍攝的影片，讓 YOLO 找出汽車、機車、公車、貨車，再從車框「變大得多快」估計車子還有幾秒會到，提早亮燈或發出嗶聲。</p>
+    <p>騎單車時看不到後方逼近的大車。這個專題用朝後拍攝的影片，讓 YOLO 找出汽車、機車、公車、貨車，再從車框「變大得多快」估計車子還有幾秒會到，提早亮燈、發出嗶聲，並用語音說出「後方機車／汽車／大型車」。</p>
     <div class="actions">
       <a class="btn btn-primary" href="bike_rear_alert_starter_pack.zip" download="bike_rear_alert_starter_pack.zip">⬇ 下載程式包（ZIP）</a>
       <a class="btn btn-ghost" href="#design">看功能設計</a>
@@ -175,7 +175,7 @@
       <li>建議人數：3～4 人</li>
       <li>時程：約 12～16 週</li>
       <li>核心技術：YOLO11 ＋ 追蹤 ＋ 到達時間估計</li>
-      <li>預算：約 1,800～6,700 元（不含筆電）</li>
+      <li>預算：約 2,200～7,500 元（不含筆電）</li>
     </ul>
   </div>
 </header>
@@ -216,7 +216,7 @@
         <li>τ 小於 4 秒亮黃燈（注意），小於 2 秒亮紅燈並連續嗶聲（危險）。</li>
         <li>用人工標記的正確答案，計算<strong>平均提早幾秒警示</strong>、漏報與誤報次數，並能一次評估整批影片、比較不同參數。</li>
         <li>對外的影片與截圖自動模糊行人與車牌，保護隱私。</li>
-        <li>用 ESP32 燈號做成桌上模型，現場展示警示效果。</li>
+        <li>用 ESP32 做成桌上模型：三色燈與蜂鳴器表示等級，<strong>DFPlayer 語音說出車種</strong>，<strong>TFT 螢幕顯示等級、車種與到達秒數</strong>。</li>
       </ol>
       <div class="note warn">
         <strong>安全規則</strong>
@@ -291,8 +291,8 @@
           <ol class="flow" aria-label="桌上模型流程">
             <li><b>鏡頭</b>拍玩具車或螢幕上的影片</li>
             <li><b>筆電</b>即時辨識與估計</li>
-            <li><b>USB 線</b>送出 L0／L1／L2</li>
-            <li><b>ESP32</b>控制三色燈與蜂鳴器</li>
+            <li><b>USB 線</b>送出狀態與語音編號</li>
+            <li><b>ESP32</b>燈號、蜂鳴器、TFT 文字、DFPlayer 語音</li>
           </ol>
         </div>
       </div>
@@ -317,16 +317,18 @@
             <tr><th scope="row">F4</th><td>到達時間估計</td><td>用最近 0.8 秒「寬度倒數」的直線，估計還有幾秒到達（τ）</td><td><code>Track.estimate_ttc</code></td><td>等速逼近時，估計值和實際值相差 0.5 秒以內</td></tr>
             <tr><th scope="row">F5</th><td>危險區域過濾</td><td>只看 <code>zone_x</code> 範圍內、寬度夠大的車</td><td><code>rear_alert.py</code></td><td>遠車道、太遠的車不會觸發警示</td></tr>
             <tr><th scope="row">F6</th><td>警示狀態機</td><td>安全、注意、危險三級；連續確認才警示，降級要維持 1 秒</td><td><code>AlertState</code></td><td>燈號不會在同一台車逼近時忽亮忽滅</td></tr>
-            <tr><th scope="row">F7</th><td>警示輸出</td><td>ESP32 三色燈與蜂鳴器；沒接 ESP32 時用電腦嗶聲</td><td><code>Esp32Link</code>、<code>PcBeeper</code>、<code>esp32_rear_alert.ino</code></td><td>三種等級的燈號與聲音都能分辨</td></tr>
-            <tr><th scope="row">F8</th><td>失效提示</td><td>ESP32 超過 1.5 秒沒收到訊號就顯示「離線」</td><td><code>esp32_rear_alert.ino</code></td><td>拔掉 USB 或關閉程式後，綠燈改為慢閃</td></tr>
+            <tr><th scope="row">F7</th><td>警示輸出</td><td>ESP32 三色燈與蜂鳴器；沒接 ESP32 時用電腦嗶聲（播放語音時蜂鳴器暫停約 1.2 秒）</td><td><code>Esp32Link</code>、<code>PcBeeper</code>、<code>esp32_rear_alert.ino</code></td><td>三種等級的燈號與聲音都能分辨</td></tr>
+            <tr><th scope="row">F8</th><td>失效提示</td><td>ESP32 超過 1.5 秒沒收到訊號就顯示「離線」</td><td><code>esp32_rear_alert.ino</code></td><td>拔掉 USB 或關閉程式後，綠燈改為慢閃、TFT 顯示「未連線」</td></tr>
             <tr><th scope="row">F9</th><td>畫面顯示</td><td>狀態列、車框顏色、編號、τ、危險區域線</td><td><code>draw_overlay</code></td><td>旁人看畫面就知道目前等級與原因</td></tr>
             <tr><th scope="row">F10</th><td>紀錄與摘要</td><td>警示開始、升級、解除寫入 CSV；分析結束寫入摘要 JSON</td><td><code>rear_alert.py</code></td><td>每次分析都有 CSV 與 JSON，時間和影片一致</td></tr>
             <tr><th scope="row">F11</th><td>隱私保護</td><td>輸出影片與警示截圖時，模糊行人與車輛下半部（車牌）</td><td><code>blur_privacy</code></td><td><code>output/</code> 裡看不清楚車牌與人臉</td></tr>
             <tr><th scope="row">F12</th><td>警示截圖</td><td>每次警示開始或升級，存一張已模糊的截圖</td><td><code>rear_alert.py</code></td><td>截圖檔名有時間與等級，可直接放進報告</td></tr>
             <tr><th scope="row">F13</th><td>正確答案標記</td><td>播放影片，按數字鍵記錄車輛經過時間與車種</td><td><code>label_events.py</code></td><td>可暫停、逐格、取消；答案存在影片旁邊</td></tr>
-            <tr><th scope="row">F14</th><td>單支成效評估</td><td>成功率、平均與最短提早秒數、紅燈提早、誤報、各車種</td><td><code>evaluate.py</code></td><td>練習影片得到成功 2 次、誤報 0 次</td></tr>
+            <tr><th scope="row">F14</th><td>單支成效評估</td><td>成功率、平均與最短提早秒數、紅燈提早、誤報、各車種、車種判斷正確率</td><td><code>evaluate.py</code></td><td>練習影片得到成功 2 次、誤報 0 次、車種 2/2 正確</td></tr>
             <tr><th scope="row">F15</th><td>批次評估與參數實驗</td><td>一次分析整個資料夾；用 <code>--set</code> 暫時改參數，不動 <code>config.json</code></td><td><code>batch_run.py</code></td><td>輸出可用 Excel 開啟的成績表與當次設定</td></tr>
             <tr><th scope="row">F16</th><td>練習資料</td><td>產生固定內容的練習影片與答案，每個人的結果都一樣</td><td><code>make_demo_video.py</code></td><td>不需要拍攝就能跑完整個流程</td></tr>
+            <tr><th scope="row">F17</th><td>車種語音提示</td><td>車子第一次進入注意時說「後方機車／汽車／大型車」，升到危險時說「危險，＋車種」；同一台車只說一次，兩段語音至少間隔 1.5 秒</td><td><code>voice.py</code>、<code>esp32_rear_alert.ino</code>（DFPlayer）</td><td>練習影片依序說「後方大型車」「危險，大型車」「危險，大型車」；<code>test_voice_logic.py</code> 全部通過</td></tr>
+            <tr><th scope="row">F18</th><td>TFT 文字顯示</td><td>1.8 吋 TFT 顯示等級色塊、車種中文、到達秒數；只有內容改變時才重畫</td><td><code>esp32_rear_alert.ino</code>、<code>make_tft_labels.py</code></td><td>四種狀態的畫面都正確，數字更新時不閃爍</td></tr>
           </tbody>
         </table>
       </div>
@@ -351,7 +353,7 @@
       <figure class="figure">
         <svg viewBox="0 0 680 360" role="img" aria-labelledby="modTitle modDesc">
           <title id="modTitle">系統模組圖</title>
-          <desc id="modDesc">影像輸入進入處理流程：車輛辨識、車輛追蹤、到達時間估計、區域過濾、警示狀態機依序相連。警示狀態機輸出到 ESP32 燈號、電腦嗶聲、畫面疊圖、紀錄與摘要、影片與截圖。成效評估部分：標記答案與紀錄一起送到比對成效，再彙整成批次成績表。</desc>
+          <desc id="modDesc">影像輸入進入處理流程：車輛辨識、車輛追蹤、到達時間估計、區域過濾、警示狀態機依序相連。警示狀態機輸出到 ESP32（燈號、TFT、語音）、電腦語音與嗶聲、畫面疊圖、紀錄與摘要、影片與截圖。成效評估部分：標記答案與紀錄一起送到比對成效，再彙整成批次成績表。</desc>
           <defs><marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
           <g font-family="Noto Sans TC, sans-serif">
             <rect x="20" y="16" width="112" height="44" rx="8" fill="#e2e8f0" stroke="#64748b"/>
@@ -389,8 +391,8 @@
               <rect x="276" y="204" width="112" height="56" rx="8"/><rect x="404" y="204" width="112" height="56" rx="8"/>
               <rect x="532" y="204" width="112" height="56" rx="8"/>
             </g>
-            <text class="svg-label" x="76" y="228" text-anchor="middle">ESP32 燈號</text><text class="svg-sub" x="76" y="247" text-anchor="middle">三色燈＋蜂鳴器</text>
-            <text class="svg-label" x="204" y="228" text-anchor="middle">電腦嗶聲</text><text class="svg-sub" x="204" y="247" text-anchor="middle">沒接 ESP32 時</text>
+            <text class="svg-label" x="76" y="228" text-anchor="middle">ESP32</text><text class="svg-sub" x="76" y="247" text-anchor="middle">燈號、TFT、語音</text>
+            <text class="svg-label" x="204" y="228" text-anchor="middle">電腦語音與嗶聲</text><text class="svg-sub" x="204" y="247" text-anchor="middle">沒接 ESP32 時</text>
             <text class="svg-label" x="332" y="228" text-anchor="middle">畫面疊圖</text><text class="svg-sub" x="332" y="247" text-anchor="middle">狀態列＋車框</text>
             <text class="svg-label" x="460" y="228" text-anchor="middle">紀錄與摘要</text><text class="svg-sub" x="460" y="247" text-anchor="middle">logs/ CSV、JSON</text>
             <text class="svg-label" x="588" y="228" text-anchor="middle">影片與截圖</text><text class="svg-sub" x="588" y="247" text-anchor="middle">output/（已模糊）</text>
@@ -457,12 +459,15 @@
             <table style="min-width:0">
               <thead><tr><th scope="col">方向</th><th scope="col">內容</th><th scope="col">意義</th></tr></thead>
               <tbody>
-                <tr><td>電腦 → ESP32</td><td><code>L0\n</code> <code>L1\n</code> <code>L2\n</code></td><td>每 0.2 秒送一次目前等級</td></tr>
+                <tr><td>電腦 → ESP32</td><td><code>S1B25</code></td><td>每 0.2 秒送一次狀態：S＋等級（0／1／2）＋車種（M 機車、C 汽車、B 大型車、N 無）＋到達秒數×10</td></tr>
+                <tr><td>電腦 → ESP32</td><td><code>P1</code>～<code>P9</code></td><td>播放 microSD 卡 <code>01</code> 資料夾的 001～009 號語音</td></tr>
+                <tr><td>電腦 → ESP32</td><td><code>V0</code>～<code>V30</code></td><td>語音音量（程式開始時送一次）</td></tr>
+                <tr><td>電腦 → ESP32</td><td><code>L0</code>～<code>L2</code></td><td>舊版狀態（只有等級），仍然可以用</td></tr>
                 <tr><td>ESP32 → 電腦</td><td><code>I,ready</code></td><td>開機完成</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="muted">其他內容一律忽略；每行最多 8 個字元，避免雜訊塞滿記憶體。</p>
+          <p class="muted">每行以換行結尾；其他內容一律忽略；每行最多 8 個字元，避免雜訊塞滿記憶體。</p>
         </div>
         <div class="box">
           <h3>正確答案 <code>影片名_truth.csv</code></h3>
@@ -484,29 +489,47 @@
           <thead><tr><th scope="col">欄位</th><th scope="col">意義</th><th scope="col">範例</th></tr></thead>
           <tbody>
             <tr><td><code>time</code></td><td>影片中的秒數（鏡頭模式為開始後的秒數）</td><td>8.27</td></tr>
-            <tr><td><code>event</code></td><td><code>alert_on</code> 開始、<code>escalate</code> 升級、<code>alert_off</code> 解除</td><td>alert_on</td></tr>
+            <tr><td><code>event</code></td><td><code>alert_on</code> 開始、<code>escalate</code> 升級、<code>alert_off</code> 解除、<code>voice</code> 語音</td><td>alert_on</td></tr>
             <tr><td><code>level</code></td><td>1＝注意、2＝危險、0＝解除</td><td>1</td></tr>
             <tr><td><code>vehicle</code>、<code>track</code></td><td>觸發警示的車種與編號</td><td>bus、2</td></tr>
             <tr><td><code>ttc_sec</code></td><td>當下估計的到達秒數</td><td>2.22</td></tr>
             <tr><td><code>width_ratio</code></td><td>車框寬度占畫面寬度的比例</td><td>0.203</td></tr>
+            <tr><td><code>voice</code></td><td><code>event</code> 為 <code>voice</code> 時，說出的語音內容</td><td>後方大型車</td></tr>
           </tbody>
         </table>
       </div>
-      <p>分析結束時另外寫入同名的 <code>.json</code> 摘要：影片長度、處理張數、處理速度、各車種出現台數、警示次數，以及這次使用的主要設定。<code>batch_run.py</code> 的成績表欄位為：經過次數、成功警示、漏報、成功率、平均／最短提早秒數、紅燈平均提早、誤報、影片分鐘數、每 10 分鐘誤報、處理速度。</p>
+      <p>分析結束時另外寫入同名的 <code>.json</code> 摘要：影片長度、處理張數、處理速度、各車種出現台數、警示次數，以及這次使用的主要設定。<code>batch_run.py</code> 的成績表欄位為：經過次數、成功警示、漏報、成功率、平均／最短提早秒數、紅燈平均提早、車種正確、誤報、影片分鐘數、每 10 分鐘誤報、處理速度。</p>
+      <h3>語音清單（<code>sd_card/01/</code>）</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">編號</th><th scope="col">內容</th><th scope="col">什麼時候說</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">001～003</th><td>後方機車／後方汽車／後方大型車</td><td>一台車第一次進入「注意」（公車、貨車都算大型車）</td></tr>
+            <tr><th scope="row">004</th><td>後方多台車</td><td>同時出現兩台以上新的車（其中有大型車時改說「後方大型車」）</td></tr>
+            <tr><th scope="row">005</th><td>危險，注意</td><td>升到「危險」，而且危險的車不只一種</td></tr>
+            <tr><th scope="row">006</th><td>警示系統啟動</td><td>程式開始時</td></tr>
+            <tr><th scope="row">007～009</th><td>危險，機車／危險，汽車／危險，大型車</td><td>每次警示第一次升到「危險」，會打斷正在說的話</td></tr>
+          </tbody>
+        </table>
+      </div>
 
       <h3>3.6 畫面、燈號與聲音設計</h3>
       <div class="table-wrap">
         <table class="nw1">
-          <thead><tr><th scope="col">等級</th><th scope="col">畫面狀態列</th><th scope="col">車框</th><th scope="col">ESP32</th><th scope="col">電腦嗶聲</th></tr></thead>
+          <thead><tr><th scope="col">等級</th><th scope="col">畫面狀態列</th><th scope="col">車框</th><th scope="col">ESP32 燈號與蜂鳴器</th><th scope="col">TFT</th><th scope="col">電腦嗶聲</th></tr></thead>
           <tbody>
-            <tr><th scope="row">安全</th><td>綠色「SAFE」</td><td>綠框</td><td>綠燈恆亮</td><td>無</td></tr>
-            <tr><th scope="row">注意</th><td>黃色「CAUTION」</td><td>觸發的車為黃框，標示 τ</td><td>黃燈每 0.25 秒閃爍、每秒短嗶</td><td>每秒一聲低音</td></tr>
-            <tr><th scope="row">危險</th><td>紅色「DANGER」</td><td>觸發的車為紅框</td><td>紅燈快閃、嗶聲 0.1 秒響停</td><td>每 0.3 秒一聲高音</td></tr>
-            <tr><th scope="row">離線</th><td>—</td><td>—</td><td>綠燈每 2 秒閃一下</td><td>—</td></tr>
+            <tr><th scope="row">安全</th><td>綠色「SAFE」</td><td>綠框</td><td>綠燈恆亮</td><td>綠色「安全」、後方無來車</td><td>無</td></tr>
+            <tr><th scope="row">注意</th><td>黃色「CAUTION」</td><td>觸發的車為黃框，標示 τ</td><td>黃燈每 0.25 秒閃爍、每秒短嗶</td><td>黃色「注意」、黃字車種、到達秒數</td><td>每秒一聲低音</td></tr>
+            <tr><th scope="row">危險</th><td>紅色「DANGER」</td><td>觸發的車為紅框</td><td>紅燈快閃、嗶聲 0.1 秒響停</td><td>紅色「危險」、紅字車種、到達秒數</td><td>每 0.3 秒一聲高音</td></tr>
+            <tr><th scope="row">離線</th><td>—</td><td>—</td><td>綠燈每 2 秒閃一下</td><td>灰色「未連線」、請檢查電腦連線</td><td>—</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="muted">設計原則：顏色與聲音同時變化，色弱或吵雜環境也能分辨；等級越高，閃爍與嗶聲越快。灰色直線框出危險區域 <code>zone_x</code>。</p>
+      <p class="muted">設計原則：顏色、文字與聲音同時變化，色弱或吵雜環境也能分辨；等級越高，閃爍與嗶聲越快。語音盡量短（每段約 1 秒），播放時蜂鳴器暫停，才聽得清楚。灰色直線框出危險區域 <code>zone_x</code>。</p>
+      <figure class="figure">
+        <img src="bike_rear_alert_tft_preview.png" width="1360" height="322" style="width:100%;height:auto" alt="TFT 畫面的四種狀態：安全時上方綠色「安全」、中間「後方無來車」；注意時上方黃色「注意」、中間黃字「後方機車」、下方「3.5 秒後到達」；危險時上方紅色「危險」、中間紅字「後方大型車」、下方「1.2 秒後到達」；離線時上方灰色「未連線」、中間「請檢查電腦連線」。">
+        <figcaption>TFT 畫面（160×128，依程式版面模擬）。中文是事先轉好的點陣圖，秒數用內建字型顯示</figcaption>
+      </figure>
 
       <h3>3.7 例外處理</h3>
       <div class="table-wrap">
@@ -517,10 +540,12 @@
             <tr><th scope="row">鏡頭中途沒有畫面</th><td>提示檢查 USB 線，並停止送出燈號，讓 ESP32 顯示離線</td></tr>
             <tr><th scope="row">找不到 ESP32 或沒裝 pyserial</th><td>提示原因，改用電腦嗶聲繼續執行</td></tr>
             <tr><th scope="row">序列埠中途斷線</th><td>提示寫入失敗，ESP32 端 1.5 秒後顯示離線</td></tr>
-            <tr><th scope="row">程式結束（含 Ctrl+C）</th><td>補寫「解除警示」、送出 L0、存好紀錄與摘要</td></tr>
+            <tr><th scope="row">程式結束（含 Ctrl+C）</th><td>補寫「解除警示」、送出安全狀態、存好紀錄與摘要</td></tr>
             <tr><th scope="row">答案檔空白或找不到紀錄</th><td><code>evaluate.py</code> 說明要先標記或先分析</td></tr>
             <tr><th scope="row">資料夾內影片沒有答案檔</th><td><code>batch_run.py</code> 列出並跳過，不會中斷</td></tr>
             <tr><th scope="row"><code>--set</code> 打錯設定名稱</th><td>顯示「config.json 沒有這個設定」並結束，避免實驗白跑</td></tr>
+            <tr><th scope="row">找不到語音檔</th><td>沒接 ESP32 時改用電腦嗶聲，並提示執行 <code>6_make_voice_files.bat</code></td></tr>
+            <tr><th scope="row">DFPlayer 沒插卡或接線錯誤</th><td>沒有語音，但燈號、蜂鳴器、TFT 照常運作</td></tr>
             <tr><th scope="row">標記時不小心覆蓋答案</th><td>舊檔自動改名為 <code>.bak</code>；重新開啟同一支影片會接續之前的標記</td></tr>
           </tbody>
         </table>
@@ -531,14 +556,16 @@
         <table class="nw1">
           <thead><tr><th scope="col">測試</th><th scope="col">對應功能</th><th scope="col">方法</th><th scope="col">通過標準</th></tr></thead>
           <tbody>
-            <tr><th scope="row">T1</th><td>F1、F2、F14、F16</td><td>執行 <code>0_demo_practice.bat</code></td><td>成功 2 次、誤報 0 次</td></tr>
+            <tr><th scope="row">T1</th><td>F1、F2、F14、F16</td><td>執行 <code>0_demo_practice.bat</code></td><td>成功 2 次、誤報 0 次、車種 2/2 正確</td></tr>
             <tr><th scope="row">T2</th><td>F3、F9</td><td>開視窗觀看練習影片</td><td>逼近過程中車輛編號不變</td></tr>
             <tr><th scope="row">T3</th><td>F4</td><td>練習影片第一台車的速度是每秒 6 公尺，第 8.27 秒時距離約 13.4 公尺；比對紀錄中的 <code>ttc_sec</code></td><td>與 13.4 ÷ 6 ≈ 2.2 秒相差 0.5 秒以內</td></tr>
             <tr><th scope="row">T4</th><td>F5、F6</td><td>練習影片 12～23 秒（跟車、遠離）</td><td>沒有警示</td></tr>
-            <tr><th scope="row">T5</th><td>F7、F8</td><td>執行 <code>1_test_lights.bat</code>，再拔掉 USB</td><td>四種燈號都正確</td></tr>
+            <tr><th scope="row">T5</th><td>F7、F8</td><td>執行 <code>1_test_lights.bat</code>，再拔掉 USB</td><td>四種燈號與 TFT 畫面都正確</td></tr>
             <tr><th scope="row">T6</th><td>F10、F11、F12</td><td>用 <code>3_analyze_video.bat</code> 分析自己的影片</td><td>紀錄、摘要、影片、截圖齊全，車牌已模糊</td></tr>
             <tr><th scope="row">T7</th><td>F13、F15</td><td>標記兩支影片後執行 <code>4_batch_evaluate.bat</code></td><td>成績表有兩支影片、合計與各車種</td></tr>
             <tr><th scope="row">T8</th><td>例外處理</td><td>拔鏡頭、拔 ESP32、打錯 <code>--set</code> 名稱</td><td>都依 3.7 的方式反應，程式不當掉</td></tr>
+            <tr><th scope="row">T9</th><td>F17</td><td>執行 <code>7_test_voice_logic.bat</code>；再用 <code>1_test_lights.bat</code> 聽 9 段語音</td><td>規則測試全部通過；每段語音清楚、編號與內容一致</td></tr>
+            <tr><th scope="row">T10</th><td>F17、F18</td><td>桌上模型展示時，用手機慢動作錄影</td><td>黃燈亮起後 1 秒內聽到車種語音、TFT 顯示同一車種</td></tr>
           </tbody>
         </table>
       </div>
@@ -561,7 +588,11 @@
             <tr><th scope="row">ESP32 開發板</th><td>ESP32 DevKit（含 USB 轉序列晶片 CP2102 或 CH340）</td><td>1</td><td>200～350 元</td></tr>
             <tr><th scope="row">LED 與電阻</th><td>綠、黃、紅 LED 各 1 顆，220Ω 電阻 3 個</td><td>1 組</td><td>約 30 元</td></tr>
             <tr><th scope="row">主動式蜂鳴器模組</th><td>3.3V 可用、<strong>高電位觸發</strong></td><td>1</td><td>30～60 元</td></tr>
-            <tr><th scope="row">麵包板、杜邦線</th><td>—</td><td>1 組</td><td>100～200 元</td></tr>
+            <tr><th scope="row">ST7735 1.8 吋 TFT</th><td>160×128、SPI 介面（標示 1.8" TFT SPI）</td><td>1</td><td>150～300 元</td></tr>
+            <tr><th scope="row">DFPlayer Mini</th><td>MP3／WAV 播放模組，附 microSD 卡槽</td><td>1</td><td>80～150 元</td></tr>
+            <tr><th scope="row">microSD 卡</th><td>32 GB 以下、FAT32 格式</td><td>1</td><td>100～200 元</td></tr>
+            <tr><th scope="row">小喇叭</th><td>3W、4～8Ω</td><td>1</td><td>40～100 元</td></tr>
+            <tr><th scope="row">麵包板、杜邦線、1kΩ 電阻</th><td>—</td><td>1 組</td><td>100～200 元</td></tr>
             <tr><th scope="row">模型材料</th><td>外型逼真的合金玩具車（越大越容易辨識）、紙板斜坡或軌道；也可以用平板播放影片給鏡頭看</td><td>1 組</td><td>200～500 元</td></tr>
           </tbody>
         </table>
@@ -570,7 +601,7 @@
 
     <section id="wiring">
       <h2><span class="num">5</span>桌上模型接線</h2>
-      <p>全部使用 ESP32 的 <strong>3.3V</strong>，由筆電 USB 供電。</p>
+      <p>LED、蜂鳴器、TFT 使用 ESP32 的 <strong>3.3V</strong>；DFPlayer 接 <strong>5V（VIN 腳）</strong>，全部由筆電 USB 供電。</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th scope="col">元件</th><th scope="col">接法</th><th scope="col">ESP32 腳位</th><th scope="col">燈號意義</th></tr></thead>
@@ -578,13 +609,26 @@
             <tr><th scope="row"><span class="dot" style="background:#22c55e" aria-hidden="true"></span>綠色 LED</th><td>長腳 → 220Ω → GPIO；短腳 → GND</td><td>GPIO25</td><td>恆亮＝安全；每 2 秒閃一下＝沒收到電腦訊號</td></tr>
             <tr><th scope="row"><span class="dot" style="background:#facc15" aria-hidden="true"></span>黃色 LED</th><td>同上</td><td>GPIO26</td><td>閃爍＋每秒短嗶＝注意</td></tr>
             <tr><th scope="row"><span class="dot" style="background:#ef4444" aria-hidden="true"></span>紅色 LED</th><td>同上</td><td>GPIO27</td><td>快閃＋連續嗶聲＝危險</td></tr>
-            <tr><th scope="row">主動式蜂鳴器模組</th><td>VCC → 3V3、GND → GND、I/O → GPIO</td><td>GPIO14</td><td>HIGH＝響</td></tr>
+            <tr><th scope="row">主動式蜂鳴器模組</th><td>VCC → 3V3、GND → GND、I/O → GPIO</td><td>GPIO14</td><td>HIGH＝響；播放語音時暫停</td></tr>
+            <tr><th scope="row" rowspan="2">ST7735 TFT</th><td>SCK、SDA（MOSI）、CS、A0（DC）、RST</td><td>GPIO18、GPIO23、GPIO5、GPIO21、GPIO22</td><td rowspan="2">顯示等級、車種、到達秒數</td></tr>
+            <tr><td>VCC、GND、LED（背光）</td><td>3V3、GND、3V3</td></tr>
+            <tr><th scope="row" rowspan="2">DFPlayer Mini</th><td>VCC、GND</td><td>5V（VIN）、GND</td><td rowspan="2">播放車種語音</td></tr>
+            <tr><td>RX ← 1kΩ ← ESP32；TX → ESP32；SPK_1／SPK_2 → 喇叭</td><td>GPIO17（送）、GPIO16（收）</td></tr>
           </tbody>
         </table>
       </div>
       <div class="note tip">
         <strong>「離線」燈號很重要</strong>
-        電腦每 0.2 秒送一次等級，ESP32 超過 1.5 秒沒收到就改成綠燈慢閃。警示裝置最怕「壞掉了卻看起來正常」，所以要讓使用者看得出系統沒在運作。
+        電腦每 0.2 秒送一次狀態，ESP32 超過 1.5 秒沒收到就改成綠燈慢閃、TFT 顯示「未連線」。警示裝置最怕「壞掉了卻看起來正常」，所以要讓使用者看得出系統沒在運作。
+      </div>
+      <div class="note info">
+        <strong>接線注意</strong>
+        <ul>
+          <li>DFPlayer 的 RX、TX 要和 ESP32 <strong>交叉</strong>接（ESP32 送出的 GPIO17 接 DFPlayer 的 RX），RX 前面串 1kΩ 電阻可以減少雜音。</li>
+          <li>喇叭直接接 DFPlayer 的 SPK_1、SPK_2，不要接到 GND。</li>
+          <li>TFT 顏色或邊緣不對時，把程式裡的 <code>INITR_BLACKTAB</code> 改成 <code>INITR_GREENTAB</code> 或 <code>INITR_REDTAB</code>。</li>
+          <li>把語音檔的 <code>01</code> 資料夾複製到 microSD 卡根目錄；資料夾與檔名（001.wav…）都不能改。</li>
+        </ul>
       </div>
     </section>
 
@@ -595,8 +639,10 @@
           <thead><tr><th scope="col">軟體</th><th scope="col">用途</th><th scope="col">取得方式</th></tr></thead>
           <tbody>
             <tr><th scope="row">Python 3.10 以上</th><td>分析程式</td><td>python.org，勾選 <code>Add Python to PATH</code></td></tr>
-            <tr><th scope="row">ultralytics、opencv-python、numpy、pyserial</th><td>YOLO 辨識、影片處理、與 ESP32 通訊</td><td><code>pip install -r requirements.txt</code></td></tr>
-            <tr><th scope="row">Arduino IDE ＋ ESP32 開發板套件</th><td>上傳 <code>esp32_rear_alert.ino</code>，開發板選「ESP32 Dev Module」，不需要額外程式庫</td><td>arduino.cc</td></tr>
+            <tr><th scope="row">ultralytics、opencv-python、numpy、pyserial、pyttsx3</th><td>YOLO 辨識、影片處理、與 ESP32 通訊、產生語音檔</td><td><code>pip install -r requirements.txt</code></td></tr>
+            <tr><th scope="row">Arduino IDE ＋ ESP32 開發板套件</th><td>上傳 <code>esp32_rear_alert.ino</code>，開發板選「ESP32 Dev Module」</td><td>arduino.cc</td></tr>
+            <tr><th scope="row">Adafruit ST7735 and ST7789 Library、Adafruit GFX Library</th><td>TFT 顯示（DFPlayer 用序列指令控制，不需要程式庫）</td><td>Arduino IDE 程式庫管理員</td></tr>
+            <tr><th scope="row">Windows 中文語音</th><td>重新產生語音檔時才需要（程式包已附語音檔）</td><td>設定 → 時間與語言 → 語音 → 新增「中文（台灣）」</td></tr>
             <tr><th scope="row">Google Antigravity／Claude Code</th><td>AI 程式助手（擇一）</td><td>Antigravity 免費；Claude Code 需 Claude 付費方案</td></tr>
           </tbody>
         </table>
@@ -648,9 +694,9 @@
             <tr><th scope="row">第 6 週</th><td>執行 <code>4_batch_evaluate.bat</code>，用預設參數分析全部影片</td><td>基準成績表（提早秒數、漏報、誤報、各車種）</td></tr>
             <tr><th scope="row">第 7 週</th><td>看 <code>output/snapshots/</code> 的警示截圖與標註影片，找出漏報與誤報的原因並分類</td><td>原因分類表與截圖</td></tr>
             <tr><th scope="row">第 8 週</th><td>用 <code>batch_run.py --set</code> 調整參數或改良程式，<strong>每次只改一項</strong>，在同一批影片上比較</td><td>參數比較表</td></tr>
-            <tr><th scope="row">第 9 週</th><td>ESP32 接線，用 <code>1_test_lights.bat</code> 測試燈號</td><td>接線照片、燈號說明</td></tr>
+            <tr><th scope="row">第 9 週</th><td>ESP32 接上燈號、TFT、DFPlayer，用 <code>1_test_lights.bat</code> 測試；（選做）錄自己的語音</td><td>接線照片、燈號與語音說明</td></tr>
             <tr><th scope="row">第 10 週</th><td>完成桌上模型，用手機慢動作錄影量測反應時間</td><td>反應時間紀錄</td></tr>
-            <tr><th scope="row">第 11 週</th><td>請同學看展示，回饋燈號與聲音是否容易懂；（選做）延伸到手機或樹莓派</td><td>回饋紀錄</td></tr>
+            <tr><th scope="row">第 11 週</th><td>請同學看展示，回饋燈號、TFT 文字與語音是否容易懂、會不會太吵；（選做）延伸到手機或樹莓派</td><td>回饋紀錄</td></tr>
             <tr><th scope="row">第 12 週</th><td>製作成果影片（使用已模糊的標註影片）</td><td>成果影片</td></tr>
             <tr><th scope="row">第 13 週以後</th><td>撰寫書面報告、練習上台報告</td><td>書面報告、簡報</td></tr>
           </tbody>
@@ -723,6 +769,16 @@
       <p>另外有三個過濾條件：車子的中心要在 <code>zone_x</code> 範圍內（排除其他方向的車道）、框寬度要超過畫面的 <code>min_width_ratio</code>（太遠的車不準）、警示至少維持 <code>hold_sec</code> 秒（避免燈號一直閃）。</p>
       <p>停在路邊的車、比你慢的車、對向車道已經開過去的車，在朝後的畫面裡都是<strong>越來越小或大小不變</strong>，所以不會警示。</p>
 
+      <h3>步驟四：說出車種、顯示在 TFT</h3>
+      <ul>
+        <li><strong>什麼時候說：</strong>一台車第一次進入「注意」時說「後方機車／汽車／大型車」；同一台車只說一次。</li>
+        <li><strong>危險優先：</strong>每次警示第一次升到「危險」時，立刻說「危險，＋車種」，會打斷正在說的話，所以危險語音本身也帶車種。</li>
+        <li><strong>不要太吵：</strong>兩段語音至少間隔 <code>voice_cooldown_sec</code>（1.5 秒）；來不及說的車，等間隔到了再說。</li>
+        <li><strong>要夠短：</strong>危險時可能只剩 1～2 秒，所以每段語音剪掉前後靜音後只有約 1 秒。</li>
+        <li><strong>大型車：</strong>YOLO 分不出大卡車和小貨車，所以公車、貨車統稱「大型車」，報告中要說明這個限制。</li>
+        <li><strong>TFT：</strong>電腦每 0.2 秒送一次狀態（例如 <code>S1B25</code>），ESP32 只在內容改變時重畫，避免閃爍。</li>
+      </ul>
+
       <div class="note warn">
         <strong>方法的限制（要寫進報告）</strong>
         <ul>
@@ -741,14 +797,18 @@
           <thead><tr><th scope="col">檔案</th><th scope="col">用途</th></tr></thead>
           <tbody>
             <tr><th scope="row"><code>0_demo_practice.bat</code></th><td>產生練習影片 → 分析 → 計算成績</td></tr>
-            <tr><th scope="row"><code>1_test_lights.bat</code>／<code>test_lights.py</code></th><td>依序測試安全、注意、危險、離線四種燈號</td></tr>
+            <tr><th scope="row"><code>1_test_lights.bat</code>／<code>test_lights.py</code></th><td>依序測試四種燈號與 TFT 畫面，再播放 9 段語音</td></tr>
             <tr><th scope="row"><code>2_label_video.bat</code>／<code>label_events.py</code></th><td>把影片拖到 bat 上：車輛經過時按鍵，在影片旁邊存成「影片名_truth.csv」</td></tr>
             <tr><th scope="row"><code>3_analyze_video.bat</code>／<code>rear_alert.py</code></th><td>把影片拖到 bat 上：開視窗分析一支影片，輸出標註影片與警示截圖；有答案檔就順便算成績</td></tr>
             <tr><th scope="row"><code>4_batch_evaluate.bat</code>／<code>batch_run.py</code></th><td>分析 <code>videos/</code> 裡每支有答案檔的影片，輸出成績表；也能做參數實驗</td></tr>
-            <tr><th scope="row"><code>5_bench_demo.bat</code></th><td>桌上模型：鏡頭即時辨識，燈號送到 ESP32（沒接會改用電腦嗶聲）</td></tr>
+            <tr><th scope="row"><code>5_bench_demo.bat</code></th><td>桌上模型：鏡頭即時辨識，狀態與語音送到 ESP32（沒接會改用電腦播放語音與嗶聲）</td></tr>
+            <tr><th scope="row"><code>6_make_voice_files.bat</code>／<code>make_voice_files.py</code></th><td>用 Windows 中文語音重新產生 <code>sd_card/01/</code> 的語音檔（會剪掉前後靜音）</td></tr>
+            <tr><th scope="row"><code>7_test_voice_logic.bat</code>／<code>test_voice_logic.py</code></th><td>不用硬體，檢查語音規則與傳給 ESP32 的格式</td></tr>
+            <tr><th scope="row"><code>voice.py</code></th><td>語音規則（什麼時候說哪一段）、電腦播放、狀態格式</td></tr>
+            <tr><th scope="row"><code>make_tft_labels.py</code></th><td>把 TFT 的中文詞彙轉成點陣圖（<code>esp32_rear_alert/tft_labels.h</code>）；改了文字要重新執行再上傳</td></tr>
             <tr><th scope="row"><code>evaluate.py</code></th><td>比對一支影片的紀錄與答案，其他程式也會呼叫它的函式</td></tr>
             <tr><th scope="row"><code>make_demo_video.py</code></th><td>產生練習影片 <code>videos/demo.mp4</code> 與答案 <code>videos/demo_truth.csv</code></td></tr>
-            <tr><th scope="row"><code>esp32_rear_alert/</code></th><td>ESP32 燈號與蜂鳴器程式</td></tr>
+            <tr><th scope="row"><code>esp32_rear_alert/</code></th><td>ESP32 燈號、蜂鳴器、TFT、DFPlayer 程式</td></tr>
             <tr><th scope="row"><code>config.json</code></th><td>所有門檻與設定，說明見 <code>README_先看我.md</code></td></tr>
           </tbody>
         </table>
@@ -760,6 +820,7 @@
           <tbody>
             <tr><th scope="row"><code>videos/</code></th><td>自己拍的影片與答案檔。<strong>不要上傳到網路</strong></td></tr>
             <tr><th scope="row"><code>logs/</code></th><td>每次分析的警示紀錄（CSV）與摘要（JSON）；批次分析在 <code>logs/batch_標籤_時間/</code>，裡面有當次設定</td></tr>
+            <tr><th scope="row"><code>sd_card/01/</code></th><td>語音檔 001～009.wav；電腦直接播放，也要複製到 microSD 卡根目錄。想用自己的聲音，照編號換檔即可</td></tr>
             <tr><th scope="row"><code>output/</code></th><td>標註影片、成績表 <code>summary_*.csv</code>、警示截圖 <code>snapshots/</code>（都已模糊）</td></tr>
           </tbody>
         </table>
@@ -774,7 +835,7 @@
         <li><b>成績</b>執行 <code>4_batch_evaluate.bat</code></li>
         <li><b>改良</b><code>batch_run.py --set</code> 比較</li>
       </ol>
-      <p>練習影片的預期結果：兩次逼近都有警示、沒有誤報，第一台車約提早 2 秒，第二台車開得快，只提早約 0.5 秒。想一想：為什麼開得越快，能提早的時間越少？</p>
+      <p>練習影片的預期結果：兩次逼近都有警示、沒有誤報，第一台車約提早 2 秒，第二台車開得快，只提早約 0.5 秒；車種判斷 2/2 正確，語音依序是「後方大型車」「危險，大型車」「危險，大型車」。想一想：為什麼開得越快，能提早的時間越少？</p>
     </section>
 
     <section id="prompts">
@@ -814,7 +875,7 @@
   python batch_run.py videos --set ttc_warn=5 --tag warn5
 然後讀取這三次產生的 output/summary_*.csv 的【合計】列，
 用 matplotlib 畫一張圖：橫軸是 ttc_warn，左邊縱軸是平均提早秒數、右邊縱軸是每 10 分鐘誤報，
-圖存成 output/compare_ttc_warn.png，並用繁體中文說明取捨。不要修改 config.json。</pre></pre>
+圖存成 output/compare_ttc_warn.png，並用繁體中文說明取捨。不要修改 config.json。</pre>
       </div>
 
       <div class="prompt">
@@ -829,6 +890,14 @@
 <pre id="p6">這是我們所有影片的成績表（貼上表格）。請整理成書面報告可用的表格，
 依時段、天氣、車種分組，計算成功率與平均提早秒數，並寫一段 150 字的分析，
 說明哪些情況效果最差、可能的原因，以及樣本數是否足夠。數字只能用我提供的資料。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>⑦ 延伸：語音說出方向</span><button type="button" class="copy" data-target="p7">複製</button></div>
+<pre id="p7">我們想讓語音也說出車子在左後方還是正後方。請閱讀 voice.py 與 rear_alert.py，
+提出做法：需要新增哪些語音檔（先列出編號與內容）、怎麼從車框位置判斷方向、要改哪些函式。
+改完後同步更新 test_voice_logic.py 的測試案例，執行後全部通過再回報；
+並提醒我要用 6_make_voice_files.bat 重新產生語音檔、把新檔案複製到 microSD 卡。</pre>
       </div>
     </section>
 
@@ -850,6 +919,7 @@
             <tr><th scope="row">成功率（召回率）</th><td>成功警示次數 ÷ 標記的經過次數</td><td>有多少台車被提前發現</td></tr>
             <tr><th scope="row">平均提早秒數</th><td>經過時間 − 第一次警示時間，取平均</td><td>騎士有多少反應時間</td></tr>
             <tr><th scope="row">危險燈提早秒數</th><td>經過時間 − 第一次紅燈時間</td><td>最後警告夠不夠早</td></tr>
+            <tr><th scope="row">車種判斷正確率</th><td>語音說的車種與標記一致的次數 ÷ 有標記車種的成功警示（公車、貨車都算大型車）</td><td>語音會不會說錯；說錯會讓騎士誤判</td></tr>
             <tr><th scope="row">誤報率</th><td>誤報次數 ÷ 影片分鐘數 × 10</td><td>每 10 分鐘誤報幾次；誤報太多，使用者會不再理會警示</td></tr>
           </tbody>
         </table>
@@ -869,7 +939,9 @@ python batch_run.py videos --set imgsz=960 --tag img960
 python batch_run.py videos --set confirm_count=1 --tag confirm1</code></pre>
       <p class="muted">每次的成績表存在 <code>output/summary_標籤_時間.csv</code>，<code>config.json</code> 不會被修改。</p>
       <h3>桌上模型反應時間</h3>
-      <p>用手機慢動作錄下「玩具車開始移動」到「黃燈亮起」的過程，數影格算出延遲。也可以比較 <code>detect_interval_sec</code> 0.1 與 0.3 的差別。</p>
+      <p>用手機慢動作錄下「玩具車開始移動」到「黃燈亮起」「開始說話」「TFT 顯示車種」的過程，數影格算出延遲。也可以比較 <code>detect_interval_sec</code> 0.1 與 0.3 的差別。</p>
+      <h3>語音與 TFT 的使用者測試</h3>
+      <p>請沒參與製作的同學看桌上模型展示，記錄：聽不聽得清楚語音、多久能看懂 TFT 的意思、會不會覺得太吵。可以比較「只有燈號」「燈號＋語音」「燈號＋語音＋TFT」三種組合，哪一種最容易理解。</p>
     </section>
 
     <section id="ethics">
@@ -900,6 +972,11 @@ python batch_run.py videos --set confirm_count=1 --tag confirm1</code></pre>
             <tr><th scope="row">ESP32 綠燈一直慢閃</th><td>電腦沒有送出訊號</td><td>確認沒有加 <code>--no-serial</code>；程式開頭是否顯示「已連線 ESP32」</td></tr>
             <tr><th scope="row">找不到 ESP32 序列埠</th><td>沒裝 USB 驅動、USB 線只能充電</td><td>安裝 CP210x 或 CH340 驅動；換一條傳輸線；在 config.json 指定 COM 埠</td></tr>
             <tr><th scope="row">蜂鳴器一直響</th><td>買到「低電位觸發」的模組</td><td>換成高電位觸發模組，或請 AI 助手把程式中蜂鳴器的 HIGH／LOW 反過來</td></tr>
+            <tr><th scope="row">DFPlayer 沒有聲音</th><td>卡片不是 FAT32、資料夾或檔名不對、RX／TX 沒交叉、喇叭沒接好</td><td>卡片格式化成 FAT32；根目錄要有 <code>01</code> 資料夾與 <code>001.wav</code>；對調 GPIO16／17 接線；先用 <code>1_test_lights.bat</code> 測試</td></tr>
+            <tr><th scope="row">播放語音時 ESP32 重開機</th><td>喇叭太大聲、USB 供電不足</td><td>把 <code>voice_volume</code> 調低到 15～20；換較短的 USB 線或接有外接電源的 USB 集線器</td></tr>
+            <tr><th scope="row">語音有雜音</th><td>DFPlayer 與 ESP32 共用電源的雜訊</td><td>RX 前串 1kΩ 電阻；DFPlayer 電源腳並聯 100µF 電容</td></tr>
+            <tr><th scope="row">TFT 全白、顏色錯或邊緣有雜點</th><td>接線錯誤、面板型號不同</td><td>檢查 CS、A0、RST；把 <code>INITR_BLACKTAB</code> 改成 <code>INITR_GREENTAB</code> 或 <code>INITR_REDTAB</code></td></tr>
+            <tr><th scope="row">電腦語音唸成英文或沒有聲音</th><td>沒有中文語音</td><td>Windows 設定新增「中文（台灣）」語音後，重新執行 <code>6_make_voice_files.bat</code></td></tr>
             <tr><th scope="row">玩具車認不出來</th><td>玩具車太小、不夠逼真</td><td>換大一點的合金車，或改用平板播放錄好的影片給鏡頭看</td></tr>
           </tbody>
         </table>
@@ -925,7 +1002,7 @@ python batch_run.py videos --set confirm_count=1 --tag confirm1</code></pre>
         <li><strong>研究動機：</strong>問卷或訪談結果。</li>
         <li><strong>文獻與現況：</strong>後照鏡、後方雷達尾燈、行車紀錄器，說明本作品用影像辨識的優缺點。</li>
         <li><strong>研究方法：</strong>功能清單與驗收標準、系統模組圖、狀態機、拍攝方式、標記規則、追蹤與到達時間的原理（附公式與圖）、參數。</li>
-        <li><strong>測試與結果：</strong>功能測試（T1～T8）、基準成績、情境與車種比較、參數實驗、桌上模型反應時間。</li>
+        <li><strong>測試與結果：</strong>功能測試（T1～T10）、基準成績、情境與車種比較、參數實驗、桌上模型反應時間。</li>
         <li><strong>討論：</strong>漏報與誤報原因、方法限制、安全與隱私措施。</li>
         <li><strong>結論與未來展望：</strong>例如裁切辨識、手機或樹莓派版本。</li>
       </ol>
@@ -938,7 +1015,7 @@ python batch_run.py videos --set confirm_count=1 --tag confirm1</code></pre>
             <tr><th scope="row">資料蒐集與標記</th><td>20%</td><td>影片涵蓋多種情境、至少 30 次經過，標記規則清楚且經過交叉確認</td></tr>
             <tr><th scope="row">功能設計與原理</th><td>15%</td><td>功能與驗收標準清楚，能用自己的話和例子說明追蹤、狀態機與到達時間的計算</td></tr>
             <tr><th scope="row">測試與改良</th><td>25%</td><td>有基準成績、一次改一項的參數實驗，能用影片說明誤報原因</td></tr>
-            <tr><th scope="row">桌上模型</th><td>15%</td><td>燈號清楚易懂、有離線提示、量測反應時間</td></tr>
+            <tr><th scope="row">桌上模型</th><td>15%</td><td>燈號、語音、TFT 清楚易懂，有離線提示，量測反應時間並做使用者測試</td></tr>
             <tr><th scope="row">安全、隱私與報告</th><td>15%</td><td>拍攝過程安全、畫面確實模糊處理、數據真實、展示清楚</td></tr>
           </tbody>
         </table>

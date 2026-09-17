@@ -5,6 +5,7 @@
   2. 追蹤同一台車，記錄它的框寬度隨時間的變化
   3. 框的寬度和距離成反比，由此估計還有幾秒會到（τ，碰撞前時間）
   4. τ 小於 ttc_warn 秒 → 注意（黃燈、短嗶）；小於 ttc_danger 秒 → 危險（紅燈、連續嗶）
+  5. 說出車種（後方機車／汽車／大型車），ESP32 的 TFT 顯示等級、車種與到達秒數（見 voice.py）
 
 輸出：
   logs/<影片名>_<時間>.csv          每次警示開始、升級、解除的時間
@@ -31,6 +32,8 @@ from collections import Counter, deque
 import cv2
 import numpy as np
 from ultralytics import YOLO
+
+import voice
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEVEL_NAME = {0: "安全", 1: "注意", 2: "危險"}
@@ -151,7 +154,8 @@ class AlertState:
 
 # ---------- 警示輸出 ----------
 class Esp32Link:
-    """把警示等級（L0／L1／L2）傳給 ESP32，由 ESP32 控制燈號與蜂鳴器。"""
+    """把狀態（S＋等級＋車種＋秒數）、語音編號（P1～P9）、音量（V0～V30）傳給 ESP32，
+    由 ESP32 控制燈號、蜂鳴器、TFT 文字與 DFPlayer 語音。"""
 
     def __init__(self, port, baud):
         self.ser = None
@@ -175,10 +179,10 @@ class Esp32Link:
         except Exception as e:
             print("無法開啟序列埠：", e)
 
-    def send(self, level):
+    def send(self, text):
         if self.ser:
             try:
-                self.ser.write(f"L{level}\n".encode())
+                self.ser.write(f"{text}\n".encode())
                 return True
             except Exception as e:
                 print("序列埠寫入失敗，ESP32 會顯示離線：", e)
@@ -192,9 +196,10 @@ class PcBeeper:
     def __init__(self, enabled):
         self.enabled = enabled and os.name == "nt"
         self.last = 0.0
+        self.quiet_until = 0.0      # 播放語音時暫停嗶聲
 
     def update(self, level):
-        if not self.enabled or level == 0:
+        if not self.enabled or level == 0 or time.time() < self.quiet_until:
             return
         import winsound
         now = time.time()
@@ -245,7 +250,7 @@ def main():
     parser.add_argument("--window", action="store_true", help="顯示畫面（q 離開、空白鍵暫停）")
     parser.add_argument("--save", action="store_true", help="輸出標註影片到 output/")
     parser.add_argument("--no-serial", action="store_true", help="不連接 ESP32")
-    parser.add_argument("--no-sound", action="store_true", help="不要電腦嗶聲")
+    parser.add_argument("--no-sound", action="store_true", help="電腦不發出嗶聲與語音")
     parser.add_argument("--log", help="指定警示紀錄的檔名（批次分析用）")
     args = parser.parse_args()
 
@@ -266,7 +271,25 @@ def main():
     fps = cap.get(cv2.CAP_PROP_FPS) or 30
 
     link = None if args.no_serial else Esp32Link(cfg.get("serial_port", "auto"), cfg.get("baud", 115200))
-    beeper = PcBeeper(cfg.get("pc_beep", True) and not args.no_sound and not (link and link.ser))
+    use_pc_sound = not args.no_sound and not (link and link.ser)
+    beeper = PcBeeper(cfg.get("pc_beep", True) and use_pc_sound)
+    voice_on = cfg.get("voice", True)
+    announcer = voice.Announcer(cfg.get("voice_cooldown_sec", 1.5), cfg.get("big_vehicle_classes", ["bus", "truck"]))
+    pc_player = voice.PcPlayer(voice_on and use_pc_sound)
+    voice_count = 0
+
+    def play_clip(clip):
+        if not voice_on:
+            return
+        if link and link.ser:
+            link.send(f"P{clip}")
+        else:
+            pc_player.play(clip)
+            beeper.quiet_until = time.time() + 1.5
+
+    if voice_on and link and link.ser:
+        link.send(f"V{int(cfg.get('voice_volume', 22))}")
+    play_clip(voice.CLIP_READY)
 
     stamp = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
     if args.log:
@@ -276,7 +299,7 @@ def main():
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
     log_f = open(log_path, "w", newline="", encoding="utf-8-sig")
     log = csv.writer(log_f)
-    log.writerow(["time", "event", "level", "vehicle", "track", "ttc_sec", "width_ratio"])
+    log.writerow(["time", "event", "level", "vehicle", "track", "ttc_sec", "width_ratio", "voice"])
 
     snap_dir = None
     if cfg.get("snapshot_on_alert", True):
@@ -293,6 +316,7 @@ def main():
     alert_count = danger_count = 0
     last_detect = -1e9
     last_send = 0.0
+    shown_name, shown_ttc = "", None     # TFT 顯示的車種與秒數
     last_frame_wall = time.time()
     camera_lost_said = False
     frame_idx = 0
@@ -357,23 +381,39 @@ def main():
                             want, worst = tr.level, (tr, width_ratio)
 
                     event = state.update(want, now)
+                    if worst:
+                        shown_name, shown_ttc = worst[0].name, worst[0].ttc
+                    elif not state.on:
+                        shown_name, shown_ttc = "", None
                     if event in ("alert_on", "escalate"):
                         tr, wr = worst
-                        log.writerow([round(now, 2), event, want, tr.name, tr.id, round(tr.ttc, 2), round(wr, 3)])
+                        log.writerow([round(now, 2), event, want, tr.name, tr.id, round(tr.ttc, 2), round(wr, 3), ""])
                         print(f"[{now:6.2f}s] {LEVEL_NAME[want]}：{tr.name} #{tr.id}，約 {tr.ttc:.1f} 秒後到達")
                         alert_count += event == "alert_on"
                         danger_count += want == 2
                         snap_level = want
                     elif event == "alert_off":
-                        log.writerow([round(now, 2), "alert_off", 0, "", "", "", ""])
+                        log.writerow([round(now, 2), "alert_off", 0, "", "", "", "", ""])
                         print(f"[{now:6.2f}s] 解除警示")
+
+                    # 車種語音
+                    alerting = [(tr.id, tr.name, tr.level) for tr in tracks if tr.level > 0]
+                    said = announcer.update(now, alerting, state.level, event)
+                    if said:
+                        clip, text = said
+                        play_clip(clip)
+                        voice_count += 1
+                        log.writerow([round(now, 2), "voice", state.level,
+                                      "+".join(sorted({n for _, n, _ in alerting})),
+                                      "+".join(str(i) for i, _, _ in alerting), "", "", text])
+                        print(f"[{now:6.2f}s] 語音：{text}")
                     log_f.flush()
 
                 # 燈號：畫面正常時每 0.2 秒送一次；ESP32 超過 1.5 秒沒收到會顯示「離線」
                 if time.time() - last_send > 0.2:
                     last_send = time.time()
                     if link:
-                        link.send(state.level)
+                        link.send(voice.status_line(state.level, shown_name, shown_ttc))
                 beeper.update(state.level)
 
                 view = frame.copy()
@@ -402,9 +442,9 @@ def main():
         pass
     finally:
         if state.on:
-            log.writerow([round(now, 2), "alert_off", 0, "", "", "", ""])
+            log.writerow([round(now, 2), "alert_off", 0, "", "", "", "", ""])
         if link:
-            link.send(0)
+            link.send(voice.status_line(0, "", None))
         cap.release()
         if writer:
             writer.release()
@@ -421,6 +461,7 @@ def main():
             "vehicles": dict(tracker.counts),
             "alerts": alert_count,
             "danger_alerts": danger_count,
+            "voice_clips": voice_count,
             "config": {k: cfg[k] for k in ("model", "imgsz", "confidence", "zone_x", "min_width_ratio",
                                            "size_window_sec", "ttc_warn", "ttc_danger", "confirm_count",
                                            "hold_sec")},

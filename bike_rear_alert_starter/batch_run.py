@@ -44,6 +44,7 @@ def row_of(name, s, false_alarms, minutes, fps):
         "平均提早秒數": evaluate.fmt(s["avg_lead"]),
         "最短提早秒數": evaluate.fmt(s["min_lead"]),
         "紅燈平均提早": evaluate.fmt(s["avg_danger_lead"]),
+        "車種正確": f"{s['type_correct']}/{s['type_checked']}" if s["type_checked"] else "—",
         "誤報": false_alarms,
         "影片分鐘數": evaluate.fmt(minutes, 1),
         "每10分鐘誤報": evaluate.fmt(false_alarms / minutes * 10 if minutes else None, 1),
@@ -99,7 +100,7 @@ def main():
             info = json.load(f)
         truth = evaluate.load_truth(truth_path)
         alerts, danger = evaluate.load_alerts(log_path)
-        rows, fa = evaluate.match(truth, alerts, danger)
+        rows, fa = evaluate.match(truth, alerts, danger, vehicles=evaluate.load_alert_vehicles(log_path))
         minutes = info["duration_sec"] / 60
         table.append(row_of(v, evaluate.score(rows), len(fa), minutes, info["processing_fps"]))
         all_rows += rows
