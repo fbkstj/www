@@ -35,3 +35,6 @@ headgear_assist_starter/logs/
 headgear_assist_starter/demo.mp4
 headgear_assist_starter/demo_sensor.csv
 headgear_assist_starter/yolo11n.pt
+
+# 加密網頁的未加密原始檔（只留在本機／雲端硬碟，不可上傳）
+_private/
