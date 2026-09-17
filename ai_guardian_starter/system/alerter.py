@@ -39,6 +39,10 @@ class Alerter:
     def __init__(self):
         self.last_sent = {}   # (攝影機, 事件種類) -> 時間
         self.pending = []     # 等待取消窗口結束的高風險事件
+        # 最近一次的狀態（警示盒顯示用）：(時間, 事件種類)
+        self.last_reported = None   # 高風險事件已發出通報
+        self.last_cancelled = None  # 保全取消（誤報）
+        self.last_notice = None     # 中、低風險事件
         EVENT_DIR.mkdir(exist_ok=True)
         self.csv_path = EVENT_DIR / "events.csv"
         if not self.csv_path.exists():
@@ -70,6 +74,8 @@ class Alerter:
 
     def handle(self, cam, events, frame, now):
         for ev in events:
+            if ev.level != LEVEL_HIGH:
+                self.last_notice = (now, ev.kind)   # 事件持續時，警示盒一直顯示「注意」
             key = (cam, ev.kind)
             if now - self.last_sent.get(key, -1e9) < COOLDOWN_SEC:
                 continue
@@ -94,9 +100,12 @@ class Alerter:
             self.pending.remove(p)
             self._send(self._message(p["cam"], p["ev"], p["ts"], "🚨【緊急通報】請立即處置"))
             self._log(p["ts"], p["cam"], p["ev"], "二級通報(LINE)", p["snap"])
+            self.last_reported = (now, p["ev"].kind)
 
-    def cancel_all(self):
-        """保全按 C:判定為誤報,取消所有待送出的高風險通報。"""
+    def cancel_all(self, now=None):
+        """保全按 C（或警示盒的取消鈕）：判定為誤報，取消所有待送出的高風險通報。"""
+        if self.pending:
+            self.last_cancelled = (time.time() if now is None else now, self.pending[0]["ev"].kind)
         for p in self.pending:
             self._log(p["ts"], p["cam"], p["ev"], "保全取消(誤報)", p["snap"])
             print(f"[取消] {p['cam']} {p['ev'].kind} 已標記為誤報", flush=True)

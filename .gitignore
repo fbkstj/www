@@ -58,3 +58,7 @@ ai_guardian_starter/events/
 ai_guardian_starter/system/events/
 ai_guardian_starter/yolov8n.pt
 ai_guardian_starter/.venv/
+ai_guardian_starter/output/
+ai_guardian_starter/logs/
+ai_guardian_starter/videos/*
+!ai_guardian_starter/videos/把影片放在這裡.txt

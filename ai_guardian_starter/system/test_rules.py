@@ -137,5 +137,70 @@ check("按 C 取消後不送出", len(sent) == 1)
 rows = (tmp / "events.csv").read_text(encoding="utf-8-sig").splitlines()
 check("events.csv 有 2 筆紀錄（通報、取消）", len(rows) == 3 and "取消" in rows[2])
 
+print("7. 警示盒狀態與通訊格式")
+from alarm_link import compute_state, parse_line, status_line
+b = alerter_mod.Alerter()
+check("平常是「監控中」S0N0", status_line(*compute_state(b, 0.0)) == "S0N0")
+b.handle("穿堂", [high], frame, 200.0)
+check("倒數剩 5 秒送 S2W5", status_line(*compute_state(b, 200.0)) == "S2W5")
+check("倒數剩 0.3 秒時顯示 1", status_line(*compute_state(b, 204.7)) == "S2W1")
+b.tick(205.0)
+check("通報後 10 秒內是「已通報」S3W0", status_line(*compute_state(b, 206.0)) == "S3W0")
+check("通報 10 秒後回到監控中", status_line(*compute_state(b, 215.1)) == "S0N0")
+b.handle("穿堂", [Event("奔逃", LEVEL_HIGH, "測試")], frame, 300.0)
+b.cancel_all(301.0)
+check("取消後是「已取消」S4R0", status_line(*compute_state(b, 302.0)) == "S4R0")
+b.handle("穿堂", [Event("倒地", "中", "測試")], frame, 400.0)
+check("中風險事件是「注意」S1F0", status_line(*compute_state(b, 401.0)) == "S1F0")
+b.handle("穿堂", [Event("倒地", "中", "測試")], frame, 420.0)
+check("倒地一直持續（冷卻時間內）仍顯示「注意」", status_line(*compute_state(b, 422.0)) == "S1F0")
+check("取消鈕訊息 K", parse_line("K\r") == "cancel" and parse_line("I,ready") == "ready"
+      and parse_line("S2W5") is None)
+check("秒數超過 9 以 9 表示、每行 4 個字元", status_line(2, "聚集", 12) == "S2C9")
+
+print("8. 暫時修改門檻（--set）")
+import threat_rules as tr
+saved = tr.current_params()
+name, value = tr.set_param("weapon_sustain_sec=2")
+check("名稱不分大小寫、數值轉成小數", (name, value) == ("WEAPON_SUSTAIN_SEC", 2.0))
+tr.set_param("PRACTICE_SCISSORS=false")
+check("關掉練習模式後，剪刀不算危險物品", 76 not in tr.weapon_classes() and 76 not in tr.WEAPON_CLASSES)
+try:
+    tr.set_param("NO_SUCH=1")
+    check("打錯名稱會停止", False)
+except SystemExit:
+    check("打錯名稱會停止", True)
+for k, v in saved.items():
+    tr.set_param(f"{k}={v}")
+check("還原後剪刀又算危險物品", 76 in tr.WEAPON_CLASSES)
+
+print("9. 評估工具（練習資料）")
+import demo_scenes
+import detlog
+import evaluate
+frames = demo_scenes.build_frames()
+path = tmp / "demo_dets.csv"
+detlog.write_dets(path, frames)
+back = detlog.read_dets(path)
+check("偵測紀錄存檔再讀回，時間點數量相同", len(back) == len(frames) == 1801)
+truths = [{"kind": k, "start": s, "end": e, "note": n} for k, s, e, n in demo_scenes.TRUTH]
+eps = evaluate.replay(back)
+results, falses, repeats = evaluate.match(truths, eps)
+total = evaluate.score(results, falses, evaluate.duration_min(back))
+check("練習資料：6 件事偵測到 5 件", (total["events"], total["hits"]) == (6, 5))
+check("練習資料：誤報 1 次（有人從桌上的剪刀旁走過）",
+      len(falses) == 1 and falses[0]["kind"] == "持械" and 33 < falses[0]["start"] < 35)
+check("練習資料：漏報的是遠處低信心度的剪刀", [r["start"] for r in results if not r["hit"]] == [152.0])
+check("練習資料：平均反應 2.18 秒、重複警示 1 次",
+      round(total["avg_latency"], 2) == 2.18 and repeats == 1)
+tr.set_param("WEAPON_SUSTAIN_SEC=2")
+_, falses2, _ = evaluate.match(truths, evaluate.replay(back))
+tr.set_param("WEAPON_SUSTAIN_SEC=0.6")
+check("持續秒數改 2 秒：誤報變 0 次", len(falses2) == 0)
+tr.set_param("WEAPON_CONF=0.25")
+r3, f3, _ = evaluate.match(truths, evaluate.replay(back))
+tr.set_param("WEAPON_CONF=0.35")
+check("信心度門檻改 0.25：6 件全抓到，但誤報變 2 次", sum(r["hit"] for r in r3) == 6 and len(f3) == 2)
+
 print(f"\n結果：{passed} 項通過，{failed} 項失敗")
 raise SystemExit(1 if failed else 0)

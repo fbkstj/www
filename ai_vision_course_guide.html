@@ -782,13 +782,13 @@
               <div class="font-bold text-white mb-1">做法</div>
               <ol class="list-decimal pl-5 space-y-1">
                 <li>YOLO 偵測人與刀、剪刀、球棒，危險物品的框和人的框重疊才算「拿在手上」</li>
-                <li>持續 0.6 秒才成立警示，嗶聲並倒數 5 秒，保全按 C 可取消誤報</li>
-                <li>沒人取消就截圖存證、寫入紀錄，並用 LINE Messaging API 通報；多台攝影機合成一面監控牆</li>
+                <li>持續 0.6 秒才成立警示，嗶聲並倒數 5 秒，保全按取消鈕可取消誤報</li>
+                <li>沒人取消就截圖存證、寫入紀錄，並用 LINE Messaging API 通報；現場 ESP32 警示盒顯示燈號、倒數與取消鈕</li>
               </ol>
             </div>
             <dl class="mt-4 space-y-2 text-base text-slate-200">
-              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">用調參實驗表比較不同信心度與持續秒數：「穩定拿著剪刀 3 秒」與「快速晃過鏡頭」各測 10 次，統計正確偵測、誤報與反應時間。</dd></div>
-              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">改用姿態模型判斷倒地、接 Arduino 現場警示燈，或自行訓練火焰、煙霧類別。</dd></div>
+              <div><dt class="inline font-bold text-sky-300">驗證方式：</dt><dd class="inline">照腳本錄製校內演練影片並標記正確答案，用評估工具計算偵測率、反應秒數與每 10 分鐘誤報，再比較不同門檻的取捨。</dd></div>
+              <div><dt class="inline font-bold text-teal-300">延伸方向：</dt><dd class="inline">ESP32 警示盒加上語音、改用姿態模型判斷手持與倒地，或自行訓練火焰、煙霧類別。</dd></div>
               <div><dt class="inline font-bold text-violet-300">隱私：</dt><dd class="inline">設置錄影告示、只用在安全用途；事件截圖定期刪除，不放進成果報告。</dd></div>
             </dl>
           <div class="mt-4 flex flex-wrap gap-2">
