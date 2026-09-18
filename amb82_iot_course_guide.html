@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMB82-Mini 影像物聯網入門｜研習講義</title>
+<meta name="description" content="AMB82-Mini 影像物聯網入門研習講義：Arduino 環境安裝、RTSP 影音串流、AP 模式網頁與 ngrok、拍照上傳 Google 雲端硬碟與試算表、LINE 推播、MP4 錄影與 TFT 顯示、Telegram Bot 遠端控制，逐步操作與排錯。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #cbd5e1;
+    --text: #0f172a;
+    --muted: #475569;
+    --primary: #0369a1;
+    --primary-soft: #e0f2fe;
+    --accent: #a16207;
+    --accent-soft: #fef9c3;
+    --danger: #b91c1c;
+    --danger-soft: #fef2f2;
+    --ok: #047857;
+    --ok-soft: #ecfdf5;
+    --code-bg: #0f172a;
+    --code-text: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text);
+    background: var(--bg);
+  }
+  a { color: var(--primary); }
+  :focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; border-radius: 4px; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 8px; background: #fff; padding: 6px 12px; z-index: 10; }
+
+  header.hero {
+    background: linear-gradient(135deg, #0f766e 0%, #7c2d12 100%);
+    color: #fff;
+    padding: 48px 20px 40px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  .hero .wrap { padding: 0; }
+  .hero .eyebrow {
+    display: inline-block; background: rgba(15,23,42,0.4); border: 1px solid rgba(255,255,255,0.35);
+    padding: 2px 12px; border-radius: 999px; font-size: 0.9rem; font-weight: 700;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.3; margin: 14px 0 10px; font-weight: 900; }
+  .hero p { font-size: 1.1rem; max-width: 760px; margin: 0 0 20px; color: #f0f9ff; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px;
+    font-weight: 700; text-decoration: none; border: 2px solid transparent; font-size: 1rem; cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-primary { background: #fde047; color: #0f172a; }
+  .btn-primary:hover { background: #facc15; }
+  .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.7); background: transparent; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+  .facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; padding: 0; list-style: none; }
+  .facts li { background: rgba(15,23,42,0.35); border-radius: 8px; padding: 4px 12px; font-size: 0.95rem; }
+
+  .layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; padding-top: 28px; padding-bottom: 60px; }
+  nav.toc { position: sticky; top: 16px; align-self: start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  nav.toc h2 { font-size: 1rem; margin: 0 0 6px; }
+  nav.toc ol { margin: 0; padding-left: 1.3em; font-size: 0.95rem; line-height: 1.9; }
+  nav.toc a { text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  main { min-width: 0; }
+
+  section { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-bottom: 24px; scroll-margin-top: 16px; }
+  section > h2 { font-size: 1.5rem; margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+  .num { display: inline-flex; width: 36px; height: 36px; border-radius: 9px; background: var(--primary-soft); color: var(--primary); align-items: center; justify-content: center; font-size: 1rem; font-weight: 900; flex-shrink: 0; }
+  h3 { font-size: 1.15rem; margin: 20px 0 6px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-left: 1.4em; margin: 8px 0; }
+  li { margin: 3px 0; }
+  .muted { color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.97rem; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  thead th { background: #e2e8f0; }
+  tbody th { background: #f1f5f9; font-weight: 700; }
+
+  .note { border-radius: 10px; padding: 12px 16px; margin: 12px 0; border: 1px solid; }
+  .note > strong:first-child { display: block; }
+  .note.warn { background: var(--danger-soft); border-color: #fca5a5; color: #7f1d1d; }
+  .note.tip { background: var(--ok-soft); border-color: #6ee7b7; color: #064e3b; }
+  .note.info { background: var(--accent-soft); border-color: #fde047; color: #713f12; }
+
+  .flow { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; counter-reset: flow; }
+  .flow li { counter-increment: flow; background: var(--primary-soft); border: 1px solid #7dd3fc; border-radius: 10px; padding: 8px 12px; flex: 1 1 150px; font-size: 0.95rem; position: relative; margin: 0; }
+  .flow li::before { content: counter(flow); display: inline-block; background: var(--primary); color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 0.8rem; font-weight: 700; margin-right: 6px; }
+  .flow li b { display: block; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .box { border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; background: #f8fafc; }
+  .box h3 { margin-top: 0; }
+
+  pre, code { font-family: "JetBrains Mono", Consolas, monospace; }
+  code { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 0.92em; overflow-wrap: anywhere; }
+  pre { background: var(--code-bg); color: var(--code-text); padding: 14px 16px; border-radius: 10px; overflow-x: auto; font-size: 0.9rem; line-height: 1.6; margin: 8px 0; }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .prompt { border: 1px solid var(--border); border-radius: 10px; margin: 12px 0; overflow: hidden; }
+  .prompt-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #f1f5f9; padding: 8px 12px; font-weight: 700; flex-wrap: wrap; }
+  .prompt pre { margin: 0; border-radius: 0; white-space: pre-wrap; }
+  .copy { background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 4px 12px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+  .copy:hover { background: #075985; }
+
+  .check { list-style: none; padding-left: 0; }
+  .check li::before { content: "☐ "; font-weight: 700; color: var(--primary); }
+
+  footer { text-align: center; color: var(--muted); padding: 24px 16px 40px; font-size: 0.95rem; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; }
+    .grid2 { grid-template-columns: 1fr; }
+    section { padding: 20px 16px; }
+    body { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media print {
+    nav.toc, .hero .actions, .copy, .calc { display: none; }
+    .layout { display: block; }
+    section { break-inside: avoid; }
+  }
+  details { margin: 8px 0 16px; }
+  details summary { cursor: pointer; font-weight: 700; color: var(--primary); padding: 4px 0; }
+</style>
+<style>
+  .figure { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 12px 0; }
+  .figure svg { display: block; width: 100%; height: auto; max-width: 720px; margin: 0 auto; }
+  .figure figcaption { text-align: center; color: var(--muted); font-size: 0.95rem; margin-top: 6px; }
+  .svg-label { font: 500 14px "Noto Sans TC", sans-serif; fill: #0f172a; }
+  .svg-sub { font: 400 12px "Noto Sans TC", sans-serif; fill: #475569; }
+  .formula { font-family: "JetBrains Mono", Consolas, monospace; background: var(--primary-soft); border: 1px solid #7dd3fc; border-radius: 10px; padding: 10px 14px; margin: 10px 0; font-size: 1.05rem; overflow-x: auto; }
+  .calc { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin: 14px 0; background: #f8fafc; }
+  .calc h3 { margin-top: 0; }
+  .calc-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .calc label { display: flex; flex-direction: column; font-weight: 700; font-size: 0.95rem; }
+  .calc input { font: inherit; width: 130px; padding: 6px 8px; border: 1px solid #94a3b8; border-radius: 8px; background: #fff; color: var(--text); }
+  .calc-out { margin-top: 10px; padding: 8px 12px; border-radius: 8px; font-weight: 700; border: 1px solid var(--border); background: #fff; }
+  .calc-out.lv0 { border-color: #6ee7b7; background: var(--ok-soft); color: #064e3b; }
+  .calc-out.lv1 { border-color: #fde047; background: var(--accent-soft); color: #713f12; }
+  .calc-out.lv2 { border-color: #fca5a5; background: var(--danger-soft); color: #7f1d1d; }
+  kbd { font-family: "JetBrains Mono", Consolas, monospace; font-size: 0.88em; background: #fff; border: 1px solid #94a3b8; border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; }
+  table.nw1 tbody th, table.nw1 thead th:first-child, table.nw3 td:nth-child(3),
+  table.nw12 th:first-child, table.nw12 td:nth-child(2), table.nw12 thead th:nth-child(2) { white-space: nowrap; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; margin-right: 4px; border: 1px solid #334155; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">教師研習・學生實作講義</span>
+    <h1>AMB82-Mini 影像物聯網入門<br>從拍一張照片，到手機遠端遙控</h1>
+    <p>AMB82-Mini 是一塊會拍照、會錄影、還能自己連網路的 AI 開發板。這份講義照著研習的六節課排，每一節都寫清楚「要做什麼、按哪裡、看到什麼算成功、出錯先查哪裡」，可以邊上課邊對照，課後也能自己重做一次。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="amb82_course_starter_pack.zip" download="amb82_course_starter_pack.zip">⬇ 下載程式包（ZIP）</a>
+      <a class="btn btn-ghost" href="#prepare">課前準備</a>
+      <a class="btn btn-ghost" href="#trouble">排錯總表</a>
+    </div>
+    <ul class="facts">
+      <li>研習日期：115 年 12 月 2 日（星期三）</li>
+      <li>六節課・09:20～16:00</li>
+      <li>開發板：Realtek AMB82-Mini（RTL8735B）</li>
+      <li>環境：BlocklyDuino F2／Arduino IDE</li>
+      <li>外聘講師：鳳山科技中心 傅仲儀主任（法蘭斯老師）</li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="本頁目錄">
+    <h2>目錄</h2>
+    <ol>
+      <li><a href="#overview">課程總覽</a></li>
+      <li><a href="#board">認識 AMB82-Mini</a></li>
+      <li><a href="#prepare">課前準備</a></li>
+      <li><a href="#u1">第 1 節：平台與第一支程式</a></li>
+      <li><a href="#u2">第 2 節：RTSP 影音串流</a></li>
+      <li><a href="#u3">第 3 節：AP 網頁與 ngrok</a></li>
+      <li><a href="#u4">第 4 節：雲端硬碟與 LINE</a></li>
+      <li><a href="#u5">第 5 節：MP4 錄影與 TFT</a></li>
+      <li><a href="#u6">第 6 節：Telegram Bot</a></li>
+      <li><a href="#prompts">AI 助手提示語</a></li>
+      <li><a href="#trouble">排錯總表</a></li>
+      <li><a href="#safety">安全、隱私與規範</a></li>
+      <li><a href="#check">學習單與檢核表</a></li>
+      <li><a href="#next">課後延伸</a></li>
+    </ol>
+  </nav>
+
+  <main id="main">
+
+    <section id="overview">
+      <h2><span class="num">1</span>課程總覽</h2>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">時間</th><th scope="col">單元</th><th scope="col">做出什麼</th><th scope="col">本講義</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">09:00～09:20</th><td>報到</td><td>—</td><td>先完成<a href="#prepare">課前準備</a>的三項檢查</td></tr>
+            <tr><th scope="row">09:20～10:10</th><td>BlocklyDuino F2 平台建置與開發板功能介紹</td><td>板子亮燈、拍一張照片存 SD 卡</td><td><a href="#u1">第 1 節</a></td></tr>
+            <tr><th scope="row">10:20～11:10</th><td>RTSP／RTP／TCP 多元影音串流實作</td><td>電腦用 VLC 看到板子的即時畫面</td><td><a href="#u2">第 2 節</a></td></tr>
+            <tr><th scope="row">11:20～12:10</th><td>ngrok 跨網域視訊串流與 AP 模組網頁應用</td><td>手機連板子看畫面；讓外網也看得到</td><td><a href="#u3">第 3 節</a></td></tr>
+            <tr><th scope="row">12:10～13:10</th><td>用餐</td><td>—</td><td>把 Google 帳號、Telegram 先登入好</td></tr>
+            <tr><th scope="row">13:10～14:00</th><td>視訊截圖雲端整合：雲端硬碟、試算表與 LINE Bot</td><td>照片自動存雲端、寫進試算表、推播 LINE</td><td><a href="#u4">第 4 節</a></td></tr>
+            <tr><th scope="row">14:10～15:00</th><td>MP4 影像錄製與 TFT 顯示螢幕整合應用</td><td>按鈕錄影存 SD，小螢幕顯示狀態</td><td><a href="#u5">第 5 節</a></td></tr>
+            <tr><th scope="row">15:10～16:00</th><td>Telegram Bot 物聯網遠端控制應用</td><td>手機傳指令，板子拍照回傳</td><td><a href="#u6">第 6 節</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>六節課串起來是一條路</h3>
+      <ol class="flow" aria-label="課程脈絡">
+        <li><b>板子自己</b>拍照、存 SD 卡</li>
+        <li><b>區域網路</b>RTSP 串流給電腦</li>
+        <li><b>手機直連</b>AP 模式網頁</li>
+        <li><b>雲端</b>存檔、記錄、通知</li>
+        <li><b>存證</b>錄影與現場顯示</li>
+        <li><b>雙向</b>遠端下指令</li>
+      </ol>
+      <div class="note tip">
+        <strong>講義怎麼用</strong>
+        每一節都有「做什麼 → 步驟 → 檢查點 → 常見錯誤 → 動手改改看」。跟不上時先確認「檢查點」有沒有過；有過就繼續往下，沒過就看常見錯誤那一格。程式包裡的資料夾編號和節次一樣。
+      </div>
+    </section>
+
+    <section id="board">
+      <h2><span class="num">2</span>認識 AMB82-Mini</h2>
+      <p>AMB82-Mini 用的是 Realtek RTL8735B，和一般 Arduino 板最大的差別是：<strong>它自己就有鏡頭、麥克風、WiFi 和影像壓縮能力</strong>，還有一顆專門跑 AI 的 NPU。所以不必接電腦、不必外掛攝影機模組，板子自己就能把影像變成網路上的串流或檔案。</p>
+      <figure class="figure">
+        <svg viewBox="0 0 680 300" role="img" aria-labelledby="boardTitle boardDesc">
+          <title id="boardTitle">AMB82-Mini 的資料流</title>
+          <desc id="boardDesc">鏡頭與麥克風的資料進入板子，板子內部有影像壓縮與 NPU，輸出有四個方向：存到 SD 卡、透過 RTSP 串流、用 HTTP 傳到雲端服務、以及在 TFT 螢幕或 LED 顯示狀態。</desc>
+          <defs><marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <g fill="#e0f2fe" stroke="#0369a1">
+            <rect x="20" y="60" width="110" height="48" rx="8"/>
+            <rect x="20" y="130" width="110" height="48" rx="8"/>
+          </g>
+          <text class="svg-label" x="75" y="80" text-anchor="middle">鏡頭 5MP</text>
+          <text class="svg-sub" x="75" y="98" text-anchor="middle">JPEG／H.264</text>
+          <text class="svg-label" x="75" y="150" text-anchor="middle">麥克風</text>
+          <text class="svg-sub" x="75" y="168" text-anchor="middle">錄音／串流</text>
+          <rect x="190" y="70" width="150" height="110" rx="12" fill="#fef9c3" stroke="#a16207" stroke-width="1.5"/>
+          <text class="svg-label" x="265" y="96" text-anchor="middle">AMB82-Mini</text>
+          <text class="svg-sub" x="265" y="118" text-anchor="middle">RTL8735B</text>
+          <text class="svg-sub" x="265" y="136" text-anchor="middle">WiFi ＋ 影像壓縮</text>
+          <text class="svg-sub" x="265" y="154" text-anchor="middle">NPU（AI 運算）</text>
+          <g stroke="#475569" stroke-width="1.5">
+            <line x1="130" y1="84" x2="188" y2="104" marker-end="url(#arrB)"/>
+            <line x1="130" y1="154" x2="188" y2="140" marker-end="url(#arrB)"/>
+            <line x1="340" y1="90" x2="418" y2="60" marker-end="url(#arrB)"/>
+            <line x1="340" y1="112" x2="418" y2="118" marker-end="url(#arrB)"/>
+            <line x1="340" y1="138" x2="418" y2="176" marker-end="url(#arrB)"/>
+            <line x1="340" y1="160" x2="418" y2="234" marker-end="url(#arrB)"/>
+          </g>
+          <g fill="#dcfce7" stroke="#15803d">
+            <rect x="420" y="36" width="240" height="46" rx="8"/>
+            <rect x="420" y="94" width="240" height="46" rx="8"/>
+            <rect x="420" y="152" width="240" height="46" rx="8"/>
+            <rect x="420" y="210" width="240" height="46" rx="8"/>
+          </g>
+          <text class="svg-label" x="436" y="56">SD 卡</text><text class="svg-sub" x="436" y="74">照片 JPEG、影片 MP4（第 1、5 節）</text>
+          <text class="svg-label" x="436" y="114">RTSP 串流</text><text class="svg-sub" x="436" y="132">VLC、手機 App 即時觀看（第 2 節）</text>
+          <text class="svg-label" x="436" y="172">HTTP／HTTPS</text><text class="svg-sub" x="436" y="190">網頁、雲端硬碟、LINE、Telegram（第 3、4、6 節）</text>
+          <text class="svg-label" x="436" y="230">LED／TFT</text><text class="svg-sub" x="436" y="248">現場看得到狀態（第 5 節）</text>
+        </svg>
+        <figcaption>一塊板子，四種輸出：存起來、串出去、傳上雲、顯示在現場</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">項目</th><th scope="col">內容</th><th scope="col">課堂上會用到的地方</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">鏡頭</th><td>500 萬畫素，可輸出 JPEG 或 H.264；常用 1920×1080、1280×720</td><td>全部單元</td></tr>
+            <tr><th scope="row">影像通道</th><td>通道 0：1920×1080 H.264；通道 1：1280×720 H.264；通道 2：1280×720 MJPEG</td><td>第 2、5 節挑通道</td></tr>
+            <tr><th scope="row">儲存</th><td>microSD 卡（FAT32）</td><td>第 1、5 節</td></tr>
+            <tr><th scope="row">網路</th><td>WiFi，可當連線端（STA）或自己開基地台（AP）</td><td>第 2～6 節</td></tr>
+            <tr><th scope="row">LED</th><td>程式裡寫 <code>LED_B</code>（藍）、<code>LED_G</code>（綠）</td><td>當成「程式跑到哪裡」的指示燈</td></tr>
+            <tr><th scope="row">按鈕</th><td>程式裡寫 <code>PUSH_BTN</code>，按下時是低電位</td><td>第 5 節觸發錄影</td></tr>
+            <tr><th scope="row">AI 能力</th><td>內建 NPU，可跑物件偵測、人臉辨識等模型</td><td><a href="#next">課後延伸</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="prepare">
+      <h2><span class="num">3</span>課前準備</h2>
+      <div class="note warn">
+        <strong>這三件事請在研習前一天完成</strong>
+        開發板套件約 2 GB，三十個人在教室同時下載會塞爆網路，當天一定來不及。
+      </div>
+      <h3>1. 安裝 Arduino IDE 與開發板套件</h3>
+      <ol>
+        <li>到 <code>arduino.cc</code> 下載安裝 <strong>Arduino IDE 2.x</strong>。</li>
+        <li>開啟 IDE → 檔案 → 偏好設定 → <strong>額外的開發板管理員網址</strong>，貼上：
+          <pre><code>https://github.com/ambiot/ambpro2_arduino/raw/main/Arduino_package/package_realtek_amebapro2_index.json</code></pre>
+        </li>
+        <li>工具 → 開發板 → 開發板管理員 → 搜尋 <strong>AmebaPro2</strong> → 安裝（下載時間長，請耐心等）。</li>
+        <li>安裝完成後，工具 → 開發板 → <strong>AMB82-MINI</strong>。</li>
+      </ol>
+      <h3>2. 確認電腦看得到板子</h3>
+      <ol>
+        <li>用<strong>可以傳資料</strong>的 USB 線接上板子（很多充電線只有電源，不能傳資料）。</li>
+        <li>工具 → 連接埠，要看到一個新的 COM 埠。看不到就先裝 USB 驅動程式（依講師說明）。</li>
+        <li>序列埠監控視窗右下角設 <strong>115200</strong>。</li>
+      </ol>
+      <h3>3. 其他準備</h3>
+      <ul class="check">
+        <li>microSD 卡格式化成 <strong>FAT32</strong>（32 GB 以下最穩），插好再開機。</li>
+        <li>要做 TFT 的人：<strong>不需要</strong>另外安裝程式庫，開發板套件已內建 ILI9341 函式庫（<code>AmebaILI9341</code>）。請準備 ILI9341 介面的 TFT 模組。</li>
+        <li>電腦安裝 <strong>VLC</strong>（第 2 節播串流用）。</li>
+        <li>Google 帳號登入好（第 4 節）；手機安裝 <strong>Telegram</strong>（第 6 節）。</li>
+        <li>下載本講義的<a href="amb82_course_starter_pack.zip" download>程式包</a>並解壓縮。</li>
+        <li>準備一支手機熱點：學校 WiFi 常常隔離裝置，熱點是最有效的備援。</li>
+      </ul>
+      <h3>BlocklyDuino F2 與程式碼的關係</h3>
+      <p>BlocklyDuino F2 是用<strong>積木</strong>寫 Arduino 程式的環境，拉完積木會產生對應的程式碼。課堂上用積木比較快，但看得懂程式碼才改得動。本講義每一節都附「積木在做什麼」與「對應的程式碼」，兩邊對照著看。積木包的版本以講師提供的為準。</p>
+    </section>
+
+    <section id="u1">
+      <h2><span class="num">4</span>第 1 節：平台建置與第一支程式（09:20～10:10）</h2>
+      <h3>這節做出什麼</h3>
+      <p>讓板子亮燈、在序列埠說話，然後<strong>拍一張照片存進 SD 卡</strong>。做到這裡，代表環境、鏡頭、SD 卡三件事都正常，後面五節才有基礎。</p>
+
+      <h3>步驟 A：讓板子亮燈（確認能上傳程式）</h3>
+      <ol>
+        <li>工具 → 開發板選 <strong>AMB82-MINI</strong>；工具 → 連接埠選那個 COM 埠。</li>
+        <li>貼上下面的程式，按上傳（→ 箭頭）。</li>
+        <li>上傳完成後，板子上的藍燈會一秒亮一秒暗。</li>
+      </ol>
+      <pre><code>void setup() {
+  Serial.begin(115200);
+  pinMode(LED_B, OUTPUT);       // LED_B 是板子上的藍燈
+}
+
+void loop() {
+  digitalWrite(LED_B, HIGH);
+  Serial.println("亮");
+  delay(1000);
+  digitalWrite(LED_B, LOW);
+  Serial.println("暗");
+  delay(1000);
+}</code></pre>
+      <div class="note tip">
+        <strong>積木對照</strong>
+        BlocklyDuino F2 裡就是「設定腳位 LED_B 為輸出」＋「重複執行：數位寫入 HIGH → 等待 1 秒 → 數位寫入 LOW → 等待 1 秒」。拉完積木按「產生程式碼」，就會看到和上面幾乎一樣的內容。
+      </div>
+
+      <h3>步驟 B：拍一張照片存 SD 卡</h3>
+      <ol>
+        <li>關掉序列埠監控視窗（上傳時開著容易失敗），插好 SD 卡。</li>
+        <li>開啟程式包的 <code>01_camera_snapshot/01_camera_snapshot.ino</code>，直接上傳。</li>
+        <li>上傳後打開序列埠監控視窗（115200），會看到每 5 秒一行訊息。</li>
+        <li>拍 10 張後拔下 SD 卡，插到電腦看 <code>img001.jpg</code>～<code>img010.jpg</code>。</li>
+      </ol>
+      <p>程式的三個重點：</p>
+      <pre><code>VideoSetting config(VIDEO_FHD, CAM_FPS, VIDEO_JPEG, 1);  // 1920x1080、JPEG 格式
+Camera.configVideoChannel(CHANNEL, config);              // 設定鏡頭
+Camera.videoInit();
+Camera.channelBegin(CHANNEL);                            // 開始輸出影像
+
+fs.begin();                                              // 掛載 SD 卡
+File file = fs.open(String(fs.getRootPath()) + "img001.jpg");
+Camera.getImage(CHANNEL, &amp;img_addr, &amp;img_len);          // 取得最新一張 JPEG
+file.write((uint8_t *)img_addr, img_len);                // 寫進檔案
+file.close();</code></pre>
+
+      <div class="note info">
+        <strong>檢查點</strong>
+        序列埠出現「第 1 張：img001.jpg 大小 xx KB」，而且 SD 卡裡真的看得到照片。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">看不到 COM 埠</th><td>USB 線只能充電、驅動沒裝；換線、換孔，或依講師指示安裝驅動</td></tr>
+            <tr><th scope="row">上傳卡住不動</th><td>序列埠監控視窗沒關；關掉再上傳。仍失敗就拔插 USB 重來</td></tr>
+            <tr><th scope="row">序列埠出現亂碼</th><td>速率不是 115200</td></tr>
+            <tr><th scope="row">「讀不到 SD 卡」</th><td>沒插到底、不是 FAT32、卡太大；先在電腦上格式化成 FAT32</td></tr>
+            <tr><th scope="row">照片全黑或過曝</th><td>剛開機鏡頭還在自動調整，程式已等 2 秒；可把 <code>delay(2000)</code> 加大</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>動手改改看</h3>
+      <ul>
+        <li>把 <code>SHOT_INTERVAL</code> 改成 1000，變成每秒一張的縮時素材。</li>
+        <li>把 <code>VIDEO_FHD</code> 改成 <code>VIDEO_HD</code>，比較檔案大小差多少。</li>
+        <li>加一個判斷：按下 <code>PUSH_BTN</code> 才拍照（<a href="#prompts">提示語 ①</a> 可以請 AI 幫忙改）。</li>
+      </ul>
+    </section>
+
+    <section id="u2">
+      <h2><span class="num">5</span>第 2 節：RTSP／RTP／TCP 影音串流（10:20～11:10）</h2>
+      <h3>這節做出什麼</h3>
+      <p>板子連上 WiFi，把即時畫面用 <strong>RTSP</strong> 送出去，電腦用 VLC 打開就能看。</p>
+
+      <h3>先搞懂三個名詞</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">名詞</th><th scope="col">負責什麼</th><th scope="col">生活比喻</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">RTSP</th><td>控制：開始播、暫停、結束</td><td>遙控器</td></tr>
+            <tr><th scope="row">RTP</th><td>真正把影音一段一段送出去</td><td>送貨的車</td></tr>
+            <tr><th scope="row">UDP</th><td>送出去不確認有沒有收到，快但可能掉封包</td><td>直接放在門口就走</td></tr>
+            <tr><th scope="row">TCP</th><td>會確認、會重送，穩定但延遲較高</td><td>要簽收，掉件會補寄</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>所以完整的說法是：<strong>用 RTSP 控制、由 RTP 傳送、底層走 UDP 或 TCP</strong>。畫面破格是掉封包（UDP 常見），畫面延遲越來越久則多半是網路塞住或快取設太大。</p>
+
+      <h3>操作步驟</h3>
+      <ol>
+        <li>開啟 <code>02_rtsp_stream/02_rtsp_stream.ino</code>，把最上面的 <code>ssid</code>、<code>pass</code> 改成教室 WiFi。</li>
+        <li>上傳，打開序列埠監控視窗，等到出現 <code>rtsp://192.168.x.x:554</code> 這一行（板子藍燈會亮著）。</li>
+        <li>電腦開 VLC → 媒體 → <strong>開啟網路串流</strong> → 貼上網址 → 播放。</li>
+        <li>把手放到鏡頭前晃一晃，看畫面延遲大概多少。</li>
+      </ol>
+      <div class="note tip">
+        <strong>延遲怎麼量</strong>
+        用手機開碼表對著鏡頭，再用手機拍「碼表＋電腦畫面」同框的照片，兩個時間相減就是延遲。VLC → 工具 → 偏好設定 → 輸入／編碼器 → 網路快取改成 200 毫秒，延遲會明顯下降。
+      </div>
+
+      <h3>比較實驗（可以寫進報告）</h3>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">改哪裡</th><th scope="col">怎麼改</th><th scope="col">觀察</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">解析度</th><td><code>#define CHANNEL 0</code>（1080p）改成 <code>1</code>（720p）</td><td>延遲、流暢度、畫質</td></tr>
+            <tr><th scope="row">位元率</th><td><code>BITRATE</code> 改成 1 Mbps 或 4 Mbps</td><td>畫面破格的頻率</td></tr>
+            <tr><th scope="row">傳輸方式</th><td>VLC 的網路串流選項勾選「RTP over RTSP (TCP)」</td><td>破格變少但延遲變高</td></tr>
+            <tr><th scope="row">距離</th><td>把板子拿遠離 AP</td><td>訊號變差時的畫面變化</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>電腦端也可以用程式包的小工具，直接量到實際收到幾張畫面：</p>
+      <pre><code>python tools/rtsp_check.py rtsp://192.168.1.50:554
+python tools/rtsp_check.py rtsp://192.168.1.50:554 --tcp</code></pre>
+
+      <div class="note info">
+        <strong>檢查點</strong>
+        VLC 看得到即時畫面；序列埠的網址和 VLC 用的一致；知道自己的延遲大約幾秒。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">序列埠一直印連線中</th><td>WiFi 名稱或密碼錯、板子連不到 5GHz 專用網路；改用 2.4GHz 或手機熱點</td></tr>
+            <tr><th scope="row">VLC 轉圈圈打不開</th><td>電腦和板子不在同一個網段（學校 WiFi 常隔離裝置）；兩台都連同一個手機熱點再試</td></tr>
+            <tr><th scope="row">畫面破格</th><td>位元率太高或訊號差；<code>BITRATE</code> 調成 1 Mbps，或改用 TCP</td></tr>
+            <tr><th scope="row">延遲越來越久</th><td>VLC 網路快取太大；改成 200 毫秒</td></tr>
+            <tr><th scope="row">很多人同時串流就變慢</th><td>教室頻寬有限；輪流測，或降到 720p</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="u3">
+      <h2><span class="num">6</span>第 3 節：AP 模式網頁與 ngrok（11:20～12:10）</h2>
+      <h3>這節做出什麼</h3>
+      <p>兩種「不必靠學校網路」的做法：<strong>AP 模式</strong>（板子自己當基地台，手機直接連）與 <strong>ngrok</strong>（把區網的服務開一個對外網址）。</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 680 250" role="img" aria-labelledby="netTitle netDesc">
+          <title id="netTitle">三種連線方式比較</title>
+          <desc id="netDesc">第一種，板子與電腦都連學校 WiFi，只有同一個網路內看得到。第二種，板子自己開基地台，手機直接連板子，不需要外部網路。第三種，板子在區網內，電腦執行 ngrok 產生對外網址，網際網路上的人也能連進來。</desc>
+          <defs><marker id="arrN" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <g font-family="Noto Sans TC, sans-serif">
+            <text class="svg-label" x="12" y="24">① 同一個 WiFi</text>
+            <rect x="12" y="34" width="86" height="38" rx="7" fill="#fef9c3" stroke="#a16207"/>
+            <text class="svg-sub" x="55" y="58" text-anchor="middle">板子</text>
+            <rect x="130" y="34" width="86" height="38" rx="7" fill="#e2e8f0" stroke="#64748b"/>
+            <text class="svg-sub" x="173" y="58" text-anchor="middle">電腦 VLC</text>
+            <line x1="98" y1="53" x2="128" y2="53" stroke="#475569" stroke-width="1.4" marker-end="url(#arrN)"/>
+            <text class="svg-sub" x="232" y="50">只有校內同網段看得到</text>
+            <text class="svg-sub" x="232" y="68">學校常隔離裝置 → 看不到</text>
+
+            <text class="svg-label" x="12" y="114">② AP 模式（最可靠）</text>
+            <rect x="12" y="124" width="86" height="38" rx="7" fill="#fef9c3" stroke="#a16207"/>
+            <text class="svg-sub" x="55" y="148" text-anchor="middle">板子＝基地台</text>
+            <rect x="130" y="124" width="86" height="38" rx="7" fill="#dcfce7" stroke="#15803d"/>
+            <text class="svg-sub" x="173" y="148" text-anchor="middle">手機瀏覽器</text>
+            <line x1="98" y1="143" x2="128" y2="143" stroke="#475569" stroke-width="1.4" marker-end="url(#arrN)"/>
+            <text class="svg-sub" x="232" y="140">不需要任何外部網路</text>
+            <text class="svg-sub" x="232" y="158">但板子此時也上不了網</text>
+
+            <text class="svg-label" x="12" y="204">③ ngrok（對外）</text>
+            <rect x="12" y="214" width="76" height="30" rx="7" fill="#fef9c3" stroke="#a16207"/>
+            <text class="svg-sub" x="50" y="233" text-anchor="middle">板子</text>
+            <rect x="110" y="214" width="96" height="30" rx="7" fill="#e2e8f0" stroke="#64748b"/>
+            <text class="svg-sub" x="158" y="233" text-anchor="middle">電腦 ngrok</text>
+            <rect x="228" y="214" width="96" height="30" rx="7" fill="#e0e7ff" stroke="#4338ca"/>
+            <text class="svg-sub" x="276" y="233" text-anchor="middle">ngrok 伺服器</text>
+            <rect x="346" y="214" width="96" height="30" rx="7" fill="#dcfce7" stroke="#15803d"/>
+            <text class="svg-sub" x="394" y="233" text-anchor="middle">任何人</text>
+            <g stroke="#475569" stroke-width="1.4">
+              <line x1="88" y1="229" x2="108" y2="229" marker-end="url(#arrN)"/>
+              <line x1="206" y1="229" x2="226" y2="229" marker-end="url(#arrN)"/>
+              <line x1="324" y1="229" x2="344" y2="229" marker-end="url(#arrN)"/>
+            </g>
+            <text class="svg-sub" x="454" y="226">網址知道的人都看得到</text>
+            <text class="svg-sub" x="454" y="242">課後一定要關掉</text>
+          </g>
+        </svg>
+        <figcaption>教室展示優先用 ②，要讓校外看到才用 ③</figcaption>
+      </figure>
+
+      <h3>步驟 A：AP 模式網頁</h3>
+      <ol>
+        <li>開啟 <code>03_ap_web_snapshot/03_ap_web_snapshot.ino</code>，把 <code>ap_ssid</code> 改成自己的（例如 <code>AMB82-座號01</code>），密碼至少 8 碼。</li>
+        <li>上傳後，序列埠會顯示網址（通常是 <code>192.168.1.1</code>）。</li>
+        <li>手機的 WiFi 清單連上剛剛設定的名稱，瀏覽器打開那個網址。</li>
+        <li>畫面會每 0.7 秒換一張照片，還可以按「開燈／關燈」。</li>
+      </ol>
+      <p>網頁怎麼來的？板子就是一台小型網頁伺服器，收到不同網址回不同東西：</p>
+      <pre><code>if (requestLine.indexOf("GET /photo") &gt;= 0) {      // 要照片
+    sendPhoto(client);                             // 回一張 JPEG
+} else if (requestLine.indexOf("GET /led") &gt;= 0) { // 要開關燈
+    ledOn = (requestLine.indexOf("on=1") &gt;= 0);
+    digitalWrite(LED_B, ledOn ? HIGH : LOW);
+} else {
+    sendPage(client);                              // 回首頁 HTML
+}</code></pre>
+
+      <h3>步驟 B：ngrok 讓校外也看得到</h3>
+      <ol>
+        <li>到 <code>ngrok.com</code> 註冊，下載 ngrok，執行 <code>ngrok config add-authtoken 你的token</code>（token 貼在自己的電腦上就好）。</li>
+        <li>板子改回連學校 WiFi（用第 2 節的程式，或把 AP 版改成連線模式），記下板子的 IP。</li>
+        <li>要分享網頁就開 <code>ngrok http 192.168.1.50:80</code>；要分享 RTSP 就開 <code>ngrok tcp 192.168.1.50:554</code>。</li>
+        <li>把畫面上出現的網址傳給別人；RTSP 的網址要改寫成 <code>rtsp://0.tcp.ngrok.io:12345</code> 這種形式再貼進 VLC。</li>
+      </ol>
+      <div class="note warn">
+        <strong>ngrok 的限制與風險</strong>
+        <ul>
+          <li>免費版<strong>每次重開網址都會變</strong>，上課中途重開，所有人的連結都會失效。</li>
+          <li>免費版有連線數與流量限制，全班同時連很容易卡住。</li>
+          <li>網址等於把教室畫面公開，<strong>知道網址的任何人都看得到</strong>：課後務必關閉（視窗按 Ctrl+C）。</li>
+          <li>學校網路可能擋住 ngrok；擋住時就改用 AP 模式展示。</li>
+        </ul>
+      </div>
+      <div class="note info">
+        <strong>檢查點</strong>
+        手機連上板子的 AP 後看得到即時畫面，也能開關 LED；ngrok 網址在手機行動網路（關掉 WiFi）下也打得開。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">手機連上 AP 卻打不開網頁</th><td>手機可能因「沒有網際網路」自動切回行動網路；把該網路設成「保持連線」或關閉行動數據</td></tr>
+            <tr><th scope="row">畫面更新很慢</th><td>板子一次只服務一個連線；請其他同學先關掉分頁</td></tr>
+            <tr><th scope="row">同學之間互相連錯板子</th><td>AP 名稱重複；加上自己的座號</td></tr>
+            <tr><th scope="row">ngrok 顯示 ERR_NGROK_xxx</th><td>多半是沒設定 authtoken，或免費版連線數用完</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="u4">
+      <h2><span class="num">7</span>第 4 節：雲端硬碟、試算表與 LINE（13:10～14:00）</h2>
+      <h3>這節做出什麼</h3>
+      <p>板子拍照後自動上傳：<strong>照片存進 Google 雲端硬碟、資料寫進試算表、（選用）推播到 LINE</strong>。這是「把感測資料變成可以查、可以通知」的完整鏈路。</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 680 210" role="img" aria-labelledby="cloudTitle cloudDesc">
+          <title id="cloudTitle">雲端整合資料流</title>
+          <desc id="cloudDesc">板子拍照後轉成 Base64 編碼，用 HTTPS POST 傳給 Google Apps Script 網頁應用程式；Apps Script 把照片存進雲端硬碟、在試算表新增一列，並可選擇透過 LINE Messaging API 推播給使用者。</desc>
+          <defs><marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <rect x="16" y="76" width="120" height="54" rx="9" fill="#fef9c3" stroke="#a16207"/>
+          <text class="svg-label" x="76" y="98" text-anchor="middle">AMB82-Mini</text>
+          <text class="svg-sub" x="76" y="118" text-anchor="middle">拍照 → Base64</text>
+          <rect x="196" y="76" width="140" height="54" rx="9" fill="#e0e7ff" stroke="#4338ca"/>
+          <text class="svg-label" x="266" y="98" text-anchor="middle">Apps Script</text>
+          <text class="svg-sub" x="266" y="118" text-anchor="middle">doPost 接收</text>
+          <g fill="#dcfce7" stroke="#15803d">
+            <rect x="404" y="16" width="150" height="46" rx="9"/>
+            <rect x="404" y="80" width="150" height="46" rx="9"/>
+            <rect x="404" y="144" width="150" height="46" rx="9"/>
+          </g>
+          <text class="svg-label" x="479" y="38" text-anchor="middle">雲端硬碟</text><text class="svg-sub" x="479" y="55" text-anchor="middle">存照片</text>
+          <text class="svg-label" x="479" y="102" text-anchor="middle">試算表</text><text class="svg-sub" x="479" y="119" text-anchor="middle">時間、裝置、連結</text>
+          <text class="svg-label" x="479" y="166" text-anchor="middle">LINE</text><text class="svg-sub" x="479" y="183" text-anchor="middle">推播通知（選用）</text>
+          <g stroke="#475569" stroke-width="1.5">
+            <line x1="136" y1="103" x2="194" y2="103" marker-end="url(#arrC)"/>
+            <line x1="336" y1="96" x2="402" y2="48" marker-end="url(#arrC)"/>
+            <line x1="336" y1="103" x2="402" y2="103" marker-end="url(#arrC)"/>
+            <line x1="336" y1="112" x2="402" y2="164" marker-end="url(#arrC)"/>
+          </g>
+          <text class="svg-sub" x="146" y="96">HTTPS POST</text>
+          <text class="svg-sub" x="566" y="104">手機、電腦</text>
+          <text class="svg-sub" x="566" y="122">都查得到</text>
+        </svg>
+        <figcaption>板子不直接碰 Google 帳號：所有權限都在 Apps Script 這一層，板子只負責把照片 POST 過去</figcaption>
+      </figure>
+
+      <h3>步驟 A：建立 Apps Script 接收端</h3>
+      <ol>
+        <li>打開 <code>script.google.com</code> → 新增專案，把程式包 <code>04_cloud_upload/apps_script/Code.gs</code> 的內容整份貼上（取代原本的 <code>myFunction</code>）。</li>
+        <li>按「部署」→「新增部署作業」→ 類型選 <strong>網頁應用程式</strong>。</li>
+        <li><strong>執行身分：我</strong>；<strong>誰可以存取：任何人</strong>（這一步選錯，板子會一直失敗）。</li>
+        <li>第一次會要求授權，選自己的帳號 → 進階 → 前往「未經驗證的應用程式」→ 允許。</li>
+        <li>複製網址，長得像 <code>https://script.google.com/macros/s/AKfycb.../exec</code>。</li>
+        <li>先在瀏覽器打開這個網址，看到「AMB82 接收端運作中」代表部署成功。</li>
+      </ol>
+      <p>不必等板子，電腦就能先測完整流程：</p>
+      <pre><code>python tools/appscript_test.py https://script.google.com/macros/s/AKfycb..../exec</code></pre>
+      <p>成功的話，雲端硬碟會出現 <code>AMB82-Mini</code> 資料夾與一張測試圖，並多一個「AMB82 上傳紀錄」試算表。</p>
+
+      <h3>步驟 B：讓板子上傳</h3>
+      <ol>
+        <li>開啟 <code>04_cloud_upload/04_cloud_upload.ino</code>。</li>
+        <li>填入 WiFi 名稱密碼；<code>scriptPath</code> 只填網址的後半段，例如 <code>/macros/s/AKfycb..../exec</code>。</li>
+        <li><code>deviceName</code> 改成自己的座號，試算表才分得出是哪一台。</li>
+        <li>上傳並打開序列埠，成功時會看到 <code>{"ok":true,...}</code>。</li>
+      </ol>
+      <div class="note tip">
+        <strong>為什麼要 Base64？</strong>
+        照片是二進位資料，直接塞進網址或表單會壞掉，所以先用 Base64 編成純文字再傳，Apps Script 那端再解回來。代價是資料量變大約 1.33 倍，所以程式把解析度降成 768×768，上傳比較快。
+      </div>
+
+      <h3>步驟 C：推播到 LINE（選用）</h3>
+      <p><strong>LINE Notify 已經在 2025 年停止服務</strong>，現在要用 Messaging API：</p>
+      <ol>
+        <li>到 <code>developers.line.biz</code> 建立 Messaging API channel，取得 <strong>Channel access token</strong>。</li>
+        <li>用手機加自己的官方帳號好友，取得自己的 <strong>userId</strong>。</li>
+        <li>Apps Script → 專案設定 → 指令碼屬性，新增 <code>LINE_TOKEN</code> 與 <code>LINE_TO</code> 兩筆。</li>
+        <li>重新部署，再上傳一張照片，手機就會收到訊息與圖片。</li>
+      </ol>
+      <p>LINE 只吃「公開的 HTTPS 圖片網址」，所以 <code>Code.gs</code> 會把檔案設成「知道連結的人可檢視」，再用雲端硬碟的縮圖網址推播。收到訊息卻沒有圖時，先把那個網址貼到無痕視窗，確認真的看得到圖。</p>
+
+      <div class="note info">
+        <strong>檢查點</strong>
+        雲端硬碟有照片、試算表有一列（時間／裝置／檔名／連結／大小）、序列埠出現 <code>"ok":true</code>。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">序列埠出現一堆 HTML 或 302</th><td>部署權限不是「任何人」，或網址用到 <code>/dev</code> 結尾；重新部署並用 <code>/exec</code></td></tr>
+            <tr><th scope="row">改了 Code.gs 卻沒效果</th><td>Apps Script 要「重新部署」才會生效（管理部署作業 → 編輯 → 版本選新版本）</td></tr>
+            <tr><th scope="row">上傳很久或失敗</th><td>照片太大；把 <code>VideoSetting config(768, 768, ...)</code> 調小，或降低上傳頻率</td></tr>
+            <tr><th scope="row">試算表沒有新列</th><td>看 Apps Script 的「執行項目」記錄找錯誤訊息</td></tr>
+            <tr><th scope="row">LINE 沒收到</th><td>token 或 userId 沒設；或官方帳號沒加好友</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <strong>這一節牽涉到別人的臉</strong>
+        鏡頭會拍到教室裡的人，照片還會上傳到雲端。拍攝前先告知同學，示範時把鏡頭朝向桌面或物品；課後把雲端硬碟的照片刪掉，或把 Apps Script 部署改成「僅限自己」。
+      </div>
+    </section>
+
+    <section id="u5">
+      <h2><span class="num">8</span>第 5 節：MP4 錄影與 TFT 顯示（14:10～15:00）</h2>
+      <h3>這節做出什麼</h3>
+      <p>按一下板子的按鈕開始錄影，錄滿設定的秒數自動存成 MP4；TFT 小螢幕顯示「READY／REC 幾秒／SAVED」與檔名。</p>
+
+      <h3>步驟 A：先把錄影跑起來（不接螢幕也可以）</h3>
+      <ol>
+        <li>開啟 <code>05_record_mp4_tft/05_record_mp4_tft.ino</code>；沒有 TFT 就把 <code>#define USE_TFT 1</code> 改成 <code>0</code>。</li>
+        <li>插好 SD 卡，上傳，打開序列埠。</li>
+        <li>按下板子上的 <code>PUSH_BTN</code>，序列埠開始倒數，藍燈亮起。</li>
+        <li>錄滿 15 秒後出現「已存檔：class1.mp4」。把 SD 卡插到電腦，用播放器打開確認。</li>
+      </ol>
+      <p>錄影的設定就這幾行，和 RTSP 的差別只在「輸出到哪裡」：</p>
+      <pre><code>mp4.configVideo(config);              // 和鏡頭一樣的格式
+mp4.setRecordingDuration(15);         // 錄幾秒
+mp4.setRecordingFileCount(1);         // 錄幾個檔
+mp4.setRecordingFileName("class1");   // 檔名（副檔名自動加 .mp4）
+mp4.setRecordingDataType(STORAGE_VIDEO);   // 只錄影像；要收音改 STORAGE_ALL
+
+videoStreamer.registerInput(Camera.getStream(CHANNEL));
+videoStreamer.registerOutput(mp4);    // 第 2 節這裡接的是 rtsp
+mp4.begin();</code></pre>
+
+      <h3>步驟 B：接上 TFT 顯示狀態</h3>
+      <ol>
+        <li>螢幕用 <strong>ILI9341</strong> 介面的模組，函式庫已內建在開發板套件裡，不必另外安裝。</li>
+        <li>接線：SCK → <code>SPI_SCLK</code>、SDI(MOSI) → <code>SPI_MOSI</code>、CS → <code>SPI_SS</code>、DC → 4 號腳、RESET → 5 號腳、VCC → 3V3、GND → GND、LED → 3V3。腳位不同就改程式最上面的 <code>TFT_DC</code>、<code>TFT_RESET</code>。</li>
+        <li>把 <code>USE_TFT</code> 改回 <code>1</code>，重新上傳。</li>
+        <li>顯示文字用 <code>tft.setFontSize()</code>、<code>tft.setForeground()</code>、<code>tft.setCursor()</code>、<code>tft.println()</code>。</li>
+      </ol>
+      <div class="note warn">
+        <strong>不要用 Adafruit 的 ST7735 函式庫</strong>
+        那套函式庫相依的 Adafruit BusIO 在這塊板子上編譯不過（會出現 <code>portOutputRegister was not declared</code>）。請改用 ILI9341 模組與內建的 <code>AmebaILI9341</code>；本講義的程式已經驗證可以編譯。
+      </div>
+      <div class="note tip">
+        <strong>TFT 顯示中文要另外處理</strong>
+        Adafruit 的字型只有英數字。要顯示中文，得先在電腦把文字轉成點陣圖再畫上去。課堂上先用英文與數字（REC、SAVED、檔名），課後想做中文版可以參考<a href="bike_rear_alert_project_guide.html">自行車後方來車專題</a>的做法。
+      </div>
+      <div class="note info">
+        <strong>檢查點</strong>
+        SD 卡裡的 MP4 能在電腦播放；TFT 顯示狀態會跟著改變。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">按了沒反應</th><td>按鈕腳位不同；把 <code>digitalRead(PUSH_BTN) == LOW</code> 印出來確認</td></tr>
+            <tr><th scope="row">檔案打不開或長度 0</th><td>錄影還沒結束就拔卡或斷電；等序列埠出現「已存檔」再動</td></tr>
+            <tr><th scope="row">錄第二段時失敗</th><td>檔名重複；程式已自動編號，若自行修改請記得換名字</td></tr>
+            <tr><th scope="row">TFT 全白或全黑</th><td>接線是否正確、背光（LED）腳是否接 3V3、DC／RESET 腳位是否和程式一致</td></tr>
+            <tr><th scope="row">編譯出現 portOutputRegister 錯誤</th><td>用到了 Adafruit ST7735／BusIO；改用 ILI9341 與內建函式庫</td></tr>
+            <tr><th scope="row">想同時錄影又串流</th><td>資源有限，建議二選一；要同時做請改用不同通道，並在課堂上實測</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="u6">
+      <h2><span class="num">9</span>第 6 節：Telegram Bot 遠端控制（15:10～16:00）</h2>
+      <h3>這節做出什麼</h3>
+      <p>在手機 Telegram 傳指令，板子收到就動作：<code>/photo</code> 拍照傳回來、<code>/led on</code>、<code>/led off</code> 開關燈、<code>/status</code> 回報狀態。這是整天課的收尾——<strong>資料不只送出去，指令也能傳回來</strong>。</p>
+
+      <h3>步驟 A：建立 Bot 並取得 chatID</h3>
+      <ol>
+        <li>手機 Telegram 搜尋 <strong>@BotFather</strong> → 傳 <code>/newbot</code> → 依指示命名，取得一串 <strong>Bot Token</strong>。</li>
+        <li>搜尋自己剛建立的 Bot，按「開始」，隨便傳一句話（例如 hi）。</li>
+        <li>電腦執行小工具，貼上 Token，它會列出你的 chatID：
+          <pre><code>python tools/telegram_check.py</code></pre>
+        </li>
+      </ol>
+
+      <h3>步驟 B：上傳程式</h3>
+      <ol>
+        <li>開啟 <code>06_telegram_bot/06_telegram_bot.ino</code>，填 WiFi、<code>botToken</code>、<code>ALLOWED_CHAT_ID</code>。</li>
+        <li>上傳後，手機應該會收到「AMB82-Mini 上線了」。</li>
+        <li>傳 <code>/photo</code>，過幾秒就會收到剛拍的照片。</li>
+      </ol>
+      <p>板子怎麼「收」訊息？它每兩秒主動問一次 Telegram：</p>
+      <pre><code>GET /bot&lt;TOKEN&gt;/getUpdates?timeout=1&amp;limit=1&amp;offset=&lt;上次的編號+1&gt;</code></pre>
+      <p>這叫做<strong>輪詢（polling）</strong>：板子沒有固定的對外網址，所以不是別人來找它，而是它定時去問。<code>offset</code> 的作用是「只要比上次新的訊息」，否則同一則指令會一直重複執行。</p>
+
+      <div class="note warn">
+        <strong>Token 就是密碼</strong>
+        拿到 Token 的人可以完全控制你的 Bot。不要上傳到 GitHub、不要貼在報告或簡報，截圖時要遮起來。程式裡的 <code>ALLOWED_CHAT_ID</code> 是第二道防線：別人就算找到你的 Bot，也無法叫板子拍照。
+      </div>
+      <div class="note info">
+        <strong>檢查點</strong>
+        <code>/photo</code> 收得到照片、<code>/led on</code> 會亮燈、<code>/status</code> 回報得出執行時間與訊號強度；用另一個帳號傳指令時，板子不會理他。
+      </div>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">常見錯誤</th><th scope="col">原因與處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">完全沒反應</th><td>先用 <code>tools/telegram_check.py</code> 確認 Token 有效、chatID 正確</td></tr>
+            <tr><th scope="row">序列埠說連不上</th><td>學校網路可能擋住 api.telegram.org；改用手機熱點</td></tr>
+            <tr><th scope="row">同一個指令一直重複執行</th><td><code>offset</code> 沒更新；確認 <code>lastUpdateId</code> 有被更新</td></tr>
+            <tr><th scope="row">照片送不出去</th><td>照片太大；把解析度調小（程式預設 768×768）</td></tr>
+            <tr><th scope="row">別人也能操控</th><td><code>ALLOWED_CHAT_ID</code> 填錯；用小工具重新確認</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>動手改改看</h3>
+      <ul>
+        <li>新增 <code>/rec</code> 指令：收到就錄一段 MP4（把第 5 節的程式合併進來）。</li>
+        <li>新增「有人按按鈕就主動傳訊息給我」的功能（不必等指令）。</li>
+        <li>把 <code>/status</code> 加上 SD 卡剩餘空間。</li>
+      </ul>
+    </section>
+
+    <section id="prompts">
+      <h2><span class="num">10</span>AI 助手提示語</h2>
+      <p>卡住、想改功能、想看懂程式時，可以把整支程式貼給 AI 助手（Google Antigravity、Claude、ChatGPT 都可以），再用下面的提示語。<strong>貼程式前先把 WiFi 密碼、Token、Apps Script 網址換成假的</strong>。</p>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>① 看懂程式在做什麼</span><button type="button" class="copy" data-target="q1">複製</button></div>
+<pre id="q1">這是 Realtek AMB82-Mini（Arduino 環境）的程式，我是高中職學生，請用繁體中文說明：
+1. setup() 和 loop() 各做了哪些事，依順序列出
+2. VideoSetting、Camera、StreamIO 這幾個物件分別負責什麼
+3. 哪幾行是「我可以安全修改」的設定，改了會有什麼影響
+先不要改程式，也不要加新功能。
+（貼上程式碼）</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>② 加一個功能（按鈕拍照）</span><button type="button" class="copy" data-target="q2">複製</button></div>
+<pre id="q2">請幫我修改這支 AMB82-Mini 的程式：改成「按下 PUSH_BTN 才拍一張照片存 SD 卡」，
+要有防彈跳處理（按一次只拍一張），拍照時 LED_B 閃一下，序列埠印出檔名。
+請只改必要的部分，並在修改處加上中文註解說明為什麼這樣寫。
+（貼上 01_camera_snapshot 的程式碼）</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>③ 看懂錯誤訊息</span><button type="button" class="copy" data-target="q3">複製</button></div>
+<pre id="q3">我在 Arduino IDE 編譯（或執行）AMB82-Mini 的程式時出現以下訊息，
+請用繁體中文說明：這是什麼意思、最可能的原因是什麼、我應該依序檢查哪三件事。
+如果需要改程式，請只給要修改的那幾行。
+（貼上完整錯誤訊息，以及相關的程式碼）</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>④ 設計自己的專題</span><button type="button" class="copy" data-target="q4">複製</button></div>
+<pre id="q4">我手上有 Realtek AMB82-Mini（鏡頭、WiFi、SD 卡、NPU）與一張 SD 卡，
+已經學會：拍照存檔、RTSP 串流、AP 模式網頁、上傳 Google 雲端硬碟與試算表、MP4 錄影、Telegram Bot 控制。
+請幫我想 5 個適合高中職專題製作的題目，每個題目寫出：
+要解決的問題、用到上面哪幾項技術、怎麼驗證成效（要能量化）、可能遇到的困難、隱私要注意什麼。
+題目要能在教室或校園內完成，不要牽涉到拍攝不特定人。</pre>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head"><span>⑤ 把積木程式和程式碼對照</span><button type="button" class="copy" data-target="q5">複製</button></div>
+<pre id="q5">下面是 BlocklyDuino F2 積木產生的程式碼，請用繁體中文做一張對照表：
+左欄是積木的中文名稱，右欄是它產生的程式碼，並說明每一塊積木的作用。
+最後指出：哪些地方用積木比較快、哪些地方直接改程式碼比較好。
+（貼上積木產生的程式碼）</pre>
+      </div>
+    </section>
+
+    <section id="trouble">
+      <h2><span class="num">11</span>排錯總表</h2>
+      <p>遇到問題時，照這個順序檢查最快：<strong>電源與線 → 開發板選擇 → 序列埠訊息 → 網路 → 服務設定</strong>。</p>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">症狀</th><th scope="col">先確認</th><th scope="col">再處理</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">看不到 COM 埠</th><td>USB 線是否能傳資料、驅動是否安裝</td><td>換線、換孔、重開 IDE</td></tr>
+            <tr><th scope="row">上傳失敗</th><td>開發板是否選 AMB82-MINI、序列埠監控視窗是否關閉</td><td>拔插 USB 再試一次</td></tr>
+            <tr><th scope="row">序列埠亂碼</th><td>速率是否 115200</td><td>重新選連接埠</td></tr>
+            <tr><th scope="row">鏡頭沒畫面</th><td>是否呼叫 <code>Camera.videoInit()</code> 與 <code>channelBegin()</code></td><td>重開機，等 2 秒讓曝光穩定</td></tr>
+            <tr><th scope="row">SD 卡讀不到</th><td>FAT32、插到底、卡片在電腦上正常</td><td>換卡、重新格式化</td></tr>
+            <tr><th scope="row">連不上 WiFi</th><td>名稱密碼、是否為 2.4GHz、是否需要認證頁面</td><td>改用手機熱點</td></tr>
+            <tr><th scope="row">VLC 打不開串流</th><td>序列埠是否印出網址、電腦與板子是否同網段</td><td>用 <code>tools/rtsp_check.py</code> 測；改用熱點或 AP 模式</td></tr>
+            <tr><th scope="row">雲端上傳失敗</th><td>部署權限是否為「任何人」、網址是否 <code>/exec</code></td><td>用 <code>tools/appscript_test.py</code> 從電腦測</td></tr>
+            <tr><th scope="row">Telegram 沒反應</th><td>Token、chatID、網路是否擋住</td><td>用 <code>tools/telegram_check.py</code> 測</td></tr>
+            <tr><th scope="row">全班一起卡住</th><td>是不是同時在下載或串流</td><td>分批進行；串流降到 720p、1 Mbps</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note tip">
+        <strong>問問題的好習慣</strong>
+        描述問題時附上三件事：<strong>做到哪一步、序列埠印出什麼、改過什麼設定</strong>。這也是問 AI 助手時最有效的寫法。
+      </div>
+    </section>
+
+    <section id="safety">
+      <h2><span class="num">12</span>安全、隱私與規範</h2>
+      <ul class="check">
+        <li><strong>鏡頭會拍到人</strong>：練習時把鏡頭朝向桌面或物品；要拍到人之前先告知並取得同意。</li>
+        <li><strong>雲端照片會留下來</strong>：課後刪除雲端硬碟裡的照片，或把 Apps Script 部署改成「僅限自己」。</li>
+        <li><strong>金鑰不是程式的一部分</strong>：Bot Token、Apps Script 網址、LINE token 都等於密碼，不要放進報告、簡報、GitHub；截圖要遮。</li>
+        <li><strong>對外開放要收回</strong>：ngrok、AP 模式在課後都要關掉，不要讓教室畫面一直公開。</li>
+        <li><strong>不要監看他人</strong>：不可以把鏡頭裝在廁所、更衣室、宿舍，或用來監看特定同學，這會觸犯法律與校規。</li>
+        <li><strong>用電安全</strong>：板子與模組都用 3.3V／5V 低壓；接線前先拔掉 USB。</li>
+      </ul>
+    </section>
+
+    <section id="check">
+      <h2><span class="num">13</span>學習單與檢核表</h2>
+      <p>每完成一節就打勾，並把觀察到的數字寫下來，課後整理成心得或專題的基礎資料。</p>
+      <div class="table-wrap">
+        <table class="nw1">
+          <thead><tr><th scope="col">節次</th><th scope="col">完成條件</th><th scope="col">記錄下來</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">第 1 節</th><td>☐ SD 卡裡看得到照片</td><td>照片大小 ____ KB；解析度改小後 ____ KB</td></tr>
+            <tr><th scope="row">第 2 節</th><td>☐ VLC 看得到即時畫面</td><td>延遲約 ____ 秒；改 TCP 後 ____ 秒</td></tr>
+            <tr><th scope="row">第 3 節</th><td>☐ 手機連 AP 看得到畫面<br>☐ ngrok 網址在行動網路打得開</td><td>網頁每秒更新 ____ 張</td></tr>
+            <tr><th scope="row">第 4 節</th><td>☐ 雲端硬碟有照片<br>☐ 試算表有新的一列</td><td>一張照片上傳花 ____ 秒</td></tr>
+            <tr><th scope="row">第 5 節</th><td>☐ MP4 能播放<br>☐ TFT 顯示狀態</td><td>15 秒影片檔案 ____ MB</td></tr>
+            <tr><th scope="row">第 6 節</th><td>☐ <code>/photo</code> 收得到照片</td><td>從傳指令到收到照片約 ____ 秒</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>三個思考題</h3>
+      <ol>
+        <li>同樣是「把畫面送出去」，RTSP 串流和上傳雲端各適合什麼情境？從延遲、保存、流量三個角度回答。</li>
+        <li>AP 模式和 ngrok 都能讓別人看到畫面，兩者的風險有什麼不同？</li>
+        <li>如果要做一個「校園設備異常通知」系統，你會用今天哪幾項技術？資料要保存多久？</li>
+      </ol>
+    </section>
+
+    <section id="next">
+      <h2><span class="num">14</span>課後延伸</h2>
+      <ul>
+        <li><strong>用 NPU 做 AI 辨識</strong>：官方 NeuralNetwork 範例有物件偵測、人臉偵測、手勢辨識，可以做「有人靠近就拍照上傳」。</li>
+        <li><strong>接感測器</strong>：板子有 I2C、SPI、ADC，可以加溫溼度或距離感測，把數值一起寫進試算表。</li>
+        <li><strong>做成專題</strong>：參考本站其他專題手冊的寫法（功能設計、測試方法、評分表）：
+          <a href="ai_vision_course_guide.html">AI 視覺創客小學堂</a>、
+          <a href="bike_rear_alert_project_guide.html">自行車後方來車警示</a>、
+          <a href="airtouch_project_guide.html">AirTouch 手勢語音遙控</a>。</li>
+        <li><strong>官方資源</strong>：Realtek Arduino 範例原始碼（GitHub：<code>Ameba-AIoT/ameba-arduino-pro2</code>），本講義的程式就是從那裡改寫並加上中文註解。</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  AMB82-Mini 影像物聯網入門研習講義 ・ 程式包：<a href="amb82_course_starter_pack.zip" download>amb82_course_starter_pack.zip</a> ・ 相關教材：<a href="ai_vision_course_guide.html">AI 視覺創客小學堂</a>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = document.getElementById(btn.dataset.target).innerText;
+      const done = () => {
+        const old = btn.textContent;
+        btn.textContent = '已複製';
+        setTimeout(() => { btn.textContent = old; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(() => window.prompt('請手動複製：', text));
+      } else {
+        window.prompt('請手動複製：', text);
+      }
+    });
+  });
+</script>
+</body>
+</html>

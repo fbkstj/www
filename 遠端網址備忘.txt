@@ -27,6 +27,9 @@ https://fbkstj.github.io/www/ai_guardian_project_guide.html
 【專題實作】AirTouch 無接觸手勢＋語音遙控（學生實作手冊）：
 https://fbkstj.github.io/www/airtouch_project_guide.html
 
+AMB82-Mini 影像物聯網入門（研習講義）：
+https://fbkstj.github.io/www/amb82_iot_course_guide.html
+
 數位電子乙級評審表設定：
 https://fbkstj.github.io/www/digi_el.html
 
@@ -63,6 +66,9 @@ https://stjwww.netlify.app/ai_guardian_project_guide.html
 【專題實作】AirTouch 無接觸手勢＋語音遙控（學生實作手冊）：
 https://stjwww.netlify.app/airtouch_project_guide.html
 
+AMB82-Mini 影像物聯網入門（研習講義）：
+https://stjwww.netlify.app/amb82_iot_course_guide.html
+
 數位電子乙級評審表設定：
 https://stjwww.netlify.app/digi_el.html
 
@@ -98,6 +104,9 @@ http://127.0.0.1:18456/ai_guardian_project_guide.html
 
 【專題實作】AirTouch 無接觸手勢＋語音遙控（學生實作手冊）：
 http://127.0.0.1:18456/airtouch_project_guide.html
+
+AMB82-Mini 影像物聯網入門（研習講義）：
+http://127.0.0.1:18456/amb82_iot_course_guide.html
 
 數位電子乙級評審表設定：
 http://127.0.0.1:18456/digi_el.html
