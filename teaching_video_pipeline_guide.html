@@ -331,23 +331,28 @@
 
 <header>
     <h1>🎬 AI 課程影片自動化剪輯與發布教學指南</h1>
-    <p>從影片整理、無聲裁切、Whisper 語音辨識、高職電機電子群專有名詞注入、單行字幕重構到 YouTube API 批次發布與跨電腦移植的完整實戰全紀錄</p>
+    <p>從長空白偵測、Whisper 語音辨識與專有名詞、單行字幕重組、片頭與 FFmpeg 壓製，到 YouTube API 上傳、CC 字幕、播放清單與跨電腦移植的完整實戰紀錄</p>
 </header>
 
 <div class="container">
+
+    <div class="callout">
+        <div class="callout-title">📝 本頁已修訂（115-09-18）</div>
+        <p>依實際測試修正：字幕停留時間造成重疊、片頭秒數與燒字幕的時間對齊、Whisper 防幻覺參數、OAuth「永久有效」的誤解、YouTube API 未稽核專案影片會被鎖成私人等。技能包同步改版：課程資料改寫在 <code>config.json</code>，並附自我測試（字幕規則 21 項、端到端 11 項）。</p>
+    </div>
 
     <!-- 目錄區 -->
     <nav class="toc">
         <h2>📑 本教學目錄 (Table of Contents)</h2>
         <ul>
             <li><a href="#sec-overview">1. 工作流全景圖與架構概述</a></li>
-            <li><a href="#sec-phase1">2. 第一階段：原始檔整理與標準化命名</a></li>
-            <li><a href="#sec-phase2">3. 第二階段：智能無聲裁切與噪音過濾</a></li>
-            <li><a href="#sec-phase3">4. 第三階段：Whisper 語音辨識與高職電機電子群專有名詞注入</a></li>
-            <li><a href="#sec-phase4">5. 第四階段：字幕重構黃金法則與美學規範</a></li>
-            <li><a href="#sec-phase5">6. 第五階段：FFmpeg 自動化壓製與片頭合成</a></li>
-            <li><a href="#sec-phase6">7. 第六階段：YouTube API 批次上傳與播放清單</a></li>
-            <li><a href="#sec-oauth">8. 【核心專題】Google OAuth2 7天 Token 續期與永久認證解決方案</a></li>
+            <li><a href="#sec-phase1">2. 第一階段：原始檔整理與設定檔</a></li>
+            <li><a href="#sec-phase2">3. 第二階段：長空白偵測（先報告、再裁切）</a></li>
+            <li><a href="#sec-phase3">4. 第三階段：Whisper 語音辨識、防幻覺與專有名詞</a></li>
+            <li><a href="#sec-phase4">5. 第四階段：單行字幕重組規則與樣式</a></li>
+            <li><a href="#sec-phase5">6. 第五階段：片頭合成與 FFmpeg 壓製</a></li>
+            <li><a href="#sec-phase6">7. 第六階段：YouTube API 上傳、CC 字幕與播放清單</a></li>
+            <li><a href="#sec-oauth">8. 【核心專題】OAuth 7 天失效與重新授權</a></li>
             <li><a href="#sec-summary">9. 核心避坑總結與最佳實踐 CheckList</a></li>
             <li><a href="#sec-migrate">10. 【跨電腦移植】在另一台電腦上安裝與使用本技能</a></li>
         </ul>
@@ -356,36 +361,39 @@
     <!-- 1. 工作流架構 -->
     <section id="sec-overview" class="card">
         <h2 class="section-title">1. 工作流全景圖與架構概述</h2>
-        <p>本套自動化流程旨在將長達數小時的課堂側錄影片，透過 Python 腳本結合 AI 語音辨識技術，自動轉化為高質感、具備動態片頭、繁體中文字幕與 YouTube 專屬播放清單的完整線上課程。</p>
+        <p>把數小時的課堂錄影，透過 Python 腳本與 AI 語音辨識，轉成有片頭、繁體中文字幕、並整理成 YouTube 播放清單的線上課程。每個階段都是獨立的腳本，可以只重做其中一段（例如改了字幕規則，只要重跑字幕與壓製）。</p>
 
         <div class="grid-2">
             <div class="step-box">
                 <div class="step-number">01</div>
-                <h4>標準化輸入與裁切</h4>
-                <p>長影片自動分段、FFmpeg 靜音與過低音量偵測，剔除非授課無聲空白。</p>
+                <h4>長空白偵測（選用）</h4>
+                <p>只抓 8 秒以上的空白並列出時間點，<strong>人工確認後</strong>才裁切；裁切一律重新編碼並固定 30 fps。<code>trim_silence.py</code></p>
             </div>
             <div class="step-box">
                 <div class="step-number">02</div>
-                <h4>AI 語音辨識與繁體化</h4>
-                <p>Faster-Whisper (CPU int8) VAD 斷句，結合 OpenCC 轉換為台灣習慣繁體用語。</p>
+                <h4>語音辨識與繁體化</h4>
+                <p>Faster-Whisper＋VAD、逐字時間戳、關閉「延續前文」防跳針；專有名詞用 hotwords；OpenCC 轉台灣繁體。<code>transcribe.py</code></p>
             </div>
             <div class="step-box">
                 <div class="step-number">03</div>
-                <h4>單行舒適字幕重構</h4>
-                <p>打破碎片切分，合併為 15~25 字單行長句，停留 3~6 秒，徹底解決閃爍問題。</p>
+                <h4>單行字幕重組</h4>
+                <p>依逐字時間在標點與停頓處斷句：每行最多 20 字、停留時間跟著講話、絕不重疊。<code>subtitles.py</code></p>
             </div>
             <div class="step-box">
                 <div class="step-number">04</div>
-                <h4>自動壓製與 YT 發布</h4>
-                <p>1080p 動態片頭繪製、ASS 陰影字幕燒錄，搭配 YouTube API 批次自動建置清單。</p>
+                <h4>片頭、壓製與發布</h4>
+                <p>1080p 片頭圖卡＋4 秒片頭、統一規格後壓製；YouTube 上傳、CC 字幕、播放清單。<code>render.py</code>、<code>upload.py</code></p>
             </div>
         </div>
+        <pre><code>python run_pipeline.py --episodes 1     # 第一次先做一集（到壓製完成，不上傳）
+python upload.py --dry-run              # 先看要上傳什麼
+python upload.py                        # 確認後才上傳</code></pre>
     </section>
 
     <!-- 2. 原始檔整理 -->
     <section id="sec-phase1" class="card">
-        <h2 class="section-title">2. 第一階段：原始檔整理與標準化命名</h2>
-        <p>良好的檔案結構是自動化腳本順利運作的基石。建立規範的目錄與命名習慣可大幅降低後續處理錯誤率。</p>
+        <h2 class="section-title">2. 第一階段：原始檔整理與設定檔</h2>
+        <p>良好的檔案結構是自動化順利運作的基石。課程相關的資料（檔名、標題、日期、術語）全部寫在 <code>config.json</code>，換一門課只要換設定檔，不用改程式。</p>
 
         <h3>資料夾結構建議</h3>
         <pre><code>d:\影片編輯\115-09-07-AI課程\
@@ -393,26 +401,35 @@
 ├── 第02節課_45分鐘分段_004500至013000.mp4
 ├── ...
 └── output/
-    ├── transcriptions/    # 語音辨識原始 JSON 檔
-    ├── subtitles/         # 生成之 SRT 與 ASS 字幕檔
-    ├── covers/            # 1080p 片頭圖卡與 4 秒短片
-    └── final_videos/      # 最終壓製完成之 MP4 影片</code></pre>
+    ├── trimmed/           # 裁切後的影片（有做才會有）
+    ├── transcriptions/    # 語音辨識結果（含逐字時間）
+    ├── subtitles/         # epXX.srt（給 CC）與 epXX.ass（燒字幕用）
+    ├── covers/            # 1080p 片頭圖卡與 4 秒片頭
+    ├── final_videos/      # 成品影片
+    ├── logs/              # 每一次 ffmpeg 的完整紀錄
+    └── uploads.json       # 已上傳的影片 ID（中斷後再跑不會重傳）</code></pre>
+
+        <h3>config.json 重點欄位</h3>
+        <pre><code>"episodes": [ {"file": "第01節課_….mp4", "title": "【115-09-07 AI課程】第 01 節課：…"} ],
+"whisper":  {"model": "large-v3-turbo", "initial_prompt": "這是台灣高職 AI 應用與實務課堂教學。",
+             "hotwords": "AI Python ChatGPT Prompt LLM ESP32 Arduino 物聯網 PCB"},
+"subtitles":{"max_chars": 20, "min_duration": 1.2, "max_duration": 6.0, "max_cps": 8,
+             "replacements": {"序列布": "序列埠"}},
+"render":   {"subtitle_mode": "cc"}</code></pre>
 
         <div class="callout">
             <div class="callout-title">💡 命名關鍵技巧</div>
-            <p>使用具備明確集數序號（如 <code>第01節課</code>、<code>ep01</code>）的檔案名稱，方便 Python 使用正則表達式（Regex）自動解析與排序。</p>
+            <p>使用有明確集數序號（如 <code>第01節課</code>、<code>ep01</code>）的檔名，排序與對照都不會錯；檔名可以有中文，但避免 <code>'</code> 等特殊符號。</p>
         </div>
     </section>
 
     <!-- 3. 無聲裁切 -->
     <section id="sec-phase2" class="card">
-        <h2 class="section-title">3. 第二階段：智能無聲裁切與噪音過濾</h2>
-        <p>課堂影片常包含老師思考、寫板書或學生實作的無聲空白段落。過濾這些片段可提高影片節奏與觀看體驗。</p>
+        <h2 class="section-title">3. 第二階段：長空白偵測（先報告、再裁切）</h2>
+        <p>課堂影片裡「沒有聲音」不等於「沒有內容」：老師可能正在寫板書、示範操作，學生在實作。所以不要把每一段安靜都剪掉，只處理很長的空白（例如忘記停錄、下課時間），而且要先看過再剪。</p>
 
-        <h3>FFmpeg SilenceDetect 檢測參數</h3>
-        <p>利用 FFmpeg 的 <code>silencedetect</code> 音訊濾鏡偵測連續無聲段落：</p>
-        <pre><code>ffmpeg -i input.mp4 -af silencedetect=noise=-32dB:d=1.5 -f null -</code></pre>
-
+        <h3>FFmpeg silencedetect 參數</h3>
+        <pre><code>ffmpeg -i input.mp4 -af silencedetect=noise=-35dB:d=8 -f null -</code></pre>
         <table>
             <thead>
                 <tr>
@@ -424,253 +441,330 @@
             <tbody>
                 <tr>
                     <td><code>noise</code></td>
-                    <td><code>-32dB</code> ~ <code>-35dB</code></td>
-                    <td>噪音門檻。高於此分貝數視為有聲音，低於則視為靜音。</td>
+                    <td><code>-35dB</code>（教室有冷氣風扇聲可試 <code>-30dB</code>）</td>
+                    <td>低於這個音量算安靜。門檻設太高，連小聲講話都會被當成空白。</td>
                 </tr>
                 <tr>
                     <td><code>d</code> (duration)</td>
-                    <td><code>1.5s</code> ~ <code>2.0s</code></td>
-                    <td>持續時間。無聲狀態超過此秒數時記錄時間點。</td>
+                    <td><code>8</code> 秒以上</td>
+                    <td>安靜超過這個秒數才列出來。1.5～2 秒的短停頓是正常講話節奏，交給語音辨識的 VAD 處理即可，不要剪。</td>
+                </tr>
+                <tr>
+                    <td>保留邊界</td>
+                    <td>前後各 <code>0.5</code> 秒</td>
+                    <td>空白頭尾各留一點，接起來才不突兀。</td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="callout danger">
+            <div class="callout-title">⚠️ 裁切一定要重新編碼，並固定影格率</div>
+            <p>用 <code>-c copy</code> 在非關鍵影格的位置切，會造成聲音與畫面不同步；沒有鎖定影格率（<code>fps=30</code>），多次重新編碼後畫面會慢慢落後聲音。技能包的 <code>trim_silence.py --apply</code> 用 <code>select</code>／<code>aselect</code> 一次裁切並重新編碼成固定 30 fps。</p>
+        </div>
+        <pre><code>python trim_silence.py                        # 只列出每集的長空白時間點（不改檔案）
+python trim_silence.py --episodes 3 --apply   # 看過確定後才裁切</code></pre>
     </section>
 
     <!-- 4. Whisper 語音辨識與詞庫注入 -->
     <section id="sec-phase3" class="card">
-        <h2 class="section-title">4. 第三階段：Whisper 語音辨識與高職電機電子群專有名詞注入</h2>
-        <p>為大幅提升 AI 語音轉字幕對**台灣高職電機與電子群課程**專有名詞的精準度，我們在 Whisper 語音辨識階段引入了「領域 context 提示詞 (Domain Initial Prompt)」與「OpenCC 台灣繁體慣用詞對譯庫 (s2twp)」。</p>
+        <h2 class="section-title">4. 第三階段：Whisper 語音辨識、防幻覺與專有名詞</h2>
+        <p>為了提升台灣高職電機電子群課程專有名詞的辨識率，同時避免 Whisper 常見的「跳針」幻覺，這個階段有三件事要做對：<strong>防幻覺參數</strong>、<strong>專有名詞放對地方</strong>、<strong>一定要有逐字時間</strong>。</p>
+
+        <div class="callout danger">
+            <div class="callout-title">⚠️ 重大陷阱：重複幻覺（跳針）</div>
+            <p>Whisper 預設會把「上一段的結果」當成下一段的提示（<code>condition_on_previous_text=True</code>）。一旦某段認錯或遇到安靜、低音量的片段，錯誤就會一路延續，變成同一句話重複幾十次，或把提示詞本身當成字幕吐出來。<strong>關掉它是最有效的一招</strong>；把 <code>initial_prompt</code> 縮短也有幫助。<code>compute_type</code> 用 int8 或 float16 只影響速度與記憶體，和幻覺無關。</p>
+        </div>
 
         <div class="callout">
-            <div class="callout-title">🎯 高職電機與電子群 & AI 專有名詞注入詞庫</div>
-            <p>在語音辨識時，特別針對以下三大類別術語進行提示與修正：</p>
+            <div class="callout-title">🎯 專有名詞：hotwords 與同音字表</div>
             <ul>
-                <li><strong>AI 與程式開發類</strong>：<code>Python</code>、<code>ChatGPT</code>、<code>提示詞 Prompt</code>、<code>LLM 大語言模型</code>、<code>生成式 AI</code>、<code>Gemini</code>、<code>Antigravity</code>、<code>自動化腳本</code>、<code>演算法</code>。</li>
-                <li><strong>高職電子電機與物聯網類</strong>：<code>Arduino</code>、<code>ESP32</code>、<code>微控制器 (MCU)</code>、<code>PCB 印刷電路板</code>、<code>物聯網 (IoT)</code>、<code>感測器 (Sensors)</code>、<code>數位電路</code>、<code>電子學</code>、<code>專題製作</code>。</li>
-                <li><strong>校園與技職教育類</strong>：<code>高職</code>、<code>電機與電子群</code>、<code>實習處</code>、<code>楊梅高中</code>。</li>
+                <li><strong>initial_prompt</strong> 只放一句情境，例如「這是台灣高職 AI 應用與實務課堂教學。」</li>
+                <li><strong>hotwords</strong> 放專有名詞：<code>Python</code>、<code>ChatGPT</code>、<code>LLM</code>、<code>ESP32</code>、<code>Arduino</code>、<code>PCB</code>、<code>物聯網</code>、<code>微控制器</code>…（faster-whisper 1.0 以上支援）</li>
+                <li><strong>同音字表</strong>（config 的 <code>replacements</code>）修正仍然認錯的詞，例如 <code>序列布 → 序列埠</code>。</li>
             </ul>
         </div>
 
-        <div class="callout danger">
-            <div class="callout-title">⚠️ 重大陷阱：Whisper 提示詞重複幻覺 (Prompt Hallucination)</div>
-            <p>在使用 Faster-Whisper 時，若傳入過長或過於複雜的 <code>initial_prompt</code>（如將幾十個名詞全部串在一起），一旦遇上影片中**低音量、靜音或老師未說話的空白段落**，Whisper 容易陷入死迴圈，將提示詞重複輸出，導致整集影片字幕壞死（僅剩幾行無效文字）。</p>
-        </div>
+        <h3>模型怎麼選</h3>
+        <table>
+            <thead><tr><th>情況</th><th>建議模型</th><th>說明</th></tr></thead>
+            <tbody>
+                <tr><td>有 NVIDIA 顯示卡</td><td><code>large-v3-turbo</code></td><td>中文準確度明顯比 medium 好，速度也快</td></tr>
+                <tr><td>只有 CPU</td><td><code>medium</code></td><td>45 分鐘課程約需數十分鐘；<code>small</code> 較快但錯字較多</td></tr>
+                <tr><td>第一次調參數</td><td>先剪 30 秒片段測試</td><td>確認有字、有逐字時間、沒跳針，再跑整集</td></tr>
+            </tbody>
+        </table>
 
-        <h3>精簡高效的 Initial Prompt 注入範例</h3>
+        <h3>建議的辨識設定</h3>
         <pre><code>from faster_whisper import WhisperModel
 import opencc
 
-# 1. 初始化模型（CPU int8 穩定性最佳）
-model = WhisperModel("medium", device="cpu", compute_type="int8")
-converter = opencc.OpenCC('s2twp') # 台灣繁體慣用詞庫（自動將大陸用語轉為台灣習慣）
-
-# 2. 精簡注入「高職電機與電子群與 AI 領域 Prompt」
-domain_prompt = "這是台灣高職電機與電子群 AI 應用與實務課堂教學。專有名詞：AI、Python、ChatGPT、Prompt、LLM、生成式AI、ESP32、Arduino、物聯網、PCB、自動化。"
+model = WhisperModel("large-v3-turbo", device="cuda", compute_type="float16")   # 只有 CPU：("medium", device="cpu", compute_type="int8")
+converter = opencc.OpenCC("s2twp")   # 轉台灣繁體＋台灣慣用詞；只想轉字不改詞可用 "s2tw"
 
 segments, info = model.transcribe(
     "video_path.mp4",
     language="zh",
-    initial_prompt=domain_prompt,  # 精簡傳入，防死迴圈
     beam_size=5,
-    vad_filter=True,               # 必須啟用 VAD 過濾靜音
-    vad_parameters=dict(
-        min_silence_duration_ms=1500,
-        speech_pad_ms=400
-    )
+    initial_prompt="這是台灣高職 AI 應用與實務課堂教學。",      # 短短一句就好
+    hotwords="AI Python ChatGPT Prompt LLM ESP32 Arduino 物聯網 PCB",
+    condition_on_previous_text=False,     # 防跳針：錯一段不會一路錯下去
+    word_timestamps=True,                 # 逐字時間：字幕才能精準斷句（沒開就只能用猜的）
+    vad_filter=True,                      # 先濾掉沒講話的部分
+    vad_parameters=dict(min_silence_duration_ms=1000, speech_pad_ms=400),
+    hallucination_silence_threshold=2.0,  # 長停頓附近的可疑片段直接跳過
+    compression_ratio_threshold=2.4,      # 文字重複度太高（像在跳針）就重試或丟棄
+    no_speech_threshold=0.6,
 )
-
-# 3. 轉譯並過濾潛在幻覺
-segs_data = []
 for s in segments:
-    tw_text = converter.convert(s.text.strip())
-    # 防護機制：過濾包含提示詞抬頭的幻覺字串
-    if tw_text and "專有名詞：" not in tw_text:
-        segs_data.append({"start": round(s.start, 2), "end": round(s.end, 2), "text": tw_text})</code></pre>
+    text = converter.convert(s.text.strip())
+    words = [(w.start, w.end, converter.convert(w.word)) for w in s.words]</code></pre>
     </section>
 
-    <!-- 5. 字幕黃金法則 -->
+    <!-- 5. 字幕規則 -->
     <section id="sec-phase4" class="card">
-        <h2 class="section-title">5. 第四階段：字幕重構黃金法則與美學規範</h2>
-        <p>預設語音辨識常輸出 3~5 個字的碎句，導致字幕快速換頁閃爍。必須經過「二次重構」才能達到電視/教學影片的閱讀品質。</p>
+        <h2 class="section-title">5. 第四階段：單行字幕重組規則與樣式</h2>
+        <p>語音辨識常輸出 3～5 個字的碎句，直接當字幕會快速閃爍；但硬把每行拉長到固定秒數，又會和下一句重疊、在畫面上疊成兩行。正確做法是用<strong>逐字時間</strong>重新組句，並讓停留時間跟著講話走。</p>
 
         <div class="grid-2">
             <div class="step-box">
                 <span class="badge success">原則 1</span>
-                <h4>堅持「單行顯示」</h4>
-                <p>嚴格禁止雙行折行或換行。畫面保持單行，乾淨不遮擋教學簡報內容。</p>
+                <h4>永遠單行、不超寬</h4>
+                <p>每行最多約 20 個中文字（英數字母算半個字寬）。ASS 加 <code>WrapStyle: 2</code>，播放器才不會自動折行。串流平台的中文字幕規範多在每行 16 字左右；有簡報的教學影片放寬到 20 字仍好讀。</p>
             </div>
             <div class="step-box">
                 <span class="badge success">原則 2</span>
-                <h4>長度黃金區間 (15-25 字)</h4>
-                <p>將連續語音片段合併為 15~25 個繁體中文字的自然完整長句。</p>
+                <h4>斷在標點與停頓</h4>
+                <p>停頓超過 0.8 秒一定斷開；被字數逼著斷行時，往回找標點或最長的停頓，不要把「輸出」切成「…的輸」「出結果」。</p>
             </div>
             <div class="step-box">
                 <span class="badge success">原則 3</span>
-                <h4>舒適停留時間 (3-6 秒)</h4>
-                <p>每行字幕在螢幕上至少停留 3~6 秒，避免快閃造成觀眾視覺疲勞。</p>
+                <h4>停留時間跟著講話走</h4>
+                <p>最少 1.2 秒、最多 6 秒；講太快（每秒超過 8 字）就稍微延長，讓人讀得完。<strong>延長時絕不能蓋到下一句</strong>，否則兩行會同時出現。</p>
             </div>
             <div class="step-box">
                 <span class="badge success">原則 4</span>
-                <h4>高對比視覺美學</h4>
-                <p>採用微軟正黑體、純白文字、深色陰影外框（Outline 3, Shadow 2），確保清晰度。</p>
+                <h4>高對比、乾淨</h4>
+                <p>微軟正黑體、白字、深色外框（Outline 3、Shadow 2）；句尾的逗號句號去掉、句中改成空白；中英文之間留一個空白（「用 Python 寫」）。</p>
             </div>
         </div>
 
-        <h3>ASS 字幕樣式配置 (v4+ Styles)</h3>
+        <div class="callout danger">
+            <div class="callout-title">⚠️ 片頭秒數只能加一次</div>
+            <p>成品前面接了 4 秒片頭，字幕時間就要往後 4 秒。技能包的做法：<code>epXX.srt</code> 已加 4 秒（對齊成品，上傳 CC 用）；<code>epXX.ass</code> 不加，在接片頭<strong>之前</strong>燒進原始影片。兩邊都加或都沒加，字幕就會整條差 4 秒。</p>
+        </div>
+
+        <h3>ASS 字幕樣式配置</h3>
         <pre><code>[Script Info]
 PlayResX: 1920
 PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Microsoft JhengHei,46,&H00FFFFFF,&H000000FF,&H00181818,&H80000000,-1,0,0,0,100,100,0,0,1,3,2,2,40,40,65,1</code></pre>
+Style: Default,Microsoft JhengHei,46,&amp;H00FFFFFF,&amp;H000000FF,&amp;H00181818,&amp;H80000000,-1,0,0,0,100,100,0,0,1,3,2,2,40,40,65,1</code></pre>
     </section>
 
     <!-- 6. FFmpeg 自動化壓製 -->
     <section id="sec-phase5" class="card">
-        <h2 class="section-title">6. 第五階段：FFmpeg 自動化壓製與片頭合成</h2>
-        <p>利用 Python Pillow 繪製 1080p 動態封面（標註上課日期與學校資訊），並透過 FFmpeg 將 4 秒片頭與主影片拼接，同時燒錄 ASS 內嵌字幕。</p>
+        <h2 class="section-title">6. 第五階段：片頭合成與 FFmpeg 壓製</h2>
+        <p>用 Pillow 繪製 1080p 片頭圖卡（課程名稱、上課日期、學校），做成 4 秒片頭，再和課程影片接起來壓製。接之前一定要把兩段的規格統一，否則 <code>concat</code> 會失敗或造成聲音畫面漸漸不同步。</p>
 
-        <h3>FFmpeg 複合濾鏡 (Filter Complex) 命令範例</h3>
-        <pre><code>ffmpeg -y \
-  -i intro_4s.mp4 \
-  -i lecture_main.mp4 \
-  -filter_complex \
-  "[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2[v0]; \
-   [1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2[v1]; \
-   [v0][0:a][v1][1:a]concat=n=2:v=1:a=1[vconcat][acontat]; \
-   [vconcat]ass='subtitles.ass'[outv]" \
-  -map "[outv]" -map "[acontat]" \
-  -c:v libx264 -preset ultrafast -crf 20 \
-  -c:a aac -ar 44100 -ac 2 -b:a 192k \
+        <h3>片頭：圖片＋靜音音軌</h3>
+        <pre><code>ffmpeg -y -loop 1 -framerate 30 -i cover.png \
+  -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=48000 \
+  -t 4 -vf setsar=1 -c:v libx264 -pix_fmt yuv420p -r 30 \
+  -c:a aac -ar 48000 -ac 2 intro_4s.mp4</code></pre>
+        <p>用圖片做的片頭本身沒有聲音，<code>concat</code> 需要每一段都有聲音軌，所以要補一條靜音音軌（<code>anullsrc</code>）。</p>
+
+        <h3>接片頭＋（選擇性）燒字幕＋壓製</h3>
+        <pre><code>ffmpeg -y -i intro_4s.mp4 -i lecture_main.mp4 -filter_complex \
+  "[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v0]; \
+   [1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,ass=ep01.ass[v1]; \
+   [0:a]aresample=48000,aformat=channel_layouts=stereo[a0]; \
+   [1:a]aresample=48000,aformat=channel_layouts=stereo[a1]; \
+   [v0][a0][v1][a1]concat=n=2:v=1:a=1[outv][outa]" \
+  -map "[outv]" -map "[outa]" \
+  -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -r 30 \
+  -c:a aac -b:a 192k -ar 48000 -ac 2 -movflags +faststart \
   final_output.mp4</code></pre>
+        <ul>
+            <li><strong>字幕燒在課程影片 <code>[1:v]</code> 上、接片頭之前</strong>：ASS 的時間就不用加片頭秒數。不燒字幕（上傳 CC）時，把 <code>,ass=ep01.ass</code> 拿掉。</li>
+            <li><strong><code>setsar=1</code>、<code>fps=30</code>、<code>aresample=48000</code></strong>：兩段規格一致，concat 才穩定。</li>
+            <li><strong><code>-preset medium</code></strong>：<code>ultrafast</code> 同樣畫質檔案大很多，只適合預覽；最終版用 medium（有時間可用 slow）。</li>
+            <li><strong><code>-movflags +faststart</code>、<code>yuv420p</code></strong>：網頁、手機、LINE 都能直接播。</li>
+            <li><strong>字幕路徑不用手動轉義</strong>：在字幕資料夾裡執行 ffmpeg，<code>ass=ep01.ass</code> 只寫檔名，就不會遇到 Windows 磁碟機冒號、反斜線要轉義的問題。</li>
+            <li><strong>不要把 ffmpeg 的錯誤訊息丟掉</strong>：技能包把每次指令與錯誤存到 <code>output/logs/</code>，並檢查成品長度＝片頭＋正片。</li>
+        </ul>
     </section>
 
     <!-- 7. YouTube API 自動化發布 -->
     <section id="sec-phase6" class="card">
-        <h2 class="section-title">7. 第六階段：YouTube API 批次上傳與播放清單</h2>
-        <p>透過 Google OAuth 2.0 API 進行無人值守全自動發布，並掛載繁體中文 CC 字幕軌與自動建立播放清單。</p>
+        <h2 class="section-title">7. 第六階段：YouTube API 上傳、CC 字幕與播放清單</h2>
+        <p>透過 YouTube Data API 上傳影片、掛上繁體中文 CC 字幕、建立播放清單。技能包的 <code>upload.py</code> 每傳完一支就記錄在 <code>output/uploads.json</code>，中斷或配額用完，隔天再跑會接著傳，不會重複。</p>
+
+        <div class="callout danger">
+            <div class="callout-title">⚠️ 未通過稽核的 API 專案：影片會被鎖成「私人」</div>
+            <p>YouTube 規定：2020 年 7 月 28 日之後建立、且未通過 YouTube API 稽核的專案，用 API 上傳的影片一律限制為私人。設定成不公開或公開都不會生效。解法是申請 API 稽核（YouTube API Services Audit），或上傳後到 YouTube 工作室手動確認。<code>upload.py</code> 上傳後會檢查實際的隱私狀態並提醒。</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="step-box">
+                <span class="badge primary">字幕二選一</span>
+                <h4>CC 字幕 或 燒進畫面</h4>
+                <p>同時燒字幕又上傳 CC，觀眾打開 CC 會看到兩份。建議上傳 CC（<code>subtitle_mode: "cc"</code>）：可以開關、可以被搜尋，對需要的人也更友善；要燒進畫面就不要再上傳 CC。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge warning">配額</span>
+                <h4>每天預設 10,000 單位</h4>
+                <p>上傳影片是最耗配額的操作，一天通常只能傳個位數支；字幕、播放清單也會消耗（實際數字以官方配額表為準）。出現 <code>quotaExceeded</code> 隔天再跑即可。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge success">可續傳＋重試</span>
+                <h4>大檔案不怕斷線</h4>
+                <p>用 <code>MediaFileUpload(resumable=True)</code> 分段上傳；遇到 500/502/503/504 或網路中斷，等 2、4、8… 秒從斷點續傳。</p>
+            </div>
+            <div class="step-box">
+                <span class="badge success">播放清單</span>
+                <h4>加入失敗就重試</h4>
+                <p>剛上傳的影片有時要幾秒後才查得到，加入播放清單會回報找不到影片。做法是失敗時等待後重試，並且不指定 <code>position</code>，依集數順序加入。</p>
+            </div>
+        </div>
+        <pre><code>python upload.py --dry-run     # 先列出要上傳的內容，不連線
+python upload.py               # 確認後上傳</code></pre>
     </section>
 
-    <!-- 8. OAuth 7天到期專題 -->
+    <!-- 8. OAuth -->
     <section id="sec-oauth" class="card">
-        <h2 class="section-title">8. 【核心專題】Google OAuth2 7天 Token 續期與永久認證解決方案</h2>
-        
+        <h2 class="section-title">8. 【核心專題】OAuth 7 天失效與重新授權</h2>
+
         <div class="callout danger">
             <div class="callout-title">🚨 經典踩坑：為什麼 Refresh Token 在 7 天後突然失效？</div>
-            <p>在 Google Cloud Console 中建立 OAuth 2.0 Client ID 時，若 GCP 專案的 **「OAuth 同意畫面 (OAuth Consent Screen)」發布狀態保持在『Testing (測試中)』**，Google 安全機制規定發出的 Refresh Token 最長有效期**限定為 7 天**。7 天一到，Token 即被強制撤銷，執行 API 時會拋出 <code>invalid_grant: Token has been expired or revoked</code> 錯誤。</p>
+            <p>Google Cloud 專案的 <strong>OAuth 同意畫面</strong>如果還在「<strong>測試中（Testing）</strong>」，發出的 refresh token 7 天後一定失效，執行 API 會出現 <code>invalid_grant: Token has been expired or revoked</code>。</p>
         </div>
 
-        <h3>💡 三大核心解決方案 (3 Robust Solutions)</h3>
+        <h3>💡 三個對策，各自解決不同的問題</h3>
 
         <div class="step-box" style="margin-bottom: 1.5rem;">
-            <span class="badge success">解法 A（推薦）</span>
-            <h4>Google Cloud 專案正式發布 (In Production) —— 免去 7 天限制</h4>
-            <p>登入 <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> &rarr; 選擇您的專案 &rarr; 進入 <strong>OAuth 同意畫面 (OAuth Consent Screen)</strong> &rarr; 將發布狀態 (Publishing Status) 從 <code>Testing</code> 點擊切換為 <strong><code>In Production (正式發布)</code></strong>。</p>
-            <p><em>註：若僅供個人或內部測試使用（User Type 為 External 但非公開商業應用），直接發布無須提交 Google 官方安全性人工審查，即可獲得永久有效的 Refresh Token。</em></p>
+            <span class="badge success">對策 A（根本解決 7 天問題）</span>
+            <h4>把 OAuth 同意畫面改成「正式發布（In production）」</h4>
+            <p>登入 <a href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console</a> → 選擇專案 → OAuth 同意畫面 → 發布狀態從 <code>Testing</code> 改為 <strong><code>In production</code></strong>，然後重新授權一次。</p>
+            <p><em>注意：個人自用可以不送 Google 審查，但授權時會看到「Google 尚未驗證這個應用程式」，按「進階 → 前往」即可，且最多 100 位使用者。正式發布後 refresh token 沒有 7 天限制，但不是永久：自己撤銷授權、超過 6 個月沒使用、同一帳號對同一個用戶端授權太多次（舊的會被作廢），都會讓它失效，屆時重新授權即可。</em></p>
         </div>
 
         <div class="step-box" style="margin-bottom: 1.5rem;">
-            <span class="badge primary">解法 B</span>
-            <h4>Python 程式碼自動 Token 續期機制 (Auto-Refresh Routine)</h4>
-            <p>在 Python 程式中，使用 <code>google.auth.transport.requests.Request()</code>，每次發起 API 呼叫前檢查 Token 狀態。若已過期但 refresh_token 仍有效，自動向 Google OAuth 伺服器申請新的 access_token 並回寫更新 <code>yt_token.json</code>：</p>
+            <span class="badge primary">對策 B（日常自動續期）</span>
+            <h4>程式自動換新的 access token</h4>
+            <p>access token 大約 1 小時就過期，程式用 refresh token 自動換新的即可。<strong>這只能處理 access token 過期，救不了 refresh token 本身被撤銷</strong>（例如 Testing 的 7 天到期），那時 <code>refresh()</code> 一樣會出現 <code>invalid_grant</code>，要改用對策 A＋重新授權。</p>
             <pre><code>from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
-import os
+from google.auth.exceptions import RefreshError
 
-token_path = r"d:\影片編輯\yt_token.json"
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
-
-def get_valid_youtube_credentials():
-    if not os.path.exists(token_path):
-        raise FileNotFoundError(f"找不到 Token 檔案: {token_path}")
-        
-    creds = Credentials.from_authorized_user_file(token_path, SCOPES)
-    
-    # 核心自動續期邏輯
-    if creds.expired and creds.refresh_token:
-        print("🔄 Token 已過期，正在向 Google API 自動申請續期 (Refresh Token)...")
-        creds.refresh(Request())
-        
-        # 回寫更新後的權限 JSON 檔
-        with open(token_path, "w", encoding="utf-8") as f:
-            f.write(creds.to_json())
-        print("✅ Token 續期成功並已更新存檔！")
-        
-    return creds</code></pre>
+creds = Credentials.from_authorized_user_file("yt_token.json", SCOPES)
+if not creds.valid:
+    try:
+        creds.refresh(Request())                       # 換新的 access token
+    except RefreshError:
+        raise SystemExit("授權已失效：請執行 python youtube_auth.py 重新授權")
+    with open("yt_token.json", "w", encoding="utf-8") as f:
+        f.write(creds.to_json())</code></pre>
         </div>
 
         <div class="step-box">
-            <span class="badge warning">解法 C</span>
-            <h4>OAuth Code 快捷重新授權驗證腳本 (Fast Re-auth Fallback)</h4>
-            <p>若 Token 已超過 7 天遭到 Google 強制失效，可透過備份的 <code>client_secrets.json</code>（內含 <code>client_id</code> 與 <code>client_secret</code>），執行快捷認證腳本，只需在瀏覽器開啟驗證網址授權後，複製 URL 中的 <code>code</code> 貼回程式，即可 3 秒內重新產生最新的 <code>yt_token.json</code>：</p>
+            <span class="badge warning">對策 C（重新授權）</span>
+            <h4>重新產生 yt_token.json</h4>
+            <p>一般情況用 <code>run_local_server</code> 最簡單，會自動開瀏覽器、授權完自動存檔。瀏覽器開不起來時才用手動貼上的方式，而且<strong>產生網址和換 token 必須用同一個 flow 物件</strong>（新版會加上 PKCE 驗證碼，換成另一個物件就對不上）。</p>
             <pre><code>from google_auth_oauthlib.flow import InstalledAppFlow
 
-# 使用原本的 client_secrets.json 重新換取 Token
-flow = InstalledAppFlow.from_client_secrets_file('client_secrets.json', SCOPES)
-flow.redirect_uri = 'http://127.0.0.1:8080/'
+flow = InstalledAppFlow.from_client_secrets_file("client_secrets.json", SCOPES)
 
-# 取得授權網址
-auth_url, _ = flow.authorization_url(prompt='consent', access_type='offline')
-print(f"請在瀏覽器開啟授權網址:\n{auth_url}")
+# 一般情況：自動開瀏覽器
+creds = flow.run_local_server(port=0, prompt="consent", access_type="offline")
 
-# 使用使用者貼回的 code 直接完成交換
-auth_code = input("請貼上瀏覽器回傳 URL 中的 code 參數值: ")
-flow.fetch_token(code=auth_code)
+# 瀏覽器開不起來時（同一個 flow 物件）：
+# flow.redirect_uri = "http://127.0.0.1:8080/"
+# url, _ = flow.authorization_url(prompt="consent", access_type="offline")
+# print(url); code = input("貼上網址列中的 code：")
+# flow.fetch_token(code=code); creds = flow.credentials
 
-with open('yt_token.json', 'w', encoding='utf-8') as f:
-    f.write(flow.credentials.to_json())
-print("🎉 成功重新產生 yt_token.json！")</code></pre>
+with open("yt_token.json", "w", encoding="utf-8") as f:
+    f.write(creds.to_json())</code></pre>
+            <p>技能包的 <code>python youtube_auth.py</code>（或 <code>--manual</code>）就是這個流程，也接受直接貼上整串網址。</p>
         </div>
     </section>
 
     <!-- 9. 避坑總結 CheckList -->
     <section id="sec-summary" class="card">
         <h2 class="section-title">9. 核心避坑總結與最佳實踐 CheckList</h2>
-        
+
         <table>
             <thead>
                 <tr>
                     <th>步驟階段</th>
                     <th>常見問題 / 踩坑點</th>
-                    <th>最佳實踐 (Best Practice) 解決方案</th>
+                    <th>最佳實踐解決方案</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>專有名詞辨識</strong></td>
-                    <td>英文縮寫或高職電機專業術語被誤判為同音中文字</td>
-                    <td>注入專屬 <code>domain_prompt</code>（包含 Python, ESP32, Arduino, LLM 等）並搭配 OpenCC 轉台灣繁體。</td>
-                </tr>
-                <tr>
-                    <td><strong>OAuth 認證</strong></td>
-                    <td>Refresh Token 7 天後拋出 invalid_grant 強制失效</td>
-                    <td>GCP 切換至 Production 發布；程式加入 <code>creds.refresh(Request())</code> 自動續期。</td>
+                    <td><strong>空白裁切</strong></td>
+                    <td>把寫板書、示範操作的安靜片段也剪掉；<code>-c copy</code> 切完聲音畫面不同步</td>
+                    <td>只抓 8 秒以上的空白、先看報告再剪；裁切一律重新編碼並固定 30 fps。</td>
                 </tr>
                 <tr>
                     <td><strong>語音辨識</strong></td>
-                    <td>Whisper 提示詞迴圈幻覺導致字幕壞死</td>
-                    <td>避免傳入過長 Initial Prompt；採用 CPU int8 模式 + VAD Filter。</td>
+                    <td>字幕跳針、重複同一句、把提示詞當字幕</td>
+                    <td><code>condition_on_previous_text=False</code>＋VAD＋<code>hallucination_silence_threshold</code>；initial_prompt 只放一句。</td>
                 </tr>
                 <tr>
-                    <td><strong>字幕顯示</strong></td>
-                    <td>字幕字數太少（3-5字）換頁太快閃爍</td>
-                    <td>重構成 15-25 字單行長句，確保停留時間 3-6 秒。</td>
+                    <td><strong>專有名詞</strong></td>
+                    <td>英文縮寫、電機電子術語被認成同音字</td>
+                    <td>術語放 <code>hotwords</code>；仍認錯的用同音字表修正；有顯示卡改用 large-v3-turbo。</td>
+                </tr>
+                <tr>
+                    <td><strong>字幕時間</strong></td>
+                    <td>硬拉到固定秒數，和下一句重疊，畫面變兩行</td>
+                    <td>停留時間跟著講話（1.2～6 秒、每秒 ≤ 8 字），延長時不超過下一句開始時間。</td>
                 </tr>
                 <tr>
                     <td><strong>字幕排版</strong></td>
-                    <td>多行折行遮擋教學簡報畫面</td>
-                    <td>全程維護「單行顯示」，MarginV 設定 65px 以上離底高。</td>
+                    <td>長句被從中間切開、播放器自動折行</td>
+                    <td>用逐字時間在標點與停頓處斷；每行 ≤ 20 字；ASS 加 <code>WrapStyle: 2</code>；MarginV 65。</td>
+                </tr>
+                <tr>
+                    <td><strong>片頭對齊</strong></td>
+                    <td>接了 4 秒片頭，字幕整條早 4 秒（或晚 8 秒）</td>
+                    <td>SRT 加片頭秒數給 CC；ASS 不加，接片頭之前燒進原始影片。</td>
                 </tr>
                 <tr>
                     <td><strong>影片壓製</strong></td>
-                    <td>FFmpeg ASS 濾鏡路徑轉義失敗</td>
-                    <td>Windows 路徑斜線轉為正斜線，並轉義冒號：<code>replace('\\', '/').replace(':', '\\:')</code>。</td>
+                    <td>concat 失敗或聲音漸漸不同步；檔案太大；錯誤被隱藏</td>
+                    <td>統一 <code>setsar=1</code>、<code>fps=30</code>、48 kHz；片頭補靜音音軌；<code>preset medium</code>＋<code>faststart</code>；保留 ffmpeg 紀錄。</td>
                 </tr>
                 <tr>
-                    <td><strong>YT 自動化</strong></td>
-                    <td>新增播放清單項目回報 Video Not Found</td>
-                    <td>影片上傳與加入清單間加入 2 秒延遲，並移除 <code>position</code> 參數。</td>
+                    <td><strong>字幕路徑</strong></td>
+                    <td>Windows 路徑的冒號、反斜線讓 ass 濾鏡讀不到檔</td>
+                    <td>在字幕資料夾裡執行 ffmpeg，濾鏡只寫檔名。</td>
+                </tr>
+                <tr>
+                    <td><strong>OAuth 認證</strong></td>
+                    <td>7 天後 invalid_grant</td>
+                    <td>同意畫面改成正式發布並重新授權；程式的自動續期只處理 access token。</td>
+                </tr>
+                <tr>
+                    <td><strong>上傳</strong></td>
+                    <td>影片被鎖成私人；配額用完；斷線重傳</td>
+                    <td>申請 API 稽核；記錄已上傳 ID 可接續；可續傳上傳＋自動重試。</td>
+                </tr>
+                <tr>
+                    <td><strong>字幕重複</strong></td>
+                    <td>燒了字幕又上傳 CC，開 CC 看到兩份</td>
+                    <td>二選一，建議上傳 CC。</td>
+                </tr>
+                <tr>
+                    <td><strong>播放清單</strong></td>
+                    <td>加入項目回報找不到影片</td>
+                    <td>失敗後等待重試、不指定 <code>position</code>。</td>
                 </tr>
             </tbody>
         </table>
@@ -679,40 +773,39 @@ print("🎉 成功重新產生 yt_token.json！")</code></pre>
     <!-- 10. 跨電腦移植 -->
     <section id="sec-migrate" class="card">
         <h2 class="section-title">10. 【跨電腦移植】在另一台電腦上安裝與使用本技能</h2>
-        <p>若您需要換一台全新電腦（Windows）操作本自動化技能，請依循以下 4 個簡單步驟設定：</p>
+        <p>換一台全新的 Windows 電腦時，依照以下 4 個步驟設定：</p>
 
         <div class="step-box" style="margin-bottom: 1.25rem;">
             <span class="badge success">步驟 1</span>
-            <h4>安裝核心依賴軟體 (Python & FFmpeg)</h4>
+            <h4>安裝 Python 與 FFmpeg</h4>
             <ul>
-                <li><strong>Python 3.10+</strong>：請先下載並安裝 Python，勾選 <code>Add python.exe to PATH</code>。</li>
-                <li><strong>FFmpeg</strong>：下載 FFmpeg 解壓縮後，將 <code>bin</code> 目錄路徑加入 Windows 系統環境變數 PATH 中（確保命令列可直接執行 <code>ffmpeg</code> 與 <code>ffprobe</code>）。</li>
+                <li><strong>Python 3.10+</strong>：安裝時勾選 <code>Add python.exe to PATH</code>。</li>
+                <li><strong>FFmpeg</strong>：<code>winget install Gyan.FFmpeg</code>，裝完<strong>重開終端機</strong>，確認 <code>ffmpeg -version</code> 有反應。</li>
             </ul>
         </div>
 
         <div class="step-box" style="margin-bottom: 1.25rem;">
             <span class="badge primary">步驟 2</span>
-            <h4>一鍵安裝 Python 第三方套件</h4>
-            <p>開啟命令提示字元 (cmd) 或 PowerShell，執行以下指令安裝所需套件：</p>
-            <pre><code>pip install faster-whisper opencc-python-reimplemented Pillow google-api-python-client google-auth-httplib2 google-auth-oauthlib</code></pre>
+            <h4>解壓技能包、安裝套件、先跑測試</h4>
+            <pre><code>pip install -r requirements.txt
+python tests/test_subtitles.py      # 字幕規則：通過 21 項
+python tests/smoke_test.py          # 端到端：自己產生假影片跑完整流程，OK 11</code></pre>
+            <p>第一次語音辨識會自動下載模型（medium 約 1.5 GB、large-v3-turbo 約 1.6 GB），請在網路穩定時進行。</p>
         </div>
 
         <div class="step-box" style="margin-bottom: 1.25rem;">
             <span class="badge warning">步驟 3</span>
-            <h4>複製技能檔與認證金鑰</h4>
-            <p>在新電腦上建立工作目錄（如 <code>d:\影片編輯</code>），並將舊電腦上的以下檔案複製過來：</p>
+            <h4>設定檔與授權</h4>
             <ul>
-                <li><code>SKILL.md</code> 及技能專案資料夾（放置於 <code>edit/episodes/teaching-video-pipeline/</code>）</li>
-                <li><code>client_secrets.json</code> 與 <code>yt_token.json</code>（Google OAuth 授權憑證）</li>
+                <li>複製 <code>config.example.json</code> 為 <code>config.json</code>，填好影片資料夾、集數與標題、術語。</li>
+                <li>要上傳 YouTube：把自己的 <code>client_secrets.json</code> 放進資料夾，執行 <code>python youtube_auth.py</code> 產生 <code>yt_token.json</code>。建議在新電腦重新授權，不要到處複製 token 檔；這兩個檔案等於密碼，不可放進壓縮檔、GitHub 或報告。</li>
             </ul>
         </div>
 
         <div class="step-box">
             <span class="badge success">步驟 4</span>
-            <h4>放入原始影片並啟動自動化流程</h4>
-            <p>將新錄製的課堂 MP4 影片放入該目錄，執行一鍵自動化處理腳本：</p>
-            <pre><code>python process_1150907_ai_course.py</code></pre>
-            <p>腳本將全自動完成：<strong>語音辨識 &rarr; 繁體化 &rarr; 單行長句字幕重構 &rarr; 1080p 動態片頭繪製 &rarr; 硬字幕壓製 &rarr; YouTube API 發布與播放清單建置</strong>！</p>
+            <h4>處理影片 → 檢查 → 上傳</h4>
+            <p>雙擊 <code>1_處理影片.bat</code>（或 <code>python run_pipeline.py</code>）：<strong>長空白報告 → 語音辨識 → 單行字幕 → 片頭 → 壓製</strong>。看過成品與字幕後，雙擊 <code>2_上傳YouTube.bat</code>：先列出要上傳的內容，輸入 y 才會上傳並建立播放清單。</p>
         </div>
     </section>
 

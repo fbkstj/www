@@ -60,3 +60,4 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `ai_vision_course_guide.html` 的專題庫（11 題，第 09 題是 AI 守望）與下載包講義單元六內容要一致。
 - 新增頁面時，要一起更新 `index.html` 的導覽連結和 `遠端網址備忘.txt`。
 - 專案之前放在 `antigravity\stjweb`，舊文件裡如果還看到這個路徑，現在的位置是 Google 雲端硬碟的 `我的雲端硬碟\claude\stjweb`。磁碟代號會變（目前是 `H:`，`遠端網址備忘.txt` 裡寫的還是 `J:`），不要把磁碟代號寫死在腳本裡。雲端硬碟上的 `du`、`find` 之類大量掃描很慢，盡量避免。
+- 教學影片後製技能包（`teaching_video_pipeline_guide.html`＋`teaching_video_pipeline_master_pack.zip`，公開）：原始碼在 `_private/teaching_video_pipeline_pack/`（`_old/` 是 115-09-18 改版前的舊腳本，不進 zip）。改完要重新打包 zip，並把講義同步複製一份進 zip。驗收：`python tests/test_subtitles.py`（21 項）、`python tests/smoke_test.py`（用 Windows SAPI 中文語音自製假課程影片，跑裁切→辨識→字幕→壓製→上傳試跑，11 項，約 30 秒）。重點：字幕 SRT 已加片頭秒數、ASS 不加且在接片頭前燒；`condition_on_previous_text=False`＋逐字時間；OAuth 手動授權要用同一個 flow 物件（PKCE）。zip 不可含 `client_secrets.json`、`yt_token.json`、`config.json`（`D:\影片編輯` 的工作副本裡有真的憑證）。
