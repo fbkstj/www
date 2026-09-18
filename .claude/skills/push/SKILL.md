@@ -22,7 +22,7 @@ git log origin/main..HEAD --oneline   # 已 commit 但還沒推的
 - **zip 內容**：有新增或修改的 `.zip`，用 `unzip -l <檔名>` 檢查，裡面不可有上面的機密檔（`.gitignore` 管不到 zip 裡面）。
 - **大型檔**：單檔超過 10 MB（影片、壓縮包、`*.pt` 模型）先問使用者。`.git` 已經約 1.3 GB，影片應該放 YouTube 或雲端硬碟。
 - **學生個資**：身分證、電話、完整座號姓名對照等不可公開。
-- **加密頁面**：`app_inventor_answers.html`、`mcp_course_automation_guide.html` 若在修改清單中，要確認是加密後的版本（`grep -c staticrypt` 大於 0，且找不到原文，例如 `grep -c "App Inventor"` 為 0）。`_private/` 底下任何檔案都不可 commit。
+- **加密頁面**：`app_inventor_answers.html`、`mcp_course_automation_guide.html`、`amb82_iot_course_guide.html`、`amb82_ai_course_guide.html` 若在修改清單中，要確認是加密後的版本（`grep -c staticrypt` 大於 0，且找不到原文，例如 `grep -c "App Inventor"` 為 0）。`_private/` 底下任何檔案都不可 commit。
 - **不相關的檔案**：一次性腳本、暫存檔、測試產物，確認使用者是否真的要推。
 
 ## 3. Commit
