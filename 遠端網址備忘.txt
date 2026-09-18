@@ -33,6 +33,9 @@ https://fbkstj.github.io/www/amb82_iot_course_guide.html
 AMB82-Mini AI 視覺辨識進階實作（研習講義・第 2 天）：
 https://fbkstj.github.io/www/amb82_ai_course_guide.html
 
+筆電＋USB 攝影機 AI 視覺課程（兩天 12 單元）：
+https://fbkstj.github.io/www/laptop_cam_course_guide.html
+
 數位電子乙級評審表設定：
 https://fbkstj.github.io/www/digi_el.html
 
@@ -75,6 +78,9 @@ https://stjwww.netlify.app/amb82_iot_course_guide.html
 AMB82-Mini AI 視覺辨識進階實作（研習講義・第 2 天）：
 https://stjwww.netlify.app/amb82_ai_course_guide.html
 
+筆電＋USB 攝影機 AI 視覺課程（兩天 12 單元）：
+https://stjwww.netlify.app/laptop_cam_course_guide.html
+
 數位電子乙級評審表設定：
 https://stjwww.netlify.app/digi_el.html
 
@@ -116,6 +122,9 @@ http://127.0.0.1:18456/amb82_iot_course_guide.html
 
 AMB82-Mini AI 視覺辨識進階實作（研習講義・第 2 天）：
 http://127.0.0.1:18456/amb82_ai_course_guide.html
+
+筆電＋USB 攝影機 AI 視覺課程（兩天 12 單元）：
+http://127.0.0.1:18456/laptop_cam_course_guide.html
 
 數位電子乙級評審表設定：
 http://127.0.0.1:18456/digi_el.html
