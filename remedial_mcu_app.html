@@ -434,23 +434,8 @@ function loadYT() {
 function mountVideo(v) {
   const box = $('#player');
   if (v.type === 'drive') {
-    // 雲端硬碟的嵌入播放器常常一直轉圈，改用 <video> 直接讀檔（檔案需「知道連結的任何人」可檢視）；讀不到才退回嵌入播放器
-    const id = encodeURIComponent(v.id);
-    const vid = playerVideo('https:' + '/' + '/drive.usercontent.google.com/download?id=' + id + '&export=download');
-    vid.crossOrigin = 'anonymous';
-    vid.addEventListener('error', () => {
-      if (!document.body.contains(vid)) return;
-      study.mode = 'time'; study.playing = false;
-      box.innerHTML = `<iframe src="https:${"/"}/drive.google.com/file/d/${id}/preview" allow="autoplay; fullscreen" allowfullscreen title="關卡影片"></iframe>`;
-      const a = document.createElement('a');
-      a.href = 'https:' + '/' + '/drive.google.com/file/d/' + id + '/view'; a.target = '_blank'; a.rel = 'noopener';
-      a.className = 'link'; a.textContent = '影片無法播放？在新分頁開啟';
-      box.after(a);
-      if (LEVEL && LEVEL.progress) renderProgress(LEVEL.progress);
-      updateLive();
-    }, { once: true });
-    box.appendChild(vid);
-    addControls(box, vid);
+    // 雲端硬碟不讓其他網頁直接讀影片檔，只能用它的嵌入播放器（時間軸擋不掉，只能以停留時間計算）
+    mountDrive(box, v.id);
   } else if (v.type === 'youtube') {
     box.innerHTML = '<div id="yt"></div>';
     loadYT().then(() => {
@@ -462,9 +447,22 @@ function mountVideo(v) {
     });
   } else {
     const vid = playerVideo(v.url);
+    // 網站上的副本讀不到時，退回雲端硬碟的原檔
+    if (v.drive) vid.addEventListener('error', () => { if (document.body.contains(vid)) mountDrive(box, v.drive); }, { once: true });
     box.appendChild(vid);
     addControls(box, vid);
   }
+}
+function mountDrive(box, driveId) {
+  const id = encodeURIComponent(driveId);
+  study.mode = 'time'; study.playing = false;
+  box.innerHTML = `<iframe src="https:${"/"}/drive.google.com/file/d/${id}/preview" allow="autoplay; fullscreen" allowfullscreen title="關卡影片"></iframe>`;
+  const a = document.createElement('a');
+  a.href = 'https:' + '/' + '/drive.google.com/file/d/' + id + '/view'; a.target = '_blank'; a.rel = 'noopener';
+  a.className = 'link'; a.textContent = '影片無法播放？在新分頁開啟';
+  box.after(a);
+  if (LEVEL && LEVEL.progress) renderProgress(LEVEL.progress);
+  updateLive();
 }
 function playerVideo(src) {
   const vid = document.createElement('video');
@@ -570,7 +568,7 @@ function renderProgress(p) {
   if ($('#wtext')) {
     showWatch();
     $('#whint').textContent = p.videoDone ? '已看完，可以作答'
-      : ($('#player iframe') && LEVEL.video.type === 'drive' ? '停留在這個頁面觀看影片就會計時' : '依序看到 90% 就能作答，還沒看過的部分不能快轉');
+      : ($('#player iframe') ? '停留在這個頁面觀看影片就會計時' : '依序看到 90% 就能作答，還沒看過的部分不能快轉');
   }
   if (!wasDone && p.videoDone && wasDone !== undefined) toast('影片看完了，測驗已解鎖');
   if (!$('#quizForm')) renderQuizBox();
