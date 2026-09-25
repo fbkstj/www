@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>數位電子乙級術科評審成績表 - 361資訊三甲</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      color: var(--gray-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === 密碼保護模態遮罩 === */
+    #auth-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .auth-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: #eff6ff;
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .auth-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .auth-card p {
+      font-size: 13px;
+      color: var(--gray-600);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .auth-input-group {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .auth-input.error {
+      border-color: var(--danger);
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3);
+    }
+
+    .auth-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .auth-hint {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+    }
+
+    /* === 主要頁面內容 === */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      width: 100%;
+      flex: 1;
+    }
+
+    header {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+      border-top: 5px solid var(--primary);
+      position: relative;
+    }
+
+    .header-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #dbeafe;
+      color: var(--primary-dark);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* 統計指標卡片 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .stat-card.blue .stat-icon { background: #eff6ff; color: #2563eb; }
+    .stat-card.green .stat-icon { background: #ecfdf5; color: #059669; }
+    .stat-card.amber .stat-icon { background: #fffbeb; color: #d97706; }
+    .stat-card.purple .stat-icon { background: #faf5ff; color: #7c3aed; }
+
+    .stat-info .label {
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-bottom: 4px;
+    }
+
+    .stat-info .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* 控制工具列 */
+    .toolbar {
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .toolbar-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sort-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-right: 4px;
+    }
+
+    .sort-btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--gray-300);
+      background: white;
+      color: var(--gray-800);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sort-btn:hover {
+      background: var(--gray-100);
+      border-color: var(--gray-400);
+    }
+
+    .sort-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 5px rgba(30, 64, 175, 0.25);
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-input {
+      padding: 8px 14px 8px 34px;
+      font-size: 13px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      outline: none;
+      width: 180px;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      width: 220px;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 14px;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      background: #e2e8f0;
+      color: var(--gray-600);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.03);
+    }
+
+    /* 表格本體 */
+    .table-card {
+      background: white;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow-x: auto;
+      border: 1px solid var(--gray-200);
+      border-top: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    thead th {
+      background: #1e3a8a;
+      color: white;
+      padding: 12px 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+
+    thead th:hover {
+      background: #2563eb;
+    }
+
+    thead tr.sub-hdr th {
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 12px;
+      border-color: var(--gray-300);
+    }
+
+    tbody td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--gray-200);
+      border-right: 1px solid var(--gray-200);
+      transition: background 0.1s ease;
+    }
+
+    tbody tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* 特殊樣式欄位 */
+    .seat-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--primary);
+      background: #eff6ff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .name-cell {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .score-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .score-avg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e3a8a;
+      background: #fef3c7;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .time-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .badge-top {
+      background: #fef08a;
+      color: #854d0e;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .badge-highlight {
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-fail {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .note-text {
+      text-align: left;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+      max-width: 260px;
+    }
+
+    /* 頁尾 */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-top: 30px;
+      padding: 16px 0;
+    }
+
+    /* 列印專用樣式 */
+    @media print {
+      #auth-overlay, .toolbar, .tab-bar {
+        display: none !important;
+      }
+      body {
+        background: white;
+      }
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      .table-card {
+        box-shadow: none;
+        border: 1px solid #000;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 密碼保護模態層 -->
+  <div id="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-icon">🔒</div>
+      <h2>成績查詢安全驗證</h2>
+      <p>此頁面包含班級評量成績隱私資訊<br>請輸入存取通關密碼解鎖查閱</p>
+      
+      <div class="auth-input-group">
+        <input type="password" id="auth-password" class="auth-input" placeholder="請輸入密碼" autofocus>
+      </div>
+      
+      <button id="auth-submit-btn" class="auth-btn" onclick="verifyPassword()">驗證並進入</button>
+      <div class="auth-hint">💡 預設通關密碼為：<strong>361</strong></div>
+    </div>
+  </div>
+
+  <div class="container" id="main-content">
+    
+    <!-- 標題表頭 -->
+    <header>
+      <div class="header-badge">115學年度 第1學期 ｜ 技能檢定培訓評量</div>
+      <h1>數位電子乙級術科評審 三梯次綜合評量成績表</h1>
+      <div class="header-sub">
+        班級：<strong>361 資訊三甲</strong> ｜ 授課指導：<strong>簡樹櫥 老師</strong> ｜ 評審日期：<strong>09/10、09/17、09/24 (共三梯次)</strong><br>
+        評分標準：依完成時間先後排序，最高95分每次遞減2分 ｜ 總成績採<strong>【三梯次平均分數】</strong>呈現 ｜ 未到/未完成以 50 分計
+      </div>
+    </header>
+
+    <!-- 統計數據指標 -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <div class="label">應測總人數</div>
+          <div class="value">12 <span style="font-size:14px;font-weight:500;">人</span></div>
+        </div>
+      </div>
+      
+      <div class="stat-card green">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <div class="label">全班平均成績</div>
+          <div class="value">79.3 <span style="font-size:14px;font-weight:500;">分</span></div>
+        </div>
+      </div>
+
+      <div class="stat-card amber">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <div class="label">平均及格率 (&ge;60)</div>
+          <div class="value">91.7 <span style="font-size:14px;font-weight:500;">%</span></div>
+        </div>
+      </div>
+
+      <div class="stat-card purple">
+        <div class="stat-icon">👑</div>
+        <div class="stat-info">
+          <div class="label">最高平均分 (張脩宸)</div>
+          <div class="value">95.0 <span style="font-size:14px;font-weight:500;">分</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 標籤頁切換 -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-main')">📋 三梯次評分總表 (平均分數制)</button>
+      <button class="tab-btn" onclick="switchTab('tab-raw')">🗂️ 全體 36 人次原始評審清冊</button>
+    </div>
+
+    <!-- 快速排序與控制工具列 -->
+    <div class="toolbar" id="toolbar-main">
+      <div class="toolbar-left">
+        <span class="sort-label">排序方式：</span>
+        <button class="sort-btn active" id="btn-sort-avg-desc" onclick="sortStudents('avg', 'desc')">📊 平均分數：高 ➔ 低</button>
+        <button class="sort-btn" id="btn-sort-avg-asc" onclick="sortStudents('avg', 'asc')">📈 平均分數：低 ➔ 高</button>
+        <button class="sort-btn" id="btn-sort-seat" onclick="sortStudents('seat', 'asc')">🔢 座號：小 ➔ 大</button>
+        <button class="sort-btn" id="btn-sort-s3" onclick="sortStudents('s3', 'desc')">🔥 9/24 最新得分</button>
+      </div>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="搜尋座號或姓名..." oninput="filterStudents()">
+      </div>
+    </div>
+
+    <!-- 表格 1: 三梯次評審評分總表 -->
+    <div id="tab-main" class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th colspan="3">學生基本資料</th>
+            <th colspan="2">第一梯次 (09/10)</th>
+            <th colspan="2">第二梯次 (09/17)</th>
+            <th colspan="2">第三梯次 (09/24)</th>
+            <th colspan="4" style="background:#1e40af;">三梯次綜合評量結算 (平均制)</th>
+          </tr>
+          <tr class="sub-hdr">
+            <th onclick="sortStudents('seq', 'asc')" title="點擊排序">序號 ⇕</th>
+            <th onclick="sortStudents('seat', 'asc')" title="點擊排序">座號 ⇕</th>
+            <th onclick="sortStudents('name', 'asc')" title="點擊排序">姓名 ⇕</th>
+            <th>時間</th>
+            <th onclick="sortStudents('s1', 'desc')" title="點擊排序">評分 ⇕</th>
+            <th>時間</th>
+            <th onclick="sortStudents('s2', 'desc')" title="點擊排序">評分 ⇕</th>
+            <th>時間</th>
+            <th onclick="sortStudents('s3', 'desc')" title="點擊排序">評分 ⇕</th>
+            <th>最佳時間</th>
+            <th>狀態</th>
+            <th onclick="sortStudents('avg', 'desc')" title="點擊排序" style="color:#1e3a8a;font-weight:800;">三梯次平均成績 ⇕</th>
+            <th>歷次表現與進步註記</th>
+          </tr>
+        </thead>
+        <tbody id="student-tbody">
+          <!-- 由 JavaScript 動態生成渲染 -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 表格 2: 全體 36 人次原始評審清冊 -->
+    <div id="tab-raw" class="table-card" style="display:none;">
+      <table>
+        <thead>
+          <tr>
+            <th>清冊序號</th>
+            <th>來源掃描檔</th>
+            <th>測試梯次</th>
+            <th>術科測試編號</th>
+            <th>考生姓名</th>
+            <th>完成/離場時間</th>
+            <th>抽題組合</th>
+            <th>監評人員</th>
+          </tr>
+        </thead>
+        <tbody id="raw-tbody">
+          <!-- 由 JavaScript 動態生成渲染 -->
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      國立楊梅高級商工職業學校 資訊科 ｜ 數位電子乙級術科評審系統 ｜ 監評教師：簡樹櫥 老師
+    </footer>
+
+  </div>
+
+  <script>
+    // 學生與清冊資料
+    const students = [{"seq": 1, "seat": "01", "name": "張軒萓", "t1": "未到", "s1": 50, "t2": "未完成", "s2": 50, "t3": "11:31", "s3": 79, "best_t": "11:31", "status": "昨日到測合格", "avg": 59.7, "note": "前兩次未到/未完成(50分)，09/24測驗11:31完成(79分)"}, {"seq": 2, "seat": "05", "name": "詹晏妮", "t1": "11:44", "s1": 87, "t2": "11:35", "s2": 85, "t3": "11:35", "s3": 77, "best_t": "11:35", "status": "歷次穩定完成", "avg": 83.0, "note": "09/10獲87分，09/17與09/24均以11:35穩定完成"}, {"seq": 3, "seat": "11", "name": "朱家潤", "t1": "無紀錄", "s1": 70, "t2": "無紀錄(完成)", "s2": 70, "t3": "11:15", "s3": 89, "best_t": "11:15", "status": "昨日大幅提升", "avg": 76.3, "note": "前兩次無時間(70分)，09/24突破至11:15獲89分高分"}, {"seq": 4, "seat": "13", "name": "李宜叡", "t1": "11:46", "s1": 83, "t2": "10:56", "s2": 93, "t3": "11:19", "s3": 87, "best_t": "10:56", "status": "有時間紀錄", "avg": 87.7, "note": "09/17以10:56獲93分最高，09/24亦達87分"}, {"seq": 5, "seat": "15", "name": "胡加澤", "t1": "無紀錄", "s1": 70, "t2": "11:29", "s2": 87, "t3": "11:35", "s3": 77, "best_t": "11:29", "status": "有時間紀錄", "avg": 78.0, "note": "09/17以11:29獲87分，09/24獲77分"}, {"seq": 6, "seat": "18", "name": "張脩宸", "t1": "10:54", "s1": 95, "t2": "10:46", "s2": 95, "t3": "10:47", "s3": 95, "best_t": "10:46", "status": "全班最快(滿分)", "avg": 95.0, "note": "連三梯次全班第一(10:54, 10:46, 10:47)，平均95.0滿分"}, {"seq": 7, "seat": "20", "name": "許智閎", "t1": "11:20", "s1": 91, "t2": "11:50", "s2": 83, "t3": "11:28", "s3": 81, "best_t": "11:20", "status": "歷次順利完成", "avg": 85.0, "note": "09/10以11:20獲91分，歷次皆在時間內順利完成"}, {"seq": 8, "seat": "22", "name": "陳帟廷", "t1": "11:25", "s1": 89, "t2": "11:10", "s2": 89, "t3": "11:24", "s3": 85, "best_t": "11:10", "status": "表現穩定優良", "avg": 87.7, "note": "前兩次獲89分，09/24獲85分，平均高達87.7分"}, {"seq": 9, "seat": "26", "name": "曾聖宏", "t1": "未完成", "s1": 50, "t2": "無紀錄", "s2": 70, "t3": "11:06", "s3": 91, "best_t": "11:06", "status": "昨日名列前茅", "avg": 70.3, "note": "09/24大突破至11:06完成，單次獲91分高分"}, {"seq": 10, "seat": "29", "name": "劉睿哲", "t1": "未到", "s1": 50, "t2": "未完成", "s2": 50, "t3": "未完成", "s3": 50, "best_t": "-", "status": "未完成/未到", "avg": 50.0, "note": "09/10未到，09/17與09/24到場但未完成(各50分)"}, {"seq": 11, "seat": "30", "name": "蕭丙宏", "t1": "11:45", "s1": 85, "t2": "10:59", "s2": 91, "t3": "11:25", "s3": 83, "best_t": "10:59", "status": "表現良好", "avg": 86.3, "note": "09/17以10:59獲91分，歷次皆達標完成"}, {"seq": 12, "seat": "35", "name": "羅煒璋", "t1": "11:17", "s1": 93, "t2": "10:56", "s2": 93, "t3": "11:00", "s3": 93, "best_t": "10:56", "status": "名列前茅", "avg": 93.0, "note": "連三梯次維持頂尖表現(11:17, 10:56, 11:00)，平均高達93.0分"}];
+    const rawRecords = [{"id": "1", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100001", "name": "李宜叡", "time": "11:46", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "2", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100008", "name": "蕭丙宏", "time": "11:45", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "3", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100009", "name": "詹晏妮", "time": "11:44", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "4", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100006", "name": "陳帟廷", "time": "11:25", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "5", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100005", "name": "許智閎", "time": "11:20 (離場11:20)", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "6", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100011", "name": "羅煒璋", "time": "11:17", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "7", "file": "SKMBT_36326091011450", "round": "09/10", "code": "09100002", "name": "張脩宸", "time": "10:54", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "8", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030007", "name": "蕭丙宏", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "9", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030009", "name": "羅煒璋", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "10", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030001", "name": "李宜叡", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "11", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030002", "name": "張脩宸", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "12", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030003", "name": "陳帟廷", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "13", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030008", "name": "朱家潤", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "14", "file": "SKMBT_36326091011450", "round": "09/03", "code": "09030012", "name": "胡加澤", "time": "無手寫時間", "draw": "接腳D, 顯示M", "teacher": "簡樹櫥"}, {"id": "15", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170009", "name": "楊家林", "time": "11:41 (離場11:41)", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "16", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170008", "name": "詹晏妮", "time": "11:35", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "17", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170003", "name": "許智閎", "time": "11:50", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "18", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170007", "name": "胡加澤", "time": "11:29", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "19", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170004", "name": "陳帟廷", "time": "11:10", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "20", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170006", "name": "李宜叡", "time": "10:56", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "21", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170010", "name": "羅煒璋", "time": "10:56", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "22", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170002", "name": "蕭丙宏", "time": "10:59", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "23", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170001", "name": "張脩宸", "time": "10:46 (①圈選)", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "24", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09170005", "name": "曾聖宏", "time": "無手寫時間 (註9/17)", "draw": "接腳A, 顯示J", "teacher": "簡樹櫥"}, {"id": "25", "file": "SKMBT_36326091713280", "round": "09/17", "code": "09100007", "name": "朱家潤", "time": "無手寫時間 (註9/17完成)", "draw": "接腳E, 顯示N", "teacher": "簡樹櫥"}, {"id": "26", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240002", "name": "胡加澤", "time": "11:35", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "27", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240007", "name": "張脩宸", "time": "10:47", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "28", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240006", "name": "羅煒璋", "time": "11:00", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "29", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240004", "name": "曾聖宏", "time": "11:06", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "30", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240011", "name": "朱家潤", "time": "11:15", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "31", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240010", "name": "李宜叡", "time": "11:19", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "32", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240001", "name": "陳帟廷", "time": "11:24", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "33", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240005", "name": "蕭丙宏", "time": "11:25", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "34", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240009", "name": "張軒萓", "time": "11:31", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "35", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240003", "name": "許智閎", "time": "11:28", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}, {"id": "36", "file": "SKMBT_36326092411210", "round": "09/24", "code": "09240008", "name": "詹晏妮", "time": "11:35", "draw": "接腳C, 顯示L", "teacher": "簡樹櫥"}];
+
+    let currentSortField = 'avg';
+    let currentSortOrder = 'desc';
+
+    // 密碼檢查邏輯 (預設密碼 361)
+    const CORRECT_PASSWORD = '361';
+
+    function verifyPassword() {
+      const input = document.getElementById('auth-password');
+      const val = input.value.trim();
+      
+      if (val === CORRECT_PASSWORD) {
+        // 通過
+        sessionStorage.setItem('grades_auth', 'passed');
+        const overlay = document.getElementById('auth-overlay');
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+      } else {
+        input.classList.add('error');
+        setTimeout(() => { input.classList.remove('error'); }, 400);
+        input.value = '';
+        input.placeholder = '密碼錯誤，請重新輸入';
+      }
+    }
+
+    // 檢查 Session
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('grades_auth') === 'passed') {
+        document.getElementById('auth-overlay').style.display = 'none';
+      } else {
+        document.getElementById('auth-password').focus();
+      }
+
+      // 監聽 Enter 鍵
+      document.getElementById('auth-password').addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') verifyPassword();
+      });
+
+      renderStudents();
+      renderRawRecords();
+    });
+
+    // 渲染學生主表格
+    function renderStudents(dataToRender = students) {
+      const tbody = document.getElementById('student-tbody');
+      tbody.innerHTML = '';
+
+      dataToRender.forEach((s, idx) => {
+        const tr = document.createElement('tr');
+
+        // 勳章判定
+        let rankBadge = '';
+        if (currentSortField === 'avg' && currentSortOrder === 'desc') {
+          if (idx === 0) rankBadge = '<span class="badge-top">👑 榜首</span>';
+          else if (idx === 1 || idx === 2) rankBadge = '<span class="badge-top">🥈 前3</span>';
+        }
+
+        // 昨日突飛猛進標記
+        let t3Highlight = (['張軒萓', '曾聖宏', '朱家潤'].includes(s.name)) ? 'style="background:#f0fdf4;font-weight:700;"' : '';
+        let statusBadge = s.status;
+        if (s.avg < 60) {
+          statusBadge = `<span class="badge-fail">${s.status}</span>`;
+        } else if (s.status.includes('昨日') || s.status.includes('最快')) {
+          statusBadge = `<span class="badge-highlight">${s.status}</span>`;
+        }
+
+        tr.innerHTML = `
+          <td>${s.seq}</td>
+          <td><span class="seat-badge">${s.seat}</span></td>
+          <td class="name-cell">${s.name} ${rankBadge}</td>
+          <td><span class="time-badge">${s.t1}</span></td>
+          <td class="score-cell">${s.s1}</td>
+          <td><span class="time-badge">${s.t2}</span></td>
+          <td class="score-cell">${s.s2}</td>
+          <td ${t3Highlight}><span class="time-badge">${s.t3}</span></td>
+          <td class="score-cell" ${t3Highlight}>${s.s3}</td>
+          <td><span class="time-badge">${s.best_t}</span></td>
+          <td>${statusBadge}</td>
+          <td><span class="score-avg">${s.avg.toFixed(1)}</span></td>
+          <td class="note-text">${s.note}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 排序函數
+    function sortStudents(field, order = 'desc') {
+      currentSortField = field;
+      currentSortOrder = order;
+
+      // 更新按鈕樣式
+      document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+      if (field === 'avg' && order === 'desc') document.getElementById('btn-sort-avg-desc').classList.add('active');
+      if (field === 'avg' && order === 'asc') document.getElementById('btn-sort-avg-asc').classList.add('active');
+      if (field === 'seat') document.getElementById('btn-sort-seat').classList.add('active');
+      if (field === 's3') document.getElementById('btn-sort-s3').classList.add('active');
+
+      students.sort((a, b) => {
+        let vA = a[field];
+        let vB = b[field];
+
+        if (field === 'seat') {
+          vA = parseInt(vA);
+          vB = parseInt(vB);
+        }
+
+        if (order === 'asc') {
+          return vA > vB ? 1 : (vA < vB ? -1 : 0);
+        } else {
+          return vA < vB ? 1 : (vA > vB ? -1 : 0);
+        }
+      });
+
+      filterStudents(); // 重新過濾並呈現
+    }
+
+    // 即時搜尋過濾
+    function filterStudents() {
+      const query = document.getElementById('search-input').value.trim().toLowerCase();
+      if (!query) {
+        renderStudents(students);
+        return;
+      }
+      const filtered = students.filter(s => 
+        s.name.toLowerCase().includes(query) || 
+        s.seat.includes(query) ||
+        s.note.toLowerCase().includes(query)
+      );
+      renderStudents(filtered);
+    }
+
+    // 渲染全體 36 人次明細
+    function renderRawRecords() {
+      const tbody = document.getElementById('raw-tbody');
+      tbody.innerHTML = '';
+      rawRecords.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r.id}</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${r.file}</td>
+          <td><span class="badge-highlight">${r.round}</span></td>
+          <td style="font-family:'JetBrains Mono',monospace;">${r.code}</td>
+          <td class="name-cell">${r.name}</td>
+          <td><span class="time-badge">${r.time}</span></td>
+          <td>${r.draw}</td>
+          <td>${r.teacher}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 切換分頁標籤
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (tabId === 'tab-main') {
+        document.getElementById('tab-main').style.display = 'block';
+        document.getElementById('toolbar-main').style.display = 'flex';
+        document.getElementById('tab-raw').style.display = 'none';
+      } else {
+        document.getElementById('tab-main').style.display = 'none';
+        document.getElementById('toolbar-main').style.display = 'none';
+        document.getElementById('tab-raw').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
